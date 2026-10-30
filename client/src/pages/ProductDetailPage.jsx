@@ -206,48 +206,6 @@ export const ProductDetailPage = () => {
                 ))}
               </div>
             </div>
-
-            {/* Live Integration Endpoints */}
-            <div className="dive-block">
-              <div className="dive-title-row">
-                <Globe size={22} className="text-icon-blue" />
-                <h2>Live Integration Endpoints &amp; Management</h2>
-              </div>
-              <div className="endpoints-deep-card">
-                <div className="endpoint-item">
-                  <Globe size={18} className="text-icon-green" />
-                  <div style={{ flex: 1 }}>
-                    <span className="ep-title">Public Website URL</span>
-                    <a
-                      href={product.websiteUrl || '#'}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="ep-url-link"
-                    >
-                      {product.websiteUrl || `https://speshway.com/${product.slug}`}
-                      <ExternalLink size={12} style={{ display: 'inline', marginLeft: '6px' }} />
-                    </a>
-                  </div>
-                  <button onClick={handleOpenWebsite} className="btn-ep-visit">
-                    Open Website ↗
-                  </button>
-                </div>
-
-                <div className="endpoint-item">
-                  <Shield size={18} className="text-icon-purple" />
-                  <div style={{ flex: 1 }}>
-                    <span className="ep-title">Admin Management Endpoint</span>
-                    <span className="ep-url">{product.adminUrl || '/admin/products'}</span>
-                  </div>
-                  <button
-                    onClick={() => navigate(product.adminUrl || '/admin/products')}
-                    className="btn-ep-admin"
-                  >
-                    Open Admin ⚙
-                  </button>
-                </div>
-              </div>
-            </div>
           </section>
         </div>
 
