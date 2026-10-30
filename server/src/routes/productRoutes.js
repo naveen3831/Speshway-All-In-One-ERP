@@ -1,38 +1,49 @@
 import express from 'express';
-import {
-  getProducts,
-  getProductById,
-  addProduct,
-  updateProduct,
-  deleteProduct,
-} from '../services/productStore.js';
+import mongoose from 'mongoose';
+import Product from '../models/Product.js';
 import { getIO } from '../services/socketService.js';
 
 const router = express.Router();
 
-// @desc    Get all products
+// Helper to find by MongoDB _id or custom slug
+const getProductQuery = (id) => {
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    return { $or: [{ _id: id }, { slug: id }] };
+  }
+  return { slug: id };
+};
+
+// @desc    Get all products from MongoDB database
 // @route   GET /api/products
 // @access  Public
-router.get('/', (req, res) => {
-  const products = getProducts();
-  res.json({ success: true, count: products.length, data: products });
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find().sort({ popularity: -1, createdAt: -1 });
+    res.json({ success: true, count: products.length, data: products });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
-// @desc    Get single product by id or slug
+// @desc    Get single product by id or slug from MongoDB
 // @route   GET /api/products/:id
 // @access  Public
-router.get('/:id', (req, res) => {
-  const product = getProductById(req.params.id);
-  if (!product) {
-    return res.status(404).json({ success: false, message: 'Product not found' });
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findOne(getProductQuery(req.params.id));
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found in database' });
+    }
+    res.json({ success: true, data: product });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-  res.json({ success: true, data: product });
 });
 
-// @desc    Add new product (CRUD Create)
+// @desc    Add new product directly to MongoDB database (CRUD Create)
 // @route   POST /api/products
-// @access  Public (or Protected Admin)
-router.post('/', (req, res) => {
+// @access  Public
+router.post('/', async (req, res) => {
   try {
     const {
       name,
@@ -60,7 +71,7 @@ router.post('/', (req, res) => {
     const finalSlug =
       slug || name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
-    const createdProduct = addProduct({
+    const createdProduct = await Product.create({
       name,
       slug: finalSlug,
       category: category || 'Business Operations',
@@ -82,16 +93,17 @@ router.post('/', (req, res) => {
       iconName: iconName || 'Layers',
       color: color || 'green',
       status: status || 'active',
+      popularity: 90,
     });
 
-    // Real-time broadcast
+    // Real-time WebSocket broadcast to all connected clients
     const io = getIO();
     if (io) {
       io.emit('product:added', createdProduct);
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `New ERP Product added: "${createdProduct.name}"`,
+        text: `New ERP Product added to database: "${createdProduct.name}"`,
         time: 'Just now',
       });
     }
@@ -102,10 +114,10 @@ router.post('/', (req, res) => {
   }
 });
 
-// @desc    Update product (CRUD Update)
+// @desc    Update product in MongoDB database (CRUD Update)
 // @route   PUT /api/products/:id
-// @access  Public (or Protected Admin)
-router.put('/:id', (req, res) => {
+// @access  Public
+router.put('/:id', async (req, res) => {
   try {
     const body = { ...req.body };
     if (body.technologies && typeof body.technologies === 'string') {
@@ -115,19 +127,24 @@ router.put('/:id', (req, res) => {
       body.features = body.features.split(',').map((f) => f.trim()).filter(Boolean);
     }
 
-    const updated = updateProduct(req.params.id, body);
+    const updated = await Product.findOneAndUpdate(
+      getProductQuery(req.params.id),
+      body,
+      { new: true, runValidators: true }
+    );
+
     if (!updated) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'Product not found in database' });
     }
 
-    // Real-time broadcast
+    // Real-time WebSocket broadcast
     const io = getIO();
     if (io) {
       io.emit('product:updated', updated);
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product updated: "${updated.name}" details & technologies refreshed`,
+        text: `Product updated in database: "${updated.name}" details refreshed`,
         time: 'Just now',
       });
     }
@@ -138,34 +155,29 @@ router.put('/:id', (req, res) => {
   }
 });
 
-// @desc    Delete product (CRUD Delete)
+// @desc    Delete product from MongoDB database (CRUD Delete)
 // @route   DELETE /api/products/:id
-// @access  Public (or Protected Admin)
-router.delete('/:id', (req, res) => {
+// @access  Public
+router.delete('/:id', async (req, res) => {
   try {
-    const existing = getProductById(req.params.id);
-    const success = deleteProduct(req.params.id);
-    if (!success && !existing) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+    const deleted = await Product.findOneAndDelete(getProductQuery(req.params.id));
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: 'Product not found in database' });
     }
 
-    const deletedId = existing ? existing.id : req.params.id;
-    const deletedSlug = existing ? existing.slug : req.params.id;
-    const productName = existing ? existing.name : req.params.id;
-
-    // Real-time broadcast
+    // Real-time WebSocket broadcast
     const io = getIO();
     if (io) {
-      io.emit('product:deleted', { id: deletedId, slug: deletedSlug });
+      io.emit('product:deleted', { id: deleted.id, slug: deleted.slug });
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product "${productName}" removed from catalog`,
+        text: `Product "${deleted.name}" permanently deleted from database`,
         time: 'Just now',
       });
     }
 
-    res.json({ success: true, message: 'Product deleted successfully', id: deletedId, slug: deletedSlug });
+    res.json({ success: true, message: 'Product deleted from database successfully', id: deleted.id, slug: deleted.slug });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

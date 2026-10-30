@@ -4,13 +4,15 @@ import app from './app.js';
 import connectDB from './config/db.js';
 import { initSocket } from './services/socketService.js';
 import { seedAdminUser } from './controllers/authController.js';
+import { seedProductsDatabase } from './services/productDatabaseService.js';
 
 // Load environment variables
 dotenv.config();
 
 // Connect to MongoDB
-connectDB().then(() => {
-  seedAdminUser();
+connectDB().then(async () => {
+  await seedAdminUser();
+  await seedProductsDatabase();
 });
 
 const PORT = process.env.PORT || 5000;
