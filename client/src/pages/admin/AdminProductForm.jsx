@@ -296,20 +296,20 @@ export const AdminProductForm = () => {
 
           {/* RIGHT COLUMN: Settings & Endpoints (CRITICAL USER REQUIREMENT) */}
           <div className="form-col-side">
-            {/* Card 4: Website URLs & Admin Routes (Managed Directly Here!) */}
+            {/* Card 4: Product Website Landing URL */}
             <div className="admin-card form-section-card">
               <div className="form-section-title-row">
                 <Globe size={18} className="text-icon-blue" />
-                <h3>Websites &amp; Administrative Endpoints</h3>
+                <h3>Product Website URL</h3>
               </div>
               <p className="form-section-sub">
-                Manage live landing URLs and internal administrative routing directly for this module.
+                Configure or update the live landing and destination URL for this application.
               </p>
 
               <div className="form-group">
                 <label>
                   <Globe size={13} style={{ marginRight: '4px' }} />
-                  Product Website URL (Public Landing / Live Portal) *
+                  Website URL (Public Landing / Live Portal) *
                 </label>
                 <input
                   type="url"
@@ -318,22 +318,7 @@ export const AdminProductForm = () => {
                   onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
                   className="quick-input full-width"
                 />
-                <span className="input-hint">Users click "View Website" to open this destination.</span>
-              </div>
-
-              <div className="form-group" style={{ marginTop: '12px' }}>
-                <label>
-                  <Shield size={13} style={{ marginRight: '4px' }} />
-                  Admin Dashboard URL / Path *
-                </label>
-                <input
-                  type="text"
-                  placeholder="/admin/products"
-                  value={formData.adminUrl}
-                  onChange={(e) => setFormData({ ...formData, adminUrl: e.target.value })}
-                  className="quick-input full-width"
-                />
-                <span className="input-hint">Admins click "View Admin Dashboard" to navigate here.</span>
+                <span className="input-hint">Website visitors click "View Website" to access this destination.</span>
               </div>
             </div>
 

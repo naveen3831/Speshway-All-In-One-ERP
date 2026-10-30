@@ -216,7 +216,7 @@ export const AdminProducts = () => {
                   </div>
                 )}
 
-                {/* Card URLs Box */}
+                {/* Card URL Box - Website URL only (Admin dashboard URL removed from admin view) */}
                 <div className="admin-prod-urls-box">
                   <div className="card-url-item">
                     <div className="url-item-label">
@@ -234,16 +234,6 @@ export const AdminProducts = () => {
                       <span>{prod.websiteUrl || 'Not configured'}</span>
                       <ExternalLink size={11} />
                     </a>
-                  </div>
-
-                  <div className="card-url-item">
-                    <div className="url-item-label">
-                      <Shield size={13} className="text-icon-purple" />
-                      <span>Admin Dashboard URL</span>
-                    </div>
-                    <span className="url-item-admin-path">
-                      {prod.adminUrl || '/admin/products'}
-                    </span>
                   </div>
                 </div>
 
@@ -285,7 +275,6 @@ export const AdminProducts = () => {
                   <th>Product Name &amp; Category</th>
                   <th>Technologies</th>
                   <th>Website URL</th>
-                  <th>Admin Dashboard URL</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -327,12 +316,6 @@ export const AdminProducts = () => {
                         <span>{prod.websiteUrl || 'Not configured'}</span>
                         <ExternalLink size={11} />
                       </a>
-                    </td>
-                    <td>
-                      <span className="table-admin-path">
-                        <Shield size={13} />
-                        <span>{prod.adminUrl || '/admin/products'}</span>
-                      </span>
                     </td>
                     <td>
                       <span className={`badge-status ${prod.status || 'active'}`}>
