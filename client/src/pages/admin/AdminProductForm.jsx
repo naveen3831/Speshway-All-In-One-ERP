@@ -14,6 +14,9 @@ import {
   Zap,
   Info,
   Trash2,
+  Image as ImageIcon,
+  Upload,
+  X,
 } from 'lucide-react';
 
 export const AdminProductForm = () => {
@@ -36,6 +39,7 @@ export const AdminProductForm = () => {
     technologies: 'React 18, Node.js, Express.js, MongoDB Atlas, Socket.IO, JWT Auth, Tailwind CSS',
     websiteUrl: 'https://speshway.com/',
     adminUrl: '/admin/products',
+    imageUrl: '',
     color: 'green',
     status: 'active',
   });
@@ -59,12 +63,28 @@ export const AdminProductForm = () => {
           : existingProduct.technologies || '',
         websiteUrl: existingProduct.websiteUrl || '',
         adminUrl: existingProduct.adminUrl || '/admin/products',
+        imageUrl: existingProduct.imageUrl || '',
         color: existingProduct.color || 'green',
         status: existingProduct.status || 'active',
       });
       setSavedSlug(existingProduct.slug || existingProduct.id);
     }
   }, [isEditMode, existingProduct]);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size exceeds 5MB limit. Please choose a smaller image.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, imageUrl: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const techList = (formData.technologies || '')
     .split(',')
@@ -296,6 +316,65 @@ export const AdminProductForm = () => {
 
           {/* RIGHT COLUMN: Settings & Endpoints (CRITICAL USER REQUIREMENT) */}
           <div className="form-col-side">
+            {/* Card: Product Image & Media Showcase (NEW USER REQUIREMENT) */}
+            <div className="admin-card form-section-card">
+              <div className="form-section-title-row">
+                <ImageIcon size={18} className="text-icon-green" />
+                <h3>Product Image &amp; Media</h3>
+              </div>
+              <p className="form-section-sub">
+                Upload an application screenshot, mockup, or provide an image URL. Updates across the home page and product page in real time.
+              </p>
+
+              {/* Live Preview Box */}
+              {formData.imageUrl ? (
+                <div className="form-img-preview-box">
+                  <img
+                    src={formData.imageUrl}
+                    alt="Product preview"
+                    className="form-img-preview"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, imageUrl: '' })}
+                    className="btn-remove-preview-img"
+                    title="Remove Image"
+                  >
+                    <X size={14} /> Remove Image
+                  </button>
+                </div>
+              ) : (
+                <div className="form-img-empty-placeholder">
+                  <ImageIcon size={32} className="text-muted" />
+                  <span>No image selected yet</span>
+                </div>
+              )}
+
+              {/* Upload from Device */}
+              <div className="form-group" style={{ marginTop: '14px' }}>
+                <label>Upload Image from Device</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="quick-file-input"
+                />
+              </div>
+
+              {/* Or enter Image URL */}
+              <div className="form-group" style={{ marginTop: '12px' }}>
+                <label>Or Enter Image URL</label>
+                <input
+                  type="url"
+                  placeholder="https://images.unsplash.com/... or /logo.png"
+                  value={formData.imageUrl.startsWith('data:') ? '' : formData.imageUrl}
+                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  className="quick-input full-width"
+                />
+                <span className="input-hint">Direct link to an image file (PNG, JPG, WebP, SVG).</span>
+              </div>
+            </div>
+
             {/* Card 4: Product Website Landing URL */}
             <div className="admin-card form-section-card">
               <div className="form-section-title-row">

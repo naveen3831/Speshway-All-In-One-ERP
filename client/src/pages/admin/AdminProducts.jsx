@@ -178,7 +178,11 @@ export const AdminProducts = () => {
                 {/* Card Top: Icon, Category & Actions (Single Delete button at top-right) */}
                 <div className="admin-prod-card-top">
                   <div className={`admin-card-icon-box bg-icon-${prod.color || 'green'}`}>
-                    <Icon className={`text-icon-${prod.color || 'green'}`} size={22} />
+                    {prod.imageUrl ? (
+                      <img src={prod.imageUrl} alt={prod.name} className="admin-card-custom-img" />
+                    ) : (
+                      <Icon className={`text-icon-${prod.color || 'green'}`} size={22} />
+                    )}
                   </div>
                   <div className="admin-prod-card-badges">
                     <span className="prod-badge-category">{prod.category}</span>
@@ -289,7 +293,11 @@ export const AdminProducts = () => {
                     <td>
                       <div className="table-prod-info">
                         <div className={`table-prod-icon bg-icon-${prod.color || 'green'}`}>
-                          <Layers size={18} className={`text-icon-${prod.color || 'green'}`} />
+                          {prod.imageUrl ? (
+                            <img src={prod.imageUrl} alt={prod.name} className="admin-table-custom-img" />
+                          ) : (
+                            <Layers size={18} className={`text-icon-${prod.color || 'green'}`} />
+                          )}
                         </div>
                         <div>
                           <strong className="prod-table-name">{prod.name}</strong>

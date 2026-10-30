@@ -3894,3 +3894,135 @@ button {
   color: #ffffff;
   border-color: #0f172a;
 }
+
+
+/* =========================================================================
+   Product Custom Image & Showcase Media Styling
+   ========================================================================= */
+
+.form-img-preview-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.form-img-preview {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.btn-remove-preview-img {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #dc2626;
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-preview-img:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+.form-img-empty-placeholder {
+  height: 120px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background-color: #f8fafc;
+}
+
+.quick-file-input {
+  width: 100%;
+  padding: 8px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  background-color: #ffffff;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.quick-file-input:focus {
+  border-color: #059669;
+}
+
+/* Images on Public Home Cards */
+.app-icon-custom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+/* Images on Public Catalog Cards */
+.catalog-card-image-wrap {
+  width: 100%;
+  height: 140px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.catalog-card-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.catalog-card:hover .catalog-card-preview-img {
+  transform: scale(1.04);
+}
+
+/* Product Detail Hero Custom Image */
+.product-hero-custom-img {
+  max-width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 0 auto;
+}
+
+/* Admin Card Custom Image */
+.admin-card-custom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.admin-table-custom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}

@@ -127,10 +127,20 @@ export const ProductsPage = () => {
                 >
                   <div className="catalog-card-header">
                     <div className={`app-icon-box bg-icon-${prod.color || 'green'}`}>
-                      <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={24} />
+                      {prod.imageUrl ? (
+                        <img src={prod.imageUrl} alt={prod.name} className="app-icon-custom-img" />
+                      ) : (
+                        <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={24} />
+                      )}
                     </div>
                     <span className="product-category-tag">{prod.category}</span>
                   </div>
+
+                  {prod.imageUrl && (
+                    <div className="catalog-card-image-wrap">
+                      <img src={prod.imageUrl} alt={prod.name} className="catalog-card-preview-img" />
+                    </div>
+                  )}
 
                   <h3 className="catalog-product-name">{prod.name}</h3>
                   <p className="catalog-product-desc">{prod.description}</p>

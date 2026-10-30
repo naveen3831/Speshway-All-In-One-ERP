@@ -46,6 +46,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: 'Layers',
     },
+    imageUrl: {
+      type: String,
+      default: '',
+    },
     color: {
       type: String,
       default: 'green',

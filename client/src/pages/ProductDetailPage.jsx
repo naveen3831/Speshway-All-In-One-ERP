@@ -120,7 +120,11 @@ export const ProductDetailPage = () => {
                   <span>Enterprise Edition</span>
                 </div>
                 <div className="preview-icon-giant">
-                  <Layers size={64} className="text-icon-green" />
+                  {product.imageUrl ? (
+                    <img src={product.imageUrl} alt={product.name} className="product-hero-custom-img" />
+                  ) : (
+                    <Layers size={64} className="text-icon-green" />
+                  )}
                 </div>
                 <h3>{product.name}</h3>
                 <p>Real-Time Synchronized &bull; Role-Based Access</p>
