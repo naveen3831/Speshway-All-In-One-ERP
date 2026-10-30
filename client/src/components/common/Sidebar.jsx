@@ -1,0 +1,58 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+const navItems = [
+  { label: 'Dashboard', path: '/' },
+  { label: 'Inventory', path: '/inventory' },
+  { label: 'Sales & Orders', path: '/sales' },
+  { label: 'Purchases', path: '/purchases' },
+  { label: 'Human Resources', path: '/hr' },
+  { label: 'Finance & Accounting', path: '/finance' },
+  { label: 'Settings', path: '/settings' },
+];
+
+export const Sidebar = () => {
+  return (
+    <aside
+      style={{
+        width: 'var(--sidebar-width)',
+        backgroundColor: '#1e293b',
+        color: '#f8fafc',
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+      }}
+    >
+      <div
+        style={{
+          padding: '24px 20px',
+          fontSize: '1.25rem',
+          fontWeight: 700,
+          letterSpacing: '-0.025em',
+          borderBottom: '1px solid #334155',
+        }}
+      >
+        Speshway ERP
+      </div>
+      <nav style={{ padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            style={({ isActive }) => ({
+              display: 'block',
+              padding: '10px 16px',
+              borderRadius: '6px',
+              fontSize: '0.9rem',
+              fontWeight: 500,
+              backgroundColor: isActive ? '#3b82f6' : 'transparent',
+              color: isActive ? '#ffffff' : '#cbd5e1',
+            })}
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
+  );
+};
