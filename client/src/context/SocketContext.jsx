@@ -90,8 +90,16 @@ export const SocketProvider = ({ children }) => {
       setTimeout(() => setToastMessage(null), 4000);
     });
 
-    newSocket.on('product:deleted', ({ id }) => {
-      setProducts((prev) => prev.filter((p) => p.id !== id && p.slug !== id));
+    newSocket.on('product:deleted', (data) => {
+      const targetId = data?.id;
+      const targetSlug = data?.slug;
+      setProducts((prev) =>
+        prev.filter((p) => {
+          if (targetId && (p.id === targetId || p.slug === targetId)) return false;
+          if (targetSlug && (p.id === targetSlug || p.slug === targetSlug)) return false;
+          return true;
+        })
+      );
       setToastMessage(`Product removed from catalog`);
       setTimeout(() => setToastMessage(null), 4000);
     });

@@ -16,7 +16,7 @@ import { ContactPage } from './pages/ContactPage';
 import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminOverview } from './pages/admin/AdminOverview';
 import { AdminProducts } from './pages/admin/AdminProducts';
-import { AdminUrls } from './pages/admin/AdminUrls';
+import { AdminProductForm } from './pages/admin/AdminProductForm';
 import { AdminUsers } from './pages/admin/AdminUsers';
 import { AdminInquiries } from './pages/admin/AdminInquiries';
 import { AdminSettings } from './pages/admin/AdminSettings';
@@ -45,11 +45,13 @@ export default function App() {
             {/* 2. AUTHENTICATION */}
             <Route path="/login" element={<Login />} />
 
-            {/* 3. ADMIN DASHBOARD (With Sidebar Pages & URL Management) */}
+            {/* 3. ADMIN DASHBOARD */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminOverview />} />
               <Route path="products" element={<AdminProducts />} />
-              <Route path="urls" element={<AdminUrls />} />
+              <Route path="products/new" element={<AdminProductForm />} />
+              <Route path="products/edit/:id" element={<AdminProductForm />} />
+              <Route path="urls" element={<AdminProducts />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="inquiries" element={<AdminInquiries />} />
               <Route path="settings" element={<AdminSettings />} />

@@ -3660,3 +3660,237 @@ button {
   border-color: #047857;
   font-weight: 700;
 }
+
+
+/* =========================================================================
+   Dedicated Admin Add / Edit Product Page Layout & Styling
+   ========================================================================= */
+
+.product-form-page-view {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 90px;
+}
+
+.form-page-header {
+  margin-bottom: 24px;
+}
+
+.btn-delete-product {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-delete-product:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}
+
+.form-alert-banner {
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.alert-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-sub {
+  font-size: 0.8rem;
+  color: #065f46;
+  margin-top: 2px;
+}
+
+.product-form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.product-form-columns {
+  display: grid;
+  grid-template-columns: 1.6fr 1.1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .product-form-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-col-main,
+.form-col-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-section-card {
+  padding: 26px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.form-section-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.form-section-title-row h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.form-section-sub {
+  font-size: 0.84rem;
+  color: #64748b;
+  margin: 0 0 18px 0;
+  line-height: 1.5;
+}
+
+.input-hint {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Previews in Form */
+.tech-preview-container,
+.features-preview-container {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.preview-label {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.tech-chips-row-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.feat-chips-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feat-pill-preview {
+  font-size: 0.82rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.link-preview-card {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border: 1px solid #a7f3d0;
+}
+
+.link-preview-card h4 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #065f46;
+  margin: 0 0 6px 0;
+}
+
+.link-preview-card p {
+  font-size: 0.82rem;
+  color: #047857;
+  margin: 0 0 14px 0;
+}
+
+.btn-preview-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #047857;
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-preview-link:hover {
+  background-color: #065f46;
+  color: #ffffff;
+}
+
+/* Sticky Action Bar at Bottom */
+.form-sticky-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 260px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 36px;
+  z-index: 50;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+}
+
+@media (max-width: 900px) {
+  .form-sticky-action-bar {
+    left: 0;
+  }
+}
+
+.sticky-action-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+/* Quick Admin Edit Button on Product Detail Hero */
+.btn-edit-admin-quick {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-edit-admin-quick:hover {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}

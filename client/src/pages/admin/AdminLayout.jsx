@@ -189,14 +189,6 @@ export const AdminLayout = () => {
           </NavLink>
 
           <NavLink
-            to="/admin/urls"
-            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
-          >
-            <Globe size={18} />
-            <span>Website &amp; Admin URLs</span>
-          </NavLink>
-
-          <NavLink
             to="/admin/users"
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >

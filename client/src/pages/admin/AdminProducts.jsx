@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSocket } from '../../context/SocketContext';
-import { ProductDetailModal } from '../../components/products/ProductDetailModal';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus,
@@ -11,7 +10,6 @@ import {
   Globe,
   Shield,
   CheckCircle,
-  X,
   Layers,
   Users,
   Wallet,
@@ -48,31 +46,13 @@ const iconMap = {
 };
 
 export const AdminProducts = () => {
-  const { products, triggerAddProduct, triggerUpdateProduct, triggerDeleteProduct } =
-    useSocket();
+  const { products, triggerDeleteProduct } = useSocket();
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [selectedDetailProduct, setSelectedDetailProduct] = useState(null);
   const [statusMsg, setStatusMsg] = useState('');
   const [viewMode, setViewMode] = useState('cards'); // 'cards' is the default!
-
-  // Form State for CRUD Operations
-  const [formData, setFormData] = useState({
-    name: '',
-    category: 'Human Resources',
-    description: '',
-    longDescription: '',
-    features: '',
-    technologies: '',
-    websiteUrl: '',
-    adminUrl: '/admin/products',
-    color: 'green',
-    status: 'active',
-  });
 
   const categories = [
     'All',
@@ -85,84 +65,21 @@ export const AdminProducts = () => {
     'Business Intelligence',
   ];
 
-  const openAddModal = () => {
-    setEditingProduct(null);
-    setFormData({
-      name: '',
-      category: 'Human Resources',
-      description: '',
-      longDescription: '',
-      features: 'Automated Workflows, Role-Based Access, Real-Time Sync, PDF Export',
-      technologies: 'React 18, Node.js, Express.js, MongoDB Atlas, Socket.IO, JWT Auth, Tailwind CSS',
-      websiteUrl: 'https://speshway.com/',
-      adminUrl: '/admin/products',
-      color: 'green',
-      status: 'active',
-    });
-    setModalOpen(true);
-  };
-
-  const openEditModal = (prod, e) => {
+  const handleEditProduct = (prod, e) => {
     if (e) e.stopPropagation();
-    setEditingProduct(prod);
-    setFormData({
-      name: prod.name || '',
-      category: prod.category || 'Human Resources',
-      description: prod.description || '',
-      longDescription: prod.longDescription || '',
-      features: Array.isArray(prod.features) ? prod.features.join(', ') : '',
-      technologies: Array.isArray(prod.technologies) ? prod.technologies.join(', ') : '',
-      websiteUrl: prod.websiteUrl || '',
-      adminUrl: prod.adminUrl || '/admin/products',
-      color: prod.color || 'green',
-      status: prod.status || 'active',
-    });
-    setModalOpen(true);
+    navigate(`/admin/products/edit/${prod.slug || prod.id}`);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.description) {
-      alert('Please fill in the Product Name and Short Description');
-      return;
-    }
-
-    try {
-      const payload = {
-        ...formData,
-        features: Array.isArray(formData.features)
-          ? formData.features
-          : typeof formData.features === 'string'
-          ? formData.features.split(',').map((f) => f.trim()).filter(Boolean)
-          : [],
-        technologies: Array.isArray(formData.technologies)
-          ? formData.technologies
-          : typeof formData.technologies === 'string'
-          ? formData.technologies.split(',').map((t) => t.trim()).filter(Boolean)
-          : ['React', 'Node.js', 'Express', 'MongoDB'],
-      };
-
-      if (editingProduct) {
-        await triggerUpdateProduct(editingProduct.id || editingProduct.slug, payload);
-        setStatusMsg(`Product "${formData.name}" updated successfully!`);
-      } else {
-        await triggerAddProduct(payload);
-        setStatusMsg(`New product "${formData.name}" added successfully!`);
-      }
-
-      setModalOpen(false);
-      setTimeout(() => setStatusMsg(''), 4000);
-    } catch (err) {
-      alert('Error saving product: ' + (err.response?.data?.message || err.message));
-    }
+  const handleAddNewProduct = () => {
+    navigate('/admin/products/new');
   };
 
   const handleDelete = async (id, name, e) => {
     if (e) e.stopPropagation();
-    if (window.confirm(`Are you sure you want to delete "${name}"?`)) {
+    if (window.confirm(`Are you sure you want to delete "${name}"? This will delete it across the home page and public catalog immediately.`)) {
       try {
         await triggerDeleteProduct(id);
-        setStatusMsg(`Product "${name}" deleted.`);
+        setStatusMsg(`Product "${name}" deleted in real-time.`);
         setTimeout(() => setStatusMsg(''), 4000);
       } catch (err) {
         alert('Error deleting product');
@@ -186,11 +103,11 @@ export const AdminProducts = () => {
         <div>
           <h1 className="admin-heading">Products &amp; Module Management (CRUD)</h1>
           <p className="admin-subtext">
-            Add new ERP products, edit technologies, update website landing URLs, configure admin routes, and delete modules in real-time.
+            Add new ERP products in dedicated pages, edit technologies &amp; URLs, and control modules in real-time.
           </p>
         </div>
         <div className="admin-header-actions">
-          <button onClick={openAddModal} className="btn-hero-primary">
+          <button onClick={handleAddNewProduct} className="btn-hero-primary">
             <Plus size={16} /> Add New Product
           </button>
         </div>
@@ -330,7 +247,7 @@ export const AdminProducts = () => {
                   </div>
                 </div>
 
-                {/* Card Footer Buttons - One Single Edit button & Full Details */}
+                {/* Card Footer Buttons - Single Edit & View Details */}
                 <div className="admin-prod-card-footer">
                   <button
                     onClick={(e) => {
@@ -343,9 +260,9 @@ export const AdminProducts = () => {
                     <Eye size={14} /> Full Details
                   </button>
                   <button
-                    onClick={(e) => openEditModal(prod, e)}
+                    onClick={(e) => handleEditProduct(prod, e)}
                     className="card-btn-edit"
-                    title="Edit Product, Tech Stack, & URLs"
+                    title="Edit Product, Tech Stack, & URLs in New Page"
                   >
                     <Edit2 size={14} /> Edit Product
                   </button>
@@ -377,7 +294,7 @@ export const AdminProducts = () => {
                 {filtered.map((prod) => (
                   <tr
                     key={prod.id || prod.slug}
-                    onClick={() => setSelectedDetailProduct(prod)}
+                    onClick={() => navigate(`/product/${prod.slug || prod.id}`)}
                     style={{ cursor: 'pointer' }}
                   >
                     <td>
@@ -425,9 +342,9 @@ export const AdminProducts = () => {
                     <td>
                       <div className="table-actions-cell" onClick={(e) => e.stopPropagation()}>
                         <button
-                          onClick={(e) => openEditModal(prod, e)}
+                          onClick={(e) => handleEditProduct(prod, e)}
                           className="btn-action-icon edit"
-                          title="Edit Product, Technologies &amp; URLs"
+                          title="Edit in New Page"
                         >
                           <Edit2 size={15} />
                         </button>
@@ -444,194 +361,6 @@ export const AdminProducts = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-      )}
-
-      {/* FULL PRODUCT DETAILS MODAL */}
-      {selectedDetailProduct && (
-        <ProductDetailModal
-          product={selectedDetailProduct}
-          onClose={() => setSelectedDetailProduct(null)}
-        />
-      )}
-
-      {/* ADD / EDIT MODAL (CRUD OPERATIONS) */}
-      {modalOpen && (
-        <div className="modal-backdrop" onClick={() => setModalOpen(false)}>
-          <div className="module-modal-box admin-form-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div className="modal-header-left">
-                <Layers size={20} className="text-icon-green" />
-                <h3 className="modal-title">
-                  {editingProduct ? `Edit Product: ${editingProduct.name}` : 'Add New ERP Product'}
-                </h3>
-              </div>
-              <button className="modal-close-btn" onClick={() => setModalOpen(false)}>
-                <X size={20} />
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="admin-modal-form">
-              <div className="form-row-2col">
-                <div className="form-group">
-                  <label>Product Name *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Warehouse Inventory Pro"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="quick-input full-width"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Category *</label>
-                  <select
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="quick-select full-width"
-                  >
-                    <option value="Human Resources">Human Resources</option>
-                    <option value="Finance & HR">Finance &amp; HR</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Productivity">Productivity</option>
-                    <option value="Sales & CRM">Sales &amp; CRM</option>
-                    <option value="Operations">Operations</option>
-                    <option value="Business Intelligence">Business Intelligence</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Short Description *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Summary for product cards..."
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="quick-input full-width"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Detailed Architecture Description</label>
-                <textarea
-                  rows={3}
-                  placeholder="Comprehensive description for the dedicated details page..."
-                  value={formData.longDescription}
-                  onChange={(e) => setFormData({ ...formData, longDescription: e.target.value })}
-                  className="quick-input full-width"
-                />
-              </div>
-
-              {/* TECHNOLOGIES INPUT (CRUD REQUIREMENT) */}
-              <div className="form-group">
-                <label>
-                  <Cpu size={13} style={{ display: 'inline', marginRight: '4px' }} />
-                  Technologies &amp; Architecture Stack (comma-separated) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. React 18, Node.js, Express.js, MongoDB Atlas, Socket.IO, JWT Auth, Docker"
-                  value={formData.technologies}
-                  onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
-                  className="quick-input full-width"
-                />
-              </div>
-
-              {/* FEATURES INPUT */}
-              <div className="form-group">
-                <label>Key Features (comma-separated) *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Feature 1, Feature 2, Feature 3..."
-                  value={formData.features}
-                  onChange={(e) => setFormData({ ...formData, features: e.target.value })}
-                  className="quick-input full-width"
-                />
-              </div>
-
-              {/* WEBSITE URL & ADMIN DASHBOARD URL */}
-              <div className="form-row-2col">
-                <div className="form-group">
-                  <label>
-                    <Globe size={13} style={{ display: 'inline', marginRight: '4px' }} />
-                    Product Website URL *
-                  </label>
-                  <input
-                    type="url"
-                    placeholder="https://speshway.com/your-product"
-                    value={formData.websiteUrl}
-                    onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
-                    className="quick-input full-width"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>
-                    <Shield size={13} style={{ display: 'inline', marginRight: '4px' }} />
-                    Admin Dashboard URL / Path *
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="/admin/products or /admin"
-                    value={formData.adminUrl}
-                    onChange={(e) => setFormData({ ...formData, adminUrl: e.target.value })}
-                    className="quick-input full-width"
-                  />
-                </div>
-              </div>
-
-              <div className="form-row-2col">
-                <div className="form-group">
-                  <label>Color Theme</label>
-                  <select
-                    value={formData.color}
-                    onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                    className="quick-select full-width"
-                  >
-                    <option value="green">Emerald Green</option>
-                    <option value="blue">Royal Blue</option>
-                    <option value="purple">Purple</option>
-                    <option value="orange">Orange</option>
-                    <option value="red">Ruby Red</option>
-                    <option value="teal">Teal</option>
-                    <option value="yellow">Amber Yellow</option>
-                    <option value="indigo">Indigo</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label>Status</label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="quick-select full-width"
-                  >
-                    <option value="active">Active (Visible)</option>
-                    <option value="beta">Beta (Preview)</option>
-                    <option value="coming_soon">Coming Soon</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="admin-modal-footer">
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(false)}
-                  className="btn-hero-secondary"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn-hero-primary">
-                  {editingProduct ? 'Save & Update Product' : 'Create Product'}
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}

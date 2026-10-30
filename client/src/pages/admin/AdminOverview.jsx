@@ -27,7 +27,7 @@ export const AdminOverview = () => {
           </p>
         </div>
         <div className="admin-header-actions">
-          <Link to="/admin/products" className="btn-hero-primary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+          <Link to="/admin/products/new" className="btn-hero-primary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
             <Plus size={16} /> Add Product
           </Link>
         </div>
@@ -101,7 +101,7 @@ export const AdminOverview = () => {
                   <span className="url-preview" title={prod.websiteUrl}>
                     Web: {prod.websiteUrl || 'Local'}
                   </span>
-                  <Link to="/admin/products" className="btn-edit-tiny">
+                  <Link to={`/admin/products/edit/${prod.slug || prod.id}`} className="btn-edit-tiny">
                     Edit
                   </Link>
                 </div>

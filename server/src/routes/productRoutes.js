@@ -141,24 +141,29 @@ router.put('/:id', (req, res) => {
 // @access  Public (or Protected Admin)
 router.delete('/:id', (req, res) => {
   try {
+    const existing = getProductById(req.params.id);
     const success = deleteProduct(req.params.id);
-    if (!success) {
+    if (!success && !existing) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
+
+    const deletedId = existing ? existing.id : req.params.id;
+    const deletedSlug = existing ? existing.slug : req.params.id;
+    const productName = existing ? existing.name : req.params.id;
 
     // Real-time broadcast
     const io = getIO();
     if (io) {
-      io.emit('product:deleted', { id: req.params.id });
+      io.emit('product:deleted', { id: deletedId, slug: deletedSlug });
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product removed from catalog`,
+        text: `Product "${productName}" removed from catalog`,
         time: 'Just now',
       });
     }
 
-    res.json({ success: true, message: 'Product deleted successfully' });
+    res.json({ success: true, message: 'Product deleted successfully', id: deletedId, slug: deletedSlug });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
