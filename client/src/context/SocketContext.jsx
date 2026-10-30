@@ -108,7 +108,23 @@ export const SocketProvider = ({ children }) => {
     newSocket.on('hrms:updated', ({ employee, stats: updatedStats }) => {
       setModulesData((prev) => ({
         ...prev,
-        hrms: [employee, ...(prev.hrms || [])],
+        hrms: [employee, ...(prev.hrms || []).filter((e) => e.id !== employee.id)],
+      }));
+      if (updatedStats) setStats(updatedStats);
+    });
+
+    newSocket.on('hrms:deleted', ({ id, stats: updatedStats }) => {
+      setModulesData((prev) => ({
+        ...prev,
+        hrms: (prev.hrms || []).filter((e) => e.id !== id),
+      }));
+      if (updatedStats) setStats(updatedStats);
+    });
+
+    newSocket.on('hrms:member_updated', ({ employee, stats: updatedStats }) => {
+      setModulesData((prev) => ({
+        ...prev,
+        hrms: (prev.hrms || []).map((e) => (e.id === employee.id ? { ...e, ...employee } : e)),
       }));
       if (updatedStats) setStats(updatedStats);
     });
@@ -194,9 +210,34 @@ export const SocketProvider = ({ children }) => {
     if (socket && isConnected) {
       socket.emit('action:add_employee', emp);
     } else {
-      setModulesData((prev) => ({ ...prev, hrms: [emp, ...prev.hrms] }));
+      const newEmp = { id: Date.now(), status: 'Active', ...emp };
+      setModulesData((prev) => ({ ...prev, hrms: [newEmp, ...prev.hrms] }));
       setStats((prev) => ({ ...prev, activeEmployees: prev.activeEmployees + 1 }));
       setToastMessage(`New employee ${emp.name} added`);
+      setTimeout(() => setToastMessage(null), 4000);
+    }
+  };
+
+  const triggerDeleteEmployee = (id, name) => {
+    if (socket && isConnected) {
+      socket.emit('action:delete_employee', { id, name });
+    } else {
+      setModulesData((prev) => ({ ...prev, hrms: prev.hrms.filter((e) => e.id !== id) }));
+      setStats((prev) => ({ ...prev, activeEmployees: Math.max(0, prev.activeEmployees - 1) }));
+      setToastMessage(`Employee ${name || 'Staff'} removed`);
+      setTimeout(() => setToastMessage(null), 4000);
+    }
+  };
+
+  const triggerUpdateEmployee = (emp) => {
+    if (socket && isConnected) {
+      socket.emit('action:update_employee', emp);
+    } else {
+      setModulesData((prev) => ({
+        ...prev,
+        hrms: prev.hrms.map((e) => (e.id === emp.id ? { ...e, ...emp } : e)),
+      }));
+      setToastMessage(`Employee ${emp.name} updated`);
       setTimeout(() => setToastMessage(null), 4000);
     }
   };
@@ -236,6 +277,8 @@ export const SocketProvider = ({ children }) => {
         triggerUpdateProduct,
         triggerDeleteProduct,
         triggerAddEmployee,
+        triggerDeleteEmployee,
+        triggerUpdateEmployee,
         triggerAddTask,
         triggerRequestDemo,
       }}

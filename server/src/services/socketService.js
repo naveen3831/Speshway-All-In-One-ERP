@@ -87,6 +87,39 @@ export const initSocket = (httpServer) => {
       io.emit('activity:new', activity);
     });
 
+    socket.on('action:delete_employee', ({ id, name }) => {
+      liveState.modulesData.hrms = liveState.modulesData.hrms.filter((e) => e.id !== id);
+      liveState.stats.activeEmployees = Math.max(0, liveState.stats.activeEmployees - 1);
+
+      const activity = {
+        id: Date.now(),
+        type: 'hrms',
+        text: `Team member ${name || 'Staff'} removed from directory`,
+        time: 'Just now',
+      };
+      liveState.recentActivity.unshift(activity);
+
+      io.emit('hrms:deleted', { id, stats: liveState.stats });
+      io.emit('activity:new', activity);
+    });
+
+    socket.on('action:update_employee', (updatedEmp) => {
+      liveState.modulesData.hrms = liveState.modulesData.hrms.map((e) =>
+        e.id === updatedEmp.id ? { ...e, ...updatedEmp } : e
+      );
+
+      const activity = {
+        id: Date.now(),
+        type: 'hrms',
+        text: `Team member ${updatedEmp.name} profile updated`,
+        time: 'Just now',
+      };
+      liveState.recentActivity.unshift(activity);
+
+      io.emit('hrms:member_updated', { employee: updatedEmp, stats: liveState.stats });
+      io.emit('activity:new', activity);
+    });
+
     socket.on('action:add_task', (task) => {
       const newTask = { id: Date.now(), status: 'Pending', ...task };
       liveState.modulesData.tasks.unshift(newTask);

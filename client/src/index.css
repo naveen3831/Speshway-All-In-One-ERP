@@ -4026,3 +4026,286 @@ button {
   object-fit: cover;
   border-radius: 6px;
 }
+
+
+/* =========================================================================
+   Redesigned Admin Users & Personnel Directory Styling
+   ========================================================================= */
+
+.users-page-view {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.users-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .users-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .users-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.users-kpi-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.users-kpi-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.users-kpi-label {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.users-kpi-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.users-controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.users-table-card {
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.users-directory-table {
+  width: 100%;
+}
+
+.users-directory-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.users-directory-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.row-super-admin {
+  background-color: #f0fdf4 !important;
+}
+
+.row-super-admin:hover {
+  background-color: #ecfdf5 !important;
+}
+
+.user-profile-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.avatar-super-admin {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+}
+
+.bg-indigo-avatar {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+.bg-emerald-avatar {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.bg-blue-avatar {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.bg-purple-avatar {
+  background-color: #ede9fe;
+  color: #5b21b6;
+}
+
+.bg-amber-avatar {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.bg-rose-avatar {
+  background-color: #ffe4e6;
+  color: #9f1239;
+}
+
+.bg-teal-avatar {
+  background-color: #ccfbf1;
+  color: #115e59;
+}
+
+.user-info-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-full-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge-root-admin {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background-color: #dcfce7;
+  color: #166534;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  border: 1px solid #bbf7d0;
+}
+
+.user-work-email {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.user-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.role-super {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.role-standard {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.user-dept-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Status Pill with Toggle Indicator */
+.status-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.status-toggle-pill:disabled {
+  cursor: default;
+}
+
+.status-active {
+  background-color: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
+}
+
+.status-leave {
+  background-color: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-active .status-dot {
+  background-color: #059669;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+}
+
+.status-leave .status-dot {
+  background-color: #d97706;
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+}
+
+.status-toggle-pill:not(:disabled):hover {
+  transform: scale(1.04);
+}
+
+.protected-tag {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #94a3b8;
+  padding: 4px 10px;
+}
+
+.user-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
