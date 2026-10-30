@@ -1,18 +1,13 @@
 import mongoose from 'mongoose';
 
+const DEFAULT_MONGO_URI =
+  'mongodb+srv://speshway123:speshway123@speshwyallinoneerp.vv15a6z.mongodb.net/speshway_erp?retryWrites=true&w=majority';
+
 const connectDB = async () => {
-  const mongoUri = process.env.MONGO_URI;
+  let mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri || mongoUri.includes('<db_password>')) {
-    console.warn(
-      '\x1b[33m%s\x1b[0m',
-      '⚠️ Notice: MONGO_URI in server/.env still contains the placeholder "<db_password>".'
-    );
-    console.warn(
-      '\x1b[36m%s\x1b[0m',
-      'ℹ️ Running server with real-time in-memory synchronizer. Replace <db_password> in server/.env with your MongoDB Atlas password to persist to the cloud.'
-    );
-    return;
+    mongoUri = DEFAULT_MONGO_URI;
   }
 
   try {

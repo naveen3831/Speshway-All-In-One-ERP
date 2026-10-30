@@ -17,28 +17,76 @@ export const SocketProvider = ({ children }) => {
   });
   const [activities, setActivities] = useState([]);
   const [toastMessage, setToastMessage] = useState(null);
+  const DEFAULT_TEAM_MEMBERS = [
+    {
+      id: 'emp-1',
+      name: 'Alex Rivera',
+      email: 'alex.rivera@speshway.com',
+      role: 'Lead Architect',
+      dept: 'Engineering',
+      status: 'Active',
+    },
+    {
+      id: 'emp-2',
+      name: 'Priya Sharma',
+      email: 'priya.sharma@speshway.com',
+      role: 'HR Director',
+      dept: 'Human Resources',
+      status: 'Active',
+    },
+    {
+      id: 'emp-3',
+      name: 'Marcus Chen',
+      email: 'marcus.chen@speshway.com',
+      role: 'Financial Controller',
+      dept: 'Finance',
+      status: 'On Leave',
+    },
+    {
+      id: 'emp-4',
+      name: 'Emily Watson',
+      email: 'emily.watson@speshway.com',
+      role: 'Product Manager',
+      dept: 'Product',
+      status: 'Active',
+    },
+  ];
+
   const [products, setProducts] = useState([]);
   const [modulesData, setModulesData] = useState({
-    hrms: [],
+    hrms: DEFAULT_TEAM_MEMBERS,
     tasks: [],
     projects: [],
     clients: [],
     demoRequests: [],
   });
 
-  // Fetch initial products
+  // Fetch initial products and employees from MongoDB API
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchInitialData = async () => {
       try {
-        const res = await api.get('/products');
-        if (res.data?.data) {
-          setProducts(res.data.data);
+        const prodRes = await api.get('/products');
+        if (prodRes.data?.data && Array.isArray(prodRes.data.data) && prodRes.data.data.length > 0) {
+          setProducts(prodRes.data.data);
         }
       } catch (err) {
         console.warn('Could not fetch products from API, using fallback store');
       }
+
+      try {
+        const empRes = await api.get('/employees');
+        if (empRes.data?.data && Array.isArray(empRes.data.data) && empRes.data.data.length > 0) {
+          setModulesData((prev) => ({
+            ...prev,
+            hrms: empRes.data.data,
+          }));
+        }
+      } catch (err) {
+        console.warn('Could not fetch employees from API, using default team directory');
+      }
     };
-    fetchProducts();
+
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
@@ -113,6 +161,13 @@ export const SocketProvider = ({ children }) => {
       if (updatedStats) setStats(updatedStats);
     });
 
+    newSocket.on('employee:added', (employee) => {
+      setModulesData((prev) => ({
+        ...prev,
+        hrms: [employee, ...(prev.hrms || []).filter((e) => e.id !== employee.id)],
+      }));
+    });
+
     newSocket.on('hrms:deleted', ({ id, stats: updatedStats }) => {
       setModulesData((prev) => ({
         ...prev,
@@ -121,12 +176,26 @@ export const SocketProvider = ({ children }) => {
       if (updatedStats) setStats(updatedStats);
     });
 
+    newSocket.on('employee:deleted', ({ id }) => {
+      setModulesData((prev) => ({
+        ...prev,
+        hrms: (prev.hrms || []).filter((e) => e.id !== id),
+      }));
+    });
+
     newSocket.on('hrms:member_updated', ({ employee, stats: updatedStats }) => {
       setModulesData((prev) => ({
         ...prev,
         hrms: (prev.hrms || []).map((e) => (e.id === employee.id ? { ...e, ...employee } : e)),
       }));
       if (updatedStats) setStats(updatedStats);
+    });
+
+    newSocket.on('employee:updated', (employee) => {
+      setModulesData((prev) => ({
+        ...prev,
+        hrms: (prev.hrms || []).map((e) => (e.id === employee.id ? { ...e, ...employee } : e)),
+      }));
     });
 
     // Tasks real-time updates
@@ -206,39 +275,71 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  const triggerAddEmployee = (emp) => {
+  const triggerAddEmployee = async (emp) => {
+    // Optimistic local state update
+    const tempId = `temp-${Date.now()}`;
+    const optimisticEmp = { id: tempId, status: 'Active', ...emp };
+    setModulesData((prev) => ({ ...prev, hrms: [optimisticEmp, ...prev.hrms] }));
+    setStats((prev) => ({ ...prev, activeEmployees: prev.activeEmployees + 1 }));
+    setToastMessage(`New employee ${emp.name} added`);
+    setTimeout(() => setToastMessage(null), 4000);
+
+    // Call REST API to persist in MongoDB database
+    try {
+      const res = await api.post('/employees', emp);
+      if (res.data?.data) {
+        setModulesData((prev) => ({
+          ...prev,
+          hrms: [res.data.data, ...prev.hrms.filter((e) => e.id !== tempId && e.id !== res.data.data.id)],
+        }));
+      }
+    } catch (err) {
+      console.warn('API add employee fallback, keeping optimistic entry:', err.message);
+    }
+
+    // Also emit socket event for real-time fallback
     if (socket && isConnected) {
       socket.emit('action:add_employee', emp);
-    } else {
-      const newEmp = { id: Date.now(), status: 'Active', ...emp };
-      setModulesData((prev) => ({ ...prev, hrms: [newEmp, ...prev.hrms] }));
-      setStats((prev) => ({ ...prev, activeEmployees: prev.activeEmployees + 1 }));
-      setToastMessage(`New employee ${emp.name} added`);
-      setTimeout(() => setToastMessage(null), 4000);
     }
   };
 
-  const triggerDeleteEmployee = (id, name) => {
+  const triggerDeleteEmployee = async (id, name) => {
+    // Optimistic local state update
+    setModulesData((prev) => ({ ...prev, hrms: prev.hrms.filter((e) => e.id !== id) }));
+    setStats((prev) => ({ ...prev, activeEmployees: Math.max(0, prev.activeEmployees - 1) }));
+    setToastMessage(`Employee ${name || 'Staff'} removed`);
+    setTimeout(() => setToastMessage(null), 4000);
+
+    // Call REST API
+    try {
+      await api.delete(`/employees/${id}?name=${encodeURIComponent(name || '')}`);
+    } catch (err) {
+      console.warn('API delete employee error:', err.message);
+    }
+
     if (socket && isConnected) {
       socket.emit('action:delete_employee', { id, name });
-    } else {
-      setModulesData((prev) => ({ ...prev, hrms: prev.hrms.filter((e) => e.id !== id) }));
-      setStats((prev) => ({ ...prev, activeEmployees: Math.max(0, prev.activeEmployees - 1) }));
-      setToastMessage(`Employee ${name || 'Staff'} removed`);
-      setTimeout(() => setToastMessage(null), 4000);
     }
   };
 
-  const triggerUpdateEmployee = (emp) => {
+  const triggerUpdateEmployee = async (emp) => {
+    // Optimistic local update
+    setModulesData((prev) => ({
+      ...prev,
+      hrms: prev.hrms.map((e) => (e.id === emp.id ? { ...e, ...emp } : e)),
+    }));
+    setToastMessage(`Employee ${emp.name} updated`);
+    setTimeout(() => setToastMessage(null), 4000);
+
+    // Call REST API
+    try {
+      await api.put(`/employees/${emp.id}`, emp);
+    } catch (err) {
+      console.warn('API update employee error:', err.message);
+    }
+
     if (socket && isConnected) {
       socket.emit('action:update_employee', emp);
-    } else {
-      setModulesData((prev) => ({
-        ...prev,
-        hrms: prev.hrms.map((e) => (e.id === emp.id ? { ...e, ...emp } : e)),
-      }));
-      setToastMessage(`Employee ${emp.name} updated`);
-      setTimeout(() => setToastMessage(null), 4000);
     }
   };
 

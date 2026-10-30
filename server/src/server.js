@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import { initSocket } from './services/socketService.js';
 import { seedAdminUser } from './controllers/authController.js';
 import { seedProductsDatabase } from './services/productDatabaseService.js';
+import { seedEmployeesDatabase } from './services/employeeDatabaseService.js';
 
 // Load environment variables
 dotenv.config();
@@ -13,6 +14,7 @@ dotenv.config();
 connectDB().then(async () => {
   await seedAdminUser();
   await seedProductsDatabase();
+  await seedEmployeesDatabase();
 });
 
 const PORT = process.env.PORT || 5000;

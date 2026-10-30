@@ -38,11 +38,49 @@ export const AdminUsers = () => {
   // Form State
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('Senior Software Engineer');
+  const [role, setRole] = useState('Staff Specialist');
   const [dept, setDept] = useState('Engineering');
   const [status, setStatus] = useState('Active');
 
-  const employees = modulesData.hrms || [];
+  const defaultSeedPersonnel = [
+    {
+      id: 'emp-1',
+      name: 'Alex Rivera',
+      email: 'alex.rivera@speshway.com',
+      role: 'Lead Architect',
+      dept: 'Engineering',
+      status: 'Active',
+    },
+    {
+      id: 'emp-2',
+      name: 'Priya Sharma',
+      email: 'priya.sharma@speshway.com',
+      role: 'HR Director',
+      dept: 'Human Resources',
+      status: 'Active',
+    },
+    {
+      id: 'emp-3',
+      name: 'Marcus Chen',
+      email: 'marcus.chen@speshway.com',
+      role: 'Financial Controller',
+      dept: 'Finance',
+      status: 'On Leave',
+    },
+    {
+      id: 'emp-4',
+      name: 'Emily Watson',
+      email: 'emily.watson@speshway.com',
+      role: 'Product Manager',
+      dept: 'Product',
+      status: 'Active',
+    },
+  ];
+
+  const employees =
+    modulesData.hrms && modulesData.hrms.length > 0
+      ? modulesData.hrms
+      : defaultSeedPersonnel;
 
   // Seed Admin object
   const superAdmin = {
@@ -94,11 +132,13 @@ export const AdminUsers = () => {
     triggerAddEmployee({
       name: name.trim(),
       email: newEmpEmail,
-      role: role.trim(),
+      role: role.trim() || 'Staff Specialist',
       dept,
-      status,
+      status: status || 'Active',
     });
 
+    setName('');
+    setEmail('');
     setIsModalOpen(false);
     setMsg(`Team member "${name}" successfully added to directory.`);
     setTimeout(() => setMsg(''), 4000);
@@ -167,6 +207,65 @@ export const AdminUsers = () => {
           <span>{msg}</span>
         </div>
       )}
+
+      {/* Quick Add Team Member Card */}
+      <div className="admin-card" style={{ marginBottom: '24px', padding: '24px' }}>
+        <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#1e293b', marginBottom: '16px' }}>
+          Add Team Member
+        </h3>
+        <form onSubmit={handleAdd} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <input
+            type="text"
+            placeholder="Full Name..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="admin-search-input"
+            style={{ width: '100%', height: '44px', borderRadius: '8px', border: '1px solid #cbd5e1', padding: '0 16px', fontSize: '0.92rem' }}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Role / Title (e.g. Lead Architect, Staff Specialist)..."
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="admin-search-input"
+            style={{ width: '100%', height: '44px', borderRadius: '8px', border: '1px solid #cbd5e1', padding: '0 16px', fontSize: '0.92rem' }}
+          />
+          <select
+            value={dept}
+            onChange={(e) => setDept(e.target.value)}
+            className="admin-search-input"
+            style={{ width: '100%', height: '44px', borderRadius: '8px', border: '1px solid #cbd5e1', padding: '0 16px', fontSize: '0.92rem', background: '#fff' }}
+          >
+            {departments.filter((d) => d !== 'All').map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+          <div>
+            <button
+              type="submit"
+              className="btn-hero-primary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 24px',
+                borderRadius: '8px',
+                fontWeight: 600,
+                fontSize: '0.92rem',
+                backgroundColor: '#10b981',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              + Add User
+            </button>
+          </div>
+        </form>
+      </div>
 
       {/* KPI Stats Row */}
       <div className="users-kpi-grid">

@@ -1,4 +1,6 @@
 import { Server } from 'socket.io';
+import mongoose from 'mongoose';
+import Employee from '../models/Employee.js';
 
 let io = null;
 
@@ -70,8 +72,22 @@ export const initSocket = (httpServer) => {
       io.emit('activity:new', newActivity);
     });
 
-    socket.on('action:add_employee', (emp) => {
-      const newEmp = { id: Date.now(), status: 'Active', ...emp };
+    socket.on('action:add_employee', async (emp) => {
+      let createdId = Date.now().toString();
+      try {
+        const doc = await Employee.create({
+          name: emp.name,
+          email: emp.email || `${emp.name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@speshway.com`,
+          role: emp.role || 'Software Engineer',
+          dept: emp.dept || 'Engineering',
+          status: emp.status || 'Active',
+        });
+        createdId = doc._id.toString();
+      } catch (err) {
+        console.warn('Socket add_employee Mongo fallback:', err.message);
+      }
+
+      const newEmp = { id: createdId, status: 'Active', ...emp };
       liveState.modulesData.hrms.unshift(newEmp);
       liveState.stats.activeEmployees += 1;
       
@@ -84,11 +100,20 @@ export const initSocket = (httpServer) => {
       liveState.recentActivity.unshift(activity);
 
       io.emit('hrms:updated', { employee: newEmp, stats: liveState.stats });
+      io.emit('employee:added', newEmp);
       io.emit('activity:new', activity);
     });
 
-    socket.on('action:delete_employee', ({ id, name }) => {
-      liveState.modulesData.hrms = liveState.modulesData.hrms.filter((e) => e.id !== id);
+    socket.on('action:delete_employee', async ({ id, name }) => {
+      try {
+        if (mongoose.Types.ObjectId.isValid(id)) {
+          await Employee.findByIdAndDelete(id);
+        }
+      } catch (err) {
+        console.warn('Socket delete_employee Mongo fallback:', err.message);
+      }
+
+      liveState.modulesData.hrms = liveState.modulesData.hrms.filter((e) => e.id !== id && e._id !== id);
       liveState.stats.activeEmployees = Math.max(0, liveState.stats.activeEmployees - 1);
 
       const activity = {
@@ -100,10 +125,19 @@ export const initSocket = (httpServer) => {
       liveState.recentActivity.unshift(activity);
 
       io.emit('hrms:deleted', { id, stats: liveState.stats });
+      io.emit('employee:deleted', { id, name });
       io.emit('activity:new', activity);
     });
 
-    socket.on('action:update_employee', (updatedEmp) => {
+    socket.on('action:update_employee', async (updatedEmp) => {
+      try {
+        if (mongoose.Types.ObjectId.isValid(updatedEmp.id)) {
+          await Employee.findByIdAndUpdate(updatedEmp.id, updatedEmp);
+        }
+      } catch (err) {
+        console.warn('Socket update_employee Mongo fallback:', err.message);
+      }
+
       liveState.modulesData.hrms = liveState.modulesData.hrms.map((e) =>
         e.id === updatedEmp.id ? { ...e, ...updatedEmp } : e
       );
@@ -117,6 +151,7 @@ export const initSocket = (httpServer) => {
       liveState.recentActivity.unshift(activity);
 
       io.emit('hrms:member_updated', { employee: updatedEmp, stats: liveState.stats });
+      io.emit('employee:updated', updatedEmp);
       io.emit('activity:new', activity);
     });
 
