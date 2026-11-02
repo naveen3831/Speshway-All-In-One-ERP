@@ -117,7 +117,10 @@ export const ProductsPage = () => {
 
   return (
     <div className="landing-wrapper">
-      <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
+      <Navbar
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
 
       <main className="page-main-container">
         {/* Header */}

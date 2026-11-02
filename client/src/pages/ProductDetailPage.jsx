@@ -127,7 +127,10 @@ export const ProductDetailPage = () => {
   if (!product) {
     return (
       <div className="landing-wrapper">
-        <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
+        <Navbar
+          onOpenGetStarted={() => setModalMode('get-started')}
+          onOpenDemo={() => setModalMode('demo')}
+        />
         <main className="page-main-container" style={{ textAlign: 'center', padding: '100px 20px', flex: '1 0 auto' }}>
           <h2>Product Not Found</h2>
           <p style={{ marginTop: '10px', color: '#64748b' }}>
@@ -151,7 +154,10 @@ export const ProductDetailPage = () => {
 
   return (
     <div className="landing-wrapper">
-      <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
+      <Navbar
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
 
       <main className="product-page-detail-wrapper">
         <div className="detail-container">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 
-export const Navbar = ({ onOpenGetStarted }) => {
+export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
@@ -9,6 +9,14 @@ export const Navbar = ({ onOpenGetStarted }) => {
       onOpenGetStarted();
     } else {
       navigate('/get-started');
+    }
+  };
+
+  const handleOpenDemo = () => {
+    if (onOpenDemo) {
+      onOpenDemo();
+    } else {
+      navigate('/contact');
     }
   };
 
@@ -71,8 +79,15 @@ export const Navbar = ({ onOpenGetStarted }) => {
           </NavLink>
         </nav>
 
-        {/* Right Side Action: Get Started Button Type */}
+        {/* Right Side Actions: Request a Demo + Get Started */}
         <div className="nav-actions">
+          <button
+            type="button"
+            onClick={handleOpenDemo}
+            className="btn-nav-demo"
+          >
+            Request a Demo
+          </button>
           <button
             type="button"
             onClick={handleGetStarted}
