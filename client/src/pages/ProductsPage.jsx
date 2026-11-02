@@ -23,6 +23,10 @@ import {
   Handshake,
   ArrowRight,
   Cpu,
+  Building2,
+  Plane,
+  Package,
+  Store,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,7 +44,42 @@ const iconMap = {
   PieChart,
   Handshake,
   Layers,
+  Building2,
+  Plane,
+  Package,
+  Store,
 };
+
+const EXCLUDED_SLUGS = new Set([
+  'reports',
+  'performance',
+  'recruitment',
+  'finance',
+  'clients',
+  'leave',
+  'tasks',
+  'assets',
+  'payroll',
+  'projects',
+  'directory',
+  'hrms',
+]);
+
+const EXCLUDED_NAMES = new Set([
+  'reports & analytics',
+  'performance management',
+  'recruitment & ats',
+  'finance & accounts',
+  'client management (crm)',
+  'client management',
+  'leave & attendance',
+  'task management',
+  'asset management',
+  'payroll system',
+  'project management',
+  'employee directory',
+  'hrms portal',
+]);
 
 export const ProductsPage = () => {
   const { products } = useSocket();
@@ -49,21 +88,24 @@ export const ProductsPage = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const navigate = useNavigate();
 
+  // Filter out the 12 generic application modules
+  const availableProducts = (products || []).filter((p) => {
+    const slug = (p.slug || p.id || '').toLowerCase();
+    const name = (p.name || '').toLowerCase().trim();
+    if (EXCLUDED_SLUGS.has(slug)) return false;
+    if (EXCLUDED_NAMES.has(name)) return false;
+    return true;
+  });
+
   const categories = [
     'All',
-    'Human Resources',
-    'Finance & HR',
-    'Productivity',
-    'Finance',
-    'Sales & CRM',
-    'Operations',
-    'Business Intelligence',
+    ...Array.from(new Set(availableProducts.map((p) => p.category).filter(Boolean))),
   ];
 
-  const filteredProducts = products.filter((p) => {
+  const filteredProducts = availableProducts.filter((p) => {
     const matchesSearch =
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchTerm.toLowerCase());
+      (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.description || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCat = activeCategory === 'All' || p.category === activeCategory;
     return matchesSearch && matchesCat;
   });
@@ -206,6 +248,12 @@ const isHospital =
                           url = '/product/natural-milk-dairy/dashboard';
                         } else if (prod.slug === 'tours-and-travels' || prod.id === 'tours-and-travels') {
                           url = '/product/tours-and-travels/dashboard';
+                        } else if (
+                          prod.slug === 'vexa-style-hub' ||
+                          prod.id === 'vexa-style-hub' ||
+                          prod.slug?.includes('vexa')
+                        ) {
+                          url = '/product/vexa-style-hub/dashboard';
                         } else {
                           url = prod.adminUrl && prod.adminUrl !== '/admin/products'
                             ? prod.adminUrl
