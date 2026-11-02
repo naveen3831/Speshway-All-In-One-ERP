@@ -66,6 +66,8 @@ export const ProductDetailPage = () => {
     // Open in this site only as requested
     if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
       navigate('/product/tours-and-travels/dashboard');
+    } else if (product.slug === 'vexa-style-hub' || product.id === 'vexa-style-hub') {
+      navigate('/product/vexa-style-hub/dashboard');
     } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
       navigate(product.adminUrl);
     } else {

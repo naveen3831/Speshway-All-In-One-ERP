@@ -25,6 +25,9 @@ import { AdminSettings } from './pages/admin/AdminSettings';
 // Travel Agency Industry ERP Dashboard
 import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
 
+// Vexa Style Hub Fashion Industry ERP Dashboard
+import { VexaDashboard } from './pages/vexa/VexaDashboard';
+
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Dashboard } from './pages/Dashboard';
@@ -64,6 +67,8 @@ export default function App() {
 
             {/* 4. DEDICATED INDUSTRY ERP DASHBOARDS */}
             <Route path="/product/tours-and-travels/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/product/vexa-style-hub/dashboard" element={<VexaDashboard />} />
+            <Route path="/vexa-style-hub/dashboard" element={<VexaDashboard />} />
             <Route path="/product/:id/dashboard" element={<TravelAgencyDashboard />} />
             <Route path="/travel-erp/dashboard" element={<TravelAgencyDashboard />} />
             <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
