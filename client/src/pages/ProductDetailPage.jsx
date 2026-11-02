@@ -33,7 +33,18 @@ export const ProductDetailPage = () => {
 
   // Robust product lookup with instant fallback if socket/DB is still connecting
   const foundProduct = products && products.length > 0 ? products.find((p) => p.slug === id || p.id === id) : null;
-  const product = foundProduct || (id === 'vexa-style-hub' ? {
+  const product = foundProduct || (id === 'speshway-hospitals' || id === 'hospitals' || id?.includes('hospital') ? {
+    id: 'speshway-hospitals',
+    slug: 'speshway-hospitals',
+    name: 'Speshway Hospitals',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'HMS Enterprise is a comprehensive Hospital Management System designed to streamline hospital operations, including patient management, appointments, EMR, billing, pharmacy, laboratory reports, inventory, and staff management — all through one centralized digital platform.',
+    websiteUrl: 'https://speshway.com/hospitals',
+    adminUrl: '/product/speshway-hospitals/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'REST API'],
+    features: ['Diagnostic Lab Reports', 'Pathology & EMR', 'Appointments & Scheduling', 'Pharmacy & Blood Bank', 'Role-Based Access'],
+  } : id === 'vexa-style-hub' ? {
     id: 'vexa-style-hub',
     slug: 'vexa-style-hub',
     name: 'Vexa Style Hub',
@@ -60,7 +71,7 @@ export const ProductDetailPage = () => {
     if (e && e.preventDefault) e.preventDefault();
     try {
       const targetSlug = product?.slug || id || '';
-      if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals') {
+      if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals' || targetSlug.includes('hospital')) {
         navigate('/product/speshway-hospitals/dashboard');
       } else if (targetSlug === 'tours-and-travels') {
         navigate('/product/tours-and-travels/dashboard');
