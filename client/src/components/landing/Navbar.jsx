@@ -12,14 +12,6 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     }
   };
 
-  const handleOpenDemo = () => {
-    if (onOpenDemo) {
-      onOpenDemo();
-    } else {
-      navigate('/contact');
-    }
-  };
-
   return (
     <header className="navbar-container">
       <div className="navbar-content">
@@ -79,15 +71,8 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           </NavLink>
         </nav>
 
-        {/* Right Side Actions: Request a Demo + Get Started */}
+        {/* Right Side Action: Get Started Button Type */}
         <div className="nav-actions">
-          <button
-            type="button"
-            onClick={handleOpenDemo}
-            className="btn-nav-demo"
-          >
-            Request a Demo
-          </button>
           <button
             type="button"
             onClick={handleGetStarted}
