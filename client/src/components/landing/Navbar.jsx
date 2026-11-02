@@ -60,13 +60,6 @@ export const Navbar = ({ onOpenGetStarted }) => {
             Contact
           </NavLink>
         </nav>
-
-        {/* Action Button - Get Started */}
-        <div className="nav-actions">
-          <button onClick={onOpenGetStarted} className="btn-get-started">
-            Get Started &rarr;
-          </button>
-        </div>
       </div>
     </header>
   );
