@@ -32,6 +32,8 @@ import {
   FileText,
   CreditCard,
   Building,
+  X,
+  Sparkles,
 } from 'lucide-react';
 import './TravelAgencyDashboard.css';
 
@@ -42,23 +44,57 @@ export const TravelAgencyDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [leadFilter, setLeadFilter] = useState('all');
 
-  // KPI Metrics matching exact values from screenshot
-  const kpiData = [
-    { id: 'leads', label: 'Leads', value: '4' },
-    { id: 'won', label: 'Won', value: '2' },
-    { id: 'customers', label: 'Customers', value: '4' },
-    { id: 'vendors', label: 'Vendors', value: '4' },
-    { id: 'products', label: 'Products', value: '4' },
-    { id: 'low_stock', label: 'Low Stock', value: '0' },
-    { id: 'employees', label: 'Employees', value: '3' },
-    { id: 'sales_mo', label: 'Sales (mo)', value: '₹0' },
-    { id: 'purchase_mo', label: 'Purchase (mo)', value: '₹0' },
-    { id: 'receivables', label: 'Receivables', value: '₹3,37,229' },
-    { id: 'payables', label: 'Payables', value: '₹0' },
-  ];
+  // Modal State
+  const [modalType, setModalType] = useState(null); // 'lead' | 'customer' | 'vendor' | 'package' | 'booking' | 'invoice' | null
 
-  // Recent leads list matching exact screenshot
-  const leadsData = [
+  // Form Fields State
+  const [leadForm, setLeadForm] = useState({
+    name: '',
+    destination: '',
+    email: '',
+    phone: '',
+    budget: '',
+    agent: 'Vikram M.',
+    status: 'New',
+  });
+
+  const [customerForm, setCustomerForm] = useState({
+    name: '',
+    type: 'Individual',
+    email: '',
+    phone: '',
+  });
+
+  const [vendorForm, setVendorForm] = useState({
+    name: '',
+    category: 'Hotels & Resorts',
+    contract: '',
+    contact: '',
+  });
+
+  const [packageForm, setPackageForm] = useState({
+    title: '',
+    duration: '5 Days / 4 Nights',
+    price: '',
+    inclusions: 'Hotel, Cab Transfers, Breakfast, Sightseeing',
+  });
+
+  const [bookingForm, setBookingForm] = useState({
+    customer: '',
+    package: '',
+    travelDates: '',
+    amount: '',
+    pnr: '',
+  });
+
+  const [invoiceForm, setInvoiceForm] = useState({
+    customer: '',
+    amount: '',
+    method: 'NEFT Transfer',
+  });
+
+  // Stateful Data
+  const [leadsData, setLeadsData] = useState([
     {
       id: 1,
       name: 'Sneha Iyer',
@@ -107,34 +143,30 @@ export const TravelAgencyDashboard = () => {
       agent: 'Vikram M.',
       date: '31 Oct 2026',
     },
-  ];
+  ]);
 
-  // Customers data
-  const customersData = [
+  const [customersData, setCustomersData] = useState([
     { id: 'CUST-101', name: 'Sneha Iyer', type: 'Individual', email: 'sneha.iyer@gmail.com', phone: '+91 98201 44321', trips: 3, spent: '₹1,12,000', status: 'Active' },
     { id: 'CUST-102', name: 'Amit Traders Ltd.', type: 'Corporate', email: 'travel@traderscorp.in', phone: '+91 94112 88200', trips: 5, spent: '₹3,37,229', status: 'VIP Account' },
     { id: 'CUST-103', name: 'Dr. Rajesh Khanna', type: 'Individual', email: 'rkhanna@apollo.org', phone: '+91 98402 11928', trips: 2, spent: '₹78,500', status: 'Active' },
     { id: 'CUST-104', name: 'Ananya Deshpande', type: 'Family Group', email: 'ananya.d@gmail.com', phone: '+91 97654 33210', trips: 1, spent: '₹54,000', status: 'Active' },
-  ];
+  ]);
 
-  // Vendors data
-  const vendorsData = [
+  const [vendorsData, setVendorsData] = useState([
     { id: 'VEND-01', name: 'Taj Hotels & Palaces', category: 'Hotels & Resorts', contract: '12 Luxury Properties', payables: '₹0', contact: 'Rohan Mehra (Sales Dir.)' },
     { id: 'VEND-02', name: 'IndiGo Airlines Desk', category: 'Aviation & Flights', contract: 'Corporate Group Desk', payables: '₹0', contact: 'Pooja V. (Key Accounts)' },
     { id: 'VEND-03', name: 'Himalayan Transit Cabs', category: 'Fleet & Surface Transport', contract: '18 SUVs / Tempo Travellers', payables: '₹0', contact: 'Jaspreet Singh (Fleet Head)' },
     { id: 'VEND-04', name: 'Goa Coastal Water Excursions', category: 'Activities & Watersports', contract: 'Catamaran & Scuba Ops', payables: '₹0', contact: 'Mario Fernandes' },
-  ];
+  ]);
 
-  // Inventory data
-  const inventoryData = [
+  const [inventoryData, setInventoryData] = useState([
     { id: 'INV-01', item: 'Goa Beachfront Premium Chalets', vendor: 'Taj Resorts Goa', blocked: '20 Rooms', allocated: '18 Rooms', available: '2 Rooms', status: 'Low Stock' },
     { id: 'INV-02', item: 'IndiGo DEL-GOI Group Flight Block', vendor: 'IndiGo Desk', blocked: '40 Seats', allocated: '32 Seats', available: '8 Seats', status: 'In Stock' },
     { id: 'INV-03', item: 'Manali Pine Forest Cottages', vendor: 'Himalayan Retreats', blocked: '15 Rooms', allocated: '9 Rooms', available: '6 Rooms', status: 'In Stock' },
     { id: 'INV-04', item: 'Dubai Desert Camp VIP Seating', vendor: 'Arabian Nights Tour Co', blocked: '25 Vouchers', allocated: '14 Vouchers', available: '11 Vouchers', status: 'In Stock' },
-  ];
+  ]);
 
-  // Packages data
-  const packagesData = [
+  const [packagesData, setPackagesData] = useState([
     {
       id: 'PKG-01',
       title: 'Manali Snow & Adventure Trail',
@@ -167,29 +199,42 @@ export const TravelAgencyDashboard = () => {
       inclusions: ['Burj Khalifa Level 124', 'Desert BBQ & Safari', 'Marina Yacht Tour', 'UAE Visa'],
       gradient: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 100%)',
     },
-  ];
+  ]);
 
-  // Bookings data
-  const bookingsData = [
+  const [bookingsData, setBookingsData] = useState([
     { id: 'HC-BKG-9921', customer: 'Sneha Iyer', package: 'Kerala Backwaters (5D/4N)', travelDates: '12 Nov - 16 Nov 2026', pnr: 'IX-49201', status: 'Confirmed', amount: '₹48,000' },
     { id: 'HC-BKG-9922', customer: 'Amit Traders (Group)', package: 'Goa Corporate Retreat (40 Pax)', travelDates: '22 Nov - 25 Nov 2026', pnr: '6E-88219 (Block)', status: 'Confirmed', amount: '₹1,85,000' },
     { id: 'HC-BKG-9923', customer: 'Priya Mehta', package: 'Dubai City & Safari (6D/5N)', travelDates: '04 Dec - 09 Dec 2026', pnr: 'EK-512', status: 'Voucher Issued', amount: '₹1,25,000' },
     { id: 'HC-BKG-9924', customer: 'Ananya Deshpande', package: 'Manali Snow Trail (6D/5N)', travelDates: '18 Dec - 23 Dec 2026', pnr: 'SG-2201', status: 'Pending Payment', amount: '₹54,000' },
-  ];
+  ]);
 
-  // Invoices / Sales data
-  const salesInvoicesData = [
+  const [salesInvoicesData, setSalesInvoicesData] = useState([
     { id: 'INV-2026-081', customer: 'Amit Traders Ltd.', date: '28 Oct 2026', amount: '₹1,85,000', gst: '₹9,250', status: 'Paid', method: 'NEFT Transfer' },
     { id: 'INV-2026-082', customer: 'Priya Mehta', date: '30 Oct 2026', amount: '₹1,25,000', gst: '₹6,250', status: 'Paid', method: 'Credit Card' },
     { id: 'INV-2026-083', customer: 'Sneha Iyer', date: '01 Nov 2026', amount: '₹48,000', gst: '₹2,400', status: 'Paid', method: 'UPI' },
     { id: 'INV-2026-084', customer: 'Dr. Rajesh Khanna', date: '02 Nov 2026', amount: '₹27,229', gst: '₹1,361', status: 'Paid', method: 'Net Banking' },
-  ];
+  ]);
 
-  // Employees data
   const employeesData = [
     { name: 'Vikram Malhotra', role: 'Senior Tour Director', specialty: 'North India & Himalayas', tours: '42 Expeditions', phone: '+91 98110 54321', email: 'vikram.m@holidaycity.com', avatar: 'VM' },
     { name: 'Pooja Nair', role: 'International Travel Consultant', specialty: 'Middle East & Europe', tours: 'IATA Certified', phone: '+91 98200 99887', email: 'pooja.n@holidaycity.com', avatar: 'PN' },
     { name: 'Karan Deshmukh', role: 'Corporate Accounts & Operations', specialty: 'MICE & Corporate Retreats', tours: '98% Client CSAT', phone: '+91 98330 11223', email: 'karan.d@holidaycity.com', avatar: 'KD' },
+  ];
+
+  // Dynamic KPI Metrics computation
+  const wonCount = leadsData.filter((l) => l.status === 'Won').length;
+  const kpiData = [
+    { id: 'leads', label: 'Leads', value: leadsData.length.toString() },
+    { id: 'won', label: 'Won', value: wonCount.toString() },
+    { id: 'customers', label: 'Customers', value: customersData.length.toString() },
+    { id: 'vendors', label: 'Vendors', value: vendorsData.length.toString() },
+    { id: 'products', label: 'Products', value: packagesData.length.toString() },
+    { id: 'low_stock', label: 'Low Stock', value: '1' },
+    { id: 'employees', label: 'Employees', value: '3' },
+    { id: 'sales_mo', label: 'Sales (mo)', value: '₹0' },
+    { id: 'purchase_mo', label: 'Purchase (mo)', value: '₹0' },
+    { id: 'receivables', label: 'Receivables', value: '₹3,37,229' },
+    { id: 'payables', label: 'Payables', value: '₹0' },
   ];
 
   // Navigation menu items matching exact sidebar from screenshot
@@ -208,6 +253,140 @@ export const TravelAgencyDashboard = () => {
     { id: 'employees', label: 'Employees', icon: Users },
     { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
   ];
+
+  // Handlers for Add Options
+  const handleAddLead = (e) => {
+    e.preventDefault();
+    if (!leadForm.name || !leadForm.destination) return;
+
+    const newLead = {
+      id: Date.now(),
+      name: leadForm.name,
+      destination: leadForm.destination,
+      email: leadForm.email || 'lead@client.com',
+      phone: leadForm.phone || '+91 98000 00000',
+      budget: leadForm.budget.startsWith('₹') ? leadForm.budget : `₹${leadForm.budget || '40,000'}`,
+      agent: leadForm.agent,
+      status: leadForm.status,
+      statusType: leadForm.status.toLowerCase(),
+      date: 'Just now',
+    };
+
+    setLeadsData((prev) => [newLead, ...prev]);
+    setLeadForm({
+      name: '',
+      destination: '',
+      email: '',
+      phone: '',
+      budget: '',
+      agent: 'Vikram M.',
+      status: 'New',
+    });
+    setModalType(null);
+  };
+
+  const handleAddCustomer = (e) => {
+    e.preventDefault();
+    if (!customerForm.name) return;
+
+    const newCust = {
+      id: `CUST-${customersData.length + 101}`,
+      name: customerForm.name,
+      type: customerForm.type,
+      email: customerForm.email || 'client@gmail.com',
+      phone: customerForm.phone || '+91 98000 11111',
+      trips: 1,
+      spent: '₹0',
+      status: 'Active',
+    };
+
+    setCustomersData((prev) => [newCust, ...prev]);
+    setCustomerForm({ name: '', type: 'Individual', email: '', phone: '' });
+    setModalType(null);
+  };
+
+  const handleAddVendor = (e) => {
+    e.preventDefault();
+    if (!vendorForm.name) return;
+
+    const newVend = {
+      id: `VEND-0${vendorsData.length + 1}`,
+      name: vendorForm.name,
+      category: vendorForm.category,
+      contract: vendorForm.contract || 'Direct Partner',
+      payables: '₹0',
+      contact: vendorForm.contact || 'Partner Desk',
+    };
+
+    setVendorsData((prev) => [newVend, ...prev]);
+    setVendorForm({ name: '', category: 'Hotels & Resorts', contract: '', contact: '' });
+    setModalType(null);
+  };
+
+  const handleAddPackage = (e) => {
+    e.preventDefault();
+    if (!packageForm.title) return;
+
+    const newPkg = {
+      id: `PKG-0${packagesData.length + 1}`,
+      title: packageForm.title,
+      duration: packageForm.duration,
+      price: packageForm.price.startsWith('₹') ? packageForm.price : `₹${packageForm.price || '25,000'}`,
+      inclusions: packageForm.inclusions.split(',').map((s) => s.trim()),
+      gradient: 'linear-gradient(135deg, #047857 0%, #10b981 100%)',
+    };
+
+    setPackagesData((prev) => [newPkg, ...prev]);
+    setPackageForm({
+      title: '',
+      duration: '5 Days / 4 Nights',
+      price: '',
+      inclusions: 'Hotel, Cab Transfers, Breakfast, Sightseeing',
+    });
+    setModalType(null);
+  };
+
+  const handleAddBooking = (e) => {
+    e.preventDefault();
+    if (!bookingForm.customer || !bookingForm.package) return;
+
+    const newBkg = {
+      id: `HC-BKG-${Math.floor(1000 + Math.random() * 9000)}`,
+      customer: bookingForm.customer,
+      package: bookingForm.package,
+      travelDates: bookingForm.travelDates || 'Next Week',
+      pnr: bookingForm.pnr || `HC-${Math.floor(10000 + Math.random() * 90000)}`,
+      status: 'Confirmed',
+      amount: bookingForm.amount.startsWith('₹') ? bookingForm.amount : `₹${bookingForm.amount || '35,000'}`,
+    };
+
+    setBookingsData((prev) => [newBkg, ...prev]);
+    setBookingForm({ customer: '', package: '', travelDates: '', amount: '', pnr: '' });
+    setModalType(null);
+  };
+
+  const handleAddInvoice = (e) => {
+    e.preventDefault();
+    if (!invoiceForm.customer || !invoiceForm.amount) return;
+
+    const rawAmt = invoiceForm.amount.replace(/[^0-9]/g, '');
+    const numAmt = parseInt(rawAmt || '40000', 10);
+    const gstAmt = Math.round(numAmt * 0.05);
+
+    const newInv = {
+      id: `INV-2026-0${salesInvoicesData.length + 85}`,
+      customer: invoiceForm.customer,
+      date: 'Today',
+      amount: `₹${numAmt.toLocaleString('en-IN')}`,
+      gst: `₹${gstAmt.toLocaleString('en-IN')}`,
+      status: 'Paid',
+      method: invoiceForm.method,
+    };
+
+    setSalesInvoicesData((prev) => [newInv, ...prev]);
+    setInvoiceForm({ customer: '', amount: '', method: 'NEFT Transfer' });
+    setModalType(null);
+  };
 
   return (
     <div className="tat-erp-root">
@@ -305,15 +484,20 @@ export const TravelAgencyDashboard = () => {
               {/* 11 Metric KPI Cards Grid */}
               <div className="tat-kpi-grid">
                 {kpiData.map((kpi) => (
-                  <div key={kpi.id} className="tat-kpi-card" onClick={() => {
-                    if (kpi.id === 'leads') setActiveTab('crm');
-                    else if (kpi.id === 'customers') setActiveTab('customers');
-                    else if (kpi.id === 'vendors') setActiveTab('vendors');
-                    else if (kpi.id === 'products') setActiveTab('packages');
-                    else if (kpi.id === 'low_stock') setActiveTab('inventory');
-                    else if (kpi.id === 'employees') setActiveTab('employees');
-                    else if (kpi.id === 'receivables' || kpi.id === 'sales_mo') setActiveTab('sales');
-                  }} style={{ cursor: 'pointer' }}>
+                  <div
+                    key={kpi.id}
+                    className="tat-kpi-card"
+                    onClick={() => {
+                      if (kpi.id === 'leads') setActiveTab('crm');
+                      else if (kpi.id === 'customers') setActiveTab('customers');
+                      else if (kpi.id === 'vendors') setActiveTab('vendors');
+                      else if (kpi.id === 'products') setActiveTab('packages');
+                      else if (kpi.id === 'low_stock') setActiveTab('inventory');
+                      else if (kpi.id === 'employees') setActiveTab('employees');
+                      else if (kpi.id === 'receivables' || kpi.id === 'sales_mo') setActiveTab('sales');
+                    }}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <span className="tat-kpi-label">{kpi.label}</span>
                     <span className="tat-kpi-value">{kpi.value}</span>
                   </div>
@@ -401,7 +585,7 @@ export const TravelAgencyDashboard = () => {
                   </div>
 
                   <div className="tat-leads-list">
-                    {leadsData.map((lead) => (
+                    {leadsData.slice(0, 4).map((lead) => (
                       <div key={lead.id} className="tat-lead-row">
                         <span className="tat-lead-name">{lead.name}</span>
                         <span className={`tat-lead-badge ${lead.statusType}`}>{lead.status}</span>
@@ -437,27 +621,27 @@ export const TravelAgencyDashboard = () => {
                     onClick={() => setLeadFilter('all')}
                     className={`tat-filter-pill ${leadFilter === 'all' ? 'active' : ''}`}
                   >
-                    All Leads (4)
+                    All Leads ({leadsData.length})
                   </button>
                   <button
                     onClick={() => setLeadFilter('won')}
                     className={`tat-filter-pill ${leadFilter === 'won' ? 'active' : ''}`}
                   >
-                    Won (2)
+                    Won ({wonCount})
                   </button>
                   <button
                     onClick={() => setLeadFilter('qualified')}
                     className={`tat-filter-pill ${leadFilter === 'qualified' ? 'active' : ''}`}
                   >
-                    Qualified (1)
+                    Qualified ({leadsData.filter((l) => l.status === 'Qualified').length})
                   </button>
                   <button
                     onClick={() => setLeadFilter('new')}
                     className={`tat-filter-pill ${leadFilter === 'new' ? 'active' : ''}`}
                   >
-                    New (1)
+                    New ({leadsData.filter((l) => l.status === 'New').length})
                   </button>
-                  <button className="tat-btn-primary" onClick={() => alert('New Lead creation modal')}>
+                  <button className="tat-btn-primary" onClick={() => setModalType('lead')}>
                     <Plus size={16} /> New Lead
                   </button>
                 </div>
@@ -527,7 +711,7 @@ export const TravelAgencyDashboard = () => {
                   />
                 </div>
                 <div className="tat-toolbar-actions">
-                  <button className="tat-btn-primary">
+                  <button className="tat-btn-primary" onClick={() => setModalType('customer')}>
                     <Plus size={16} /> Add Customer
                   </button>
                 </div>
@@ -589,7 +773,7 @@ export const TravelAgencyDashboard = () => {
                   />
                 </div>
                 <div className="tat-toolbar-actions">
-                  <button className="tat-btn-primary">
+                  <button className="tat-btn-primary" onClick={() => setModalType('vendor')}>
                     <Plus size={16} /> Add Partner Vendor
                   </button>
                 </div>
@@ -687,7 +871,7 @@ export const TravelAgencyDashboard = () => {
                   />
                 </div>
                 <div className="tat-toolbar-actions">
-                  <button className="tat-btn-primary">
+                  <button className="tat-btn-primary" onClick={() => setModalType('invoice')}>
                     <Plus size={16} /> Create Invoice
                   </button>
                 </div>
@@ -783,6 +967,22 @@ export const TravelAgencyDashboard = () => {
                 <p className="tat-subheading">Active curated vacation bundles, itineraries, and fixed departures.</p>
               </div>
 
+              <div className="tat-view-toolbar">
+                <div className="tat-search-wrap">
+                  <Search size={16} className="tat-search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search holiday packages..."
+                    className="tat-search-input"
+                  />
+                </div>
+                <div className="tat-toolbar-actions">
+                  <button className="tat-btn-primary" onClick={() => setModalType('package')}>
+                    <Plus size={16} /> New Package
+                  </button>
+                </div>
+              </div>
+
               <div className="tat-packages-grid">
                 {packagesData.map((pkg) => (
                   <div key={pkg.id} className="tat-pkg-card">
@@ -801,7 +1001,13 @@ export const TravelAgencyDashboard = () => {
                         <div className="tat-pkg-price">
                           {pkg.price} <small>/ person</small>
                         </div>
-                        <button className="tat-btn-book" onClick={() => alert(`Selected package: ${pkg.title}`)}>
+                        <button
+                          className="tat-btn-book"
+                          onClick={() => {
+                            setBookingForm((prev) => ({ ...prev, package: pkg.title, amount: pkg.price }));
+                            setModalType('booking');
+                          }}
+                        >
                           Book Tour
                         </button>
                       </div>
@@ -818,6 +1024,22 @@ export const TravelAgencyDashboard = () => {
               <div className="tat-page-header">
                 <h1 className="tat-heading">Confirmed Travel Bookings &amp; PNRs</h1>
                 <p className="tat-subheading">Real-time travel reservations, e-tickets, and hotel vouchers.</p>
+              </div>
+
+              <div className="tat-view-toolbar">
+                <div className="tat-search-wrap">
+                  <Search size={16} className="tat-search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search bookings by customer, PNR..."
+                    className="tat-search-input"
+                  />
+                </div>
+                <div className="tat-toolbar-actions">
+                  <button className="tat-btn-primary" onClick={() => setModalType('booking')}>
+                    <Plus size={16} /> New Booking
+                  </button>
+                </div>
               </div>
 
               <div className="tat-table-card">
@@ -1053,6 +1275,496 @@ export const TravelAgencyDashboard = () => {
           )}
         </main>
       </div>
+
+      {/* =========================================================================
+          CARD TYPE POPUP MODALS FOR "ADD NEW" ACTIONS
+          ========================================================================= */}
+      {modalType && (
+        <div className="tat-modal-overlay" onClick={() => setModalType(null)}>
+          <div className="tat-card-modal" onClick={(e) => e.stopPropagation()}>
+            {/* 1. NEW LEAD MODAL */}
+            {modalType === 'lead' && (
+              <form onSubmit={handleAddLead}>
+                <div className="tat-card-modal-header">
+                  <div>
+                    <h3 className="tat-card-modal-title">+ Add New Travel Lead</h3>
+                    <p className="tat-card-modal-sub">Create vacation lead and assign to an agency consultant</p>
+                  </div>
+                  <button type="button" className="tat-modal-close-btn" onClick={() => setModalType(null)}>
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="tat-card-modal-body">
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Customer / Company Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Ramesh Verma"
+                      value={leadForm.name}
+                      onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Inquired Destination / Package *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Kashmir 6D/5N Family Vacation"
+                      value={leadForm.destination}
+                      onChange={(e) => setLeadForm({ ...leadForm, destination: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-row-2col">
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Email Address</label>
+                      <input
+                        type="email"
+                        placeholder="client@gmail.com"
+                        value={leadForm.email}
+                        onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Phone / WhatsApp</label>
+                      <input
+                        type="tel"
+                        placeholder="+91 98765 43210"
+                        value={leadForm.phone}
+                        onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="tat-form-row-2col">
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Estimated Budget Quote</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. ₹55,000"
+                        value={leadForm.budget}
+                        onChange={(e) => setLeadForm({ ...leadForm, budget: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Initial Lead Status</label>
+                      <select
+                        value={leadForm.status}
+                        onChange={(e) => setLeadForm({ ...leadForm, status: e.target.value })}
+                        className="tat-form-select"
+                      >
+                        <option value="New">New</option>
+                        <option value="Qualified">Qualified</option>
+                        <option value="Won">Won</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Assigned Tour Consultant</label>
+                    <select
+                      value={leadForm.agent}
+                      onChange={(e) => setLeadForm({ ...leadForm, agent: e.target.value })}
+                      className="tat-form-select"
+                    >
+                      <option value="Vikram M.">Vikram Malhotra (Tour Director)</option>
+                      <option value="Pooja N.">Pooja Nair (International Desk)</option>
+                      <option value="Karan D.">Karan Deshmukh (Corporate Accounts)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="tat-card-modal-footer">
+                  <button type="button" className="tat-btn-cancel" onClick={() => setModalType(null)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="tat-btn-submit">
+                    <Plus size={16} /> Save Lead
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* 2. NEW CUSTOMER MODAL */}
+            {modalType === 'customer' && (
+              <form onSubmit={handleAddCustomer}>
+                <div className="tat-card-modal-header">
+                  <div>
+                    <h3 className="tat-card-modal-title">+ Add New Customer</h3>
+                    <p className="tat-card-modal-sub">Create frequent traveler or corporate group profile</p>
+                  </div>
+                  <button type="button" className="tat-modal-close-btn" onClick={() => setModalType(null)}>
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="tat-card-modal-body">
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Full Name / Organization *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Deepak Joshi"
+                      value={customerForm.name}
+                      onChange={(e) => setCustomerForm({ ...customerForm, name: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Account Type</label>
+                    <select
+                      value={customerForm.type}
+                      onChange={(e) => setCustomerForm({ ...customerForm, type: e.target.value })}
+                      className="tat-form-select"
+                    >
+                      <option value="Individual">Individual Traveler</option>
+                      <option value="Corporate">Corporate Group</option>
+                      <option value="Family Group">Family Group</option>
+                    </select>
+                  </div>
+
+                  <div className="tat-form-row-2col">
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Email</label>
+                      <input
+                        type="email"
+                        placeholder="deepak@gmail.com"
+                        value={customerForm.email}
+                        onChange={(e) => setCustomerForm({ ...customerForm, email: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Phone</label>
+                      <input
+                        type="tel"
+                        placeholder="+91 98112 00000"
+                        value={customerForm.phone}
+                        onChange={(e) => setCustomerForm({ ...customerForm, phone: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="tat-card-modal-footer">
+                  <button type="button" className="tat-btn-cancel" onClick={() => setModalType(null)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="tat-btn-submit">
+                    <Plus size={16} /> Save Customer
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* 3. NEW VENDOR MODAL */}
+            {modalType === 'vendor' && (
+              <form onSubmit={handleAddVendor}>
+                <div className="tat-card-modal-header">
+                  <div>
+                    <h3 className="tat-card-modal-title">+ Add Partner Vendor</h3>
+                    <p className="tat-card-modal-sub">Add airline desk, resort partner, or coach operator</p>
+                  </div>
+                  <button type="button" className="tat-modal-close-btn" onClick={() => setModalType(null)}>
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="tat-card-modal-body">
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Vendor / Property Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Radisson Blu Resorts"
+                      value={vendorForm.name}
+                      onChange={(e) => setVendorForm({ ...vendorForm, name: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Service Category</label>
+                    <select
+                      value={vendorForm.category}
+                      onChange={(e) => setVendorForm({ ...vendorForm, category: e.target.value })}
+                      className="tat-form-select"
+                    >
+                      <option value="Hotels & Resorts">Hotels &amp; Resorts</option>
+                      <option value="Aviation & Flights">Aviation &amp; Flights</option>
+                      <option value="Fleet & Surface Transport">Fleet &amp; Surface Transport</option>
+                      <option value="Activities & Watersports">Activities &amp; Watersports</option>
+                    </select>
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Contract Scope</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 10 Deluxe Chalets Allocation"
+                      value={vendorForm.contract}
+                      onChange={(e) => setVendorForm({ ...vendorForm, contract: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Contact Person &amp; Phone</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Manish Roy (+91 98200 12345)"
+                      value={vendorForm.contact}
+                      onChange={(e) => setVendorForm({ ...vendorForm, contact: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="tat-card-modal-footer">
+                  <button type="button" className="tat-btn-cancel" onClick={() => setModalType(null)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="tat-btn-submit">
+                    <Plus size={16} /> Save Vendor
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* 4. NEW PACKAGE MODAL */}
+            {modalType === 'package' && (
+              <form onSubmit={handleAddPackage}>
+                <div className="tat-card-modal-header">
+                  <div>
+                    <h3 className="tat-card-modal-title">+ Create Holiday Package</h3>
+                    <p className="tat-card-modal-sub">Add a curated holiday itinerary to the travel catalog</p>
+                  </div>
+                  <button type="button" className="tat-modal-close-btn" onClick={() => setModalType(null)}>
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="tat-card-modal-body">
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Package Title *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Kashmir Valley & Dal Lake Romance"
+                      value={packageForm.title}
+                      onChange={(e) => setPackageForm({ ...packageForm, title: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-row-2col">
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Duration</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 6 Days / 5 Nights"
+                        value={packageForm.duration}
+                        onChange={(e) => setPackageForm({ ...packageForm, duration: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Price Per Person *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. ₹32,000"
+                        value={packageForm.price}
+                        onChange={(e) => setPackageForm({ ...packageForm, price: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Inclusions (comma-separated)</label>
+                    <input
+                      type="text"
+                      placeholder="Houseboat, Shikara Ride, Private Cab, Breakfast"
+                      value={packageForm.inclusions}
+                      onChange={(e) => setPackageForm({ ...packageForm, inclusions: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="tat-card-modal-footer">
+                  <button type="button" className="tat-btn-cancel" onClick={() => setModalType(null)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="tat-btn-submit">
+                    <Plus size={16} /> Publish Package
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* 5. NEW BOOKING MODAL */}
+            {modalType === 'booking' && (
+              <form onSubmit={handleAddBooking}>
+                <div className="tat-card-modal-header">
+                  <div>
+                    <h3 className="tat-card-modal-title">+ Create Confirmed Booking</h3>
+                    <p className="tat-card-modal-sub">Confirm travel itinerary, allocate PNR, and generate ticket</p>
+                  </div>
+                  <button type="button" className="tat-modal-close-btn" onClick={() => setModalType(null)}>
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="tat-card-modal-body">
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Passenger / Group Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Dr. Rajesh Khanna (2 Pax)"
+                      value={bookingForm.customer}
+                      onChange={(e) => setBookingForm({ ...bookingForm, customer: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Holiday Package / Route *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Kerala Backwaters & Munnar"
+                      value={bookingForm.package}
+                      onChange={(e) => setBookingForm({ ...bookingForm, package: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-row-2col">
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Travel Dates</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 15 Nov - 20 Nov 2026"
+                        value={bookingForm.travelDates}
+                        onChange={(e) => setBookingForm({ ...bookingForm, travelDates: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">PNR / Voucher Code</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 6E-90412"
+                        value={bookingForm.pnr}
+                        onChange={(e) => setBookingForm({ ...bookingForm, pnr: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Total Booking Amount</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. ₹48,000"
+                      value={bookingForm.amount}
+                      onChange={(e) => setBookingForm({ ...bookingForm, amount: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="tat-card-modal-footer">
+                  <button type="button" className="tat-btn-cancel" onClick={() => setModalType(null)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="tat-btn-submit">
+                    <Plus size={16} /> Confirm Booking
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* 6. NEW INVOICE MODAL */}
+            {modalType === 'invoice' && (
+              <form onSubmit={handleAddInvoice}>
+                <div className="tat-card-modal-header">
+                  <div>
+                    <h3 className="tat-card-modal-title">+ Generate Tax Invoice</h3>
+                    <p className="tat-card-modal-sub">Bill customer for tour booking with 5% GST computation</p>
+                  </div>
+                  <button type="button" className="tat-modal-close-btn" onClick={() => setModalType(null)}>
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="tat-card-modal-body">
+                  <div className="tat-form-group">
+                    <label className="tat-form-label">Customer / Corporate Client *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Amit Traders Ltd."
+                      value={invoiceForm.customer}
+                      onChange={(e) => setInvoiceForm({ ...invoiceForm, customer: e.target.value })}
+                      className="tat-form-input"
+                    />
+                  </div>
+
+                  <div className="tat-form-row-2col">
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Total Invoice Amount *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. ₹65,000"
+                        value={invoiceForm.amount}
+                        onChange={(e) => setInvoiceForm({ ...invoiceForm, amount: e.target.value })}
+                        className="tat-form-input"
+                      />
+                    </div>
+                    <div className="tat-form-group">
+                      <label className="tat-form-label">Payment Mode</label>
+                      <select
+                        value={invoiceForm.method}
+                        onChange={(e) => setInvoiceForm({ ...invoiceForm, method: e.target.value })}
+                        className="tat-form-select"
+                      >
+                        <option value="NEFT Transfer">NEFT Transfer</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Net Banking">Net Banking</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="tat-card-modal-footer">
+                  <button type="button" className="tat-btn-cancel" onClick={() => setModalType(null)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="tat-btn-submit">
+                    <Plus size={16} /> Generate Invoice
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
