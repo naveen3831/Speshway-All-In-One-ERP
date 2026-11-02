@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/landing/Navbar';
 import { Hero } from '../components/landing/Hero';
 import { StatsBar } from '../components/landing/StatsBar';
+import { LandingGetStartedSection } from '../components/landing/LandingGetStartedSection';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
@@ -23,6 +24,8 @@ export const LandingPage = () => {
         />
         
         <StatsBar />
+        
+        <LandingGetStartedSection />
         
         <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
