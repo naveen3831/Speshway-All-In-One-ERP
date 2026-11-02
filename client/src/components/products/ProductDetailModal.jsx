@@ -43,6 +43,16 @@ if (
       window.open('/product/speshway-hospitals/dashboard', '_blank', 'noopener,noreferrer');
       return;
     }
+    if (
+      product.slug === 'natural-milk-dairy' ||
+      product.slug === 'madhur-dairy' ||
+      product.slug?.includes('dairy') ||
+      product.name?.toLowerCase().includes('dairy') ||
+      product.name?.toLowerCase().includes('milk')
+    ) {
+      navigate('/product/natural-milk-dairy/dashboard');
+      return;
+    }
     if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
       window.open('/product/tours-and-travels/dashboard', '_blank', 'noopener,noreferrer');
     } else if (product.adminUrl && product.adminUrl.startsWith('/')) {

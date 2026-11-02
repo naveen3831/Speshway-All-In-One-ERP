@@ -26,6 +26,7 @@ import { AdminSettings } from './pages/admin/AdminSettings';
 import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
 import { HospitalDashboard } from './pages/hospital/HospitalDashboard';
 import { VexaDashboard } from './pages/vexa/VexaDashboard';
+import { DairyDashboard } from './pages/dairy/DairyDashboard';
 
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
@@ -46,6 +47,8 @@ export default function App() {
             <Route path="/product/hospitals/dashboard" element={<HospitalDashboard />} />
             <Route path="/product/tours-and-travels/dashboard" element={<TravelAgencyDashboard />} />
             <Route path="/product/vexa-style-hub/dashboard" element={<VexaDashboard />} />
+            <Route path="/product/natural-milk-dairy/dashboard" element={<DairyDashboard />} />
+            <Route path="/product/madhur-dairy/dashboard" element={<DairyDashboard />} />
             <Route path="/product/:id/dashboard" element={<HospitalDashboard />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
@@ -75,6 +78,13 @@ export default function App() {
             <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
 
             <Route path="/vexa-style-hub/dashboard" element={<VexaDashboard />} />
+
+            {/* Dairy Management ERP routes & redirects */}
+            <Route path="/dairy-erp/dashboard" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
+            <Route path="/dairy-erp" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
+            <Route path="/dairy-management-erp" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
+            <Route path="/dashboard/natural-milk-dairy" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
+            <Route path="/dashboard/madhur-dairy" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
 
             {/* Hospital ERP routes & redirects to /product/speshway-hospitals/dashboard */}
             <Route path="/hospital-erp/dashboard" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />

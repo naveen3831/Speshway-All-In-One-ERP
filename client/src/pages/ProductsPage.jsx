@@ -196,6 +196,14 @@ const isHospital =
                         let url;
                         if (isHospital) {
                           url = '/product/speshway-hospitals/dashboard';
+                        } else if (
+                          prod.slug === 'natural-milk-dairy' ||
+                          prod.slug === 'madhur-dairy' ||
+                          prod.slug?.includes('dairy') ||
+                          prod.name?.toLowerCase().includes('dairy') ||
+                          prod.name?.toLowerCase().includes('milk')
+                        ) {
+                          url = '/product/natural-milk-dairy/dashboard';
                         } else if (prod.slug === 'tours-and-travels' || prod.id === 'tours-and-travels') {
                           url = '/product/tours-and-travels/dashboard';
                         } else {

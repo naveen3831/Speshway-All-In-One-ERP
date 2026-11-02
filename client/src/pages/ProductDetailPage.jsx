@@ -42,6 +42,17 @@ export const ProductDetailPage = () => {
     adminUrl: '/product/speshway-hospitals/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'REST API'],
     features: ['Diagnostic Lab Reports', 'Pathology & EMR', 'Appointments & Scheduling', 'Pharmacy & Blood Bank', 'Role-Based Access'],
+  } : (id === 'natural-milk-dairy' || id === 'madhur-dairy' || id?.includes('dairy') || id?.includes('milk')) ? {
+    id: 'natural-milk-dairy',
+    slug: 'natural-milk-dairy',
+    name: 'Natural Milk Dairy',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Natural Milk Dairy is an all-in-one Dairy Management System that simplifies product management, customer orders, subscriptions, inventory, daily deliveries, and payments through a centralized admin dashboard.',
+    websiteUrl: 'https://speshway.com/natural-milk-dairy',
+    adminUrl: '/product/natural-milk-dairy/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'REST API'],
+    features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
   } : id === 'vexa-style-hub' ? {
     id: 'vexa-style-hub',
     slug: 'vexa-style-hub',
@@ -71,6 +82,8 @@ export const ProductDetailPage = () => {
       const targetSlug = product?.slug || id || '';
       if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals' || targetSlug.includes('hospital')) {
         navigate('/product/speshway-hospitals/dashboard');
+      } else if (targetSlug === 'natural-milk-dairy' || targetSlug === 'madhur-dairy' || targetSlug.includes('dairy') || targetSlug.includes('milk')) {
+        navigate('/product/natural-milk-dairy/dashboard');
       } else if (targetSlug === 'tours-and-travels') {
         navigate('/product/tours-and-travels/dashboard');
       } else if (targetSlug === 'vexa-style-hub') {

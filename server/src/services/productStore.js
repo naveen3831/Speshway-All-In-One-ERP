@@ -227,6 +227,23 @@ initialProducts.push(
     color: 'cyan',
     status: 'active',
     popularity: 97,
+  },
+  {
+    id: 'natural-milk-dairy',
+    name: 'Natural Milk Dairy',
+    slug: 'natural-milk-dairy',
+    category: 'Human Resources',
+    description: 'Natural Milk Dairy is an all-in-one Dairy Management System that simplifies product management, customer orders, subscriptions, inventory, daily deliveries, and payments through a centralized admin dashboard.',
+    longDescription: 'Complete dairy operations ERP providing farm-to-door delivery tracking, automated daily subscriptions, real-time inventory for milk and milk byproducts, temperature-controlled warehouse logging, and seamless payments.',
+    features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://speshway.com/natural-milk-dairy',
+    adminUrl: '/product/natural-milk-dairy/dashboard',
+    imageUrl: '',
+    iconName: 'Package',
+    color: 'emerald',
+    status: 'active',
+    popularity: 98,
   }
 );
 
