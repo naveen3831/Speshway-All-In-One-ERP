@@ -79,19 +79,19 @@ export const ProductDetailPage = () => {
   const handleOpenAdminDashboard = (e) => {
     if (e && e.preventDefault) e.preventDefault();
     try {
-      const targetSlug = product?.slug || id || '';
+      const targetSlug = (product?.slug || id || '').toLowerCase();
       if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals' || targetSlug.includes('hospital')) {
-        navigate('/product/speshway-hospitals/dashboard');
+        navigate('/dashboard/speshway-hospitals');
       } else if (targetSlug === 'natural-milk-dairy' || targetSlug === 'madhur-dairy' || targetSlug.includes('dairy') || targetSlug.includes('milk')) {
-        navigate('/product/natural-milk-dairy/dashboard');
-      } else if (targetSlug === 'tours-and-travels') {
-        navigate('/product/tours-and-travels/dashboard');
-      } else if (targetSlug === 'vexa-style-hub') {
-        navigate('/product/vexa-style-hub/dashboard');
-      } else if (product?.adminUrl && product.adminUrl.startsWith('/')) {
+        navigate('/dashboard/natural-milk-dairy');
+      } else if (targetSlug === 'tours-and-travels' || targetSlug.includes('tour') || targetSlug.includes('travel')) {
+        navigate('/dashboard/tours-and-travels');
+      } else if (targetSlug === 'vexa-style-hub' || targetSlug.includes('vexa') || targetSlug.includes('style-hub')) {
+        navigate('/dashboard/vexa-style-hub');
+      } else if (product?.adminUrl && product.adminUrl.startsWith('/') && product.adminUrl !== '/admin/products') {
         navigate(product.adminUrl);
       } else {
-        navigate(`/product/${targetSlug}/dashboard`);
+        navigate('/dashboard');
       }
     } catch (err) {
       console.error('Error opening admin dashboard:', err);
@@ -155,7 +155,6 @@ export const ProductDetailPage = () => {
                 >
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
-                  <ExternalLink size={14} style={{ marginLeft: '4px' }} />
                 </button>
 
                 <button onClick={() => setModalMode('demo')} className="btn-hero-secondary">

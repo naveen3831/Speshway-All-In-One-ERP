@@ -43,13 +43,35 @@ export default function App() {
             {/* 1. SEPARATE PUBLIC WEBSITE PAGES */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/products" element={<ProductsPage />} />
+
+            {/* DEDICATED INDUSTRY ERP DASHBOARDS (Both /dashboard/:slug and /product/:slug/dashboard) */}
             <Route path="/product/speshway-hospitals/dashboard" element={<HospitalDashboard />} />
             <Route path="/product/hospitals/dashboard" element={<HospitalDashboard />} />
+            <Route path="/dashboard/speshway-hospitals" element={<HospitalDashboard />} />
+            <Route path="/dashboard/hospitals" element={<HospitalDashboard />} />
+            <Route path="/hospital-erp/dashboard" element={<HospitalDashboard />} />
+            <Route path="/hospital-erp" element={<HospitalDashboard />} />
+            <Route path="/hospital-management-erp" element={<HospitalDashboard />} />
+            <Route path="/hospitals-admin" element={<HospitalDashboard />} />
+
             <Route path="/product/tours-and-travels/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
+            <Route path="/travel-erp/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
+
             <Route path="/product/vexa-style-hub/dashboard" element={<VexaDashboard />} />
+            <Route path="/dashboard/vexa-style-hub" element={<VexaDashboard />} />
+            <Route path="/vexa-style-hub/dashboard" element={<VexaDashboard />} />
+
             <Route path="/product/natural-milk-dairy/dashboard" element={<DairyDashboard />} />
             <Route path="/product/madhur-dairy/dashboard" element={<DairyDashboard />} />
-            <Route path="/product/:id/dashboard" element={<HospitalDashboard />} />
+            <Route path="/dashboard/natural-milk-dairy" element={<DairyDashboard />} />
+            <Route path="/dashboard/madhur-dairy" element={<DairyDashboard />} />
+            <Route path="/dairy-erp/dashboard" element={<DairyDashboard />} />
+            <Route path="/dairy-erp" element={<DairyDashboard />} />
+            <Route path="/dairy-management-erp" element={<DairyDashboard />} />
+
+            <Route path="/product/:id/dashboard" element={<Navigate to="/dashboard" replace />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/why-us" element={<WhyUsPage />} />
@@ -71,27 +93,6 @@ export default function App() {
               <Route path="inquiries" element={<AdminInquiries />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
-
-            {/* 4. DEDICATED INDUSTRY ERP DASHBOARDS */}
-            <Route path="/travel-erp/dashboard" element={<TravelAgencyDashboard />} />
-            <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
-            <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
-
-            <Route path="/vexa-style-hub/dashboard" element={<VexaDashboard />} />
-
-            {/* Dairy Management ERP routes & redirects */}
-            <Route path="/dairy-erp/dashboard" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
-            <Route path="/dairy-erp" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
-            <Route path="/dairy-management-erp" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
-            <Route path="/dashboard/natural-milk-dairy" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
-            <Route path="/dashboard/madhur-dairy" element={<Navigate to="/product/natural-milk-dairy/dashboard" replace />} />
-
-            {/* Hospital ERP routes & redirects to /product/speshway-hospitals/dashboard */}
-            <Route path="/hospital-erp/dashboard" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
-            <Route path="/hospital-erp" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
-            <Route path="/dashboard/hospitals" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
-            <Route path="/hospital-management-erp" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
-            <Route path="/hospitals-admin" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
 
             {/* 5. INTERNAL ERP DASHBOARD */}
             <Route path="/dashboard" element={<DashboardLayout />}>

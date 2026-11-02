@@ -237,7 +237,7 @@ const isHospital =
 
                         let url;
                         if (isHospital) {
-                          url = '/product/speshway-hospitals/dashboard';
+                          url = '/dashboard/speshway-hospitals';
                         } else if (
                           prod.slug === 'natural-milk-dairy' ||
                           prod.slug === 'madhur-dairy' ||
@@ -245,24 +245,24 @@ const isHospital =
                           prod.name?.toLowerCase().includes('dairy') ||
                           prod.name?.toLowerCase().includes('milk')
                         ) {
-                          url = '/product/natural-milk-dairy/dashboard';
+                          url = '/dashboard/natural-milk-dairy';
                         } else if (prod.slug === 'tours-and-travels' || prod.id === 'tours-and-travels') {
-                          url = '/product/tours-and-travels/dashboard';
+                          url = '/dashboard/tours-and-travels';
                         } else if (
                           prod.slug === 'vexa-style-hub' ||
                           prod.id === 'vexa-style-hub' ||
                           prod.slug?.includes('vexa')
                         ) {
-                          url = '/product/vexa-style-hub/dashboard';
+                          url = '/dashboard/vexa-style-hub';
+                        } else if (prod.adminUrl && prod.adminUrl.startsWith('/') && prod.adminUrl !== '/admin/products') {
+                          url = prod.adminUrl;
                         } else {
-                          url = prod.adminUrl && prod.adminUrl !== '/admin/products'
-                            ? prod.adminUrl
-                            : `/product/${prod.slug || prod.id}/dashboard`;
+                          url = '/dashboard';
                         }
-                        window.open(url, '_blank', 'noopener,noreferrer');
+                        navigate(url);
                       }}
                       className="catalog-btn-link admin-color"
-                      title="View Admin Dashboard"
+                      title="View Admin Dashboard in this site"
                     >
                       <Shield size={14} /> Admin Dashboard
                     </button>

@@ -33,32 +33,39 @@ export const ProductDetailModal = ({ product, onClose }) => {
 
   const handleViewAdminDashboard = () => {
     onClose();
-if (
-      product.slug === 'speshway-hospitals' ||
-      product.slug === 'hospitals' ||
-      product.slug?.includes('hospital') ||
+    const slug = (product?.slug || product?.id || '').toLowerCase();
+    if (
+      slug === 'speshway-hospitals' ||
+      slug === 'hospitals' ||
+      slug.includes('hospital') ||
       product.name?.toLowerCase().includes('hospital') ||
       product.adminUrl?.toLowerCase().includes('hospital')
     ) {
-      window.open('/product/speshway-hospitals/dashboard', '_blank', 'noopener,noreferrer');
+      navigate('/dashboard/speshway-hospitals');
       return;
     }
     if (
-      product.slug === 'natural-milk-dairy' ||
-      product.slug === 'madhur-dairy' ||
-      product.slug?.includes('dairy') ||
+      slug === 'natural-milk-dairy' ||
+      slug === 'madhur-dairy' ||
+      slug.includes('dairy') ||
       product.name?.toLowerCase().includes('dairy') ||
       product.name?.toLowerCase().includes('milk')
     ) {
-      navigate('/product/natural-milk-dairy/dashboard');
+      navigate('/dashboard/natural-milk-dairy');
       return;
     }
-    if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
-      window.open('/product/tours-and-travels/dashboard', '_blank', 'noopener,noreferrer');
-    } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
-      window.open(product.adminUrl, '_blank', 'noopener,noreferrer');
+    if (slug === 'tours-and-travels' || slug.includes('tour') || slug.includes('travel')) {
+      navigate('/dashboard/tours-and-travels');
+      return;
+    }
+    if (slug === 'vexa-style-hub' || slug.includes('vexa') || slug.includes('style-hub')) {
+      navigate('/dashboard/vexa-style-hub');
+      return;
+    }
+    if (product.adminUrl && product.adminUrl.startsWith('/') && product.adminUrl !== '/admin/products') {
+      navigate(product.adminUrl);
     } else {
-      window.open(`/product/${product.slug || product.id}/dashboard`, '_blank', 'noopener,noreferrer');
+      navigate('/dashboard');
     }
   };
 
