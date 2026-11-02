@@ -4690,6 +4690,8 @@ button {
    Removes visible scrollbars from window, body, containers, tables & sidebars
    while preserving natural mouse-wheel, touchpad, and touch scroll behavior.
    ========================================================================== */
+.salon-wrapper,
+.salon-wrapper *,
 .nexora-wrapper,
 .nexora-wrapper *,
 .aneera-dashboard-container,
@@ -4710,6 +4712,8 @@ button {
   -ms-overflow-style: none !important;
 }
 
+.salon-wrapper::-webkit-scrollbar,
+.salon-wrapper *::-webkit-scrollbar,
 .nexora-wrapper::-webkit-scrollbar,
 .nexora-wrapper *::-webkit-scrollbar,
 .aneera-dashboard-container::-webkit-scrollbar,
@@ -4731,6 +4735,8 @@ button {
   height: 0 !important;
 }
 
+html:has(.salon-wrapper),
+body:has(.salon-wrapper),
 html:has(.nexora-wrapper),
 body:has(.nexora-wrapper),
 html:has(.aneera-dashboard-container),
@@ -4749,6 +4755,8 @@ body:has(.admin-layout-container) {
   -ms-overflow-style: none !important;
 }
 
+html:has(.salon-wrapper)::-webkit-scrollbar,
+body:has(.salon-wrapper)::-webkit-scrollbar,
 html:has(.nexora-wrapper)::-webkit-scrollbar,
 body:has(.nexora-wrapper)::-webkit-scrollbar,
 html:has(.aneera-dashboard-container)::-webkit-scrollbar,

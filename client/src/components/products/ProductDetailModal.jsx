@@ -68,6 +68,18 @@ export const ProductDetailModal = ({ product, onClose }) => {
       return;
     }
     if (
+      slug === 'saloon' ||
+      slug === 'salon' ||
+      slug.includes('saloon') ||
+      slug.includes('salon') ||
+      slug.includes('spy-salon') ||
+      product.name?.toLowerCase().includes('saloon') ||
+      product.name?.toLowerCase().includes('salon')
+    ) {
+      navigate('/product/saloon/dashboard');
+      return;
+    }
+    if (
       slug === 'natural-milk-dairy' ||
       slug === 'madhur-dairy' ||
       slug.includes('dairy') ||

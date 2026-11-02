@@ -75,6 +75,17 @@ export const ProductDetailPage = () => {
     adminUrl: '/product/e-commerce/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
+  } : (id === 'saloon' || id === 'salon' || id?.includes('salon') || id?.includes('saloon') || id?.includes('spy-salon')) ? {
+    id: 'saloon',
+    slug: 'saloon',
+    name: 'Saloon',
+    category: 'Business Intelligence',
+    status: 'active',
+    description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
+    websiteUrl: 'https://spysalon.speshway.com',
+    adminUrl: '/product/saloon/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
   } : id === 'vexa-style-hub' ? {
     id: 'vexa-style-hub',
     slug: 'vexa-style-hub',
@@ -110,6 +121,8 @@ export const ProductDetailPage = () => {
         navigate('/product/aneera-silks/dashboard');
       } else if (targetSlug === 'e-commerce' || targetSlug === 'ecommerce' || targetSlug.includes('nexora') || targetSlug.includes('e-com') || targetSlug.includes('ecom')) {
         navigate('/product/e-commerce/dashboard');
+      } else if (targetSlug === 'saloon' || targetSlug === 'salon' || targetSlug.includes('saloon') || targetSlug.includes('salon') || targetSlug.includes('spy-salon')) {
+        navigate('/product/saloon/dashboard');
       } else if (targetSlug === 'tours-and-travels' || targetSlug.includes('tour') || targetSlug.includes('travel')) {
         navigate('/dashboard/tours-and-travels');
       } else if (targetSlug === 'vexa-style-hub' || targetSlug.includes('vexa') || targetSlug.includes('style-hub')) {

@@ -101,6 +101,23 @@ export const initialProducts = [
     status: 'active',
     popularity: 99,
   },
+  {
+    id: 'saloon',
+    name: 'Saloon',
+    slug: 'saloon',
+    category: 'Business Intelligence',
+    description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
+    longDescription: 'SPY Salon Jubilee Hills Studio ERP provides end-to-end luxury salon appointment scheduling, stylist chair allocation, beauty packages, client loyalty passes, and till billing.',
+    features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://spysalon.speshway.com',
+    adminUrl: '/product/saloon/dashboard',
+    imageUrl: '',
+    iconName: 'Scissors',
+    color: 'amber',
+    status: 'active',
+    popularity: 99,
+  },
 ];
 
 let productsMemory = [...initialProducts];

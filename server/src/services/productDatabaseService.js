@@ -46,6 +46,10 @@ export const seedProductsDatabase = async () => {
         { slug: { $regex: /e-commerce|ecommerce|nexora/i } },
         { $set: { adminUrl: '/product/e-commerce/dashboard' } }
       );
+      await Product.updateMany(
+        { slug: { $regex: /saloon|salon|spy-salon/i } },
+        { $set: { adminUrl: '/product/saloon/dashboard' } }
+      );
       const dairyExists = await Product.findOne({ slug: { $regex: /natural-milk-dairy|madhur-dairy/i } });
       if (!dairyExists) {
         await Product.create({
@@ -80,6 +84,25 @@ export const seedProductsDatabase = async () => {
           imageUrl: '',
           iconName: 'ShoppingCart',
           color: 'red',
+          status: 'active',
+          popularity: 99,
+        });
+      }
+      const salonExists = await Product.findOne({ slug: { $regex: /saloon|salon|spy-salon/i } });
+      if (!salonExists) {
+        await Product.create({
+          name: 'Saloon',
+          slug: 'saloon',
+          category: 'Business Intelligence',
+          description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
+          longDescription: 'SPY Salon Jubilee Hills Studio ERP provides end-to-end luxury salon appointment scheduling, stylist chair allocation, beauty packages, client loyalty passes, and till billing.',
+          features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
+          technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+          websiteUrl: 'https://spysalon.speshway.com',
+          adminUrl: '/product/saloon/dashboard',
+          imageUrl: '',
+          iconName: 'Scissors',
+          color: 'amber',
           status: 'active',
           popularity: 99,
         });

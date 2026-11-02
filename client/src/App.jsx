@@ -29,6 +29,7 @@ import { VexaDashboard } from './pages/vexa/VexaDashboard';
 import { DairyDashboard } from './pages/dairy/DairyDashboard';
 import { AneeraDashboard } from './pages/aneera/AneeraDashboard';
 import { NexoraDashboard } from './pages/ecommerce/NexoraDashboard';
+import { SalonDashboard } from './pages/salon/SalonDashboard';
 
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
@@ -90,6 +91,18 @@ export default function App() {
             <Route path="/ecommerce-erp/dashboard" element={<NexoraDashboard />} />
             <Route path="/ecommerce-dashboard" element={<NexoraDashboard />} />
             <Route path="/nexora-dashboard" element={<NexoraDashboard />} />
+
+            <Route path="/product/saloon/dashboard" element={<SalonDashboard />} />
+            <Route path="/product/salon/dashboard" element={<SalonDashboard />} />
+            <Route path="/product/spy-salon/dashboard" element={<SalonDashboard />} />
+            <Route path="/product/spysalon/dashboard" element={<SalonDashboard />} />
+            <Route path="/dashboard/saloon" element={<SalonDashboard />} />
+            <Route path="/dashboard/salon" element={<SalonDashboard />} />
+            <Route path="/dashboard/spy-salon" element={<SalonDashboard />} />
+            <Route path="/saloon-erp/dashboard" element={<SalonDashboard />} />
+            <Route path="/salon-erp/dashboard" element={<SalonDashboard />} />
+            <Route path="/salon-dashboard" element={<SalonDashboard />} />
+            <Route path="/saloon-dashboard" element={<SalonDashboard />} />
 
             <Route path="/product/:id/dashboard" element={<Navigate to="/dashboard" replace />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />

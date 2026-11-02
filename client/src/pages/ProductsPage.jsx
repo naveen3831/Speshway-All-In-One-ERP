@@ -260,6 +260,16 @@ const isHospital =
                         ) {
                           url = '/product/e-commerce/dashboard';
                         } else if (
+                          prod.slug === 'saloon' ||
+                          prod.slug === 'salon' ||
+                          prod.slug?.includes('saloon') ||
+                          prod.slug?.includes('salon') ||
+                          prod.slug?.includes('spy-salon') ||
+                          prod.name?.toLowerCase().includes('saloon') ||
+                          prod.name?.toLowerCase().includes('salon')
+                        ) {
+                          url = '/product/saloon/dashboard';
+                        } else if (
                           prod.slug === 'natural-milk-dairy' ||
                           prod.slug === 'madhur-dairy' ||
                           prod.slug?.includes('dairy') ||
