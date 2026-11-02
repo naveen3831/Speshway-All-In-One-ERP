@@ -1100,3 +1100,42 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+
+/* Hide all scrollbars within Nexora Dashboard */
+.nexora-wrapper,
+.nexora-wrapper *,
+.nexora-sidebar,
+.nexora-nav,
+.nexora-main,
+.nexora-content,
+.nexora-table-responsive {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.nexora-wrapper::-webkit-scrollbar,
+.nexora-wrapper *::-webkit-scrollbar,
+.nexora-sidebar::-webkit-scrollbar,
+.nexora-nav::-webkit-scrollbar,
+.nexora-main::-webkit-scrollbar,
+.nexora-content::-webkit-scrollbar,
+.nexora-table-responsive::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.nexora-wrapper),
+body:has(.nexora-wrapper) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.nexora-wrapper)::-webkit-scrollbar,
+body:has(.nexora-wrapper)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

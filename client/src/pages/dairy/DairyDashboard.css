@@ -1052,3 +1052,41 @@
     padding: 16px;
   }
 }
+
+
+/* Hide all scrollbars within Dairy Dashboard */
+.dairy-dashboard-container,
+.dairy-dashboard-container *,
+.dairy-sidebar,
+.dairy-sidebar-nav,
+.dairy-main,
+.dairy-content,
+.dairy-table-responsive {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.dairy-dashboard-container::-webkit-scrollbar,
+.dairy-dashboard-container *::-webkit-scrollbar,
+.dairy-sidebar::-webkit-scrollbar,
+.dairy-sidebar-nav::-webkit-scrollbar,
+.dairy-main::-webkit-scrollbar,
+.dairy-content::-webkit-scrollbar,
+.dairy-table-responsive::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.dairy-dashboard-container),
+body:has(.dairy-dashboard-container) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.dairy-dashboard-container)::-webkit-scrollbar,
+body:has(.dairy-dashboard-container)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

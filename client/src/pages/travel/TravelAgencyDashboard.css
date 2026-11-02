@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    TRAVEL AGENCY ERP DASHBOARD (HOLIDAYCITY PVT. LTD.)
    Pixel-perfect styling matching exact screenshot
    ========================================================================== */
@@ -950,3 +950,39 @@
   background-color: #047857;
 }
 
+
+
+/* Hide all scrollbars within Travel Agency Dashboard */
+.tat-erp-root,
+.tat-erp-root *,
+.tat-sidebar,
+.tat-main-content,
+.tat-content-inner,
+.tat-table-responsive {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.tat-erp-root::-webkit-scrollbar,
+.tat-erp-root *::-webkit-scrollbar,
+.tat-sidebar::-webkit-scrollbar,
+.tat-main-content::-webkit-scrollbar,
+.tat-content-inner::-webkit-scrollbar,
+.tat-table-responsive::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.tat-erp-root),
+body:has(.tat-erp-root) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.tat-erp-root)::-webkit-scrollbar,
+body:has(.tat-erp-root)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

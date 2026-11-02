@@ -1035,3 +1035,41 @@
     padding: 16px;
   }
 }
+
+
+/* Hide all scrollbars within Aneera Dashboard */
+.aneera-dashboard-container,
+.aneera-dashboard-container *,
+.aneera-sidebar,
+.aneera-sidebar-nav,
+.aneera-main,
+.aneera-content,
+.aneera-table-responsive {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.aneera-dashboard-container::-webkit-scrollbar,
+.aneera-dashboard-container *::-webkit-scrollbar,
+.aneera-sidebar::-webkit-scrollbar,
+.aneera-sidebar-nav::-webkit-scrollbar,
+.aneera-main::-webkit-scrollbar,
+.aneera-content::-webkit-scrollbar,
+.aneera-table-responsive::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.aneera-dashboard-container),
+body:has(.aneera-dashboard-container) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.aneera-dashboard-container)::-webkit-scrollbar,
+body:has(.aneera-dashboard-container)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

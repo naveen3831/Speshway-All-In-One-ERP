@@ -880,3 +880,39 @@
   border-radius: 9999px;
   transition: width 0.3s ease;
 }
+
+
+/* Hide all scrollbars within Vexa Dashboard */
+.vexa-erp-root,
+.vexa-erp-root *,
+.vexa-sidebar,
+.vexa-main-content,
+.vexa-content-inner,
+.vexa-table-responsive {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.vexa-erp-root::-webkit-scrollbar,
+.vexa-erp-root *::-webkit-scrollbar,
+.vexa-sidebar::-webkit-scrollbar,
+.vexa-main-content::-webkit-scrollbar,
+.vexa-content-inner::-webkit-scrollbar,
+.vexa-table-responsive::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.vexa-erp-root),
+body:has(.vexa-erp-root) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.vexa-erp-root)::-webkit-scrollbar,
+body:has(.vexa-erp-root)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

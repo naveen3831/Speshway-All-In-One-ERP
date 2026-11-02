@@ -4659,3 +4659,87 @@ button {
     margin-top: 4px;
   }
 }
+
+
+/* ==========================================================================
+   HIDE SCROLLBARS (SIDE BARS) ACROSS ALL DASHBOARDS
+   Removes visible scrollbars from window, body, containers, tables & sidebars
+   while preserving natural mouse-wheel, touchpad, and touch scroll behavior.
+   ========================================================================== */
+.nexora-wrapper,
+.nexora-wrapper *,
+.aneera-dashboard-container,
+.aneera-dashboard-container *,
+.dairy-dashboard-container,
+.dairy-dashboard-container *,
+.hosp-erp-root,
+.hosp-erp-root *,
+.tat-erp-root,
+.tat-erp-root *,
+.vexa-erp-root,
+.vexa-erp-root *,
+.admin-layout-container,
+.admin-layout-container *,
+.dashboard-layout,
+.dashboard-layout * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.nexora-wrapper::-webkit-scrollbar,
+.nexora-wrapper *::-webkit-scrollbar,
+.aneera-dashboard-container::-webkit-scrollbar,
+.aneera-dashboard-container *::-webkit-scrollbar,
+.dairy-dashboard-container::-webkit-scrollbar,
+.dairy-dashboard-container *::-webkit-scrollbar,
+.hosp-erp-root::-webkit-scrollbar,
+.hosp-erp-root *::-webkit-scrollbar,
+.tat-erp-root::-webkit-scrollbar,
+.tat-erp-root *::-webkit-scrollbar,
+.vexa-erp-root::-webkit-scrollbar,
+.vexa-erp-root *::-webkit-scrollbar,
+.admin-layout-container::-webkit-scrollbar,
+.admin-layout-container *::-webkit-scrollbar,
+.dashboard-layout::-webkit-scrollbar,
+.dashboard-layout *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.nexora-wrapper),
+body:has(.nexora-wrapper),
+html:has(.aneera-dashboard-container),
+body:has(.aneera-dashboard-container),
+html:has(.dairy-dashboard-container),
+body:has(.dairy-dashboard-container),
+html:has(.hosp-erp-root),
+body:has(.hosp-erp-root),
+html:has(.tat-erp-root),
+body:has(.tat-erp-root),
+html:has(.vexa-erp-root),
+body:has(.vexa-erp-root),
+html:has(.admin-layout-container),
+body:has(.admin-layout-container) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.nexora-wrapper)::-webkit-scrollbar,
+body:has(.nexora-wrapper)::-webkit-scrollbar,
+html:has(.aneera-dashboard-container)::-webkit-scrollbar,
+body:has(.aneera-dashboard-container)::-webkit-scrollbar,
+html:has(.dairy-dashboard-container)::-webkit-scrollbar,
+body:has(.dairy-dashboard-container)::-webkit-scrollbar,
+html:has(.hosp-erp-root)::-webkit-scrollbar,
+body:has(.hosp-erp-root)::-webkit-scrollbar,
+html:has(.tat-erp-root)::-webkit-scrollbar,
+body:has(.tat-erp-root)::-webkit-scrollbar,
+html:has(.vexa-erp-root)::-webkit-scrollbar,
+body:has(.vexa-erp-root)::-webkit-scrollbar,
+html:has(.admin-layout-container)::-webkit-scrollbar,
+body:has(.admin-layout-container)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

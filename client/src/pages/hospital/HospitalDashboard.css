@@ -1019,3 +1019,39 @@
   color: #64748b;
 }
 
+
+
+/* Hide all scrollbars within Hospital Dashboard */
+.hosp-erp-root,
+.hosp-erp-root *,
+.hosp-sidebar,
+.hosp-main-content,
+.hosp-content-inner,
+.hosp-table-responsive {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.hosp-erp-root::-webkit-scrollbar,
+.hosp-erp-root *::-webkit-scrollbar,
+.hosp-sidebar::-webkit-scrollbar,
+.hosp-main-content::-webkit-scrollbar,
+.hosp-content-inner::-webkit-scrollbar,
+.hosp-table-responsive::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.hosp-erp-root),
+body:has(.hosp-erp-root) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.hosp-erp-root)::-webkit-scrollbar,
+body:has(.hosp-erp-root)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
