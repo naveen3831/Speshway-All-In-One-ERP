@@ -59,6 +59,12 @@ export const Navbar = ({ onOpenGetStarted }) => {
           >
             Contact
           </NavLink>
+          <NavLink
+            to="/get-started"
+            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+          >
+            Get Started
+          </NavLink>
         </nav>
       </div>
     </header>
