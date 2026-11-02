@@ -8,7 +8,6 @@ import { useSocket } from '../context/SocketContext';
 import {
   Globe,
   Shield,
-  ArrowLeft,
   Check,
   ExternalLink,
   Layers,
@@ -117,11 +116,6 @@ export const ProductDetailPage = () => {
 
       <main className="product-page-detail-wrapper">
         <div className="detail-container">
-          {/* Back button */}
-          <Link to="/products" className="back-link-btn">
-            <ArrowLeft size={16} /> Back to Products Catalog
-          </Link>
-
           {/* Product Hero Banner */}
           <div className="product-detail-hero">
             <div className="detail-hero-left">
