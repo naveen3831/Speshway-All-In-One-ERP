@@ -38,6 +38,10 @@ export const seedProductsDatabase = async () => {
         { slug: { $regex: /dairy|milk/i }, adminUrl: { $in: [null, '', '/admin/products'] } },
         { $set: { adminUrl: '/product/natural-milk-dairy/dashboard' } }
       );
+      await Product.updateMany(
+        { slug: { $regex: /aneera|silk/i }, adminUrl: { $in: [null, '', '/admin/products'] } },
+        { $set: { adminUrl: '/product/aneera-silks/dashboard' } }
+      );
       const dairyExists = await Product.findOne({ slug: { $regex: /natural-milk-dairy|madhur-dairy/i } });
       if (!dairyExists) {
         await Product.create({
@@ -55,6 +59,25 @@ export const seedProductsDatabase = async () => {
           color: 'emerald',
           status: 'active',
           popularity: 98,
+        });
+      }
+      const aneeraExists = await Product.findOne({ slug: { $regex: /aneera/i } });
+      if (!aneeraExists) {
+        await Product.create({
+          name: 'Aneera Silks',
+          slug: 'aneera-silks',
+          category: 'Fashion & Luxury',
+          description: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
+          longDescription: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
+          features: ['Luxury Saree Catalog', 'Silk Mark Certification', 'Real-Time Order Tracking', 'Role-Based Access', 'Bridal Customization', 'Secure Payments'],
+          technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+          websiteUrl: 'https://aneerasilks.com',
+          adminUrl: '/product/aneera-silks/dashboard',
+          imageUrl: '',
+          iconName: 'Sparkles',
+          color: 'rose',
+          status: 'active',
+          popularity: 99,
         });
       }
     }

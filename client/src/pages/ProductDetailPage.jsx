@@ -53,6 +53,17 @@ export const ProductDetailPage = () => {
     adminUrl: '/product/natural-milk-dairy/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'REST API'],
     features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
+  } : (id === 'aneera-silks' || id === 'aneera' || id?.includes('aneera') || id?.includes('silk')) ? {
+    id: 'aneera-silks',
+    slug: 'aneera-silks',
+    name: 'Aneera Silks',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
+    websiteUrl: 'https://aneerasilks.com',
+    adminUrl: '/product/aneera-silks/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Luxury Saree Catalog', 'Silk Mark Certification', 'Real-Time Order Tracking', 'Role-Based Access', 'Bridal Customization', 'Secure Payments'],
   } : id === 'vexa-style-hub' ? {
     id: 'vexa-style-hub',
     slug: 'vexa-style-hub',
@@ -83,7 +94,9 @@ export const ProductDetailPage = () => {
       if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals' || targetSlug.includes('hospital')) {
         navigate('/dashboard/speshway-hospitals');
       } else if (targetSlug === 'natural-milk-dairy' || targetSlug === 'madhur-dairy' || targetSlug.includes('dairy') || targetSlug.includes('milk')) {
-        navigate('/dashboard/natural-milk-dairy');
+        navigate('/product/natural-milk-dairy/dashboard');
+      } else if (targetSlug === 'aneera-silks' || targetSlug === 'aneera' || targetSlug.includes('aneera') || targetSlug.includes('silk')) {
+        navigate('/product/aneera-silks/dashboard');
       } else if (targetSlug === 'tours-and-travels' || targetSlug.includes('tour') || targetSlug.includes('travel')) {
         navigate('/dashboard/tours-and-travels');
       } else if (targetSlug === 'vexa-style-hub' || targetSlug.includes('vexa') || targetSlug.includes('style-hub')) {

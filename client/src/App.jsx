@@ -27,6 +27,7 @@ import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
 import { HospitalDashboard } from './pages/hospital/HospitalDashboard';
 import { VexaDashboard } from './pages/vexa/VexaDashboard';
 import { DairyDashboard } from './pages/dairy/DairyDashboard';
+import { AneeraDashboard } from './pages/aneera/AneeraDashboard';
 
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
@@ -71,6 +72,13 @@ export default function App() {
             <Route path="/dairy-erp" element={<DairyDashboard />} />
             <Route path="/dairy-management-erp" element={<DairyDashboard />} />
 
+            <Route path="/product/aneera-silks/dashboard" element={<AneeraDashboard />} />
+            <Route path="/product/aneera/dashboard" element={<AneeraDashboard />} />
+            <Route path="/dashboard/aneera-silks" element={<AneeraDashboard />} />
+            <Route path="/dashboard/aneera" element={<AneeraDashboard />} />
+            <Route path="/aneera-silks/dashboard" element={<AneeraDashboard />} />
+            <Route path="/aneera-dashboard" element={<AneeraDashboard />} />
+
             <Route path="/product/:id/dashboard" element={<Navigate to="/dashboard" replace />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
@@ -94,7 +102,7 @@ export default function App() {
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 
-            {/* 5. INTERNAL ERP DASHBOARD */}
+            {/* 4. INTERNAL ERP DASHBOARD */}
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="inventory" element={<Dashboard />} />
@@ -105,7 +113,7 @@ export default function App() {
               <Route path="settings" element={<Dashboard />} />
             </Route>
 
-            {/* 6. 404 CATCH-ALL */}
+            {/* 5. 404 CATCH-ALL */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

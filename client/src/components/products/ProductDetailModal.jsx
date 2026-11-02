@@ -45,6 +45,17 @@ export const ProductDetailModal = ({ product, onClose }) => {
       return;
     }
     if (
+      slug === 'aneera-silks' ||
+      slug === 'aneera' ||
+      slug.includes('aneera') ||
+      slug.includes('silk') ||
+      product.name?.toLowerCase().includes('aneera') ||
+      product.name?.toLowerCase().includes('silk')
+    ) {
+      navigate('/product/aneera-silks/dashboard');
+      return;
+    }
+    if (
       slug === 'natural-milk-dairy' ||
       slug === 'madhur-dairy' ||
       slug.includes('dairy') ||

@@ -67,6 +67,23 @@ export const initialProducts = [
     status: 'active',
     popularity: 98,
   },
+  {
+    id: 'aneera-silks',
+    name: 'Aneera Silks',
+    slug: 'aneera-silks',
+    category: 'Fashion & Luxury',
+    description: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
+    longDescription: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
+    features: ['Luxury Saree Catalog', 'Silk Mark Certification', 'Real-Time Order Tracking', 'Role-Based Access', 'Bridal Customization', 'Secure Payments'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://aneerasilks.com',
+    adminUrl: '/product/aneera-silks/dashboard',
+    imageUrl: '',
+    iconName: 'Sparkles',
+    color: 'rose',
+    status: 'active',
+    popularity: 99,
+  },
 ];
 
 let productsMemory = [...initialProducts];

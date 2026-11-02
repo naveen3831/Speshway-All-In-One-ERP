@@ -239,6 +239,14 @@ const isHospital =
                         if (isHospital) {
                           url = '/dashboard/speshway-hospitals';
                         } else if (
+                          prod.slug === 'aneera-silks' ||
+                          prod.slug === 'aneera' ||
+                          prod.slug?.includes('aneera') ||
+                          prod.name?.toLowerCase().includes('aneera') ||
+                          prod.name?.toLowerCase().includes('silk')
+                        ) {
+                          url = '/product/aneera-silks/dashboard';
+                        } else if (
                           prod.slug === 'natural-milk-dairy' ||
                           prod.slug === 'madhur-dairy' ||
                           prod.slug?.includes('dairy') ||
