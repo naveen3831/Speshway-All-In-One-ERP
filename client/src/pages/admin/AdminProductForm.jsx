@@ -399,6 +399,21 @@ export const AdminProductForm = () => {
                 />
                 <span className="input-hint">Website visitors click "View Website" to access this destination.</span>
               </div>
+
+              <div className="form-group" style={{ marginTop: '16px' }}>
+                <label>
+                  <Shield size={13} style={{ marginRight: '4px' }} />
+                  Admin Dashboard URL (Internal Portal / Industry Dashboard)
+                </label>
+                <input
+                  type="text"
+                  placeholder="/product/speshway-hospitals/dashboard or /admin/products"
+                  value={formData.adminUrl}
+                  onChange={(e) => setFormData({ ...formData, adminUrl: e.target.value })}
+                  className="quick-input full-width"
+                />
+                <span className="input-hint">Admins click "View Admin Dashboard" on the product page to open this URL.</span>
+              </div>
             </div>
 
             {/* Card 5: Classification & Visuals */}

@@ -166,7 +166,7 @@ export const initialProducts = [
     category: 'Human Resources',
     description: 'Quarterly OKRs, 360-degree appraisals, continuous feedback and employee KPI tracking.',
     longDescription: 'Empower growth through transparent performance reviews, OKR alignment, peer recognition shoutouts, and skill competency heatmaps.',
-    features: ['OKR & Goal Alignment', '360° Peer Feedback', 'Continuous Check-in Notes', 'Appraisal Rating Scales', 'Promotion Readiness Reports'],
+    features: ['OKR & Goal Alignment', '360┬░ Peer Feedback', 'Continuous Check-in Notes', 'Appraisal Rating Scales', 'Promotion Readiness Reports'],
     technologies: ['React.js', 'Radar Charts', 'Node.js', 'Express', 'MongoDB', 'OKR Tracking Matrix'],
     websiteUrl: 'https://speshway.com/performance',
     adminUrl: '/admin/products',
@@ -192,6 +192,43 @@ export const initialProducts = [
     popularity: 96,
   },
 ];
+
+initialProducts.push(
+  {
+    id: 'speshway-hospitals',
+    name: 'Speshway Hospitals',
+    slug: 'speshway-hospitals',
+    category: 'Healthcare & Medical',
+    description: 'HMS Enterprise is a comprehensive Hospital Management System designed to streamline hospital operations, including patient management, appointments, EMR, billing, pharmacy, laboratory reports, inventory, and staff management — all through one centralized digital platform.',
+    longDescription: 'Speshway Hospitals transforms healthcare delivery with end-to-end clinical and administrative automation: inpatient admissions, electronic health records (EHR), dynamic doctor scheduling, diagnostic laboratory testing, pharmacy dispense tracking, and NABH-compliant billing.',
+    features: ['Diagnostic Lab Reports & Pathology', 'Patient Admissions & Inpatient Directory', 'OPD / IPD Doctor Scheduling', 'Real-Time Bed & Ward Occupancy', 'Pharmacy & Blood Bank Inventory', 'EHR & Digital Health Records'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'],
+    websiteUrl: 'https://speshway.com/hospitals',
+    adminUrl: '/product/speshway-hospitals/dashboard',
+    imageUrl: '',
+    iconName: 'Building2',
+    color: 'green',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'tours-and-travels',
+    name: 'Tours & Travels ERP',
+    slug: 'tours-and-travels',
+    category: 'Travel & Tourism',
+    description: 'Comprehensive travel agency software for booking itineraries, ticketing, holiday packages, lead management, accounts, and supplier vouchers.',
+    longDescription: 'End-to-end ERP for travel agencies and tour operators: itinerary planning, flight and hotel vouchers, customer lead pipeline, and automated accounts.',
+    features: ['Lead & CRM Management', 'Holiday Package Itinerary Builder', 'Hotel & Flight Booking Registry', 'Supplier & Vendor Accounts', 'Receivables & Invoice Generator'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://speshway.com/tours-and-travels',
+    adminUrl: '/travel-erp/dashboard',
+    imageUrl: '',
+    iconName: 'Plane',
+    color: 'cyan',
+    status: 'active',
+    popularity: 97,
+  }
+);
 
 let productsMemory = [...initialProducts];
 

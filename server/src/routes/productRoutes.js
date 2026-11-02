@@ -18,7 +18,11 @@ const getProductQuery = (id) => {
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find().sort({ popularity: -1, createdAt: -1 });
+    const sortField =
+      req.query.sort === 'popularity'
+        ? { popularity: -1, createdAt: -1 }
+        : { createdAt: -1, popularity: -1 };
+    const products = await Product.find().sort(sortField);
     res.json({ success: true, count: products.length, data: products });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -129,6 +133,11 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const body = { ...req.body };
+    delete body._id;
+    delete body.id;
+    delete body.createdAt;
+    delete body.updatedAt;
+    delete body.__v;
     if (body.technologies && typeof body.technologies === 'string') {
       body.technologies = body.technologies.split(',').map((t) => t.trim()).filter(Boolean);
     }

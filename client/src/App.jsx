@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 
@@ -21,6 +21,12 @@ import { AdminUsers } from './pages/admin/AdminUsers';
 import { AdminInquiries } from './pages/admin/AdminInquiries';
 import { AdminSettings } from './pages/admin/AdminSettings';
 
+// Travel Agency Industry ERP Dashboard
+import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
+
+// Hospital Management Industry ERP Dashboard
+import { HospitalDashboard } from './pages/hospital/HospitalDashboard';
+
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Dashboard } from './pages/Dashboard';
@@ -36,6 +42,10 @@ export default function App() {
             {/* 1. SEPARATE PUBLIC WEBSITE PAGES */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/product/speshway-hospitals/dashboard" element={<HospitalDashboard />} />
+            <Route path="/product/hospitals/dashboard" element={<HospitalDashboard />} />
+            <Route path="/product/tours-and-travels/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/product/:id/dashboard" element={<HospitalDashboard />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/why-us" element={<WhyUsPage />} />
@@ -57,7 +67,18 @@ export default function App() {
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 
-            {/* 4. INTERNAL ERP DASHBOARD */}
+            {/* 4. DEDICATED INDUSTRY ERP DASHBOARDS */}
+            <Route path="/travel-erp/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
+            <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
+
+            <Route path="/hospital-erp/dashboard" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
+            <Route path="/hospital-erp" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
+            <Route path="/dashboard/hospitals" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
+            <Route path="/hospital-management-erp" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
+            <Route path="/hospitals-admin" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
+
+            {/* 5. INTERNAL ERP DASHBOARD */}
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="inventory" element={<Dashboard />} />

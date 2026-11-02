@@ -69,7 +69,7 @@ export const AdminUrls = () => {
                 const currentAdmin =
                   currentEdit.adminUrl !== undefined
                     ? currentEdit.adminUrl
-                    : prod.adminUrl || '/admin/products';
+                    : prod.adminUrl || (prod.slug?.includes('hospital') ? '/product/speshway-hospitals/dashboard' : prod.slug === 'tours-and-travels' ? '/travel-erp/dashboard' : '/admin/products');
 
                 const hasChanges =
                   (currentEdit.websiteUrl !== undefined &&

@@ -33,7 +33,31 @@ export const ProductDetailModal = ({ product, onClose }) => {
 
   const handleViewAdminDashboard = () => {
     onClose();
-    navigate(product.adminUrl || '/admin/products');
+    if (
+      product.slug === 'speshway-hospitals' ||
+      product.slug === 'hospitals' ||
+      product.slug?.includes('hospital') ||
+      product.name?.toLowerCase().includes('hospital') ||
+      product.adminUrl?.toLowerCase().includes('hospital')
+    ) {
+      window.open('/product/speshway-hospitals/dashboard', '_blank', 'noopener,noreferrer');
+      return;
+    }
+    let url = product.adminUrl;
+    if (!url || url === '/admin/products') {
+      if (product.slug === 'tours-and-travels') {
+        url = '/product/tours-and-travels/dashboard';
+      } else if (
+        product.slug === 'speshway-hospitals' ||
+        product.slug === 'hospitals' ||
+        product.slug?.includes('hospital')
+      ) {
+        url = '/product/speshway-hospitals/dashboard';
+      } else {
+        url = '/admin/products';
+      }
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenFullPage = () => {

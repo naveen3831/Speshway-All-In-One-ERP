@@ -63,10 +63,13 @@ Create `server/.env` based on `server/.env.example`:
 PORT=5000
 NODE_ENV=development
 MONGO_URI=mongodb://localhost:27017/speshway_erp
+# Optional, if your DNS resolver blocks MongoDB Atlas SRV lookups:
+# MONGO_DNS_SERVERS=1.1.1.1,1.0.0.1
 JWT_SECRET=your_jwt_secret_key_here
 JWT_EXPIRE=30d
 CLIENT_URL=http://localhost:5173
 ```
+For MongoDB Atlas, use the connection string provided by your Atlas cluster and replace its password placeholder. If Node.js reports `querySrv ECONNREFUSED` while SRV lookups work in your system tools, set `MONGO_DNS_SERVERS` to DNS resolvers reachable from your machine. The API can start in in-memory fallback mode while MongoDB is unavailable, but database-backed changes will not persist.
 
 #### Frontend (`client/.env`):
 Create `client/.env` based on `client/.env.example`:

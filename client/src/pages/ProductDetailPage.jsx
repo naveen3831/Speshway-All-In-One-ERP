@@ -53,6 +53,33 @@ export const ProductDetailPage = () => {
     );
   }
 
+  const handleOpenAdminDashboard = () => {
+    const isHospital =
+      id === 'speshway-hospitals' ||
+      id === 'hospitals' ||
+      id?.includes('hospital') ||
+      product.slug === 'speshway-hospitals' ||
+      product.slug === 'hospitals' ||
+      product.slug?.includes('hospital') ||
+      product.name?.toLowerCase().includes('hospital') ||
+      (product.adminUrl && product.adminUrl.toLowerCase().includes('hospital'));
+
+    if (isHospital) {
+      window.open('/product/speshway-hospitals/dashboard', '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    let url = product.adminUrl;
+    if (!url || url === '/admin/products' || url.includes('hospital')) {
+      if (product.slug === 'tours-and-travels') {
+        url = '/product/tours-and-travels/dashboard';
+      } else {
+        url = `/product/${product.slug || product.id || id}/dashboard`;
+      }
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleOpenWebsite = () => {
     if (product.websiteUrl && product.websiteUrl.startsWith('http')) {
       window.open(product.websiteUrl, '_blank', 'noopener,noreferrer');
@@ -96,11 +123,12 @@ export const ProductDetailPage = () => {
                 </button>
 
                 <button
-                  onClick={() => navigate(product.adminUrl || '/admin/products')}
+                  onClick={handleOpenAdminDashboard}
                   className="btn-product-action btn-view-admin"
                 >
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
+                  <ExternalLink size={14} style={{ marginLeft: '4px' }} />
                 </button>
 
                 <button

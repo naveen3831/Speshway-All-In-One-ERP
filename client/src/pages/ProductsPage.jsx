@@ -186,7 +186,24 @@ export const ProductsPage = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(prod.adminUrl || '/admin/products');
+                        const isHospital =
+                          prod.slug === 'speshway-hospitals' ||
+                          prod.slug === 'hospitals' ||
+                          prod.slug?.includes('hospital') ||
+                          prod.name?.toLowerCase().includes('hospital') ||
+                          prod.adminUrl?.toLowerCase().includes('hospital');
+
+                        let url;
+                        if (isHospital) {
+                          url = '/product/speshway-hospitals/dashboard';
+                        } else if (prod.slug === 'tours-and-travels') {
+                          url = '/product/tours-and-travels/dashboard';
+                        } else {
+                          url = prod.adminUrl && prod.adminUrl !== '/admin/products'
+                            ? prod.adminUrl
+                            : `/product/${prod.slug || prod.id}/dashboard`;
+                        }
+                        window.open(url, '_blank', 'noopener,noreferrer');
                       }}
                       className="catalog-btn-link admin-color"
                       title="View Admin Dashboard"

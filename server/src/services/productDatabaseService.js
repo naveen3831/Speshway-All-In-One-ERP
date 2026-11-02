@@ -26,6 +26,14 @@ export const seedProductsDatabase = async () => {
       console.log(`✅ Successfully seeded ${cleanedProducts.length} products to MongoDB Atlas database!`);
     } else {
       console.log(`📦 MongoDB database connected: ${count} active products stored in database.`);
+      await Product.updateMany(
+        { slug: { $regex: /hospital/i }, adminUrl: { $in: [null, '', '/admin/products'] } },
+        { $set: { adminUrl: '/product/speshway-hospitals/dashboard' } }
+      );
+      await Product.updateMany(
+        { slug: { $regex: /travel/i }, adminUrl: { $in: [null, '', '/admin/products'] } },
+        { $set: { adminUrl: '/travel-erp/dashboard' } }
+      );
     }
   } catch (err) {
     console.error('Error seeding products to database:', err.message);
