@@ -186,7 +186,15 @@ export const ProductsPage = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(prod.adminUrl || '/admin/products');
+                        let url = prod.adminUrl;
+                        if (!url || url === '/admin/products') {
+                          if (prod.slug === 'tours-and-travels') {
+                            url = '/travel-erp/dashboard';
+                          } else {
+                            url = '/admin/products';
+                          }
+                        }
+                        window.open(url, '_blank', 'noopener,noreferrer');
                       }}
                       className="catalog-btn-link admin-color"
                       title="View Admin Dashboard"

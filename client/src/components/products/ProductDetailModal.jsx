@@ -33,7 +33,15 @@ export const ProductDetailModal = ({ product, onClose }) => {
 
   const handleViewAdminDashboard = () => {
     onClose();
-    navigate(product.adminUrl || '/admin/products');
+    let url = product.adminUrl;
+    if (!url || url === '/admin/products') {
+      if (product.slug === 'tours-and-travels') {
+        url = '/travel-erp/dashboard';
+      } else {
+        url = '/admin/products';
+      }
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenFullPage = () => {

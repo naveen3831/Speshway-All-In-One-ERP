@@ -27,7 +27,7 @@ export const AdminProductForm = () => {
 
   const isEditMode = Boolean(id);
   const existingProduct = isEditMode
-    ? products.find((p) => p.id === id || p.slug === id)
+    ? products.find((p) => p.id === id || p.slug === id || p._id === id)
     : null;
 
   const [formData, setFormData] = useState({
@@ -67,7 +67,7 @@ export const AdminProductForm = () => {
         color: existingProduct.color || 'green',
         status: existingProduct.status || 'active',
       });
-      setSavedSlug(existingProduct.slug || existingProduct.id);
+      setSavedSlug(existingProduct.slug || existingProduct.id || existingProduct._id);
     }
   }, [isEditMode, existingProduct]);
 
@@ -398,6 +398,21 @@ export const AdminProductForm = () => {
                   className="quick-input full-width"
                 />
                 <span className="input-hint">Website visitors click "View Website" to access this destination.</span>
+              </div>
+
+              <div className="form-group" style={{ marginTop: '16px' }}>
+                <label>
+                  <Shield size={13} style={{ marginRight: '4px' }} />
+                  Admin Dashboard URL (Internal Portal / Industry Dashboard)
+                </label>
+                <input
+                  type="text"
+                  placeholder="http://localhost:5173 or /admin/products"
+                  value={formData.adminUrl}
+                  onChange={(e) => setFormData({ ...formData, adminUrl: e.target.value })}
+                  className="quick-input full-width"
+                />
+                <span className="input-hint">Admins click "View Admin Dashboard" on the product page to open this URL.</span>
               </div>
             </div>
 

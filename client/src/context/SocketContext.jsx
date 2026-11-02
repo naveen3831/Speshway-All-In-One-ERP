@@ -277,15 +277,7 @@ export const SocketProvider = ({ children }) => {
       return res.data;
     } catch (err) {
       console.error('API addProduct error:', err);
-      // Fallback local update if network blocked
-      const fallbackProd = {
-        id: productData.slug || `prod-${Date.now()}`,
-        slug: productData.slug || `prod-${Date.now()}`,
-        status: 'active',
-        ...productData,
-      };
-      setProducts((prev) => [fallbackProd, ...prev]);
-      return { success: true, data: fallbackProd };
+      throw err;
     }
   };
 

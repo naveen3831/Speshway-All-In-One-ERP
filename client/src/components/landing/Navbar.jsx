@@ -61,7 +61,7 @@ export const Navbar = ({ onOpenGetStarted }) => {
           </NavLink>
         </nav>
 
-        {/* Action Button - Only Get Started */}
+        {/* Action Button - Get Started */}
         <div className="nav-actions">
           <button onClick={onOpenGetStarted} className="btn-get-started">
             Get Started &rarr;

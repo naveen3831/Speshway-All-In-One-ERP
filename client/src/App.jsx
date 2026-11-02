@@ -21,6 +21,9 @@ import { AdminUsers } from './pages/admin/AdminUsers';
 import { AdminInquiries } from './pages/admin/AdminInquiries';
 import { AdminSettings } from './pages/admin/AdminSettings';
 
+// Travel Agency Industry ERP Dashboard
+import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
+
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Dashboard } from './pages/Dashboard';
@@ -57,7 +60,12 @@ export default function App() {
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 
-            {/* 4. INTERNAL ERP DASHBOARD */}
+            {/* 4. DEDICATED INDUSTRY ERP DASHBOARDS */}
+            <Route path="/travel-erp/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
+            <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
+
+            {/* 5. INTERNAL ERP DASHBOARD */}
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="inventory" element={<Dashboard />} />

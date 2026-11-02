@@ -13,12 +13,16 @@ const getProductQuery = (id) => {
   return { slug: id };
 };
 
-// @desc    Get all products from MongoDB database
+// @desc    Get all products from MongoDB database (newest first)
 // @route   GET /api/products
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find().sort({ popularity: -1, createdAt: -1 });
+    const sortField =
+      req.query.sort === 'popularity'
+        ? { popularity: -1, createdAt: -1 }
+        : { createdAt: -1, popularity: -1 };
+    const products = await Product.find().sort(sortField);
     res.json({ success: true, count: products.length, data: products });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -59,9 +63,10 @@ router.post('/', async (req, res) => {
       iconName,
       color,
       status,
+      popularity,
     } = req.body;
 
-    if (!name || !description) {
+    if (!name || !name.trim() || !description || !description.trim()) {
       return res.status(400).json({
         success: false,
         message: 'Product name and description are required',
@@ -79,11 +84,11 @@ router.post('/', async (req, res) => {
     }
 
     const createdProduct = await Product.create({
-      name,
+      name: name.trim(),
       slug: finalSlug,
-      category: category || 'Business Operations',
-      description,
-      longDescription: longDescription || description,
+      category: category || 'Human Resources',
+      description: description.trim(),
+      longDescription: longDescription || description.trim(),
       features: Array.isArray(features)
         ? features
         : typeof features === 'string'
@@ -100,7 +105,7 @@ router.post('/', async (req, res) => {
       iconName: iconName || 'Layers',
       color: color || 'green',
       status: status || 'active',
-      popularity: 90,
+      popularity: typeof popularity === 'number' ? popularity : 100,
     });
 
     const plainProduct = createdProduct.toJSON ? createdProduct.toJSON() : createdProduct;
@@ -128,7 +133,14 @@ router.post('/', async (req, res) => {
 // @access  Public
 router.put('/:id', async (req, res) => {
   try {
+    const rawId = req.params.id ? decodeURIComponent(req.params.id).trim() : '';
     const body = { ...req.body };
+    delete body._id;
+    delete body.id;
+    delete body.createdAt;
+    delete body.updatedAt;
+    delete body.__v;
+
     if (body.technologies && typeof body.technologies === 'string') {
       body.technologies = body.technologies.split(',').map((t) => t.trim()).filter(Boolean);
     }

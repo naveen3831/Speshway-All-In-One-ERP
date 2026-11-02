@@ -61,6 +61,18 @@ export const ProductDetailPage = () => {
     }
   };
 
+  const handleOpenAdminDashboard = () => {
+    let url = product.adminUrl;
+    if (!url || url === '/admin/products') {
+      if (product.slug === 'tours-and-travels') {
+        url = '/travel-erp/dashboard';
+      } else {
+        url = '/admin/products';
+      }
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   const technologies = product.technologies && product.technologies.length > 0
     ? product.technologies
     : ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'];
@@ -96,11 +108,13 @@ export const ProductDetailPage = () => {
                 </button>
 
                 <button
-                  onClick={() => navigate(product.adminUrl || '/admin/products')}
+                  onClick={handleOpenAdminDashboard}
                   className="btn-product-action btn-view-admin"
+                  title="Open live industry Admin Dashboard in new tab"
                 >
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
+                  <ExternalLink size={14} style={{ marginLeft: '4px' }} />
                 </button>
 
                 <button
