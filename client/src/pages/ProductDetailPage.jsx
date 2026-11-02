@@ -31,7 +31,50 @@ export const ProductDetailPage = () => {
   const [modalMode, setModalMode] = useState(null);
   const navigate = useNavigate();
 
-  const product = products.find((p) => p.slug === id || p.id === id);
+  // Robust product lookup with instant fallback if socket/DB is still connecting
+  const foundProduct = products && products.length > 0 ? products.find((p) => p.slug === id || p.id === id) : null;
+  const product = foundProduct || (id === 'vexa-style-hub' ? {
+    id: 'vexa-style-hub',
+    slug: 'vexa-style-hub',
+    name: 'Vexa Style Hub',
+    category: 'Fashion & Apparel',
+    status: 'Active Product',
+    description: 'VEXA Style Hub is a modern clothing e-commerce platform that offers a seamless online shopping experience with stylish collections, easy product browsing, secure payments, and convenient order tracking.',
+    websiteUrl: 'https://vexastylehub.com',
+    adminUrl: '/product/vexa-style-hub/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Real-Time Orders', 'Role-Based Access', 'Apparel Inventory', 'Sales Tracking', 'Manufacturing Batches'],
+  } : null);
+
+  const handleOpenWebsite = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      const url = product?.websiteUrl || `https://speshway.com/${product?.slug || id || ''}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('Error opening website:', err);
+    }
+  };
+
+  const handleOpenAdminDashboard = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      const targetSlug = product?.slug || id || '';
+      if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals') {
+        navigate('/product/speshway-hospitals/dashboard');
+      } else if (targetSlug === 'tours-and-travels') {
+        navigate('/product/tours-and-travels/dashboard');
+      } else if (targetSlug === 'vexa-style-hub') {
+        navigate('/product/vexa-style-hub/dashboard');
+      } else if (product?.adminUrl && product.adminUrl.startsWith('/')) {
+        navigate(product.adminUrl);
+      } else {
+        navigate(`/product/${targetSlug}/dashboard`);
+      }
+    } catch (err) {
+      console.error('Error opening admin dashboard:', err);
+    }
+  };
 
   if (!product) {
     return (
@@ -54,40 +97,6 @@ export const ProductDetailPage = () => {
     );
   }
 
-  const handleOpenWebsite = () => {
-    if (product.websiteUrl && product.websiteUrl.startsWith('http')) {
-      window.open(product.websiteUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      window.open(product.websiteUrl || `https://speshway.com/${product.slug || id}`, '_blank', 'noopener,noreferrer');
-    }
-  };
-
-  const handleOpenAdminDashboard = () => {
-    const isHospital =
-      id === 'speshway-hospitals' ||
-      id === 'hospitals' ||
-      id?.includes('hospital') ||
-      product.slug === 'speshway-hospitals' ||
-      product.slug === 'hospitals' ||
-      product.slug?.includes('hospital') ||
-      product.name?.toLowerCase().includes('hospital') ||
-      (product.adminUrl && product.adminUrl.toLowerCase().includes('hospital'));
-
-    if (isHospital) {
-      navigate('/product/speshway-hospitals/dashboard');
-      return;
-    }
-
-    if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
-      navigate('/product/tours-and-travels/dashboard');
-    } else if (product.slug === 'vexa-style-hub' || product.id === 'vexa-style-hub') {
-      navigate('/product/vexa-style-hub/dashboard');
-    } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
-      navigate(product.adminUrl);
-    } else {
-      navigate(`/product/${product.slug || product.id || id}/dashboard`);
-    }
-  };
   const technologies = product.technologies && product.technologies.length > 0
     ? product.technologies
     : ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'];
