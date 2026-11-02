@@ -156,10 +156,6 @@ export const ProductDetailPage = () => {
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
                 </button>
-
-                <button onClick={() => setModalMode('demo')} className="btn-hero-secondary">
-                  Request Live Demo
-                </button>
               </div>
             </div>
 
