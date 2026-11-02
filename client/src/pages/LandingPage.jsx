@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/landing/Navbar';
 import { Hero } from '../components/landing/Hero';
 import { StatsBar } from '../components/landing/StatsBar';
-import { ApplicationsGrid } from '../components/landing/ApplicationsGrid';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
@@ -12,12 +11,6 @@ import { LiveActivityToast } from '../components/landing/LiveActivityToast';
 export const LandingPage = () => {
   const navigate = useNavigate();
   const [modalMode, setModalMode] = useState(null); // 'get-started' | 'demo' | null
-
-  const handleProductSelect = (prod) => {
-    // Directly redirect to the dedicated product page as requested
-    const targetId = prod.slug || prod.id;
-    navigate(`/product/${targetId}`);
-  };
 
   return (
     <div className="landing-wrapper">
@@ -30,8 +23,6 @@ export const LandingPage = () => {
         />
         
         <StatsBar />
-        
-        <ApplicationsGrid onSelectProduct={handleProductSelect} />
         
         <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
