@@ -11,6 +11,7 @@ import { FeaturesPage } from './pages/FeaturesPage';
 import { WhyUsPage } from './pages/WhyUsPage';
 import { PricingPage } from './pages/PricingPage';
 import { ContactPage } from './pages/ContactPage';
+import { GetStartedPage } from './pages/GetStartedPage';
 
 // Admin Portal Pages
 import { AdminLayout } from './pages/admin/AdminLayout';
@@ -44,6 +45,7 @@ export default function App() {
             <Route path="/why-us" element={<WhyUsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/get-started" element={<GetStartedPage />} />
 
             {/* 2. AUTHENTICATION */}
             <Route path="/login" element={<Login />} />

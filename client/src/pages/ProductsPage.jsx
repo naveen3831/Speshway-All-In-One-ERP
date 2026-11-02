@@ -208,11 +208,11 @@ export const ProductsPage = () => {
           </div>
         </section>
 
-        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
+        <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
 
       <Footer
-        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
 

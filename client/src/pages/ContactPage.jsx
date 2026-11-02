@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
@@ -7,6 +8,7 @@ import { useSocket } from '../context/SocketContext';
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock } from 'lucide-react';
 
 export const ContactPage = () => {
+  const navigate = useNavigate();
   const { triggerRequestDemo } = useSocket();
   const [modalMode, setModalMode] = useState(null);
   const [formData, setFormData] = useState({
@@ -178,11 +180,11 @@ export const ContactPage = () => {
           </div>
         </section>
 
-        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
+        <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
 
       <Footer
-        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
@@ -6,6 +7,7 @@ import { DemoModal } from '../components/landing/DemoModal';
 import { Check, Sparkles } from 'lucide-react';
 
 export const PricingPage = () => {
+  const navigate = useNavigate();
   const [modalMode, setModalMode] = useState(null);
   const [isAnnual, setIsAnnual] = useState(true);
 
@@ -108,7 +110,7 @@ export const PricingPage = () => {
                 </div>
 
                 <button
-                  onClick={() => setModalMode(tier.popular ? 'get-started' : 'demo')}
+                  onClick={() => navigate('/get-started')}
                   className={`btn-tier ${tier.popular ? 'btn-popular' : 'btn-outline'}`}
                 >
                   {tier.btnText}
@@ -128,11 +130,11 @@ export const PricingPage = () => {
           </div>
         </section>
 
-        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
+        <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
 
       <Footer
-        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
 

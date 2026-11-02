@@ -21,11 +21,11 @@ export const LandingPage = () => {
 
   return (
     <div className="landing-wrapper">
-      <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
+      <Navbar onOpenGetStarted={() => navigate('/get-started')} />
       
       <main>
         <Hero
-          onOpenGetStarted={() => setModalMode('get-started')}
+          onOpenGetStarted={() => navigate('/get-started')}
           onOpenDemo={() => setModalMode('demo')}
         />
         
@@ -33,11 +33,11 @@ export const LandingPage = () => {
         
         <ApplicationsGrid onSelectProduct={handleProductSelect} />
         
-        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
+        <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
 
       <Footer
-        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
 
