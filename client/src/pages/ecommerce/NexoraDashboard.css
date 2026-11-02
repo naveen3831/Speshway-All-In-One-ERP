@@ -1,0 +1,1102 @@
+/* ==========================================================================
+   NEXORA ONLINE STORE ADMIN PANEL STYLES
+   Scoped exclusively under .nexora- to avoid interference with other modules.
+   ========================================================================== */
+
+:root {
+  --nexora-navy: #0b1120;
+  --nexora-navy-light: #151d32;
+  --nexora-navy-hover: #1e293b;
+  --nexora-green: #10b981;
+  --nexora-green-hover: #059669;
+  --nexora-green-light: #ecfdf5;
+  --nexora-green-border: #a7f3d0;
+  --nexora-red: #e11d48;
+  --nexora-blue-light: #eff6ff;
+  --nexora-blue-text: #2563eb;
+  --nexora-amber-light: #fef3c7;
+  --nexora-amber-text: #d97706;
+  --nexora-emerald-light: #ecfdf5;
+  --nexora-emerald-text: #059669;
+  --nexora-bg: #f8fafc;
+  --nexora-card-bg: #ffffff;
+  --nexora-text-dark: #0f172a;
+  --nexora-text-muted: #64748b;
+  --nexora-border: #e2e8f0;
+  --nexora-radius: 14px;
+}
+
+/* Base Wrapper */
+.nexora-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--nexora-bg);
+  color: var(--nexora-text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.nexora-wrapper * {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   1. LEFT SIDEBAR
+   ========================================================================== */
+.nexora-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background-color: var(--nexora-navy);
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Brand Header */
+.nexora-brand {
+  padding: 22px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.nexora-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nexora-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.nexora-brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+}
+
+.nexora-dot {
+  color: #ff385c;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.nexora-brand-subtitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #ff385c;
+  margin-top: 2px;
+}
+
+.nexora-brand-tag {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  margin-top: 1px;
+}
+
+/* Navigation Links */
+.nexora-nav {
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.nexora-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.nexora-nav-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nexora-nav-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.nexora-nav-btn:hover {
+  background-color: var(--nexora-navy-light);
+  color: #ffffff;
+}
+
+.nexora-nav-btn:hover .nexora-nav-icon {
+  color: #ffffff;
+}
+
+.nexora-nav-btn.active {
+  background-color: var(--nexora-green);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.nexora-nav-btn.active .nexora-nav-icon {
+  color: #ffffff;
+}
+
+.nexora-nav-badge {
+  background-color: var(--nexora-green);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.nexora-nav-btn.active .nexora-nav-badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Sidebar Footer */
+.nexora-sidebar-footer {
+  padding: 16px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.nexora-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #f87171;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nexora-logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+/* ==========================================================================
+   2. MAIN APPLICATION CONTENT & TOPBAR
+   ========================================================================== */
+.nexora-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--nexora-bg);
+}
+
+/* Topbar: Height 82px matching request */
+.nexora-topbar {
+  height: 82px;
+  min-height: 82px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--nexora-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.nexora-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nexora-topbar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--nexora-text-dark);
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+/* Operational Pill Badge */
+.nexora-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--nexora-green-light);
+  color: var(--nexora-green-hover);
+  border: 1px solid var(--nexora-green-border);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.nexora-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--nexora-green);
+  animation: nexoraPulse 2s infinite ease-in-out;
+}
+
+@keyframes nexoraPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* Topbar Right Actions */
+.nexora-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nexora-btn-back-catalog {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: #ffffff;
+  border: 1px solid var(--nexora-border);
+  color: #475569;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nexora-btn-back-catalog:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.nexora-icon-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--nexora-border);
+  background-color: #ffffff;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nexora-icon-btn:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.nexora-unread-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  border: 2px solid #ffffff;
+}
+
+.nexora-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 6px;
+}
+
+.nexora-user-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--nexora-text-dark);
+}
+
+.nexora-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--nexora-green);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+}
+
+/* ==========================================================================
+   3. CONTENT CONTAINER
+   ========================================================================= */
+.nexora-content {
+  padding: 28px 32px;
+  flex: 1;
+}
+
+/* Welcome Row */
+.nexora-welcome-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.nexora-welcome-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--nexora-text-dark);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.3px;
+}
+
+.nexora-welcome-subtitle {
+  font-size: 0.94rem;
+  color: var(--nexora-text-muted);
+  margin: 0;
+}
+
+.nexora-date-picker-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1px solid var(--nexora-border);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* ==========================================================================
+   4. 4 KPI STATS CARDS
+   ========================================================================== */
+.nexora-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.nexora-stat-card {
+  background-color: var(--nexora-card-bg);
+  border: 1px solid var(--nexora-border);
+  border-radius: var(--nexora-radius);
+  padding: 22px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nexora-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.nexora-stat-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bg-green-light {
+  background-color: #ecfdf5;
+}
+
+.text-green {
+  color: #10b981;
+}
+
+.bg-blue-light {
+  background-color: #eff6ff;
+}
+
+.text-blue {
+  color: #3b82f6;
+}
+
+.bg-amber-light {
+  background-color: #fef3c7;
+}
+
+.text-amber {
+  color: #f59e0b;
+}
+
+.bg-emerald-light {
+  background-color: #ecfdf5;
+}
+
+.nexora-rupee-symbol {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.nexora-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nexora-stat-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--nexora-text-muted);
+  margin-bottom: 4px;
+}
+
+.nexora-stat-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--nexora-text-dark);
+  line-height: 1.2;
+}
+
+.nexora-stat-trend {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.nexora-stat-sub {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   5. ANALYTICS GRID (SALES OVERVIEW & TOP SELLING)
+   ========================================================================== */
+.nexora-analytics-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.nexora-card {
+  background-color: var(--nexora-card-bg);
+  border: 1px solid var(--nexora-border);
+  border-radius: var(--nexora-radius);
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.nexora-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.nexora-card-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nexora-card-icon-title h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--nexora-text-dark);
+  margin: 0;
+}
+
+.nexora-card-subtitle {
+  font-size: 0.82rem;
+  color: var(--nexora-text-muted);
+  margin: 2px 0 0 0;
+}
+
+/* Chart Controls */
+.nexora-chart-toggle {
+  display: flex;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.nexora-toggle-btn {
+  padding: 5px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nexora-toggle-btn.active {
+  background-color: var(--nexora-green-hover);
+  color: #ffffff;
+}
+
+/* SVG Chart Container */
+.nexora-chart-body {
+  margin-top: 8px;
+}
+
+.nexora-chart-container {
+  width: 100%;
+}
+
+.nexora-svg-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-label {
+  font-size: 10.5px;
+  fill: #94a3b8;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.chart-date {
+  font-size: 11px;
+  fill: #64748b;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+/* Top Selling Products List */
+.nexora-top-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.nexora-top-product-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+.nexora-top-product-item:hover {
+  background-color: #f1f5f9;
+}
+
+.nexora-prod-img-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid var(--nexora-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nexora-prod-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.prod-fallback-icon {
+  font-size: 1.5rem;
+}
+
+.nexora-prod-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.nexora-prod-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--nexora-text-dark);
+  margin: 0 0 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexora-prod-sales {
+  font-size: 0.78rem;
+  color: var(--nexora-text-muted);
+}
+
+.nexora-prod-price-tag {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: var(--nexora-green-hover);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   6. LOWER SECTION: RECENT ORDERS & LOW STOCK
+   ========================================================================== */
+.nexora-bottom-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.nexora-btn-view-all {
+  border: none;
+  background: transparent;
+  color: var(--nexora-text-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nexora-btn-view-all:hover {
+  color: var(--nexora-green);
+}
+
+/* Tables */
+.nexora-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.nexora-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.nexora-table th {
+  padding: 12px 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  border-bottom: 1px solid var(--nexora-border);
+  background-color: #f8fafc;
+}
+
+.nexora-table td {
+  padding: 14px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.nexora-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.nexora-customer-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.nexora-cust-name {
+  font-weight: 600;
+  color: var(--nexora-text-dark);
+}
+
+/* Badges */
+.nexora-badge {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.nexora-badge-green {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.nexora-badge-blue {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.nexora-badge-amber {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.nexora-badge-red {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.nexora-badge-gray {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+/* Low Stock List */
+.nexora-low-stock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nexora-low-stock-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+}
+
+.nexora-low-stock-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #fde68a;
+}
+
+.nexora-low-stock-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nexora-low-stock-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.nexora-low-stock-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #78350f;
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexora-low-stock-sku {
+  font-size: 0.72rem;
+  color: #b45309;
+  font-family: monospace;
+}
+
+.nexora-left-badge {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* Info Banner */
+.nexora-info-banner {
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #065f46;
+  font-size: 0.88rem;
+}
+
+.nexora-info-banner p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   7. SUB-VIEWS & SECTION HEADERS
+   ========================================================================== */
+.nexora-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.nexora-section-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--nexora-text-dark);
+  margin: 0 0 4px 0;
+}
+
+.nexora-section-subtitle {
+  font-size: 0.9rem;
+  color: var(--nexora-text-muted);
+  margin: 0;
+}
+
+.nexora-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--nexora-green);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+  transition: background-color 0.2s ease;
+}
+
+.nexora-btn-primary:hover {
+  background-color: var(--nexora-green-hover);
+}
+
+.nexora-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.nexora-search-input-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 440px;
+}
+
+.nexora-search-input-wrap .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.nexora-search-input-wrap input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  border-radius: 8px;
+  border: 1px solid var(--nexora-border);
+  background-color: #ffffff;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.nexora-search-input-wrap input:focus {
+  border-color: var(--nexora-green);
+}
+
+.nexora-filter-pills {
+  display: flex;
+  gap: 8px;
+}
+
+.nexora-pill-btn {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--nexora-border);
+  background-color: #ffffff;
+  color: #475569;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nexora-pill-btn:hover {
+  background-color: #f1f5f9;
+}
+
+.nexora-pill-btn.active {
+  background-color: var(--nexora-green);
+  color: #ffffff;
+  border-color: var(--nexora-green);
+}
+
+.nexora-table-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--nexora-border);
+  background-color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nexora-table-action-btn:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+/* Categories Grid */
+.nexora-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.nexora-category-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nexora-cat-icon-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.nexora-cat-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: var(--nexora-text-dark);
+}
+
+.nexora-cat-count {
+  font-size: 0.85rem;
+  color: var(--nexora-text-muted);
+  margin: 0 0 16px 0;
+}
+
+.nexora-cat-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nexora-cat-rev-label {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.nexora-cat-rev-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--nexora-green-hover);
+}
+
+/* Utilities */
+.text-muted { color: #64748b; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+.text-sm { font-size: 0.8rem; }
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .nexora-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .nexora-analytics-grid,
+  .nexora-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+  .nexora-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .nexora-wrapper {
+    flex-direction: column;
+  }
+  .nexora-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .nexora-topbar {
+    padding: 0 16px;
+    height: auto;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .nexora-content {
+    padding: 16px;
+  }
+  .nexora-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .nexora-categories-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -64,6 +64,17 @@ export const ProductDetailPage = () => {
     adminUrl: '/product/aneera-silks/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Luxury Saree Catalog', 'Silk Mark Certification', 'Real-Time Order Tracking', 'Role-Based Access', 'Bridal Customization', 'Secure Payments'],
+  } : (id === 'e-commerce' || id === 'ecommerce' || id?.includes('e-com') || id?.includes('nexora')) ? {
+    id: 'e-commerce',
+    slug: 'e-commerce',
+    name: 'E commerce',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
+    websiteUrl: 'https://nexora.speshway.com',
+    adminUrl: '/product/e-commerce/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
   } : id === 'vexa-style-hub' ? {
     id: 'vexa-style-hub',
     slug: 'vexa-style-hub',
@@ -97,6 +108,8 @@ export const ProductDetailPage = () => {
         navigate('/product/natural-milk-dairy/dashboard');
       } else if (targetSlug === 'aneera-silks' || targetSlug === 'aneera' || targetSlug.includes('aneera') || targetSlug.includes('silk')) {
         navigate('/product/aneera-silks/dashboard');
+      } else if (targetSlug === 'e-commerce' || targetSlug === 'ecommerce' || targetSlug.includes('nexora') || targetSlug.includes('e-com') || targetSlug.includes('ecom')) {
+        navigate('/product/e-commerce/dashboard');
       } else if (targetSlug === 'tours-and-travels' || targetSlug.includes('tour') || targetSlug.includes('travel')) {
         navigate('/dashboard/tours-and-travels');
       } else if (targetSlug === 'vexa-style-hub' || targetSlug.includes('vexa') || targetSlug.includes('style-hub')) {

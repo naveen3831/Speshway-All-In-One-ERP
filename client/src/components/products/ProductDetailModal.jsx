@@ -56,6 +56,18 @@ export const ProductDetailModal = ({ product, onClose }) => {
       return;
     }
     if (
+      slug === 'e-commerce' ||
+      slug === 'ecommerce' ||
+      slug.includes('nexora') ||
+      slug.includes('e-com') ||
+      product.name?.toLowerCase().includes('e commerce') ||
+      product.name?.toLowerCase().includes('ecommerce') ||
+      product.name?.toLowerCase().includes('nexora')
+    ) {
+      navigate('/product/e-commerce/dashboard');
+      return;
+    }
+    if (
       slug === 'natural-milk-dairy' ||
       slug === 'madhur-dairy' ||
       slug.includes('dairy') ||

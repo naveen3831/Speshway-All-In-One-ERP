@@ -42,6 +42,10 @@ export const seedProductsDatabase = async () => {
         { slug: { $regex: /aneera|silk/i }, adminUrl: { $in: [null, '', '/admin/products'] } },
         { $set: { adminUrl: '/product/aneera-silks/dashboard' } }
       );
+      await Product.updateMany(
+        { slug: { $regex: /e-commerce|ecommerce|nexora/i } },
+        { $set: { adminUrl: '/product/e-commerce/dashboard' } }
+      );
       const dairyExists = await Product.findOne({ slug: { $regex: /natural-milk-dairy|madhur-dairy/i } });
       if (!dairyExists) {
         await Product.create({
@@ -59,6 +63,25 @@ export const seedProductsDatabase = async () => {
           color: 'emerald',
           status: 'active',
           popularity: 98,
+        });
+      }
+      const ecomExists = await Product.findOne({ slug: { $regex: /e-commerce|ecommerce|nexora/i } });
+      if (!ecomExists) {
+        await Product.create({
+          name: 'E commerce',
+          slug: 'e-commerce',
+          category: 'Human Resources',
+          description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
+          longDescription: 'Nexora Online Store is an enterprise multi-category retail e-commerce ERP providing centralized catalog synchronization, inventory tracking, coupon marketing, customer loyalty programs, and high-volume order fulfillment.',
+          features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
+          technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+          websiteUrl: 'https://nexora.speshway.com',
+          adminUrl: '/product/e-commerce/dashboard',
+          imageUrl: '',
+          iconName: 'ShoppingCart',
+          color: 'red',
+          status: 'active',
+          popularity: 99,
         });
       }
       const aneeraExists = await Product.findOne({ slug: { $regex: /aneera/i } });

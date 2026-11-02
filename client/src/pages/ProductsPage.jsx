@@ -247,6 +247,16 @@ const isHospital =
                         ) {
                           url = '/product/aneera-silks/dashboard';
                         } else if (
+                          prod.slug === 'e-commerce' ||
+                          prod.slug === 'ecommerce' ||
+                          prod.slug?.includes('nexora') ||
+                          prod.slug?.includes('e-com') ||
+                          prod.name?.toLowerCase().includes('e commerce') ||
+                          prod.name?.toLowerCase().includes('ecommerce') ||
+                          prod.name?.toLowerCase().includes('nexora')
+                        ) {
+                          url = '/product/e-commerce/dashboard';
+                        } else if (
                           prod.slug === 'natural-milk-dairy' ||
                           prod.slug === 'madhur-dairy' ||
                           prod.slug?.includes('dairy') ||

@@ -84,6 +84,23 @@ export const initialProducts = [
     status: 'active',
     popularity: 99,
   },
+  {
+    id: 'e-commerce',
+    name: 'E commerce',
+    slug: 'e-commerce',
+    category: 'Human Resources',
+    description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
+    longDescription: 'Nexora Online Store is an enterprise multi-category retail e-commerce ERP providing centralized catalog synchronization, inventory tracking, coupon marketing, customer loyalty programs, and high-volume order fulfillment.',
+    features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://nexora.speshway.com',
+    adminUrl: '/product/e-commerce/dashboard',
+    imageUrl: '',
+    iconName: 'ShoppingCart',
+    color: 'red',
+    status: 'active',
+    popularity: 99,
+  },
 ];
 
 let productsMemory = [...initialProducts];
