@@ -9,7 +9,7 @@
 }
 
 /* =========================================================
-   SIDEBAR (Dark Navy #0a0e1a matching screenshot)
+   SIDEBAR (Dark Navy #0b1120 matching screenshot)
 ========================================================= */
 .dairy-sidebar {
   width: 250px;
@@ -33,13 +33,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 20px 18px 24px 18px;
+  padding: 22px 18px 24px 18px;
   text-decoration: none;
 }
 
 .dairy-brand-logo-box {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   border-radius: 10px;
   display: flex;
@@ -163,7 +163,7 @@
 }
 
 /* =========================================================
-   MAIN WRAPPER & TOP NAVBAR
+   MAIN WRAPPER & TOP NAVBAR (Increased height to 82px)
 ========================================================= */
 .dairy-main-wrapper {
   flex: 1;
@@ -175,26 +175,28 @@
 }
 
 .dairy-top-navbar {
-  height: 64px;
+  height: 82px; /* Increased height matching user request */
+  min-height: 82px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e8f0;
-  padding: 0 28px;
+  padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 40;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .dairy-nav-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .dairy-nav-brand-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #0f172a;
 }
@@ -207,7 +209,7 @@
   color: #059669;
   border: 1px solid #a7f3d0;
   border-radius: 20px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-size: 12px;
   font-weight: 600;
 }
@@ -222,52 +224,55 @@
 .dairy-nav-right {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
 }
 
 .dairy-back-catalog-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #64748b;
+  gap: 7px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #475569;
   text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
   transition: all 0.15s ease;
 }
 
 .dairy-back-catalog-link:hover {
   background-color: #f1f5f9;
   color: #0f172a;
+  border-color: #cbd5e1;
 }
 
 .dairy-bell-btn {
   position: relative;
-  background: transparent;
-  border: none;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   cursor: pointer;
   color: #64748b;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .dairy-bell-btn:hover {
   background-color: #f1f5f9;
   color: #0f172a;
+  border-color: #cbd5e1;
 }
 
 .dairy-bell-dot {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 7px;
+  right: 7px;
   width: 8px;
   height: 8px;
   background-color: #f43f5e;
@@ -278,36 +283,175 @@
 .dairy-user-pill {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  padding: 4px 8px 4px 4px;
+  border-radius: 24px;
 }
 
 .dairy-user-name {
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
   color: #1e293b;
 }
 
 .dairy-user-avatar {
-  width: 36px;
-  height: 36px;
-  background-color: #059669;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
 }
 
 /* =========================================================
    DASHBOARD CONTENT
 ========================================================= */
 .dairy-content {
-  padding: 24px 28px 40px 28px;
+  padding: 26px 32px 48px 32px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 24px;
+}
+
+/* Section Header for Non-Dashboard views */
+.dairy-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 4px;
+}
+
+.dairy-section-title-wrap h1 {
+  font-size: 23px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.dairy-section-title-wrap p {
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 4px 0 0 0;
+}
+
+.dairy-section-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dairy-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: #059669;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+  transition: all 0.15s ease;
+}
+
+.dairy-btn-primary:hover {
+  background-color: #047857;
+  transform: translateY(-1px);
+}
+
+.dairy-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dairy-btn-secondary:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Search and Filters Bar */
+.dairy-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+
+.dairy-search-box {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 7px 14px;
+  flex: 1;
+  max-width: 380px;
+}
+
+.dairy-search-input {
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #1e293b;
+  outline: none;
+  width: 100%;
+}
+
+.dairy-status-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dairy-filter-pill-btn {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dairy-filter-pill-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.dairy-filter-pill-btn.active {
+  background: #059669;
+  color: #ffffff;
+  border-color: #059669;
+  font-weight: 600;
 }
 
 /* Welcome Section */
@@ -405,6 +549,11 @@
   color: #d97706;
 }
 
+.dairy-kpi-icon-box.purple {
+  background-color: #f5f3ff;
+  color: #7c3aed;
+}
+
 .dairy-kpi-info {
   display: flex;
   flex-direction: column;
@@ -492,6 +641,10 @@
 
 .dairy-card-icon.amber {
   color: #f59e0b;
+}
+
+.dairy-card-icon.blue {
+  color: #3b82f6;
 }
 
 .dairy-card-h2 {
@@ -643,29 +796,34 @@
   white-space: nowrap;
 }
 
-.dairy-badge.paid {
+.dairy-badge.paid,
+.dairy-badge.success,
+.dairy-badge.delivered,
+.dairy-badge.active {
   background-color: #dcfce7;
   color: #15803d;
 }
 
-.dairy-badge.cod {
+.dairy-badge.cod,
+.dairy-badge.processing,
+.dairy-badge.pending,
+.dairy-badge.paused {
   background-color: #fef3c7;
   color: #b45309;
 }
 
-.dairy-badge.out-delivery {
+.dairy-badge.out-delivery,
+.dairy-badge.transit,
+.dairy-badge.settled {
   background-color: #e0f2fe;
   color: #0369a1;
 }
 
-.dairy-badge.delivered {
-  background-color: #dcfce7;
-  color: #15803d;
-}
-
-.dairy-badge.processing {
-  background-color: #fef3c7;
-  color: #b45309;
+.dairy-badge.danger,
+.dairy-badge.failed,
+.dairy-badge.low {
+  background-color: #fee2e2;
+  color: #dc2626;
 }
 
 .dairy-order-date {
@@ -775,6 +933,94 @@
 .dairy-info-divider {
   margin: 0 6px;
   color: #6ee7b7;
+}
+
+/* =========================================================
+   GRID FOR CATEGORIES & CARDS
+========================================================= */
+.dairy-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.dairy-category-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: all 0.15s ease;
+}
+
+.dairy-category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  border-color: #cbd5e1;
+}
+
+.dairy-cat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.dairy-cat-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: #ecfdf5;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dairy-cat-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.dairy-cat-desc {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 14px 0;
+  line-height: 1.4;
+}
+
+.dairy-cat-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 12.5px;
+}
+
+.dairy-cat-stat-val {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Action button inside table */
+.dairy-table-action-btn {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dairy-table-action-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
 /* =========================================================
