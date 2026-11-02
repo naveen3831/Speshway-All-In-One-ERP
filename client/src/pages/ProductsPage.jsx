@@ -186,15 +186,13 @@ export const ProductsPage = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        let url = prod.adminUrl;
-                        if (!url || url === '/admin/products') {
-                          if (prod.slug === 'tours-and-travels') {
-                            url = '/travel-erp/dashboard';
-                          } else {
-                            url = '/admin/products';
-                          }
+                        if (prod.slug === 'tours-and-travels' || prod.id === 'tours-and-travels') {
+                          navigate('/product/tours-and-travels/dashboard');
+                        } else if (prod.adminUrl && prod.adminUrl.startsWith('/')) {
+                          navigate(prod.adminUrl);
+                        } else {
+                          navigate(`/product/${prod.slug || prod.id}/dashboard`);
                         }
-                        window.open(url, '_blank', 'noopener,noreferrer');
                       }}
                       className="catalog-btn-link admin-color"
                       title="View Admin Dashboard"

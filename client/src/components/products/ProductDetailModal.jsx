@@ -33,15 +33,13 @@ export const ProductDetailModal = ({ product, onClose }) => {
 
   const handleViewAdminDashboard = () => {
     onClose();
-    let url = product.adminUrl;
-    if (!url || url === '/admin/products') {
-      if (product.slug === 'tours-and-travels') {
-        url = '/travel-erp/dashboard';
-      } else {
-        url = '/admin/products';
-      }
+    if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
+      navigate('/product/tours-and-travels/dashboard');
+    } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
+      navigate(product.adminUrl);
+    } else {
+      navigate(`/product/${product.slug || product.id}/dashboard`);
     }
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenFullPage = () => {

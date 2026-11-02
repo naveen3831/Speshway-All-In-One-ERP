@@ -22,6 +22,7 @@ import {
   Terminal,
   Activity,
   Edit2,
+  ArrowRight,
 } from 'lucide-react';
 
 export const ProductDetailPage = () => {
@@ -62,15 +63,14 @@ export const ProductDetailPage = () => {
   };
 
   const handleOpenAdminDashboard = () => {
-    let url = product.adminUrl;
-    if (!url || url === '/admin/products') {
-      if (product.slug === 'tours-and-travels') {
-        url = '/travel-erp/dashboard';
-      } else {
-        url = '/admin/products';
-      }
+    // Open in this site only as requested
+    if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
+      navigate('/product/tours-and-travels/dashboard');
+    } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
+      navigate(product.adminUrl);
+    } else {
+      navigate(`/product/${product.slug || product.id}/dashboard`);
     }
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const technologies = product.technologies && product.technologies.length > 0
@@ -110,11 +110,11 @@ export const ProductDetailPage = () => {
                 <button
                   onClick={handleOpenAdminDashboard}
                   className="btn-product-action btn-view-admin"
-                  title="Open live industry Admin Dashboard in new tab"
+                  title="Open Admin Dashboard in this site"
                 >
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
-                  <ExternalLink size={14} style={{ marginLeft: '4px' }} />
+                  <ArrowRight size={14} style={{ marginLeft: '4px' }} />
                 </button>
 
                 <button

@@ -63,6 +63,8 @@ export default function App() {
             </Route>
 
             {/* 4. DEDICATED INDUSTRY ERP DASHBOARDS */}
+            <Route path="/product/tours-and-travels/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/product/:id/dashboard" element={<TravelAgencyDashboard />} />
             <Route path="/travel-erp/dashboard" element={<TravelAgencyDashboard />} />
             <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
             <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
