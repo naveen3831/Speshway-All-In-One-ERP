@@ -21,7 +21,6 @@ import {
   Code2,
   Terminal,
   Activity,
-  Edit2,
   ArrowRight,
 } from 'lucide-react';
 
@@ -150,15 +149,6 @@ export const ProductDetailPage = () => {
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
                   <ExternalLink size={14} style={{ marginLeft: '4px' }} />
-                </button>
-
-                <button
-                  onClick={() => navigate(`/admin/products/edit/${product.slug || product.id}`)}
-                  className="btn-product-action btn-edit-admin-quick"
-                  title="Edit this product in Admin"
-                >
-                  <Edit2 size={16} />
-                  <span>Edit Product</span>
                 </button>
 
                 <button onClick={() => setModalMode('demo')} className="btn-hero-secondary">
