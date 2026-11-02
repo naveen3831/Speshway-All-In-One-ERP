@@ -346,34 +346,39 @@ export const VexaDashboard = () => {
           })}
         </nav>
 
-        {/* Sidebar Footer Logout */}
+        {/* Sidebar Footer Logout (Sign Out button matching Image 2) */}
         <div className="vexa-sidebar-footer">
           <button
             onClick={() => navigate('/product/vexa-style-hub')}
-            className="vexa-nav-item logout"
+            className="vexa-btn-logout-sidebar"
             title="Return to Product Page"
           >
-            <LogOut size={18} className="vexa-nav-icon" />
-            <span>Logout</span>
+            <LogOut size={15} />
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
 
       {/* 2. MAIN WORKSPACE */}
       <div className="vexa-main-wrapper">
-        {/* Topbar with Bell and Admin profile */}
+        {/* Topbar with Speshway Administrative Dashboard & Admin profile matching Image 2 */}
         <header className="vexa-topbar">
+          <div className="vexa-topbar-left">
+            <span className="vexa-topbar-title">Speshway Administrative Dashboard</span>
+          </div>
+
           <div className="vexa-topbar-right">
             <button className="vexa-bell-btn" title="Notifications">
-              <Bell size={20} />
+              <Bell size={18} />
               <span className="vexa-bell-badge">3</span>
             </button>
 
-            <div className="vexa-user-pill">
-              <div className="vexa-user-avatar">A</div>
-              <span className="vexa-user-name">
-                Admin <ChevronDown size={14} />
-              </span>
+            <div className="vexa-admin-profile-badge">
+              <div className="vexa-admin-avatar">AD</div>
+              <div className="vexa-admin-meta">
+                <span className="name">Speshway Administrator</span>
+                <span className="email">admin@gmail.com</span>
+              </div>
             </div>
           </div>
         </header>

@@ -1,24 +1,29 @@
 /* ==========================================================================
    VEXA STYLE HUB ADMIN DASHBOARD
-   Pixel-perfect replica matching exact uploaded screenshot
+   Styled to match Speshway Admin Console Design System (Second Image)
+   Typography: Plus Jakarta Sans / Inter
+   Color System: Emerald Green (#047857 / #10b981), Dark Navy (#0d1b2a), Slate (#f8fafc)
    ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 .vexa-erp-root {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background-color: #f1f5f9;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8fafc;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #0f172a;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* --------------------------------------------------------------------------
-   SIDEBAR
+   1. SIDEBAR (MATCHING SECOND IMAGE: .admin-sidebar)
    -------------------------------------------------------------------------- */
 .vexa-sidebar {
-  width: 250px;
-  min-width: 250px;
-  background-color: #0b1120;
+  width: 260px;
+  min-width: 260px;
+  background-color: #0d1b2a;
   color: #94a3b8;
   display: flex;
   flex-direction: column;
@@ -43,7 +48,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 20px 20px 20px;
+  padding: 20px 16px;
+  border-bottom: 1px solid #1e293b;
 }
 
 .vexa-brand-wrap {
@@ -54,8 +60,8 @@
 }
 
 .vexa-logo-hanger {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,21 +70,22 @@
 .vexa-brand-text {
   display: flex;
   flex-direction: column;
+  line-height: 1.15;
 }
 
 .vexa-brand-name {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: 0.04em;
-  line-height: 1.1;
 }
 
 .vexa-brand-subtitle {
-  font-size: 0.72rem;
-  color: #64748b;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+  font-size: 0.74rem;
+  color: #10b981; /* Speshway emerald green accent from Image 2 */
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .vexa-hamburger-btn {
@@ -91,83 +98,95 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .vexa-hamburger-btn:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: #1e293b;
   color: #ffffff;
 }
 
-/* Sidebar Nav */
+/* Sidebar Nav (Matching .admin-sidebar-menu & .admin-nav-item from Image 2) */
 .vexa-nav-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 8px 0;
+  gap: 6px;
+  padding: 16px 12px;
   flex: 1;
 }
 
 .vexa-nav-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 11px 20px;
-  border-radius: 0;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
   background: transparent;
   border: none;
-  border-left: 3.5px solid transparent;
   color: #94a3b8;
-  font-size: 0.93rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   width: 100%;
 }
 
 .vexa-nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #f1f5f9;
+  background-color: #1e293b;
+  color: #ffffff;
 }
 
+/* Active Nav Item - Emerald Green Pill like Products Management in Image 2 */
 .vexa-nav-item.active {
-  background-color: #1a233a;
+  background-color: #047857; /* Exact Speshway primary green */
   color: #ffffff;
-  border-left-color: #6366f1;
-  font-weight: 500;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .vexa-nav-icon {
   flex-shrink: 0;
   color: #94a3b8;
-  transition: color 0.15s ease;
+  transition: color 0.2s ease;
 }
 
-.vexa-nav-item:hover .vexa-nav-icon {
-  color: #f1f5f9;
-}
-
+.vexa-nav-item:hover .vexa-nav-icon,
 .vexa-nav-item.active .vexa-nav-icon {
   color: #ffffff;
 }
 
+/* Sidebar Footer (Sign Out button matching Image 2) */
 .vexa-sidebar-footer {
-  padding: 12px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px 12px;
+  border-top: 1px solid #1e293b;
 }
 
-.vexa-nav-item.logout {
-  color: #94a3b8;
+.vexa-btn-logout-sidebar {
+  background-color: #1e293b;
+  color: #f87171;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.vexa-nav-item.logout:hover {
+.vexa-btn-logout-sidebar:hover {
   background-color: rgba(239, 68, 68, 0.15);
   color: #ef4444;
 }
 
 /* --------------------------------------------------------------------------
-   MAIN VIEW AREA & TOPBAR
+   2. MAIN WORKSPACE & TOPBAR (MATCHING SECOND IMAGE)
    -------------------------------------------------------------------------- */
 .vexa-main-wrapper {
   flex: 1;
@@ -177,39 +196,49 @@
 }
 
 .vexa-topbar {
-  height: 64px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e8f0;
+  padding: 14px 28px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 0 36px;
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  justify-content: space-between;
+}
+
+.vexa-topbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.vexa-topbar-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
 }
 
 .vexa-topbar-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .vexa-bell-btn {
-  position: relative;
   background: transparent;
   border: none;
-  color: #334155;
+  color: #64748b;
   cursor: pointer;
+  position: relative;
   padding: 6px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .vexa-bell-btn:hover {
   background-color: #f1f5f9;
+  color: #0f172a;
 }
 
 .vexa-bell-badge {
@@ -229,62 +258,79 @@
   border: 2px solid #ffffff;
 }
 
-.vexa-user-pill {
+/* Admin Profile Badge (Exact match to Image 2) */
+.vexa-admin-profile-badge {
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 4px 8px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.vexa-user-avatar {
-  width: 34px;
-  height: 34px;
+.vexa-admin-avatar {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background-color: #059669;
+  background-color: #047857; /* Emerald green avatar from Image 2 */
   color: #ffffff;
-  font-size: 0.88rem;
   font-weight: 700;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-.vexa-user-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1e293b;
+.vexa-admin-meta {
   display: flex;
-  align-items: center;
-  gap: 4px;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.vexa-admin-meta .name {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.vexa-admin-meta .email {
+  font-size: 0.74rem;
+  color: #64748b;
 }
 
 /* --------------------------------------------------------------------------
-   CONTENT & KPI CARDS
+   3. CONTENT AREA
    -------------------------------------------------------------------------- */
 .vexa-content {
-  padding: 28px 36px 60px 36px;
+  padding: 28px;
   flex: 1;
 }
 
+/* Page Header (Matching Image 2 font & letter spacing) */
 .vexa-page-header {
   margin-bottom: 24px;
 }
 
 .vexa-heading {
-  font-size: 1.85rem;
-  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
   color: #0f172a;
   letter-spacing: -0.02em;
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
 }
 
 .vexa-subheading {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: #64748b;
   margin: 0;
+  font-weight: 400;
 }
 
-/* 4 KPI Grid */
+/* --------------------------------------------------------------------------
+   4. KPI METRIC CARDS
+   -------------------------------------------------------------------------- */
 .vexa-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -292,22 +338,32 @@
   margin-bottom: 24px;
 }
 
+@media (max-width: 1200px) {
+  .vexa-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .vexa-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .vexa-kpi-card {
-  background-color: #ffffff;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 22px 24px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .vexa-kpi-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
 }
 
 .vexa-kpi-top {
@@ -317,88 +373,149 @@
   margin-bottom: 12px;
 }
 
-.vexa-kpi-icon {
-  color: #0284c7;
+.vexa-kpi-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background-color: #f0fdf4;
+  color: #047857; /* Speshway green */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .vexa-kpi-label {
-  font-size: 0.88rem;
-  color: #64748b;
+  font-size: 0.82rem;
   font-weight: 500;
+  color: #64748b;
   margin-bottom: 6px;
 }
 
 .vexa-kpi-value {
-  font-size: 1.8rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .vexa-kpi-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: auto;
 }
 
 .vexa-kpi-trend {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #10b981;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #047857; /* Green positive trend */
 }
 
-.vexa-kpi-sparkline {
-  width: 100px;
-  height: 28px;
+.vexa-sparkline-wrap {
+  width: 90px;
+  height: 26px;
+}
+
+.vexa-sparkline-wrap svg {
+  width: 100%;
+  height: 100%;
 }
 
 /* --------------------------------------------------------------------------
-   LOWER TWO COLUMNS (SALES OVERVIEW & RECENT ORDERS)
+   5. LOWER GRID (CHART + RECENT ORDERS)
    -------------------------------------------------------------------------- */
 .vexa-lower-grid {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 24px;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 20px;
 }
 
-.vexa-card {
-  background-color: #ffffff;
+@media (max-width: 1024px) {
+  .vexa-lower-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vexa-chart-card,
+.vexa-orders-card {
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.vexa-card-head {
+.vexa-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-.vexa-card-title-wrap {
+.vexa-card-title-group {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .vexa-card-title {
-  font-size: 1.12rem;
+  font-size: 1.08rem;
   font-weight: 700;
   color: #0f172a;
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
+.vexa-chart-title-icon {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 18px;
+  padding-bottom: 2px;
+}
+
+.bar-icon-1 {
+  width: 3.5px;
+  height: 8px;
+  background-color: #047857;
+  border-radius: 1px;
+}
+
+.bar-icon-2 {
+  width: 3.5px;
+  height: 16px;
+  background-color: #047857;
+  border-radius: 1px;
+}
+
+.bar-icon-3 {
+  width: 3.5px;
+  height: 12px;
+  background-color: #047857;
+  border-radius: 1px;
+}
+
+.vexa-box-icon {
+  color: #047857;
+}
+
+.vexa-dropdown-select-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .vexa-select-dropdown {
-  background-color: #ffffff;
+  appearance: none;
+  background-color: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 6px 12px;
+  padding: 6px 30px 6px 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
   color: #475569;
@@ -406,101 +523,120 @@
   outline: none;
 }
 
-.vexa-link-more {
+.vexa-select-dropdown:focus {
+  border-color: #047857;
+}
+
+.vexa-select-chevron {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  color: #64748b;
+}
+
+.vexa-view-all-link {
   background: none;
   border: none;
-  color: #0284c7;
+  color: #047857; /* Speshway green */
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 0.84rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  transition: color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
-.vexa-link-more:hover {
-  color: #0369a1;
+.vexa-view-all-link:hover {
+  color: #065f46;
+  text-decoration: underline;
 }
 
-/* Sales Overview Chart */
+/* Chart Legend */
 .vexa-chart-legend {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 24px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   font-size: 0.82rem;
   font-weight: 600;
 }
 
-.legend-item {
+.vexa-legend-item {
   display: flex;
   align-items: center;
   gap: 6px;
+  color: #475569;
 }
 
-.dot-sales {
+.vexa-legend-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #1e40af;
 }
 
-.dot-orders {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #93c5fd;
+.vexa-legend-dot.sales {
+  background-color: #047857; /* Green for Sales */
 }
 
-.vexa-chart-body {
+.vexa-legend-dot.orders {
+  background-color: #93c5fd; /* Soft Blue for Orders */
+}
+
+/* PROPER CHART FLEXBOX (Fixes overlapping 30k20k10k0 and 151015202530) */
+.vexa-svg-chart-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.vexa-chart-y-axis {
   display: flex;
   flex-direction: column;
-  height: 240px;
+  justify-content: space-between;
+  height: 180px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #94a3b8;
+  padding-bottom: 22px;
+  text-align: right;
+  width: 32px;
+  flex-shrink: 0;
 }
 
 .vexa-chart-svg-wrap {
   display: flex;
-  flex: 1;
-  position: relative;
-}
-
-.vexa-y-axis {
-  width: 36px;
-  display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  font-size: 0.74rem;
-  color: #94a3b8;
-  padding-bottom: 12px;
-}
-
-.vexa-svg-canvas {
   flex: 1;
-  position: relative;
+  min-width: 0;
 }
 
-.vexa-chart-svg {
+.vexa-spline-svg {
   width: 100%;
-  height: 100%;
-  overflow: visible;
+  height: 180px;
+  display: block;
 }
 
-.vexa-x-axis {
+.vexa-chart-x-axis {
   display: flex;
   justify-content: space-between;
-  padding-left: 36px;
-  font-size: 0.76rem;
+  width: 100%;
+  font-size: 0.74rem;
+  font-weight: 600;
   color: #94a3b8;
   margin-top: 8px;
+  padding: 0 4px;
 }
 
 /* Recent Orders List */
 .vexa-orders-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .vexa-order-row {
@@ -522,8 +658,8 @@
 }
 
 .vexa-order-thumb {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 8px;
   background-color: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -534,12 +670,6 @@
   flex-shrink: 0;
 }
 
-.vexa-order-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .vexa-order-meta {
   display: flex;
   flex-direction: column;
@@ -547,13 +677,13 @@
 }
 
 .vexa-order-code {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #0f172a;
 }
 
 .vexa-order-date {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: #64748b;
 }
 
@@ -563,17 +693,20 @@
   gap: 16px;
 }
 
+/* Status Badges - Matching Image 2 ACTIVE Badge Style */
 .vexa-order-status {
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 9999px;
-  text-transform: capitalize;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-block;
 }
 
 .vexa-order-status.delivered {
-  background-color: #dcfce7;
-  color: #15803d;
+  background-color: #d1fae5;
+  color: #065f46; /* Matching Image 2 ACTIVE green badge */
 }
 
 .vexa-order-status.shipped {
@@ -596,25 +729,8 @@
   color: #7e22ce;
 }
 
-.vexa-progress-container {
-  width: 100%;
-  max-width: 130px;
-  height: 7px;
-  background-color: #e2e8f0;
-  border-radius: 9999px;
-  overflow: hidden;
-  margin-top: 4px;
-}
-
-.vexa-progress-fill {
-  height: 100%;
-  background-color: #6366f1;
-  border-radius: 9999px;
-  transition: width 0.3s ease;
-}
-
 .vexa-order-price {
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #0f172a;
   min-width: 60px;
@@ -622,7 +738,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   MODULE DATA TABLES & VIEWS
+   6. MODULE DATA TABLES & VIEWS
    -------------------------------------------------------------------------- */
 .vexa-view-toolbar {
   display: flex;
@@ -636,12 +752,12 @@
 .vexa-search-wrap {
   position: relative;
   flex: 1;
-  max-width: 360px;
+  max-width: 380px;
 }
 
 .vexa-search-icon {
   position: absolute;
-  left: 12px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
   color: #94a3b8;
@@ -649,54 +765,56 @@
 
 .vexa-search-input {
   width: 100%;
-  height: 40px;
-  background-color: #ffffff;
+  padding: 10px 14px 10px 38px;
+  border-radius: 9999px; /* Pill input like Image 2 */
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0 12px 0 38px;
+  background-color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 0.88rem;
   color: #0f172a;
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 
 .vexa-search-input:focus {
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+  border-color: #047857;
 }
 
 .vexa-toolbar-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
+/* Primary Green Pill Button (Exact match to + Add New Product in Image 2) */
 .vexa-btn-primary {
-  height: 40px;
-  padding: 0 18px;
-  border-radius: 8px;
-  background-color: #059669;
+  background-color: #047857;
   color: #ffffff;
-  border: none;
-  font-size: 0.86rem;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
   font-weight: 600;
+  border: none;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  cursor: pointer;
+  gap: 8px;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .vexa-btn-primary:hover {
-  background-color: #047857;
+  background-color: #065f46;
 }
 
+/* Table Cards */
 .vexa-table-card {
-  background-color: #ffffff;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .vexa-table-responsive {
@@ -708,58 +826,57 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.86rem;
 }
 
 .vexa-table th {
   background-color: #f8fafc;
   padding: 12px 18px;
-  font-size: 0.78rem;
-  font-weight: 700;
   color: #64748b;
+  font-weight: 700;
+  font-size: 0.76rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   border-bottom: 1px solid #e2e8f0;
 }
 
 .vexa-table td {
   padding: 14px 18px;
-  font-size: 0.88rem;
-  color: #334155;
   border-bottom: 1px solid #f1f5f9;
-  vertical-align: middle;
-}
-
-.vexa-table tr:hover td {
-  background-color: #fcfdfd;
+  color: #334155;
 }
 
 .vexa-table tr:last-child td {
   border-bottom: none;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-  .vexa-kpi-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .vexa-lower-grid {
-    grid-template-columns: 1fr;
-  }
+.vexa-table tr:hover td {
+  background-color: #f8fafc;
 }
 
-@media (max-width: 768px) {
-  .vexa-erp-root {
-    flex-direction: column;
-  }
-  .vexa-sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-  }
-  .vexa-kpi-grid {
-    grid-template-columns: 1fr;
-  }
-  .vexa-content {
-    padding: 20px 16px;
-  }
+.vexa-table code {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.vexa-progress-container {
+  width: 100%;
+  max-width: 130px;
+  height: 7px;
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.vexa-progress-fill {
+  height: 100%;
+  background-color: #047857; /* Emerald green progress fill */
+  border-radius: 9999px;
+  transition: width 0.3s ease;
 }
