@@ -78,7 +78,7 @@ export const Navbar = ({ onOpenGetStarted }) => {
             onClick={handleGetStarted}
             className="btn-get-started"
           >
-            Get Started
+            Get Started &rarr;
           </button>
         </div>
       </div>
