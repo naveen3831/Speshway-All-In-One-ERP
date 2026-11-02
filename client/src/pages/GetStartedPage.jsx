@@ -17,6 +17,7 @@ import {
   Globe,
   Lock,
 } from 'lucide-react';
+import { Navbar } from '../components/landing/Navbar';
 import './GetStartedPage.css';
 
 export const GetStartedPage = () => {
@@ -65,23 +66,8 @@ export const GetStartedPage = () => {
 
   return (
     <div className="getstarted-page-wrapper">
-      {/* Top Navigation Bar */}
-      <header className="getstarted-topbar">
-        <div className="getstarted-topbar-content">
-          <Link to="/" className="getstarted-brand">
-            <img src="/logo.png" alt="Speshway ERP Logo" className="getstarted-logo-img" />
-            <div className="getstarted-brand-text">
-              <span className="brand-title">SPESHWAY</span>
-              <span className="brand-subtitle">ALL IN ONE ERP</span>
-            </div>
-          </Link>
-
-          <Link to="/" className="getstarted-back-link">
-            <ArrowLeft size={16} />
-            <span>Back to Home</span>
-          </Link>
-        </div>
-      </header>
+      {/* Standard Header with Navigation Options */}
+      <Navbar />
 
       {/* Main Full-Screen Split Layout */}
       <main className="getstarted-main-container">
