@@ -450,10 +450,6 @@ export const TravelAgencyDashboard = () => {
         <header className="tat-topbar">
           <div className="tat-topbar-left">
             <h2 className="tat-module-title">Travel Agency ERP</h2>
-            <Link to="/product/tours-and-travels" className="tat-back-chip">
-              <ArrowLeft size={13} />
-              <span>Back to Speshway ERP</span>
-            </Link>
           </div>
 
           <div className="tat-topbar-right">
