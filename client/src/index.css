@@ -273,7 +273,11 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
   transition: all 0.2s;
+  text-decoration: none;
 }
 
 .btn-get-started:hover {
