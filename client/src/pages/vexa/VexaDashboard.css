@@ -18,7 +18,7 @@
 .vexa-sidebar {
   width: 250px;
   min-width: 250px;
-  background-color: #0d1b2a;
+  background-color: #0b1120;
   color: #94a3b8;
   display: flex;
   flex-direction: column;
@@ -28,6 +28,15 @@
   border-right: 1px solid #1e293b;
   overflow-y: auto;
   z-index: 30;
+}
+
+.vexa-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.vexa-sidebar::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
 }
 
 .vexa-sidebar-header {
@@ -94,8 +103,8 @@
 .vexa-nav-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 16px 14px;
+  gap: 2px;
+  padding: 8px 0;
   flex: 1;
 }
 
@@ -103,12 +112,13 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 11px 16px;
-  border-radius: 10px;
+  padding: 11px 20px;
+  border-radius: 0;
   background: transparent;
   border: none;
+  border-left: 3.5px solid transparent;
   color: #94a3b8;
-  font-size: 0.92rem;
+  font-size: 0.93rem;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
@@ -122,22 +132,28 @@
 }
 
 .vexa-nav-item.active {
-  background-color: #059669;
+  background-color: #1a233a;
   color: #ffffff;
-  font-weight: 600;
+  border-left-color: #6366f1;
+  font-weight: 500;
 }
 
 .vexa-nav-icon {
   flex-shrink: 0;
-  opacity: 0.85;
+  color: #94a3b8;
+  transition: color 0.15s ease;
+}
+
+.vexa-nav-item:hover .vexa-nav-icon {
+  color: #f1f5f9;
 }
 
 .vexa-nav-item.active .vexa-nav-icon {
-  opacity: 1;
+  color: #ffffff;
 }
 
 .vexa-sidebar-footer {
-  padding: 16px 14px;
+  padding: 12px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -568,6 +584,33 @@
 .vexa-order-status.processing {
   background-color: #fef3c7;
   color: #b45309;
+}
+
+.vexa-order-status.indigo {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+.vexa-order-status.purple {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+.vexa-progress-container {
+  width: 100%;
+  max-width: 130px;
+  height: 7px;
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.vexa-progress-fill {
+  height: 100%;
+  background-color: #6366f1;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
 }
 
 .vexa-order-price {
