@@ -11,10 +11,12 @@ import {
   ArrowRight,
   Shield,
   Clock,
+  Inbox,
 } from 'lucide-react';
 
 export const AdminOverview = () => {
-  const { stats, products, activities } = useSocket();
+  const { stats, products, activities, modulesData } = useSocket();
+  const inquiries = modulesData.demoRequests || [];
 
   return (
     <div className="admin-page-view">
@@ -57,16 +59,16 @@ export const AdminOverview = () => {
           </div>
         </div>
 
-        <div className="admin-kpi-card">
+        <Link to="/admin/inquiries" className="admin-kpi-card" style={{ textDecoration: 'none' }}>
           <div className="kpi-icon-wrap bg-purple-subtle">
-            <TrendingUp size={22} className="text-purple" />
+            <Inbox size={22} className="text-purple" />
           </div>
           <div>
-            <span className="kpi-label">Happy Businesses</span>
-            <span className="kpi-value">{stats.happyBusinesses}+</span>
-            <span className="kpi-trend positive">&uarr; Enterprise Scale</span>
+            <span className="kpi-label">Customer Leads</span>
+            <span className="kpi-value">{inquiries.length}</span>
+            <span className="kpi-trend positive">&rarr; Manage Leads</span>
           </div>
-        </div>
+        </Link>
 
         <div className="admin-kpi-card">
           <div className="kpi-icon-wrap bg-orange-subtle">

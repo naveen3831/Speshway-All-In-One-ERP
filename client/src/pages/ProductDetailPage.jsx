@@ -22,6 +22,7 @@ import {
   Terminal,
   Activity,
   Edit2,
+  ArrowRight,
 } from 'lucide-react';
 
 export const ProductDetailPage = () => {
@@ -88,6 +89,7 @@ export const ProductDetailPage = () => {
     }
   };
 
+
   const technologies = product.technologies && product.technologies.length > 0
     ? product.technologies
     : ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'];
@@ -125,6 +127,7 @@ export const ProductDetailPage = () => {
                 <button
                   onClick={handleOpenAdminDashboard}
                   className="btn-product-action btn-view-admin"
+                  title="Open Admin Dashboard in this site"
                 >
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
@@ -242,11 +245,11 @@ export const ProductDetailPage = () => {
           </section>
         </div>
 
-        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
+        <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
 
       <Footer
-        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
 

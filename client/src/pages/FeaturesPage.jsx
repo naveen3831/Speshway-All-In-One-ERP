@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
@@ -16,6 +17,7 @@ import {
 } from 'lucide-react';
 
 export const FeaturesPage = () => {
+  const navigate = useNavigate();
   const [modalMode, setModalMode] = useState(null);
 
   const features = [
@@ -92,11 +94,11 @@ export const FeaturesPage = () => {
           </div>
         </section>
 
-        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
+        <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
 
       <Footer
-        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
 

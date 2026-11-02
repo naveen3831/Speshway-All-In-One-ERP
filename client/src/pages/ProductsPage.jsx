@@ -186,7 +186,7 @@ export const ProductsPage = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        const isHospital =
+const isHospital =
                           prod.slug === 'speshway-hospitals' ||
                           prod.slug === 'hospitals' ||
                           prod.slug?.includes('hospital') ||
@@ -196,7 +196,7 @@ export const ProductsPage = () => {
                         let url;
                         if (isHospital) {
                           url = '/product/speshway-hospitals/dashboard';
-                        } else if (prod.slug === 'tours-and-travels') {
+                        } else if (prod.slug === 'tours-and-travels' || prod.id === 'tours-and-travels') {
                           url = '/product/tours-and-travels/dashboard';
                         } else {
                           url = prod.adminUrl && prod.adminUrl !== '/admin/products'
@@ -217,11 +217,11 @@ export const ProductsPage = () => {
           </div>
         </section>
 
-        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
+        <CtaBanner onOpenGetStarted={() => navigate('/get-started')} />
       </main>
 
       <Footer
-        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
 

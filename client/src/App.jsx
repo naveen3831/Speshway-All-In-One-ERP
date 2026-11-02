@@ -11,6 +11,7 @@ import { FeaturesPage } from './pages/FeaturesPage';
 import { WhyUsPage } from './pages/WhyUsPage';
 import { PricingPage } from './pages/PricingPage';
 import { ContactPage } from './pages/ContactPage';
+import { GetStartedPage } from './pages/GetStartedPage';
 
 // Admin Portal Pages
 import { AdminLayout } from './pages/admin/AdminLayout';
@@ -51,6 +52,7 @@ export default function App() {
             <Route path="/why-us" element={<WhyUsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/get-started" element={<GetStartedPage />} />
 
             {/* 2. AUTHENTICATION */}
             <Route path="/login" element={<Login />} />
@@ -72,6 +74,7 @@ export default function App() {
             <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
             <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
 
+            {/* Hospital ERP routes & redirects to /product/speshway-hospitals/dashboard */}
             <Route path="/hospital-erp/dashboard" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
             <Route path="/hospital-erp" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
             <Route path="/dashboard/hospitals" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
@@ -89,7 +92,7 @@ export default function App() {
               <Route path="settings" element={<Dashboard />} />
             </Route>
 
-            {/* 5. 404 CATCH-ALL */}
+            {/* 6. 404 CATCH-ALL */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

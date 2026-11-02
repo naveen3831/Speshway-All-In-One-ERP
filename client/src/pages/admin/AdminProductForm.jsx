@@ -27,7 +27,7 @@ export const AdminProductForm = () => {
 
   const isEditMode = Boolean(id);
   const existingProduct = isEditMode
-    ? products.find((p) => p.id === id || p.slug === id)
+    ? products.find((p) => p.id === id || p.slug === id || p._id === id)
     : null;
 
   const [formData, setFormData] = useState({
@@ -67,7 +67,7 @@ export const AdminProductForm = () => {
         color: existingProduct.color || 'green',
         status: existingProduct.status || 'active',
       });
-      setSavedSlug(existingProduct.slug || existingProduct.id);
+      setSavedSlug(existingProduct.slug || existingProduct.id || existingProduct._id);
     }
   }, [isEditMode, existingProduct]);
 

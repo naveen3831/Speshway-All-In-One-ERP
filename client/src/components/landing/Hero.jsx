@@ -38,10 +38,7 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
           </p>
 
           <div className="hero-cta-group">
-            <button onClick={onOpenGetStarted} className="btn-hero-primary">
-              Get Started &rarr;
-            </button>
-            <button onClick={onOpenDemo} className="btn-hero-secondary">
+            <button onClick={onOpenDemo} className="btn-hero-primary">
               Request a Demo
             </button>
           </div>

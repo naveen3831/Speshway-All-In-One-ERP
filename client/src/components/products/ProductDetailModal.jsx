@@ -33,7 +33,7 @@ export const ProductDetailModal = ({ product, onClose }) => {
 
   const handleViewAdminDashboard = () => {
     onClose();
-    if (
+if (
       product.slug === 'speshway-hospitals' ||
       product.slug === 'hospitals' ||
       product.slug?.includes('hospital') ||
@@ -43,21 +43,13 @@ export const ProductDetailModal = ({ product, onClose }) => {
       window.open('/product/speshway-hospitals/dashboard', '_blank', 'noopener,noreferrer');
       return;
     }
-    let url = product.adminUrl;
-    if (!url || url === '/admin/products') {
-      if (product.slug === 'tours-and-travels') {
-        url = '/product/tours-and-travels/dashboard';
-      } else if (
-        product.slug === 'speshway-hospitals' ||
-        product.slug === 'hospitals' ||
-        product.slug?.includes('hospital')
-      ) {
-        url = '/product/speshway-hospitals/dashboard';
-      } else {
-        url = '/admin/products';
-      }
+    if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
+      window.open('/product/tours-and-travels/dashboard', '_blank', 'noopener,noreferrer');
+    } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
+      window.open(product.adminUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      window.open(`/product/${product.slug || product.id}/dashboard`, '_blank', 'noopener,noreferrer');
     }
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleOpenFullPage = () => {

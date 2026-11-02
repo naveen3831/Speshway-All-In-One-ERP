@@ -73,10 +73,25 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  // Fetch initial products and employees from MongoDB API
+  const refreshInquiries = async () => {
+    try {
+      const res = await api.get('/inquiries');
+      if (res.data?.data && Array.isArray(res.data.data)) {
+        setModulesData((prev) => ({
+          ...prev,
+          demoRequests: res.data.data,
+        }));
+      }
+    } catch (err) {
+      console.warn('Could not refresh inquiries from API:', err.message);
+    }
+  };
+
+  // Fetch initial products, employees, and inquiries from MongoDB API
   useEffect(() => {
     const fetchInitialData = async () => {
       await refreshProducts();
+      await refreshInquiries();
 
       try {
         const empRes = await api.get('/employees');
@@ -244,9 +259,32 @@ export const SocketProvider = ({ children }) => {
     newSocket.on('demo:new', ({ request, stats: updatedStats }) => {
       setModulesData((prev) => ({
         ...prev,
-        demoRequests: [request, ...(prev.demoRequests || [])],
+        demoRequests: [
+          request,
+          ...(prev.demoRequests || []).filter(
+            (d) => (d.id || d._id) !== (request.id || request._id)
+          ),
+        ],
       }));
       if (updatedStats) setStats(updatedStats);
+    });
+
+    newSocket.on('demo:deleted', ({ id }) => {
+      setModulesData((prev) => ({
+        ...prev,
+        demoRequests: (prev.demoRequests || []).filter(
+          (d) => d.id !== id && d._id?.toString() !== id
+        ),
+      }));
+    });
+
+    newSocket.on('demo:status_updated', ({ id, status }) => {
+      setModulesData((prev) => ({
+        ...prev,
+        demoRequests: (prev.demoRequests || []).map((d) =>
+          d.id === id || d._id?.toString() === id ? { ...d, status } : d
+        ),
+      }));
     });
 
     setSocket(newSocket);
@@ -277,15 +315,7 @@ export const SocketProvider = ({ children }) => {
       return res.data;
     } catch (err) {
       console.error('API addProduct error:', err);
-      // Fallback local update if network blocked
-      const fallbackProd = {
-        id: productData.slug || `prod-${Date.now()}`,
-        slug: productData.slug || `prod-${Date.now()}`,
-        status: 'active',
-        ...productData,
-      };
-      setProducts((prev) => [fallbackProd, ...prev]);
-      return { success: true, data: fallbackProd };
+      throw err;
     }
   };
 
@@ -414,13 +444,34 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  const triggerRequestDemo = (demoData) => {
-    if (socket && isConnected) {
-      socket.emit('action:request_demo', demoData);
-    } else {
+  const triggerRequestDemo = async (demoData) => {
+    try {
+      const res = await api.post('/inquiries', demoData);
+      const saved = res.data?.data;
+      if (saved) {
+        setModulesData((prev) => ({
+          ...prev,
+          demoRequests: [
+            saved,
+            ...(prev.demoRequests || []).filter(
+              (d) => (d.id || d._id) !== (saved.id || saved._id)
+            ),
+          ],
+        }));
+      }
       setStats((prev) => ({ ...prev, happyBusinesses: prev.happyBusinesses + 1 }));
-      setToastMessage(`Demo requested by ${demoData.company || demoData.name}`);
+      setToastMessage(`Inquiry submitted from ${demoData.company || demoData.name}`);
       setTimeout(() => setToastMessage(null), 4000);
+      return saved;
+    } catch (err) {
+      console.warn('API post inquiry error, falling back to socket:', err);
+      if (socket && isConnected) {
+        socket.emit('action:request_demo', demoData);
+      } else {
+        setStats((prev) => ({ ...prev, happyBusinesses: prev.happyBusinesses + 1 }));
+        setToastMessage(`Inquiry received from ${demoData.company || demoData.name}`);
+        setTimeout(() => setToastMessage(null), 4000);
+      }
     }
   };
 
@@ -434,6 +485,7 @@ export const SocketProvider = ({ children }) => {
         toastMessage,
         products,
         refreshProducts,
+        refreshInquiries,
         modulesData,
         triggerAddProduct,
         triggerUpdateProduct,

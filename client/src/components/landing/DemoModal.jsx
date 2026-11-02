@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, CheckCircle, Sparkles, Maximize2 } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 
 export const DemoModal = ({ mode = 'demo', onClose }) => {
+  const navigate = useNavigate();
   const { triggerRequestDemo } = useSocket();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -19,12 +21,18 @@ export const DemoModal = ({ mode = 'demo', onClose }) => {
       email,
       company: company || 'Enterprise Client',
       module: moduleInterest,
+      source: mode === 'get-started' ? 'get-started' : 'demo',
     });
 
     setSubmitted(true);
     setTimeout(() => {
       onClose();
     }, 2500);
+  };
+
+  const handleOpenFullScreen = () => {
+    onClose();
+    navigate('/get-started');
   };
 
   return (
@@ -44,9 +52,20 @@ export const DemoModal = ({ mode = 'demo', onClose }) => {
               </p>
             </div>
           </div>
-          <button className="modal-close-btn" onClick={onClose}>
-            <X size={20} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              className="modal-close-btn"
+              onClick={handleOpenFullScreen}
+              title="Open in Full Screen Page"
+              style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', padding: '4px 8px' }}
+            >
+              <Maximize2 size={16} />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Full Screen</span>
+            </button>
+            <button className="modal-close-btn" onClick={onClose}>
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         <div className="modal-body">
