@@ -61,17 +61,22 @@ export const SocketProvider = ({ children }) => {
     demoRequests: [],
   });
 
+  const refreshProducts = async () => {
+    try {
+      const prodRes = await api.get('/products');
+      if (prodRes.data?.data && Array.isArray(prodRes.data.data)) {
+        setProducts(prodRes.data.data);
+        return prodRes.data.data;
+      }
+    } catch (err) {
+      console.warn('Could not refresh products from API:', err.message);
+    }
+  };
+
   // Fetch initial products and employees from MongoDB API
   useEffect(() => {
     const fetchInitialData = async () => {
-      try {
-        const prodRes = await api.get('/products');
-        if (prodRes.data?.data && Array.isArray(prodRes.data.data) && prodRes.data.data.length > 0) {
-          setProducts(prodRes.data.data);
-        }
-      } catch (err) {
-        console.warn('Could not fetch products from API, using fallback store');
-      }
+      await refreshProducts();
 
       try {
         const empRes = await api.get('/employees');
@@ -125,17 +130,44 @@ export const SocketProvider = ({ children }) => {
 
     // Product events
     newSocket.on('product:added', (newProduct) => {
-      setProducts((prev) => [newProduct, ...prev.filter((p) => p.id !== newProduct.id)]);
+      setProducts((prev) => {
+        const targetId = newProduct.id || newProduct._id;
+        const targetSlug = newProduct.slug;
+        const exists = prev.some(
+          (p) =>
+            (p.id && (p.id === targetId || p.id === targetSlug)) ||
+            (p._id && (p._id === targetId || p._id === targetSlug)) ||
+            (p.slug && p.slug === targetSlug)
+        );
+        if (exists) {
+          return prev.map((p) =>
+            (p.id && (p.id === targetId || p.id === targetSlug)) ||
+            (p._id && (p._id === targetId || p._id === targetSlug)) ||
+            (p.slug && p.slug === targetSlug)
+              ? newProduct
+              : p
+          );
+        }
+        return [newProduct, ...prev];
+      });
       setToastMessage(`Product added: ${newProduct.name}`);
       setTimeout(() => setToastMessage(null), 4000);
+      refreshProducts();
     });
 
     newSocket.on('product:updated', (updated) => {
       setProducts((prev) =>
-        prev.map((p) => (p.id === updated.id || p.slug === updated.slug ? updated : p))
+        prev.map((p) => {
+          const matchId =
+            (p.id && (p.id === updated.id || p.id === updated._id)) ||
+            (p._id && (p._id === updated.id || p._id === updated._id));
+          const matchSlug = p.slug && p.slug === updated.slug;
+          return matchId || matchSlug ? updated : p;
+        })
       );
       setToastMessage(`Product updated: ${updated.name}`);
       setTimeout(() => setToastMessage(null), 4000);
+      refreshProducts();
     });
 
     newSocket.on('product:deleted', (data) => {
@@ -143,13 +175,14 @@ export const SocketProvider = ({ children }) => {
       const targetSlug = data?.slug;
       setProducts((prev) =>
         prev.filter((p) => {
-          if (targetId && (p.id === targetId || p.slug === targetId)) return false;
-          if (targetSlug && (p.id === targetSlug || p.slug === targetSlug)) return false;
+          if (targetId && (p.id === targetId || p._id === targetId || p.slug === targetId)) return false;
+          if (targetSlug && (p.slug === targetSlug || p.id === targetSlug)) return false;
           return true;
         })
       );
       setToastMessage(`Product removed from catalog`);
       setTimeout(() => setToastMessage(null), 4000);
+      refreshProducts();
     });
 
     // HRMS real-time updates
@@ -225,8 +258,22 @@ export const SocketProvider = ({ children }) => {
     try {
       const res = await api.post('/products', productData);
       if (res.data?.data) {
-        setProducts((prev) => [res.data.data, ...prev.filter((p) => p.id !== res.data.data.id)]);
+        const newProduct = res.data.data;
+        const targetId = newProduct.id || newProduct._id;
+        const targetSlug = newProduct.slug;
+        setProducts((prev) => [
+          newProduct,
+          ...prev.filter(
+            (p) =>
+              !(
+                (p.id && (p.id === targetId || p.id === targetSlug)) ||
+                (p._id && (p._id === targetId || p._id === targetSlug)) ||
+                (p.slug && p.slug === targetSlug)
+              )
+          ),
+        ]);
       }
+      await refreshProducts();
       return res.data;
     } catch (err) {
       console.error('API addProduct error:', err);
@@ -246,10 +293,18 @@ export const SocketProvider = ({ children }) => {
     try {
       const res = await api.put(`/products/${id}`, updates);
       if (res.data?.data) {
+        const updated = res.data.data;
         setProducts((prev) =>
-          prev.map((p) => (p.id === id || p.slug === id ? res.data.data : p))
+          prev.map((p) => {
+            const matchId =
+              (p.id && (p.id === id || p.id === updated.id || p.id === updated._id)) ||
+              (p._id && (p._id === id || p._id === updated.id || p._id === updated._id));
+            const matchSlug = p.slug && (p.slug === id || p.slug === updated.slug);
+            return matchId || matchSlug ? updated : p;
+          })
         );
       }
+      await refreshProducts();
       return res.data;
     } catch (err) {
       console.error('API updateProduct error:', err);
@@ -266,11 +321,16 @@ export const SocketProvider = ({ children }) => {
   const triggerDeleteProduct = async (id) => {
     try {
       await api.delete(`/products/${id}`);
-      setProducts((prev) => prev.filter((p) => p.id !== id && p.slug !== id));
+      setProducts((prev) =>
+        prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id)
+      );
+      await refreshProducts();
       return { success: true };
     } catch (err) {
       console.error('API deleteProduct error:', err);
-      setProducts((prev) => prev.filter((p) => p.id !== id && p.slug !== id));
+      setProducts((prev) =>
+        prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id)
+      );
       return { success: true };
     }
   };
@@ -373,6 +433,7 @@ export const SocketProvider = ({ children }) => {
         activities,
         toastMessage,
         products,
+        refreshProducts,
         modulesData,
         triggerAddProduct,
         triggerUpdateProduct,

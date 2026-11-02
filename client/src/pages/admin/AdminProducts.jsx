@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSocket } from '../../context/SocketContext';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -46,8 +46,14 @@ const iconMap = {
 };
 
 export const AdminProducts = () => {
-  const { products, triggerDeleteProduct } = useSocket();
+  const { products, triggerDeleteProduct, refreshProducts } = useSocket();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (refreshProducts) {
+      refreshProducts();
+    }
+  }, []);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');

@@ -68,8 +68,15 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const finalSlug =
-      slug || name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+    let finalSlug =
+      slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    if (!finalSlug) finalSlug = 'prod-' + Date.now();
+
+    // Prevent duplicate slug crash
+    const existingProductWithSlug = await Product.findOne({ slug: finalSlug });
+    if (existingProductWithSlug) {
+      finalSlug = `${finalSlug}-${Date.now().toString().slice(-4)}`;
+    }
 
     const createdProduct = await Product.create({
       name,
@@ -96,10 +103,12 @@ router.post('/', async (req, res) => {
       popularity: 90,
     });
 
+    const plainProduct = createdProduct.toJSON ? createdProduct.toJSON() : createdProduct;
+
     // Real-time WebSocket broadcast to all connected clients
     const io = getIO();
     if (io) {
-      io.emit('product:added', createdProduct);
+      io.emit('product:added', plainProduct);
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
@@ -108,7 +117,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    res.status(201).json({ success: true, data: createdProduct });
+    res.status(201).json({ success: true, data: plainProduct });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -137,10 +146,12 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found in database' });
     }
 
+    const plainUpdated = updated.toJSON ? updated.toJSON() : updated;
+
     // Real-time WebSocket broadcast
     const io = getIO();
     if (io) {
-      io.emit('product:updated', updated);
+      io.emit('product:updated', plainUpdated);
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
@@ -149,7 +160,7 @@ router.put('/:id', async (req, res) => {
       });
     }
 
-    res.json({ success: true, data: updated });
+    res.json({ success: true, data: plainUpdated });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

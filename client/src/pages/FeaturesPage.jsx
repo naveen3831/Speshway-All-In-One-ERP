@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
+import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import {
   Zap,
@@ -93,6 +94,11 @@ export const FeaturesPage = () => {
 
         <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
       </main>
+
+      <Footer
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
 
       {modalMode && (
         <DemoModal mode={modalMode} onClose={() => setModalMode(null)} />

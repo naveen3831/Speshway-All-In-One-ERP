@@ -125,7 +125,7 @@ export const AdminProductForm = () => {
 
       setTimeout(() => {
         navigate('/admin/products');
-      }, 1800);
+      }, 600);
     } catch (err) {
       alert('Error saving product: ' + (err.response?.data?.message || err.message));
     } finally {

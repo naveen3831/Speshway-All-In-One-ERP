@@ -5,6 +5,7 @@ import { Hero } from '../components/landing/Hero';
 import { StatsBar } from '../components/landing/StatsBar';
 import { ApplicationsGrid } from '../components/landing/ApplicationsGrid';
 import { CtaBanner } from '../components/landing/CtaBanner';
+import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { LiveActivityToast } from '../components/landing/LiveActivityToast';
 
@@ -35,9 +36,10 @@ export const LandingPage = () => {
         <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
       </main>
 
-      <footer className="landing-footer">
-        <p>&copy; {new Date().getFullYear()} SPESHWAY ALL IN ONE ERP. All rights reserved. Real-time Enterprise Suite.</p>
-      </footer>
+      <Footer
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
 
       {modalMode && (
         <DemoModal

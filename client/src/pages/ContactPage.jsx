@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
+import { Footer } from '../components/landing/Footer';
+import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket } from '../context/SocketContext';
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock } from 'lucide-react';
 
 export const ContactPage = () => {
   const { triggerRequestDemo } = useSocket();
+  const [modalMode, setModalMode] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,7 +36,7 @@ export const ContactPage = () => {
 
   return (
     <div className="landing-wrapper">
-      <Navbar onOpenGetStarted={() => {}} />
+      <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
 
       <main className="page-main-container">
         <section className="page-hero-header">
@@ -175,8 +178,17 @@ export const ContactPage = () => {
           </div>
         </section>
 
-        <CtaBanner onOpenGetStarted={() => {}} />
+        <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
       </main>
+
+      <Footer
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
+
+      {modalMode && (
+        <DemoModal mode={modalMode} onClose={() => setModalMode(null)} />
+      )}
     </div>
   );
 };

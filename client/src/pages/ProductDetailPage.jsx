@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
+import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket } from '../context/SocketContext';
 import {
@@ -35,7 +36,7 @@ export const ProductDetailPage = () => {
     return (
       <div className="landing-wrapper">
         <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
-        <div style={{ textAlign: 'center', padding: '100px 20px' }}>
+        <main className="page-main-container" style={{ textAlign: 'center', padding: '100px 20px', flex: '1 0 auto' }}>
           <h2>Product Not Found</h2>
           <p style={{ marginTop: '10px', color: '#64748b' }}>
             The requested ERP application could not be found in the catalog.
@@ -43,7 +44,11 @@ export const ProductDetailPage = () => {
           <Link to="/products" className="btn-hero-primary" style={{ display: 'inline-block', marginTop: '20px' }}>
             &larr; Back to Products Catalog
           </Link>
-        </div>
+        </main>
+        <Footer
+          onOpenGetStarted={() => setModalMode('get-started')}
+          onOpenDemo={() => setModalMode('demo')}
+        />
       </div>
     );
   }
@@ -211,6 +216,11 @@ export const ProductDetailPage = () => {
 
         <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
       </main>
+
+      <Footer
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
 
       {modalMode && (
         <DemoModal mode={modalMode} onClose={() => setModalMode(null)} />
