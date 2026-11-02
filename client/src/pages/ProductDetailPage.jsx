@@ -70,26 +70,16 @@ export const ProductDetailPage = () => {
       return;
     }
 
-    let url = product.adminUrl;
-    if (!url || url === '/admin/products' || url.includes('hospital')) {
-      if (product.slug === 'tours-and-travels') {
-        url = '/product/tours-and-travels/dashboard';
-      } else {
-        url = `/product/${product.slug || product.id || id}/dashboard`;
-      }
-    }
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
-
-  const handleOpenWebsite = () => {
-    if (product.websiteUrl && product.websiteUrl.startsWith('http')) {
-      window.open(product.websiteUrl, '_blank', 'noopener,noreferrer');
+    if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
+      window.open('/product/tours-and-travels/dashboard', '_blank', 'noopener,noreferrer');
+    } else if (product.slug === 'vexa-style-hub' || product.id === 'vexa-style-hub') {
+      window.open('/product/vexa-style-hub/dashboard', '_blank', 'noopener,noreferrer');
+    } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
+      window.open(product.adminUrl, '_blank', 'noopener,noreferrer');
     } else {
-      alert(`Website URL configured: ${product.websiteUrl || 'https://speshway.com/' + product.slug}`);
+      window.open(`/product/${product.slug || product.id || id}/dashboard`, '_blank', 'noopener,noreferrer');
     }
   };
-
-
   const technologies = product.technologies && product.technologies.length > 0
     ? product.technologies
     : ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'];

@@ -1,0 +1,722 @@
+/* ==========================================================================
+   VEXA STYLE HUB ADMIN DASHBOARD
+   Pixel-perfect replica matching exact uploaded screenshot
+   ========================================================================== */
+
+.vexa-erp-root {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f1f5f9;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #0f172a;
+}
+
+/* --------------------------------------------------------------------------
+   SIDEBAR
+   -------------------------------------------------------------------------- */
+.vexa-sidebar {
+  width: 250px;
+  min-width: 250px;
+  background-color: #0d1b2a;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid #1e293b;
+  overflow-y: auto;
+  z-index: 30;
+}
+
+.vexa-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 20px 20px 20px;
+}
+
+.vexa-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.vexa-logo-hanger {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vexa-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.vexa-brand-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+.vexa-brand-subtitle {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.vexa-hamburger-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.vexa-hamburger-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Sidebar Nav */
+.vexa-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 14px;
+  flex: 1;
+}
+
+.vexa-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.vexa-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+}
+
+.vexa-nav-item.active {
+  background-color: #059669;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.vexa-nav-icon {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.vexa-nav-item.active .vexa-nav-icon {
+  opacity: 1;
+}
+
+.vexa-sidebar-footer {
+  padding: 16px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.vexa-nav-item.logout {
+  color: #94a3b8;
+}
+
+.vexa-nav-item.logout:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* --------------------------------------------------------------------------
+   MAIN VIEW AREA & TOPBAR
+   -------------------------------------------------------------------------- */
+.vexa-main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.vexa-topbar {
+  height: 64px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 36px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.vexa-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.vexa-bell-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #334155;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vexa-bell-btn:hover {
+  background-color: #f1f5f9;
+}
+
+.vexa-bell-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+}
+
+.vexa-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.vexa-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: #059669;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vexa-user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   CONTENT & KPI CARDS
+   -------------------------------------------------------------------------- */
+.vexa-content {
+  padding: 28px 36px 60px 36px;
+  flex: 1;
+}
+
+.vexa-page-header {
+  margin-bottom: 24px;
+}
+
+.vexa-heading {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px 0;
+}
+
+.vexa-subheading {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* 4 KPI Grid */
+.vexa-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.vexa-kpi-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vexa-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.vexa-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.vexa-kpi-icon {
+  color: #0284c7;
+}
+
+.vexa-kpi-label {
+  font-size: 0.88rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.vexa-kpi-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.vexa-kpi-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vexa-kpi-trend {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #10b981;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.vexa-kpi-sparkline {
+  width: 100px;
+  height: 28px;
+}
+
+/* --------------------------------------------------------------------------
+   LOWER TWO COLUMNS (SALES OVERVIEW & RECENT ORDERS)
+   -------------------------------------------------------------------------- */
+.vexa-lower-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+}
+
+.vexa-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.vexa-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.vexa-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vexa-card-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.vexa-select-dropdown {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  outline: none;
+}
+
+.vexa-link-more {
+  background: none;
+  border: none;
+  color: #0284c7;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s ease;
+}
+
+.vexa-link-more:hover {
+  color: #0369a1;
+}
+
+/* Sales Overview Chart */
+.vexa-chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot-sales {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #1e40af;
+}
+
+.dot-orders {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #93c5fd;
+}
+
+.vexa-chart-body {
+  display: flex;
+  flex-direction: column;
+  height: 240px;
+}
+
+.vexa-chart-svg-wrap {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.vexa-y-axis {
+  width: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: #94a3b8;
+  padding-bottom: 12px;
+}
+
+.vexa-svg-canvas {
+  flex: 1;
+  position: relative;
+}
+
+.vexa-chart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.vexa-x-axis {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 36px;
+  font-size: 0.76rem;
+  color: #94a3b8;
+  margin-top: 8px;
+}
+
+/* Recent Orders List */
+.vexa-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vexa-order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.vexa-order-row:last-child {
+  border-bottom: none;
+}
+
+.vexa-order-item-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.vexa-order-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.vexa-order-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vexa-order-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.vexa-order-code {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.vexa-order-date {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.vexa-order-item-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.vexa-order-status {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  text-transform: capitalize;
+}
+
+.vexa-order-status.delivered {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.vexa-order-status.shipped {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.vexa-order-status.processing {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.vexa-order-price {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #0f172a;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   MODULE DATA TABLES & VIEWS
+   -------------------------------------------------------------------------- */
+.vexa-view-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.vexa-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 360px;
+}
+
+.vexa-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.vexa-search-input {
+  width: 100%;
+  height: 40px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0 12px 0 38px;
+  font-size: 0.88rem;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.vexa-search-input:focus {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+}
+
+.vexa-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vexa-btn-primary {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 8px;
+  background-color: #059669;
+  color: #ffffff;
+  border: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vexa-btn-primary:hover {
+  background-color: #047857;
+}
+
+.vexa-table-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.vexa-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.vexa-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.vexa-table th {
+  background-color: #f8fafc;
+  padding: 12px 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.vexa-table td {
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.vexa-table tr:hover td {
+  background-color: #fcfdfd;
+}
+
+.vexa-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .vexa-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .vexa-lower-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .vexa-erp-root {
+    flex-direction: column;
+  }
+  .vexa-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  .vexa-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .vexa-content {
+    padding: 20px 16px;
+  }
+}

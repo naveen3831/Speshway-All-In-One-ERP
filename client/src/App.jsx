@@ -22,11 +22,10 @@ import { AdminUsers } from './pages/admin/AdminUsers';
 import { AdminInquiries } from './pages/admin/AdminInquiries';
 import { AdminSettings } from './pages/admin/AdminSettings';
 
-// Travel Agency Industry ERP Dashboard
+// Dedicated Industry ERP Dashboards
 import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
-
-// Hospital Management Industry ERP Dashboard
 import { HospitalDashboard } from './pages/hospital/HospitalDashboard';
+import { VexaDashboard } from './pages/vexa/VexaDashboard';
 
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
@@ -46,6 +45,7 @@ export default function App() {
             <Route path="/product/speshway-hospitals/dashboard" element={<HospitalDashboard />} />
             <Route path="/product/hospitals/dashboard" element={<HospitalDashboard />} />
             <Route path="/product/tours-and-travels/dashboard" element={<TravelAgencyDashboard />} />
+            <Route path="/product/vexa-style-hub/dashboard" element={<VexaDashboard />} />
             <Route path="/product/:id/dashboard" element={<HospitalDashboard />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
@@ -73,6 +73,8 @@ export default function App() {
             <Route path="/travel-erp/dashboard" element={<TravelAgencyDashboard />} />
             <Route path="/travel-agency-erp" element={<TravelAgencyDashboard />} />
             <Route path="/dashboard/tours-and-travels" element={<TravelAgencyDashboard />} />
+
+            <Route path="/vexa-style-hub/dashboard" element={<VexaDashboard />} />
 
             {/* Hospital ERP routes & redirects to /product/speshway-hospitals/dashboard */}
             <Route path="/hospital-erp/dashboard" element={<Navigate to="/product/speshway-hospitals/dashboard" replace />} />
