@@ -5,21 +5,30 @@
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   width: 100%;
-  max-width: 540px;
-  max-height: 90vh;
+  max-width: 520px;
+  max-height: 92vh;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.05);
   animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   position: relative;
   z-index: 100001;
-  padding: 32px 30px;
+  padding: 24px 28px;
   box-sizing: border-box;
 }
 
+.demo-modal-card-box::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .modal-top-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: -10px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
 }
 
 .modal-close-icon-btn {
@@ -44,14 +53,14 @@
 .demo-modal-card-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 22px;
-  padding-right: 30px;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-right: 32px;
 }
 
 .demo-header-icon-badge {
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   border-radius: 12px;
   background-color: #ecfdf5;
   border: 1px solid #a7f3d0;
@@ -62,15 +71,15 @@
 }
 
 .demo-form-main-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 4px 0;
+  margin: 0 0 3px 0;
   line-height: 1.2;
 }
 
 .demo-form-sub-title {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: #64748b;
   margin: 0;
 }
@@ -78,17 +87,17 @@
 .demo-card-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 11px;
 }
 
 .demo-field-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .demo-field-group label {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #334155;
 }
@@ -112,11 +121,11 @@
 
 .demo-card-input {
   width: 100%;
-  height: 44px;
+  height: 40px;
   border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 0 12px 0 40px;
-  font-size: 0.9rem;
+  border-radius: 9px;
+  padding: 0 12px 0 38px;
+  font-size: 0.88rem;
   color: #0f172a;
   background-color: #ffffff;
   outline: none;
@@ -147,12 +156,12 @@
 
 .btn-card-submit {
   width: 100%;
-  height: 46px;
+  height: 42px;
   background: linear-gradient(135deg, #047857 0%, #059669 100%);
   color: #ffffff;
   border: none;
-  border-radius: 10px;
-  font-size: 0.95rem;
+  border-radius: 9px;
+  font-size: 0.92rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -161,7 +170,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .btn-card-submit:hover:not(:disabled) {

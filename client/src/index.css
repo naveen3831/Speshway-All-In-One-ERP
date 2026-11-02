@@ -3479,7 +3479,15 @@ button {
   justify-content: center;
   padding: 20px;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   animation: modalBackdropFadeIn 0.2s ease-out forwards;
+}
+
+.modal-backdrop::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .module-modal-box {
@@ -3490,9 +3498,17 @@ button {
   max-width: 680px;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   position: relative;
   z-index: 100000;
   animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.module-modal-box::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .admin-form-modal {
