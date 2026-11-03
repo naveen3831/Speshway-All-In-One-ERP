@@ -28,7 +28,9 @@
 /* Base Wrapper */
 .salon-wrapper {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   width: 100%;
   background-color: var(--salon-bg);
   color: var(--salon-text-dark);

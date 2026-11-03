@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 import { getIO } from '../services/socketService.js';
+import { getProducts, getProductById } from '../services/productStore.js';
 
 const router = express.Router();
 
@@ -46,12 +47,24 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findOne(getProductQuery(req.params.id));
+    let product = null;
+    try {
+      product = await Product.findOne(getProductQuery(req.params.id)).lean();
+    } catch (dbErr) {
+      console.warn('MongoDB Product.findOne warning:', dbErr.message);
+    }
+    if (!product) {
+      product = getProductById(req.params.id);
+    }
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found in database' });
     }
     res.json({ success: true, data: product });
   } catch (err) {
+    const fallback = getProductById(req.params.id);
+    if (fallback) {
+      return res.json({ success: true, data: fallback });
+    }
     res.status(500).json({ success: false, message: err.message });
   }
 });

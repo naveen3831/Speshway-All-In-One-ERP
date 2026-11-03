@@ -6,28 +6,35 @@ const DEFAULT_MONGO_URI =
 
 const connectDB = async () => {
   let mongoUri = process.env.MONGO_URI;
-  const dnsServers = process.env.MONGO_DNS_SERVERS
-    ?.split(',')
-    .map((server) => server.trim())
-    .filter(Boolean);
-
   if (!mongoUri || mongoUri.includes('<db_password>')) {
     mongoUri = DEFAULT_MONGO_URI;
   }
 
-  try {
-    if (dnsServers?.length) {
-      dns.setServers(dnsServers);
-    }
+  const dnsCandidates = [
+    process.env.MONGO_DNS_SERVERS?.split(',').map((s) => s.trim()).filter(Boolean) || [],
+    ['1.1.1.1', '1.0.0.1'],
+    ['8.8.8.8', '8.8.4.4'],
+    null, // Default system resolver
+  ];
 
-    const conn = await mongoose.connect(mongoUri);
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
-    return true;
-  } catch (error) {
-    console.error(`❌ MongoDB connection error: ${error.message}`);
-    console.warn('ℹ️ Continuing in real-time fallback mode so servers stay alive.');
-    return false;
+  for (let i = 0; i < dnsCandidates.length; i++) {
+    const servers = dnsCandidates[i];
+    try {
+      if (servers && servers.length) {
+        dns.setServers(servers);
+      }
+      const conn = await mongoose.connect(mongoUri, {
+        serverSelectionTimeoutMS: 5000,
+      });
+      console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+      return true;
+    } catch (err) {
+      console.warn(`⚠️ DNS/Mongo attempt ${i + 1} (${servers ? servers.join(',') : 'system default'}) failed: ${err.message}`);
+    }
   }
+
+  console.warn('ℹ️ Continuing in real-time fallback mode with full persistent product catalog.');
+  return false;
 };
 
 export default connectDB;

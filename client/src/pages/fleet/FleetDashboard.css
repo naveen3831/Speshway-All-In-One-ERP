@@ -1,0 +1,1008 @@
+/* ==========================================================================
+   FLEET MANAGEMENT ADMIN DASHBOARD STYLES
+   Scoped exclusively under .fleet- to avoid conflicts with other modules.
+   ========================================================================== */
+
+:root {
+  --fleet-navy: #0b1120;
+  --fleet-navy-light: #151d32;
+  --fleet-navy-hover: #1e293b;
+  --fleet-green: #10b981;
+  --fleet-green-hover: #059669;
+  --fleet-green-light: #ecfdf5;
+  --fleet-green-border: #a7f3d0;
+  --fleet-gold: #f59e0b;
+  --fleet-gold-light: #fef3c7;
+  --fleet-blue-light: #eff6ff;
+  --fleet-blue-text: #2563eb;
+  --fleet-amber-light: #fef3c7;
+  --fleet-amber-text: #d97706;
+  --fleet-bg: #f8fafc;
+  --fleet-card-bg: #ffffff;
+  --fleet-text-dark: #0f172a;
+  --fleet-text-muted: #64748b;
+  --fleet-border: #e2e8f0;
+  --fleet-radius: 14px;
+}
+
+/* Base Wrapper */
+.fleet-wrapper {
+  display: flex;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  background-color: var(--fleet-bg);
+  color: var(--fleet-text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.fleet-wrapper * {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave)
+   ========================================================================== */
+.fleet-sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  max-height: 100vh;
+  flex-shrink: 0;
+  background-color: var(--fleet-navy);
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.fleet-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Brand Header */
+.fleet-brand {
+  padding: 22px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.fleet-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fleet-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.fleet-brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.fleet-brand-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--fleet-green);
+  margin-top: 2px;
+}
+
+.fleet-brand-tag {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+/* Navigation Menu */
+.fleet-nav {
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  z-index: 2;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.fleet-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.fleet-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.fleet-nav-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fleet-nav-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.fleet-nav-btn:hover {
+  background-color: var(--fleet-navy-light);
+  color: #ffffff;
+}
+
+.fleet-nav-btn:hover .fleet-nav-icon {
+  color: #ffffff;
+}
+
+.fleet-nav-btn.active {
+  background-color: var(--fleet-green);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.fleet-nav-btn.active .fleet-nav-icon {
+  color: #ffffff;
+}
+
+.fleet-nav-badge {
+  background-color: var(--fleet-green);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.fleet-nav-btn.active .fleet-nav-badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Decorative Emerald Green Silk Wave at bottom left of sidebar */
+.fleet-sidebar-green-wave {
+  position: absolute;
+  bottom: 48px;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+.fleet-wave-svg {
+  width: 100%;
+  height: 65px;
+  display: block;
+}
+
+/* Sidebar Footer */
+.fleet-sidebar-footer {
+  padding: 14px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  position: relative;
+  z-index: 2;
+  background-color: var(--fleet-navy);
+}
+
+.fleet-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #f87171;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fleet-logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+/* ==========================================================================
+   2. TOPBAR & MAIN CONTAINER (82px NAVBAR HEIGHT)
+   ========================================================================== */
+.fleet-main {
+  flex: 1;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--fleet-bg);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.fleet-main::-webkit-scrollbar {
+  display: none;
+}
+
+/* Topbar Height: 82px matching request */
+.fleet-topbar {
+  height: 82px;
+  min-height: 82px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--fleet-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.fleet-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.fleet-topbar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--fleet-text-dark);
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+/* Operational Status Pill Badge */
+.fleet-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--fleet-green-light);
+  color: var(--fleet-green-hover);
+  border: 1px solid var(--fleet-green-border);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.fleet-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--fleet-green);
+  animation: fleetPulse 2s infinite ease-in-out;
+}
+
+@keyframes fleetPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* Topbar Right Actions */
+.fleet-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.fleet-btn-back-vehicles {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: #ffffff;
+  border: 1px solid var(--fleet-border);
+  color: #475569;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fleet-btn-back-vehicles:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.fleet-icon-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--fleet-border);
+  background-color: #ffffff;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fleet-icon-btn:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.fleet-unread-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  border: 2px solid #ffffff;
+}
+
+.fleet-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 6px;
+}
+
+.fleet-user-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--fleet-text-dark);
+}
+
+.fleet-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--fleet-green);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+}
+
+/* ==========================================================================
+   3. CONTENT CONTAINER
+   ========================================================================== */
+.fleet-content {
+  padding: 28px 32px;
+  flex: 1;
+}
+
+/* Welcome Row */
+.fleet-welcome-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.fleet-welcome-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--fleet-text-dark);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.3px;
+}
+
+.fleet-welcome-subtitle {
+  font-size: 0.94rem;
+  color: var(--fleet-text-muted);
+  margin: 0;
+}
+
+.fleet-date-picker-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1px solid var(--fleet-border);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* ==========================================================================
+   4. 5 KPI STATS CARDS (GRID-TEMPLATE-COLUMNS: REPEAT(5, 1FR))
+   ========================================================================== */
+.fleet-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.fleet-stat-card {
+  background-color: var(--fleet-card-bg);
+  border: 1px solid var(--fleet-border);
+  border-radius: var(--fleet-radius);
+  padding: 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fleet-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.fleet-stat-icon-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bg-green-light {
+  background-color: #ecfdf5;
+}
+
+.text-green {
+  color: #10b981;
+}
+
+.bg-blue-light {
+  background-color: #eff6ff;
+}
+
+.text-blue {
+  color: #3b82f6;
+}
+
+.bg-amber-light {
+  background-color: #fef3c7;
+}
+
+.text-amber {
+  color: #d97706;
+}
+
+.fleet-rupee-symbol {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.fleet-stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fleet-stat-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fleet-text-muted);
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.fleet-stat-value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--fleet-text-dark);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.fleet-stat-trend {
+  font-size: 0.76rem;
+  font-weight: 600;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   5. ANALYTICS GRID (REVENUE OVERVIEW & TOP VEHICLES)
+   ========================================================================== */
+.fleet-analytics-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.fleet-card {
+  background-color: var(--fleet-card-bg);
+  border: 1px solid var(--fleet-border);
+  border-radius: var(--fleet-radius);
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.fleet-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.fleet-card-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fleet-card-icon-title h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fleet-text-dark);
+  margin: 0;
+}
+
+.fleet-card-subtitle {
+  font-size: 0.82rem;
+  color: var(--fleet-text-muted);
+  margin: 2px 0 0 0;
+}
+
+/* Chart Toggle */
+.fleet-chart-toggle {
+  display: flex;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.fleet-toggle-btn {
+  padding: 5px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fleet-toggle-btn.active {
+  background-color: var(--fleet-green-hover);
+  color: #ffffff;
+}
+
+/* SVG Chart */
+.fleet-chart-body {
+  margin-top: 8px;
+}
+
+.fleet-chart-container {
+  width: 100%;
+}
+
+.fleet-svg-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-label {
+  font-size: 10.5px;
+  fill: #94a3b8;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.chart-date {
+  font-size: 11px;
+  fill: #64748b;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+/* Top Vehicles List */
+.fleet-top-vehicles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fleet-top-vehicle-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+.fleet-top-vehicle-item:hover {
+  background-color: #f1f5f9;
+}
+
+.fleet-vehicle-img-box {
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid var(--fleet-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fleet-vehicle-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.veh-fallback-icon {
+  font-size: 1.5rem;
+}
+
+.fleet-vehicle-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.fleet-vehicle-plate {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--fleet-text-dark);
+  margin: 0 0 3px 0;
+  letter-spacing: 0.3px;
+}
+
+.fleet-vehicle-meta {
+  font-size: 0.78rem;
+  color: var(--fleet-text-muted);
+}
+
+.fleet-active-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: var(--fleet-green-light);
+  color: var(--fleet-green-hover);
+  border: 1px solid var(--fleet-green-border);
+}
+
+/* ==========================================================================
+   6. LOWER SECTION: RECENT TRIPS & MAINTENANCE ALERTS
+   ========================================================================== */
+.fleet-bottom-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.fleet-btn-view-all {
+  border: none;
+  background: transparent;
+  color: var(--fleet-text-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.fleet-btn-view-all:hover {
+  color: var(--fleet-green);
+}
+
+/* Tables */
+.fleet-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.fleet-table-responsive::-webkit-scrollbar {
+  display: none;
+}
+
+.fleet-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.fleet-table th {
+  padding: 12px 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  border-bottom: 1px solid var(--fleet-border);
+  background-color: #f8fafc;
+  white-space: nowrap;
+}
+
+.fleet-table td {
+  padding: 14px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.fleet-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.fleet-cell-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Badges */
+.fleet-badge {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fleet-badge-green {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.fleet-badge-blue {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.fleet-badge-amber {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.fleet-badge-red {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.fleet-badge-purple {
+  background-color: #f5f3ff;
+  color: #7c3aed;
+}
+
+.fleet-badge-gray {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+/* Maintenance Alerts List */
+.fleet-alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fleet-alert-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fleet-alert-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fleet-alert-task {
+  font-size: 0.85rem;
+  color: var(--fleet-text-dark);
+  font-weight: 600;
+  margin: 2px 0;
+}
+
+.fleet-alert-workshop {
+  font-size: 0.76rem;
+  color: var(--fleet-text-muted);
+}
+
+.fleet-geofence-alert-box {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.fleet-geofence-alert-box .alert-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #047857;
+  margin-bottom: 4px;
+}
+
+.fleet-geofence-alert-box .alert-desc {
+  font-size: 0.78rem;
+  color: #065f46;
+  margin: 0;
+}
+
+/* Bottom ERP Info Banner */
+.fleet-info-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #ffffff;
+  border: 1px solid var(--fleet-border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 0.88rem;
+  color: #475569;
+}
+
+.fleet-info-banner strong {
+  color: var(--fleet-text-dark);
+}
+
+/* General Action Buttons */
+.fleet-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--fleet-green);
+  color: #ffffff;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.fleet-btn-primary:hover {
+  background-color: var(--fleet-green-hover);
+  transform: translateY(-1px);
+}
+
+.fleet-table-action-btn {
+  background-color: #f1f5f9;
+  border: 1px solid var(--fleet-border);
+  color: var(--fleet-text-dark);
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fleet-table-action-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.fleet-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.fleet-section-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--fleet-text-dark);
+  margin: 0 0 4px 0;
+}
+
+.fleet-section-subtitle {
+  font-size: 0.88rem;
+  color: var(--fleet-text-muted);
+  margin: 0;
+}
+
+/* Utility Helpers */
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+.text-sm { font-size: 0.8rem; }
+.text-muted { color: var(--fleet-text-muted); }
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .fleet-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .fleet-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .fleet-analytics-grid,
+  .fleet-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .fleet-wrapper {
+    flex-direction: column;
+  }
+  .fleet-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .fleet-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

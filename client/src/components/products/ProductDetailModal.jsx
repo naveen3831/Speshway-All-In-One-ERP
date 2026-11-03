@@ -68,6 +68,58 @@ export const ProductDetailModal = ({ product, onClose }) => {
       return;
     }
     if (
+      slug === 'fleet-management' ||
+      slug === 'fleet' ||
+      slug.includes('fleet') ||
+      product.name?.toLowerCase().includes('fleet')
+    ) {
+      navigate('/product/fleet-management/dashboard');
+      return;
+    }
+    if (
+      slug === 'american-fitness-gym' ||
+      slug === 'american-fitness' ||
+      slug.includes('fitness') ||
+      slug.includes('gym') ||
+      product.name?.toLowerCase().includes('fitness') ||
+      product.name?.toLowerCase().includes('gym')
+    ) {
+      navigate('/product/american-fitness-gym/dashboard');
+      return;
+    }
+    if (
+      slug === 'flavora-kitchen' ||
+      slug === 'flavora' ||
+      slug.includes('flavora') ||
+      slug.includes('kitchen') ||
+      product.name?.toLowerCase().includes('flavora') ||
+      product.name?.toLowerCase().includes('kitchen')
+    ) {
+      navigate('/product/flavora-kitchen/dashboard');
+      return;
+    }
+    if (
+      slug === 'joy-events' ||
+      slug === 'joy_events' ||
+      slug === 'joy_event-s' ||
+      slug.includes('joy') ||
+      slug.includes('eventoza') ||
+      product.name?.toLowerCase().includes('joy') ||
+      product.name?.toLowerCase().includes('eventoza')
+    ) {
+      navigate('/product/joy-events/dashboard');
+      return;
+    }
+    if (
+      slug === 'speshway-hrms' ||
+      slug === 'hrms' ||
+      slug.includes('hrms') ||
+      product.name?.toLowerCase().includes('hrms')
+    ) {
+      navigate('/product/speshway-hrms/dashboard');
+      return;
+    }
+    if (
       slug === 'saloon' ||
       slug === 'salon' ||
       slug.includes('saloon') ||
