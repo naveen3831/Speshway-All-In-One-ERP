@@ -8,7 +8,6 @@ import { useSocket } from '../context/SocketContext';
 import {
   Globe,
   Shield,
-  ArrowLeft,
   Check,
   ExternalLink,
   Layers,
@@ -21,7 +20,6 @@ import {
   Code2,
   Terminal,
   Activity,
-  Edit2,
   ArrowRight,
 } from 'lucide-react';
 
@@ -31,12 +29,121 @@ export const ProductDetailPage = () => {
   const [modalMode, setModalMode] = useState(null);
   const navigate = useNavigate();
 
-  const product = products.find((p) => p.slug === id || p.id === id);
+  // Robust product lookup with instant fallback if socket/DB is still connecting
+  const foundProduct = products && products.length > 0 ? products.find((p) => p.slug === id || p.id === id) : null;
+  const product = foundProduct || (id === 'speshway-hospitals' || id === 'hospitals' || id?.includes('hospital') ? {
+    id: 'speshway-hospitals',
+    slug: 'speshway-hospitals',
+    name: 'Speshway Hospitals',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'HMS Enterprise is a comprehensive Hospital Management System designed to streamline hospital operations, including patient management, appointments, EMR, billing, pharmacy, laboratory reports, inventory, and staff management — all through one centralized digital platform.',
+    websiteUrl: 'https://speshway.com/hospitals',
+    adminUrl: '/product/speshway-hospitals/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'REST API'],
+    features: ['Diagnostic Lab Reports', 'Pathology & EMR', 'Appointments & Scheduling', 'Pharmacy & Blood Bank', 'Role-Based Access'],
+  } : (id === 'natural-milk-dairy' || id === 'madhur-dairy' || id?.includes('dairy') || id?.includes('milk')) ? {
+    id: 'natural-milk-dairy',
+    slug: 'natural-milk-dairy',
+    name: 'Natural Milk Dairy',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Natural Milk Dairy is an all-in-one Dairy Management System that simplifies product management, customer orders, subscriptions, inventory, daily deliveries, and payments through a centralized admin dashboard.',
+    websiteUrl: 'https://speshway.com/natural-milk-dairy',
+    adminUrl: '/product/natural-milk-dairy/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'REST API'],
+    features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
+  } : (id === 'aneera-silks' || id === 'aneera' || id?.includes('aneera') || id?.includes('silk')) ? {
+    id: 'aneera-silks',
+    slug: 'aneera-silks',
+    name: 'Aneera Silks',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
+    websiteUrl: 'https://aneerasilks.com',
+    adminUrl: '/product/aneera-silks/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Luxury Saree Catalog', 'Silk Mark Certification', 'Real-Time Order Tracking', 'Role-Based Access', 'Bridal Customization', 'Secure Payments'],
+  } : (id === 'e-commerce' || id === 'ecommerce' || id?.includes('e-com') || id?.includes('nexora')) ? {
+    id: 'e-commerce',
+    slug: 'e-commerce',
+    name: 'E commerce',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
+    websiteUrl: 'https://nexora.speshway.com',
+    adminUrl: '/product/e-commerce/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
+  } : (id === 'saloon' || id === 'salon' || id?.includes('salon') || id?.includes('saloon') || id?.includes('spy-salon')) ? {
+    id: 'saloon',
+    slug: 'saloon',
+    name: 'Saloon',
+    category: 'Business Intelligence',
+    status: 'active',
+    description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
+    websiteUrl: 'https://spysalon.speshway.com',
+    adminUrl: '/product/saloon/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
+  } : id === 'vexa-style-hub' ? {
+    id: 'vexa-style-hub',
+    slug: 'vexa-style-hub',
+    name: 'Vexa Style Hub',
+    category: 'Fashion & Apparel',
+    status: 'Active Product',
+    description: 'VEXA Style Hub is a modern clothing e-commerce platform that offers a seamless online shopping experience with stylish collections, easy product browsing, secure payments, and convenient order tracking.',
+    websiteUrl: 'https://vexastylehub.com',
+    adminUrl: '/product/vexa-style-hub/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Real-Time Orders', 'Role-Based Access', 'Apparel Inventory', 'Sales Tracking', 'Manufacturing Batches'],
+  } : null);
+
+  const handleOpenWebsite = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      const url = product?.websiteUrl || `https://speshway.com/${product?.slug || id || ''}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('Error opening website:', err);
+    }
+  };
+
+  const handleOpenAdminDashboard = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      const targetSlug = (product?.slug || id || '').toLowerCase();
+      if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals' || targetSlug.includes('hospital')) {
+        navigate('/dashboard/speshway-hospitals');
+      } else if (targetSlug === 'natural-milk-dairy' || targetSlug === 'madhur-dairy' || targetSlug.includes('dairy') || targetSlug.includes('milk')) {
+        navigate('/product/natural-milk-dairy/dashboard');
+      } else if (targetSlug === 'aneera-silks' || targetSlug === 'aneera' || targetSlug.includes('aneera') || targetSlug.includes('silk')) {
+        navigate('/product/aneera-silks/dashboard');
+      } else if (targetSlug === 'e-commerce' || targetSlug === 'ecommerce' || targetSlug.includes('nexora') || targetSlug.includes('e-com') || targetSlug.includes('ecom')) {
+        navigate('/product/e-commerce/dashboard');
+      } else if (targetSlug === 'saloon' || targetSlug === 'salon' || targetSlug.includes('saloon') || targetSlug.includes('salon') || targetSlug.includes('spy-salon')) {
+        navigate('/product/saloon/dashboard');
+      } else if (targetSlug === 'tours-and-travels' || targetSlug.includes('tour') || targetSlug.includes('travel')) {
+        navigate('/dashboard/tours-and-travels');
+      } else if (targetSlug === 'vexa-style-hub' || targetSlug.includes('vexa') || targetSlug.includes('style-hub')) {
+        navigate('/dashboard/vexa-style-hub');
+      } else if (product?.adminUrl && product.adminUrl.startsWith('/') && product.adminUrl !== '/admin/products') {
+        navigate(product.adminUrl);
+      } else {
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      console.error('Error opening admin dashboard:', err);
+    }
+  };
 
   if (!product) {
     return (
       <div className="landing-wrapper">
-        <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
+        <Navbar
+          onOpenGetStarted={() => setModalMode('get-started')}
+          onOpenDemo={() => setModalMode('demo')}
+        />
         <main className="page-main-container" style={{ textAlign: 'center', padding: '100px 20px', flex: '1 0 auto' }}>
           <h2>Product Not Found</h2>
           <p style={{ marginTop: '10px', color: '#64748b' }}>
@@ -54,47 +161,19 @@ export const ProductDetailPage = () => {
     );
   }
 
-  const handleOpenAdminDashboard = () => {
-    const isHospital =
-      id === 'speshway-hospitals' ||
-      id === 'hospitals' ||
-      id?.includes('hospital') ||
-      product.slug === 'speshway-hospitals' ||
-      product.slug === 'hospitals' ||
-      product.slug?.includes('hospital') ||
-      product.name?.toLowerCase().includes('hospital') ||
-      (product.adminUrl && product.adminUrl.toLowerCase().includes('hospital'));
-
-    if (isHospital) {
-      window.open('/product/speshway-hospitals/dashboard', '_blank', 'noopener,noreferrer');
-      return;
-    }
-
-    if (product.slug === 'tours-and-travels' || product.id === 'tours-and-travels') {
-      window.open('/product/tours-and-travels/dashboard', '_blank', 'noopener,noreferrer');
-    } else if (product.slug === 'vexa-style-hub' || product.id === 'vexa-style-hub') {
-      window.open('/product/vexa-style-hub/dashboard', '_blank', 'noopener,noreferrer');
-    } else if (product.adminUrl && product.adminUrl.startsWith('/')) {
-      window.open(product.adminUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      window.open(`/product/${product.slug || product.id || id}/dashboard`, '_blank', 'noopener,noreferrer');
-    }
-  };
   const technologies = product.technologies && product.technologies.length > 0
     ? product.technologies
     : ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'];
 
   return (
     <div className="landing-wrapper">
-      <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
+      <Navbar
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
 
       <main className="product-page-detail-wrapper">
         <div className="detail-container">
-          {/* Back button */}
-          <Link to="/products" className="back-link-btn">
-            <ArrowLeft size={16} /> Back to Products Catalog
-          </Link>
-
           {/* Product Hero Banner */}
           <div className="product-detail-hero">
             <div className="detail-hero-left">
@@ -121,20 +200,6 @@ export const ProductDetailPage = () => {
                 >
                   <Shield size={18} />
                   <span>View Admin Dashboard</span>
-                  <ExternalLink size={14} style={{ marginLeft: '4px' }} />
-                </button>
-
-                <button
-                  onClick={() => navigate(`/admin/products/edit/${product.slug || product.id}`)}
-                  className="btn-product-action btn-edit-admin-quick"
-                  title="Edit this product in Admin"
-                >
-                  <Edit2 size={16} />
-                  <span>Edit Product</span>
-                </button>
-
-                <button onClick={() => setModalMode('demo')} className="btn-hero-secondary">
-                  Request Live Demo
                 </button>
               </div>
             </div>

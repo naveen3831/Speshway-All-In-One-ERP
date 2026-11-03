@@ -5,11 +5,11 @@ import { Header } from '../common/Header';
 
 export const DashboardLayout = () => {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="dashboard-layout" style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Header />
-        <main style={{ padding: '24px', flex: 1, overflowY: 'auto' }}>
+        <main className="dashboard-main-content" style={{ padding: '24px', flex: 1, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <Outlet />
         </main>
       </div>

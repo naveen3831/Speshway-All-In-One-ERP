@@ -1,0 +1,1075 @@
+.aneera-dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f8fafc;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #1e293b;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   SIDEBAR (Deep Dark Navy #0b1120 matching screenshot)
+========================================================= */
+.aneera-sidebar {
+  width: 250px;
+  min-width: 250px;
+  background-color: #0b1120;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 50;
+  flex-shrink: 0;
+}
+
+.aneera-sidebar-top {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Brand Header */
+.aneera-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 18px 24px 18px;
+  text-decoration: none;
+}
+
+.aneera-brand-logo-wrap {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aneera-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.aneera-brand-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+  line-height: 1.15;
+}
+
+.aneera-brand-sub {
+  font-size: 11px;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+.aneera-brand-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+}
+
+/* Navigation List */
+.aneera-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 12px;
+  list-style: none;
+  margin: 0;
+}
+
+.aneera-nav-item {
+  width: 100%;
+}
+
+.aneera-nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9.5px 14px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.aneera-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+}
+
+.aneera-nav-btn.active {
+  background: #059669;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+}
+
+.aneera-nav-btn.active svg {
+  color: #ffffff;
+}
+
+.aneera-nav-label {
+  flex: 1;
+}
+
+.aneera-nav-badge {
+  background: #059669;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 12px;
+}
+
+.aneera-nav-btn.active .aneera-nav-badge {
+  background: #ffffff;
+  color: #059669;
+}
+
+/* Sidebar Footer / Logout */
+.aneera-sidebar-footer {
+  padding: 16px 12px 20px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aneera-logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.aneera-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* =========================================================
+   MAIN WRAPPER & TOP NAVBAR (Increased Height 82px)
+========================================================= */
+.aneera-main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+.aneera-top-navbar {
+  height: 82px;
+  min-height: 82px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.aneera-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.aneera-nav-brand-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.aneera-operational-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aneera-op-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+.aneera-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.aneera-back-catalog-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #475569;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  transition: all 0.15s ease;
+}
+
+.aneera-back-catalog-link:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.aneera-bell-btn {
+  position: relative;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.aneera-bell-btn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.aneera-bell-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  background-color: #f43f5e;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+.aneera-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 4px 4px;
+  border-radius: 24px;
+}
+
+.aneera-user-name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.aneera-user-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+/* =========================================================
+   DASHBOARD CONTENT
+========================================================= */
+.aneera-content {
+  padding: 26px 32px 48px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Section Header for Non-Dashboard views */
+.aneera-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 4px;
+}
+
+.aneera-section-title-wrap h1 {
+  font-size: 23px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.aneera-section-title-wrap p {
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 4px 0 0 0;
+}
+
+.aneera-section-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aneera-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: #059669;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+  transition: all 0.15s ease;
+}
+
+.aneera-btn-primary:hover {
+  background-color: #047857;
+  transform: translateY(-1px);
+}
+
+.aneera-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.aneera-btn-secondary:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Search and Filters Bar */
+.aneera-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+
+.aneera-search-box {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 7px 14px;
+  flex: 1;
+  max-width: 380px;
+}
+
+.aneera-search-input {
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: #1e293b;
+  outline: none;
+  width: 100%;
+}
+
+.aneera-status-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.aneera-filter-pill-btn {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.aneera-filter-pill-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.aneera-filter-pill-btn.active {
+  background: #059669;
+  color: #ffffff;
+  border-color: #059669;
+  font-weight: 600;
+}
+
+/* Welcome Section */
+.aneera-welcome-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.aneera-welcome-left h1 {
+  font-size: 23px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.aneera-welcome-left p {
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 4px 0 0 0;
+}
+
+.aneera-date-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.aneera-date-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* =========================================================
+   4 KPI STATS GRID
+========================================================= */
+.aneera-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.aneera-kpi-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.aneera-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.aneera-kpi-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aneera-kpi-icon-box.green {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.aneera-kpi-icon-box.blue {
+  background-color: #eff6ff;
+  color: #3b82f6;
+}
+
+.aneera-kpi-icon-box.amber {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+.aneera-kpi-icon-box.purple {
+  background-color: #f5f3ff;
+  color: #7c3aed;
+}
+
+.aneera-kpi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.aneera-kpi-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.aneera-kpi-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.15;
+}
+
+.aneera-kpi-growth {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #16a34a;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.aneera-kpi-subtext {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* =========================================================
+   MIDDLE & BOTTOM GRID (Left ~65% / Right ~35%)
+========================================================= */
+.aneera-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 20px;
+}
+
+.aneera-col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.aneera-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Standard White Card */
+.aneera-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.aneera-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.aneera-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aneera-card-icon {
+  color: #059669;
+}
+
+.aneera-card-icon.amber {
+  color: #f59e0b;
+}
+
+.aneera-card-icon.blue {
+  color: #3b82f6;
+}
+
+.aneera-card-h2 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.aneera-card-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin: 2px 0 0 0;
+}
+
+/* Sales Overview Toggle Buttons */
+.aneera-toggle-pills {
+  display: inline-flex;
+  background-color: #f1f5f9;
+  border-radius: 6px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.aneera-toggle-pill {
+  border: none;
+  background: transparent;
+  padding: 5px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.aneera-toggle-pill.active {
+  background: #059669;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.3);
+}
+
+/* Interactive SVG Area Chart */
+.aneera-chart-container {
+  padding: 20px 20px 14px 20px;
+  position: relative;
+}
+
+.aneera-svg-chart {
+  width: 100%;
+  height: 220px;
+  overflow: visible;
+}
+
+.aneera-chart-point {
+  cursor: pointer;
+  transition: r 0.15s ease;
+}
+
+.aneera-chart-point:hover {
+  r: 6px;
+}
+
+/* Saree Table */
+.aneera-view-all-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s ease;
+}
+
+.aneera-view-all-link:hover {
+  color: #059669;
+}
+
+.aneera-table-wrapper {
+  overflow-x: auto;
+}
+
+.aneera-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.aneera-table th {
+  padding: 12px 18px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.aneera-table td {
+  padding: 14px 18px;
+  font-size: 13px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.aneera-table tr:last-child td {
+  border-bottom: none;
+}
+
+.aneera-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.aneera-order-id {
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.aneera-customer-name {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.aneera-items-text {
+  color: #475569;
+  font-size: 12.5px;
+  max-width: 240px;
+}
+
+.aneera-amount-text {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Badges */
+.aneera-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.aneera-badge.paid,
+.aneera-badge.success,
+.aneera-badge.delivered,
+.aneera-badge.active {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.aneera-badge.cod,
+.aneera-badge.processing,
+.aneera-badge.pending,
+.aneera-badge.paused {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.aneera-badge.out-delivery,
+.aneera-badge.transit,
+.aneera-badge.settled {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.aneera-badge.danger,
+.aneera-badge.failed,
+.aneera-badge.low {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.aneera-order-date {
+  font-size: 12px;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   RIGHT COLUMN LISTS (Top Selling Sarees)
+========================================================= */
+.aneera-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.aneera-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
+}
+
+.aneera-list-item:last-child {
+  border-bottom: none;
+}
+
+.aneera-list-item:hover {
+  background-color: #f8fafc;
+}
+
+.aneera-item-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.aneera-saree-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.aneera-item-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.aneera-item-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.aneera-item-revenue {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.aneera-stock-badge {
+  background-color: #fee2e2;
+  color: #dc2626;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 4px 9px;
+  white-space: nowrap;
+}
+
+/* Cards Grid for Collections & Categories */
+.aneera-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.aneera-feature-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: all 0.15s ease;
+}
+
+.aneera-feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  border-color: #cbd5e1;
+}
+
+.aneera-card-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.aneera-card-badge-row .aneera-badge-pill {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.aneera-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.aneera-card-desc {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 14px 0;
+  line-height: 1.4;
+}
+
+.aneera-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 12.5px;
+  color: #475569;
+}
+
+/* Action button inside table */
+.aneera-table-action-btn {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.aneera-table-action-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Bottom info banner */
+.aneera-info-banner {
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #065f46;
+}
+
+.aneera-info-banner strong {
+  color: #047857;
+  font-weight: 700;
+}
+
+.aneera-info-divider {
+  margin: 0 6px;
+  color: #6ee7b7;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .aneera-main-grid {
+    grid-template-columns: 1fr;
+  }
+  .aneera-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .aneera-sidebar {
+    position: fixed;
+    left: -250px;
+    height: 100vh;
+    transition: left 0.3s ease;
+  }
+  .aneera-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .aneera-content {
+    padding: 16px;
+  }
+}
+
+
+/* Hide all scrollbars within Aneera Dashboard */
+.aneera-dashboard-container,
+.aneera-dashboard-container *,
+.aneera-sidebar,
+.aneera-sidebar-nav,
+.aneera-main,
+.aneera-content,
+.aneera-table-responsive {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.aneera-dashboard-container::-webkit-scrollbar,
+.aneera-dashboard-container *::-webkit-scrollbar,
+.aneera-sidebar::-webkit-scrollbar,
+.aneera-sidebar-nav::-webkit-scrollbar,
+.aneera-main::-webkit-scrollbar,
+.aneera-content::-webkit-scrollbar,
+.aneera-table-responsive::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.aneera-dashboard-container),
+body:has(.aneera-dashboard-container) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.aneera-dashboard-container)::-webkit-scrollbar,
+body:has(.aneera-dashboard-container)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}

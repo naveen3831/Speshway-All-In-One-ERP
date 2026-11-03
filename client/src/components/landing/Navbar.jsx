@@ -1,7 +1,17 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 
-export const Navbar = ({ onOpenGetStarted }) => {
+export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    if (onOpenGetStarted) {
+      onOpenGetStarted();
+    } else {
+      navigate('/get-started');
+    }
+  };
+
   return (
     <header className="navbar-container">
       <div className="navbar-content">
@@ -60,6 +70,17 @@ export const Navbar = ({ onOpenGetStarted }) => {
             Contact
           </NavLink>
         </nav>
+
+        {/* Right Side Action: Get Started Button Type */}
+        <div className="nav-actions">
+          <button
+            type="button"
+            onClick={handleGetStarted}
+            className="btn-get-started"
+          >
+            Get Started &rarr;
+          </button>
+        </div>
       </div>
     </header>
   );

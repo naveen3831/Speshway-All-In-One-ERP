@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Search,
   Home,
@@ -10,10 +11,12 @@ import {
   Settings,
   FileText,
   Clock,
+  ArrowRight,
 } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 
 export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
+  const navigate = useNavigate();
   const { stats } = useSocket();
 
   return (
@@ -40,6 +43,9 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
           <div className="hero-cta-group">
             <button onClick={onOpenDemo} className="btn-hero-primary">
               Request a Demo
+            </button>
+            <button onClick={() => navigate('/products')} className="btn-hero-secondary">
+              View All <ArrowRight size={16} />
             </button>
           </div>
         </div>

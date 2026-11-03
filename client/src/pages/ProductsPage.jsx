@@ -23,6 +23,10 @@ import {
   Handshake,
   ArrowRight,
   Cpu,
+  Building2,
+  Plane,
+  Package,
+  Store,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,7 +44,42 @@ const iconMap = {
   PieChart,
   Handshake,
   Layers,
+  Building2,
+  Plane,
+  Package,
+  Store,
 };
+
+const EXCLUDED_SLUGS = new Set([
+  'reports',
+  'performance',
+  'recruitment',
+  'finance',
+  'clients',
+  'leave',
+  'tasks',
+  'assets',
+  'payroll',
+  'projects',
+  'directory',
+  'hrms',
+]);
+
+const EXCLUDED_NAMES = new Set([
+  'reports & analytics',
+  'performance management',
+  'recruitment & ats',
+  'finance & accounts',
+  'client management (crm)',
+  'client management',
+  'leave & attendance',
+  'task management',
+  'asset management',
+  'payroll system',
+  'project management',
+  'employee directory',
+  'hrms portal',
+]);
 
 export const ProductsPage = () => {
   const { products } = useSocket();
@@ -49,21 +88,24 @@ export const ProductsPage = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const navigate = useNavigate();
 
+  // Filter out the 12 generic application modules
+  const availableProducts = (products || []).filter((p) => {
+    const slug = (p.slug || p.id || '').toLowerCase();
+    const name = (p.name || '').toLowerCase().trim();
+    if (EXCLUDED_SLUGS.has(slug)) return false;
+    if (EXCLUDED_NAMES.has(name)) return false;
+    return true;
+  });
+
   const categories = [
     'All',
-    'Human Resources',
-    'Finance & HR',
-    'Productivity',
-    'Finance',
-    'Sales & CRM',
-    'Operations',
-    'Business Intelligence',
+    ...Array.from(new Set(availableProducts.map((p) => p.category).filter(Boolean))),
   ];
 
-  const filteredProducts = products.filter((p) => {
+  const filteredProducts = availableProducts.filter((p) => {
     const matchesSearch =
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchTerm.toLowerCase());
+      (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.description || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCat = activeCategory === 'All' || p.category === activeCategory;
     return matchesSearch && matchesCat;
   });
@@ -75,7 +117,10 @@ export const ProductsPage = () => {
 
   return (
     <div className="landing-wrapper">
-      <Navbar onOpenGetStarted={() => setModalMode('get-started')} />
+      <Navbar
+        onOpenGetStarted={() => setModalMode('get-started')}
+        onOpenDemo={() => setModalMode('demo')}
+      />
 
       <main className="page-main-container">
         {/* Header */}
@@ -195,18 +240,60 @@ const isHospital =
 
                         let url;
                         if (isHospital) {
-                          url = '/product/speshway-hospitals/dashboard';
+                          url = '/dashboard/speshway-hospitals';
+                        } else if (
+                          prod.slug === 'aneera-silks' ||
+                          prod.slug === 'aneera' ||
+                          prod.slug?.includes('aneera') ||
+                          prod.name?.toLowerCase().includes('aneera') ||
+                          prod.name?.toLowerCase().includes('silk')
+                        ) {
+                          url = '/product/aneera-silks/dashboard';
+                        } else if (
+                          prod.slug === 'e-commerce' ||
+                          prod.slug === 'ecommerce' ||
+                          prod.slug?.includes('nexora') ||
+                          prod.slug?.includes('e-com') ||
+                          prod.name?.toLowerCase().includes('e commerce') ||
+                          prod.name?.toLowerCase().includes('ecommerce') ||
+                          prod.name?.toLowerCase().includes('nexora')
+                        ) {
+                          url = '/product/e-commerce/dashboard';
+                        } else if (
+                          prod.slug === 'saloon' ||
+                          prod.slug === 'salon' ||
+                          prod.slug?.includes('saloon') ||
+                          prod.slug?.includes('salon') ||
+                          prod.slug?.includes('spy-salon') ||
+                          prod.name?.toLowerCase().includes('saloon') ||
+                          prod.name?.toLowerCase().includes('salon')
+                        ) {
+                          url = '/product/saloon/dashboard';
+                        } else if (
+                          prod.slug === 'natural-milk-dairy' ||
+                          prod.slug === 'madhur-dairy' ||
+                          prod.slug?.includes('dairy') ||
+                          prod.name?.toLowerCase().includes('dairy') ||
+                          prod.name?.toLowerCase().includes('milk')
+                        ) {
+                          url = '/dashboard/natural-milk-dairy';
                         } else if (prod.slug === 'tours-and-travels' || prod.id === 'tours-and-travels') {
-                          url = '/product/tours-and-travels/dashboard';
+                          url = '/dashboard/tours-and-travels';
+                        } else if (
+                          prod.slug === 'vexa-style-hub' ||
+                          prod.id === 'vexa-style-hub' ||
+                          prod.slug?.includes('vexa')
+                        ) {
+                          url = '/dashboard/vexa-style-hub';
+                        } else if (prod.adminUrl && prod.adminUrl.startsWith('/') && prod.adminUrl !== '/admin/products') {
+                          url = prod.adminUrl;
                         } else {
-                          url = prod.adminUrl && prod.adminUrl !== '/admin/products'
-                            ? prod.adminUrl
-                            : `/product/${prod.slug || prod.id}/dashboard`;
+                          url = '/dashboard';
                         }
-                        window.open(url, '_blank', 'noopener,noreferrer');
+                        navigate(url);
                       }}
                       className="catalog-btn-link admin-color"
-                      title="View Admin Dashboard"
+                      title="View Admin Dashboard in this site"
                     >
                       <Shield size={14} /> Admin Dashboard
                     </button>

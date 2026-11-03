@@ -143,21 +143,6 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                   Contact Sales Team
                 </Link>
               </li>
-              <li>
-                {onOpenGetStarted ? (
-                  <button
-                    type="button"
-                    onClick={onOpenGetStarted}
-                    className="footer-btn-link footer-btn-cta"
-                  >
-                    Get Started Free &rarr;
-                  </button>
-                ) : (
-                  <Link to="/contact" className="footer-link footer-btn-cta">
-                    Get Started Free &rarr;
-                  </Link>
-                )}
-              </li>
             </ul>
           </div>
         </div>

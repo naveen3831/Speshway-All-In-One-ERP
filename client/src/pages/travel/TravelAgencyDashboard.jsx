@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -101,7 +101,7 @@ export const TravelAgencyDashboard = () => {
       email: 'sneha.iyer@gmail.com',
       phone: '+91 98201 44321',
       destination: 'Kerala Backwaters & Munnar (5D/4N)',
-      budget: 'Γé╣48,000',
+      budget: '₹48,000',
       status: 'Won',
       statusType: 'won',
       agent: 'Vikram M.',
@@ -113,7 +113,7 @@ export const TravelAgencyDashboard = () => {
       email: 'amit@traderscorp.in',
       phone: '+91 94112 88200',
       destination: 'Goa Corporate Annual Offsite (40 Pax)',
-      budget: 'Γé╣1,85,000',
+      budget: '₹1,85,000',
       status: 'Won',
       statusType: 'won',
       agent: 'Karan D.',
@@ -125,7 +125,7 @@ export const TravelAgencyDashboard = () => {
       email: 'priya.mehta@yahoo.com',
       phone: '+91 98721 00234',
       destination: 'Dubai City Lights & Desert Safari (6D/5N)',
-      budget: 'Γé╣1,25,000',
+      budget: '₹1,25,000',
       status: 'Qualified',
       statusType: 'qualified',
       agent: 'Pooja N.',
@@ -137,7 +137,7 @@ export const TravelAgencyDashboard = () => {
       email: 'rahul.sharma@techsol.com',
       phone: '+91 99880 12345',
       destination: 'Himachal Snow & Manali Adventure',
-      budget: 'Γé╣36,000',
+      budget: '₹36,000',
       status: 'New',
       statusType: 'new',
       agent: 'Vikram M.',
@@ -146,17 +146,17 @@ export const TravelAgencyDashboard = () => {
   ]);
 
   const [customersData, setCustomersData] = useState([
-    { id: 'CUST-101', name: 'Sneha Iyer', type: 'Individual', email: 'sneha.iyer@gmail.com', phone: '+91 98201 44321', trips: 3, spent: 'Γé╣1,12,000', status: 'Active' },
-    { id: 'CUST-102', name: 'Amit Traders Ltd.', type: 'Corporate', email: 'travel@traderscorp.in', phone: '+91 94112 88200', trips: 5, spent: 'Γé╣3,37,229', status: 'VIP Account' },
-    { id: 'CUST-103', name: 'Dr. Rajesh Khanna', type: 'Individual', email: 'rkhanna@apollo.org', phone: '+91 98402 11928', trips: 2, spent: 'Γé╣78,500', status: 'Active' },
-    { id: 'CUST-104', name: 'Ananya Deshpande', type: 'Family Group', email: 'ananya.d@gmail.com', phone: '+91 97654 33210', trips: 1, spent: 'Γé╣54,000', status: 'Active' },
+    { id: 'CUST-101', name: 'Sneha Iyer', type: 'Individual', email: 'sneha.iyer@gmail.com', phone: '+91 98201 44321', trips: 3, spent: '₹1,12,000', status: 'Active' },
+    { id: 'CUST-102', name: 'Amit Traders Ltd.', type: 'Corporate', email: 'travel@traderscorp.in', phone: '+91 94112 88200', trips: 5, spent: '₹3,37,229', status: 'VIP Account' },
+    { id: 'CUST-103', name: 'Dr. Rajesh Khanna', type: 'Individual', email: 'rkhanna@apollo.org', phone: '+91 98402 11928', trips: 2, spent: '₹78,500', status: 'Active' },
+    { id: 'CUST-104', name: 'Ananya Deshpande', type: 'Family Group', email: 'ananya.d@gmail.com', phone: '+91 97654 33210', trips: 1, spent: '₹54,000', status: 'Active' },
   ]);
 
   const [vendorsData, setVendorsData] = useState([
-    { id: 'VEND-01', name: 'Taj Hotels & Palaces', category: 'Hotels & Resorts', contract: '12 Luxury Properties', payables: 'Γé╣0', contact: 'Rohan Mehra (Sales Dir.)' },
-    { id: 'VEND-02', name: 'IndiGo Airlines Desk', category: 'Aviation & Flights', contract: 'Corporate Group Desk', payables: 'Γé╣0', contact: 'Pooja V. (Key Accounts)' },
-    { id: 'VEND-03', name: 'Himalayan Transit Cabs', category: 'Fleet & Surface Transport', contract: '18 SUVs / Tempo Travellers', payables: 'Γé╣0', contact: 'Jaspreet Singh (Fleet Head)' },
-    { id: 'VEND-04', name: 'Goa Coastal Water Excursions', category: 'Activities & Watersports', contract: 'Catamaran & Scuba Ops', payables: 'Γé╣0', contact: 'Mario Fernandes' },
+    { id: 'VEND-01', name: 'Taj Hotels & Palaces', category: 'Hotels & Resorts', contract: '12 Luxury Properties', payables: '₹0', contact: 'Rohan Mehra (Sales Dir.)' },
+    { id: 'VEND-02', name: 'IndiGo Airlines Desk', category: 'Aviation & Flights', contract: 'Corporate Group Desk', payables: '₹0', contact: 'Pooja V. (Key Accounts)' },
+    { id: 'VEND-03', name: 'Himalayan Transit Cabs', category: 'Fleet & Surface Transport', contract: '18 SUVs / Tempo Travellers', payables: '₹0', contact: 'Jaspreet Singh (Fleet Head)' },
+    { id: 'VEND-04', name: 'Goa Coastal Water Excursions', category: 'Activities & Watersports', contract: 'Catamaran & Scuba Ops', payables: '₹0', contact: 'Mario Fernandes' },
   ]);
 
   const [inventoryData, setInventoryData] = useState([
@@ -171,7 +171,7 @@ export const TravelAgencyDashboard = () => {
       id: 'PKG-01',
       title: 'Manali Snow & Adventure Trail',
       duration: '6 Days / 5 Nights',
-      price: 'Γé╣24,999',
+      price: '₹24,999',
       inclusions: ['4-Star Hotel', 'Private SUV', 'Breakfast & Dinner', 'Rohtang Pass Permit'],
       gradient: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
     },
@@ -179,7 +179,7 @@ export const TravelAgencyDashboard = () => {
       id: 'PKG-02',
       title: 'Kerala Backwaters & Munnar Hills',
       duration: '5 Days / 4 Nights',
-      price: 'Γé╣29,500',
+      price: '₹29,500',
       inclusions: ['Houseboat Stay', 'Tea Plantation Resort', 'All Transfers', 'Spice Garden Tour'],
       gradient: 'linear-gradient(135deg, #065f46 0%, #10b981 100%)',
     },
@@ -187,7 +187,7 @@ export const TravelAgencyDashboard = () => {
       id: 'PKG-03',
       title: 'Goa Sun, Sand & Sunset Cruise',
       duration: '4 Days / 3 Nights',
-      price: 'Γé╣18,400',
+      price: '₹18,400',
       inclusions: ['Beachfront Resort', 'North & South Goa Cab', 'Mandovi River Cruise', 'Breakfast'],
       gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 100%)',
     },
@@ -195,24 +195,24 @@ export const TravelAgencyDashboard = () => {
       id: 'PKG-04',
       title: 'Dubai Desert Safari & City Lights',
       duration: '6 Days / 5 Nights',
-      price: 'Γé╣62,000',
+      price: '₹62,000',
       inclusions: ['Burj Khalifa Level 124', 'Desert BBQ & Safari', 'Marina Yacht Tour', 'UAE Visa'],
       gradient: 'linear-gradient(135deg, #6b21a8 0%, #a855f7 100%)',
     },
   ]);
 
   const [bookingsData, setBookingsData] = useState([
-    { id: 'HC-BKG-9921', customer: 'Sneha Iyer', package: 'Kerala Backwaters (5D/4N)', travelDates: '12 Nov - 16 Nov 2026', pnr: 'IX-49201', status: 'Confirmed', amount: 'Γé╣48,000' },
-    { id: 'HC-BKG-9922', customer: 'Amit Traders (Group)', package: 'Goa Corporate Retreat (40 Pax)', travelDates: '22 Nov - 25 Nov 2026', pnr: '6E-88219 (Block)', status: 'Confirmed', amount: 'Γé╣1,85,000' },
-    { id: 'HC-BKG-9923', customer: 'Priya Mehta', package: 'Dubai City & Safari (6D/5N)', travelDates: '04 Dec - 09 Dec 2026', pnr: 'EK-512', status: 'Voucher Issued', amount: 'Γé╣1,25,000' },
-    { id: 'HC-BKG-9924', customer: 'Ananya Deshpande', package: 'Manali Snow Trail (6D/5N)', travelDates: '18 Dec - 23 Dec 2026', pnr: 'SG-2201', status: 'Pending Payment', amount: 'Γé╣54,000' },
+    { id: 'HC-BKG-9921', customer: 'Sneha Iyer', package: 'Kerala Backwaters (5D/4N)', travelDates: '12 Nov - 16 Nov 2026', pnr: 'IX-49201', status: 'Confirmed', amount: '₹48,000' },
+    { id: 'HC-BKG-9922', customer: 'Amit Traders (Group)', package: 'Goa Corporate Retreat (40 Pax)', travelDates: '22 Nov - 25 Nov 2026', pnr: '6E-88219 (Block)', status: 'Confirmed', amount: '₹1,85,000' },
+    { id: 'HC-BKG-9923', customer: 'Priya Mehta', package: 'Dubai City & Safari (6D/5N)', travelDates: '04 Dec - 09 Dec 2026', pnr: 'EK-512', status: 'Voucher Issued', amount: '₹1,25,000' },
+    { id: 'HC-BKG-9924', customer: 'Ananya Deshpande', package: 'Manali Snow Trail (6D/5N)', travelDates: '18 Dec - 23 Dec 2026', pnr: 'SG-2201', status: 'Pending Payment', amount: '₹54,000' },
   ]);
 
   const [salesInvoicesData, setSalesInvoicesData] = useState([
-    { id: 'INV-2026-081', customer: 'Amit Traders Ltd.', date: '28 Oct 2026', amount: 'Γé╣1,85,000', gst: 'Γé╣9,250', status: 'Paid', method: 'NEFT Transfer' },
-    { id: 'INV-2026-082', customer: 'Priya Mehta', date: '30 Oct 2026', amount: 'Γé╣1,25,000', gst: 'Γé╣6,250', status: 'Paid', method: 'Credit Card' },
-    { id: 'INV-2026-083', customer: 'Sneha Iyer', date: '01 Nov 2026', amount: 'Γé╣48,000', gst: 'Γé╣2,400', status: 'Paid', method: 'UPI' },
-    { id: 'INV-2026-084', customer: 'Dr. Rajesh Khanna', date: '02 Nov 2026', amount: 'Γé╣27,229', gst: 'Γé╣1,361', status: 'Paid', method: 'Net Banking' },
+    { id: 'INV-2026-081', customer: 'Amit Traders Ltd.', date: '28 Oct 2026', amount: '₹1,85,000', gst: '₹9,250', status: 'Paid', method: 'NEFT Transfer' },
+    { id: 'INV-2026-082', customer: 'Priya Mehta', date: '30 Oct 2026', amount: '₹1,25,000', gst: '₹6,250', status: 'Paid', method: 'Credit Card' },
+    { id: 'INV-2026-083', customer: 'Sneha Iyer', date: '01 Nov 2026', amount: '₹48,000', gst: '₹2,400', status: 'Paid', method: 'UPI' },
+    { id: 'INV-2026-084', customer: 'Dr. Rajesh Khanna', date: '02 Nov 2026', amount: '₹27,229', gst: '₹1,361', status: 'Paid', method: 'Net Banking' },
   ]);
 
   const employeesData = [
@@ -231,10 +231,10 @@ export const TravelAgencyDashboard = () => {
     { id: 'products', label: 'Products', value: packagesData.length.toString() },
     { id: 'low_stock', label: 'Low Stock', value: '1' },
     { id: 'employees', label: 'Employees', value: '3' },
-    { id: 'sales_mo', label: 'Sales (mo)', value: 'Γé╣0' },
-    { id: 'purchase_mo', label: 'Purchase (mo)', value: 'Γé╣0' },
-    { id: 'receivables', label: 'Receivables', value: 'Γé╣3,37,229' },
-    { id: 'payables', label: 'Payables', value: 'Γé╣0' },
+    { id: 'sales_mo', label: 'Sales (mo)', value: '₹0' },
+    { id: 'purchase_mo', label: 'Purchase (mo)', value: '₹0' },
+    { id: 'receivables', label: 'Receivables', value: '₹3,37,229' },
+    { id: 'payables', label: 'Payables', value: '₹0' },
   ];
 
   // Navigation menu items matching exact sidebar from screenshot
@@ -265,7 +265,7 @@ export const TravelAgencyDashboard = () => {
       destination: leadForm.destination,
       email: leadForm.email || 'lead@client.com',
       phone: leadForm.phone || '+91 98000 00000',
-      budget: leadForm.budget.startsWith('Γé╣') ? leadForm.budget : `Γé╣${leadForm.budget || '40,000'}`,
+      budget: leadForm.budget.startsWith('₹') ? leadForm.budget : `₹${leadForm.budget || '40,000'}`,
       agent: leadForm.agent,
       status: leadForm.status,
       statusType: leadForm.status.toLowerCase(),
@@ -296,7 +296,7 @@ export const TravelAgencyDashboard = () => {
       email: customerForm.email || 'client@gmail.com',
       phone: customerForm.phone || '+91 98000 11111',
       trips: 1,
-      spent: 'Γé╣0',
+      spent: '₹0',
       status: 'Active',
     };
 
@@ -314,7 +314,7 @@ export const TravelAgencyDashboard = () => {
       name: vendorForm.name,
       category: vendorForm.category,
       contract: vendorForm.contract || 'Direct Partner',
-      payables: 'Γé╣0',
+      payables: '₹0',
       contact: vendorForm.contact || 'Partner Desk',
     };
 
@@ -331,7 +331,7 @@ export const TravelAgencyDashboard = () => {
       id: `PKG-0${packagesData.length + 1}`,
       title: packageForm.title,
       duration: packageForm.duration,
-      price: packageForm.price.startsWith('Γé╣') ? packageForm.price : `Γé╣${packageForm.price || '25,000'}`,
+      price: packageForm.price.startsWith('₹') ? packageForm.price : `₹${packageForm.price || '25,000'}`,
       inclusions: packageForm.inclusions.split(',').map((s) => s.trim()),
       gradient: 'linear-gradient(135deg, #047857 0%, #10b981 100%)',
     };
@@ -357,7 +357,7 @@ export const TravelAgencyDashboard = () => {
       travelDates: bookingForm.travelDates || 'Next Week',
       pnr: bookingForm.pnr || `HC-${Math.floor(10000 + Math.random() * 90000)}`,
       status: 'Confirmed',
-      amount: bookingForm.amount.startsWith('Γé╣') ? bookingForm.amount : `Γé╣${bookingForm.amount || '35,000'}`,
+      amount: bookingForm.amount.startsWith('₹') ? bookingForm.amount : `₹${bookingForm.amount || '35,000'}`,
     };
 
     setBookingsData((prev) => [newBkg, ...prev]);
@@ -377,8 +377,8 @@ export const TravelAgencyDashboard = () => {
       id: `INV-2026-0${salesInvoicesData.length + 85}`,
       customer: invoiceForm.customer,
       date: 'Today',
-      amount: `Γé╣${numAmt.toLocaleString('en-IN')}`,
-      gst: `Γé╣${gstAmt.toLocaleString('en-IN')}`,
+      amount: `₹${numAmt.toLocaleString('en-IN')}`,
+      gst: `₹${gstAmt.toLocaleString('en-IN')}`,
       status: 'Paid',
       method: invoiceForm.method,
     };
@@ -512,11 +512,11 @@ export const TravelAgencyDashboard = () => {
                   <div className="tat-chart-container">
                     <div className="tat-chart-svg-wrap">
                       <div className="tat-y-axis">
-                        <span>Γé╣3.5L</span>
-                        <span>Γé╣3.0L</span>
-                        <span>Γé╣2.5L</span>
-                        <span>Γé╣2.0L</span>
-                        <span>Γé╣1.5L</span>
+                        <span>₹3.5L</span>
+                        <span>₹3.0L</span>
+                        <span>₹2.5L</span>
+                        <span>₹2.0L</span>
+                        <span>₹1.5L</span>
                       </div>
 
                       <div className="tat-svg-canvas">
@@ -931,21 +931,21 @@ export const TravelAgencyDashboard = () => {
                         <td><code>PO-2026-031</code></td>
                         <td><strong>Taj Resorts Goa</strong></td>
                         <td>18 Deluxe Rooms Booking Block</td>
-                        <td><strong>Γé╣1,26,000</strong></td>
+                        <td><strong>₹1,26,000</strong></td>
                         <td><span className="tat-status-pill success">Settled</span></td>
                       </tr>
                       <tr>
                         <td><code>PO-2026-032</code></td>
                         <td><strong>IndiGo Airlines Desk</strong></td>
                         <td>32 Group Return Flight Tickets</td>
-                        <td><strong>Γé╣1,84,000</strong></td>
+                        <td><strong>₹1,84,000</strong></td>
                         <td><span className="tat-status-pill success">Settled</span></td>
                       </tr>
                       <tr>
                         <td><code>PO-2026-033</code></td>
                         <td><strong>Himalayan Transit Cabs</strong></td>
                         <td>5 SUVs 6D Private Surface Hire</td>
-                        <td><strong>Γé╣27,229</strong></td>
+                        <td><strong>₹27,229</strong></td>
                         <td><span className="tat-status-pill success">Settled</span></td>
                       </tr>
                     </tbody>
@@ -1101,7 +1101,7 @@ export const TravelAgencyDashboard = () => {
                         <td>02 Nov 2026</td>
                         <td>Marketing &amp; Google Ads</td>
                         <td>Goa &amp; Manali Winter Campaign</td>
-                        <td><strong>Γé╣12,500</strong></td>
+                        <td><strong>₹12,500</strong></td>
                         <td>Corporate Credit Card</td>
                         <td><span className="tat-status-pill success">Approved</span></td>
                       </tr>
@@ -1109,7 +1109,7 @@ export const TravelAgencyDashboard = () => {
                         <td>31 Oct 2026</td>
                         <td>UAE Visa Processing Fees</td>
                         <td>Dubai 5 Pax Express Visa</td>
-                        <td><strong>Γé╣18,000</strong></td>
+                        <td><strong>₹18,000</strong></td>
                         <td>Bank Direct Transfer</td>
                         <td><span className="tat-status-pill success">Approved</span></td>
                       </tr>
@@ -1117,7 +1117,7 @@ export const TravelAgencyDashboard = () => {
                         <td>28 Oct 2026</td>
                         <td>Branch Utility &amp; Internet</td>
                         <td>High-speed Fiber Lease Line</td>
-                        <td><strong>Γé╣3,400</strong></td>
+                        <td><strong>₹3,400</strong></td>
                         <td>UPI Auto-debit</td>
                         <td><span className="tat-status-pill success">Approved</span></td>
                       </tr>
@@ -1139,19 +1139,19 @@ export const TravelAgencyDashboard = () => {
               <div className="tat-kpi-grid" style={{ marginBottom: '24px' }}>
                 <div className="tat-kpi-card">
                   <span className="tat-kpi-label">Total Receivables</span>
-                  <span className="tat-kpi-value" style={{ color: '#059669' }}>Γé╣3,37,229</span>
+                  <span className="tat-kpi-value" style={{ color: '#059669' }}>₹3,37,229</span>
                 </div>
                 <div className="tat-kpi-card">
                   <span className="tat-kpi-label">Accounts Payable</span>
-                  <span className="tat-kpi-value">Γé╣0</span>
+                  <span className="tat-kpi-value">₹0</span>
                 </div>
                 <div className="tat-kpi-card">
                   <span className="tat-kpi-label">Cash In Bank</span>
-                  <span className="tat-kpi-value">Γé╣2,84,500</span>
+                  <span className="tat-kpi-value">₹2,84,500</span>
                 </div>
                 <div className="tat-kpi-card">
                   <span className="tat-kpi-label">GST Liability (Q3)</span>
-                  <span className="tat-kpi-value">Γé╣19,261</span>
+                  <span className="tat-kpi-value">₹19,261</span>
                 </div>
               </div>
 
@@ -1174,16 +1174,16 @@ export const TravelAgencyDashboard = () => {
                         <td>HDFC Bank Current</td>
                         <td>Amit Traders Corporate Booking Receipt</td>
                         <td>&mdash;</td>
-                        <td><strong style={{ color: '#059669' }}>+Γé╣1,85,000</strong></td>
-                        <td>Γé╣2,84,500</td>
+                        <td><strong style={{ color: '#059669' }}>+₹1,85,000</strong></td>
+                        <td>₹2,84,500</td>
                       </tr>
                       <tr>
                         <td><code>TXN-990</code></td>
                         <td>HDFC Bank Current</td>
                         <td>Priya Mehta Dubai Booking Receipt</td>
                         <td>&mdash;</td>
-                        <td><strong style={{ color: '#059669' }}>+Γé╣1,25,000</strong></td>
-                        <td>Γé╣99,500</td>
+                        <td><strong style={{ color: '#059669' }}>+₹1,25,000</strong></td>
+                        <td>₹99,500</td>
                       </tr>
                     </tbody>
                   </table>
@@ -1344,7 +1344,7 @@ export const TravelAgencyDashboard = () => {
                       <label className="tat-form-label">Estimated Budget Quote</label>
                       <input
                         type="text"
-                        placeholder="e.g. Γé╣55,000"
+                        placeholder="e.g. ₹55,000"
                         value={leadForm.budget}
                         onChange={(e) => setLeadForm({ ...leadForm, budget: e.target.value })}
                         className="tat-form-input"
@@ -1579,7 +1579,7 @@ export const TravelAgencyDashboard = () => {
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Γé╣32,000"
+                        placeholder="e.g. ₹32,000"
                         value={packageForm.price}
                         onChange={(e) => setPackageForm({ ...packageForm, price: e.target.value })}
                         className="tat-form-input"
@@ -1675,7 +1675,7 @@ export const TravelAgencyDashboard = () => {
                     <label className="tat-form-label">Total Booking Amount</label>
                     <input
                       type="text"
-                      placeholder="e.g. Γé╣48,000"
+                      placeholder="e.g. ₹48,000"
                       value={bookingForm.amount}
                       onChange={(e) => setBookingForm({ ...bookingForm, amount: e.target.value })}
                       className="tat-form-input"
@@ -1726,7 +1726,7 @@ export const TravelAgencyDashboard = () => {
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Γé╣65,000"
+                        placeholder="e.g. ₹65,000"
                         value={invoiceForm.amount}
                         onChange={(e) => setInvoiceForm({ ...invoiceForm, amount: e.target.value })}
                         className="tat-form-input"
