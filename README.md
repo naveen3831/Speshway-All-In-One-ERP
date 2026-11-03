@@ -135,3 +135,20 @@ npm run dev
 | `GET` | `/api/users/:id` | Get user by ID | Admin / Manager |
 | `PUT` | `/api/users/:id` | Update user details | Admin |
 | `DELETE` | `/api/users/:id` | Delete user | Admin |
+
+
+---
+
+## 🏢 Dedicated Industry ERP Dashboards
+
+Speshway All-In-One ERP provides dedicated, full-featured administration dashboards tailored to distinct business verticals, accessible in-site with real-time synchronized status:
+
+| Industry ERP Vertical | In-Site Route | Key Modules & Capabilities |
+|---|---|---|
+| **SPY Salon Studio** | `/product/saloon/dashboard` | Live Chair Scheduling, Stylist Roster, Service Catalog, Memberships & Packages, Studio Till POS |
+| **Nexora Online Store** | `/product/e-commerce/dashboard` | Multi-Category Catalog, Order Fulfillment, Warehouse Inventory, Discount Coupons, Revenue Analytics |
+| **Aneera Silks Luxury Saree ERP** | `/product/aneera-silks/dashboard` | Luxury Handloom Catalog, Silk Mark Certification, Weave Inventory, Bridal Customization, Orders |
+| **Natural Milk Dairy Management** | `/product/natural-milk-dairy/dashboard` | Farm-to-Door Delivery Tracking, Daily Subscriptions, Cold Storage Inventory, Route Dispatch |
+| **Speshway Hospitals (HMS)** | `/product/speshway-hospitals/dashboard` | Inpatient Directory, Bed Occupancy, Lab Diagnostics, OPD / IPD Scheduling, Pharmacy Stock |
+| **Tours & Travels Agency ERP** | `/product/tours-and-travels/dashboard` | Holiday Packages Itinerary Builder, Flight/Hotel Vouchers, CRM Pipeline, Accounts & Invoicing |
+| **Vexa Style Hub Apparel ERP** | `/product/vexa-style-hub/dashboard` | Apparel SKU & Size Matrix, Omnichannel Orders, Showroom POS, Seasonal Sales Analytics |
