@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import api from '../services/api';
+import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
 
 const SocketContext = createContext(null);
 
@@ -52,201 +53,20 @@ export const SocketProvider = ({ children }) => {
     },
   ];
 
-
-  const DEFAULT_CATALOG_PRODUCTS = [
-    {
-      id: 'joy-event-s',
-      slug: 'joy-event-s',
-      name: "JOY_EVENT'S",
-      category: 'Human Resources',
-      description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination. From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
-      websiteUrl: 'https://joyevents.speshway.site/',
-      adminUrl: '/product/joy-events/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/joy-events.jpg',
-      features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    },
-    {
-      id: 'speshway-hrms',
-      slug: 'speshway-hrms',
-      name: 'SPESHWAY-HRMS',
-      category: 'Human Resources',
-      description: 'Speshway HRMS is an all-in-one Human Resource Management System designed to simplify workforce management and automate daily HR operations. Manage employees, attendance, leave requests, payroll, recruitment, and performance through a centralized platform.',
-      websiteUrl: 'https://speshwayhrms.com/',
-      adminUrl: '/product/speshway-hrms/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/speshway-hrms.jpg',
-      features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    },
-    {
-      id: 'flavora-kitchen',
-      slug: 'flavora-kitchen',
-      name: 'FLAVORA KITCHEN',
-      category: 'Human Resources',
-      description: 'Flavora Kitchen is an enterprise cloud kitchen and restaurant management system that streamlines live orders, online deliveries, dining table reservations, recipe costings, kitchen display systems (KDS), and inventory through a centralized digital platform.',
-      websiteUrl: 'https://restaurant.speshway.site/',
-      adminUrl: '/product/flavora-kitchen/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/flavora-kitchen.jpg',
-      features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    },
-    {
-      id: 'american-fitness-gym',
-      slug: 'american-fitness-gym',
-      name: 'AMERICAN FITNESS GYM',
-      category: 'Human Resources',
-      description: 'American Fitness Gym is a modern fitness platform designed to help fitness enthusiasts achieve their health and fitness goals. Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
-      websiteUrl: 'https://speshway.com/',
-      adminUrl: '/product/american-fitness-gym/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/american-fitness-gym.jpg',
-      features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    },
-    {
-      id: 'fleet-management',
-      slug: 'fleet-management',
-      name: 'Fleet Management',
-      category: 'Human Resources',
-      description: 'A smart Fleet Management System designed to simplify vehicle operations, monitor fleet activities, manage drivers and trips, and improve operational efficiency. Track fleet performance, organize vehicle records, and manage transportation operations through one centralized platform.',
-      websiteUrl: 'https://fleet.speshway.site/',
-      adminUrl: '/product/fleet-management/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/fleet-management.jpg',
-      features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    },
-    {
-      id: 'ride-flow',
-      slug: 'ride-flow',
-      name: 'RIDE FLOW',
-      category: 'Human Resources',
-      description: 'RideFlow is a modern two-wheeler platform designed to help customers explore bikes, compare models, discover attractive offers, and connect with dealers. It provides a convenient and user-friendly experience for finding the right bike.',
-      websiteUrl: 'https://bike.speshway.site/',
-      adminUrl: '/product/ride-flow/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/ride-flow.jpg',
-      features: ['Bike Listings', 'Bike Comparison', 'Offers & Deals', 'Dealer Directory', 'Service Support'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
-    },
-    {
-      id: 'saloon',
-      slug: 'saloon',
-      name: 'Saloon',
-      category: 'Business Intelligence',
-      description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
-      websiteUrl: 'https://hairsalon.speshway.site/',
-      adminUrl: '/product/saloon/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/saloon.jpg',
-      features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    },
-    {
-      id: 'e-commerce',
-      slug: 'e-commerce',
-      name: 'E commerce',
-      category: 'Human Resources',
-      description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
-      websiteUrl: 'https://ecom.speshway.site/',
-      adminUrl: '/product/e-commerce/dashboard',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/e-commerce.jpg',
-      features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    },
-    {
-      id: 'aneera-silks',
-      slug: 'aneera-silks',
-      name: 'Aneera Silks',
-      category: 'Fashion & Luxury',
-      description: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
-      websiteUrl: 'https://aneerasilks.com',
-      adminUrl: '/dashboard/aneera-silks',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/aneera-silks.jpg',
-      features: ['Luxury Saree Catalog', 'Silk Mark Certification', 'Real-Time Order Tracking', 'Role-Based Access', 'Bridal Customization', 'Secure Payments'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    },
-    {
-      id: 'natural-milk-dairy',
-      slug: 'natural-milk-dairy',
-      name: 'Natural Milk Dairy',
-      category: 'Dairy & Agriculture',
-      description: 'Natural Milk Dairy is an all-in-one Dairy Management System that simplifies product management, customer orders, subscriptions, inventory, daily deliveries, and payments through a centralized admin dashboard.',
-      websiteUrl: 'https://dairy.speshway.site/',
-      adminUrl: '/product/natural-milk-dairy/dashboard',
-      status: 'active',
-      popularity: 98,
-      imageUrl: '/images/products/natural-milk-dairy.jpg',
-      features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    },
-    {
-      id: 'vexa-style-hub',
-      slug: 'vexa-style-hub',
-      name: 'Vexa Style Hub',
-      category: 'Fashion & Apparel',
-      description: 'Premier fashion apparel ERP with inventory, size matrix management, omnichannel order processing, POS, and supply chain tracking.',
-      websiteUrl: 'https://speshway.com/vexa-style-hub',
-      adminUrl: '/dashboard/vexa-style-hub',
-      status: 'active',
-      popularity: 98,
-      imageUrl: '/images/products/vexa-style-hub.png',
-      features: ['Variant & Size Matrix', 'Omnichannel Orders', 'Showroom POS Integration', 'Fabric & Material Supply Chain', 'Seasonal Sales Analytics'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    },
-    {
-      id: 'speshway-hospitals',
-      slug: 'speshway-hospitals',
-      name: 'Speshway Hospitals',
-      category: 'Healthcare & Hospitals',
-      description: 'HMS Enterprise is a comprehensive Hospital Management System designed to streamline hospital operations, including patient management, appointments, EMR, billing, pharmacy, laboratory reports, inventory, and staff management — all through one centralized digital platform.',
-      websiteUrl: 'https://speshway.com/hospitals',
-      adminUrl: '/dashboard/speshway-hospitals',
-      status: 'active',
-      popularity: 99,
-      imageUrl: '/images/products/speshway-hospitals.jpg',
-      features: ['Diagnostic Lab Reports & Pathology', 'Patient Admissions & Inpatient Directory', 'OPD / IPD Doctor Scheduling', 'Real-Time Bed & Ward Occupancy', 'Pharmacy & Blood Bank Inventory', 'EHR & Digital Health Records'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'],
-    },
-    {
-      id: 'tours-and-travels',
-      slug: 'tours-and-travels',
-      name: 'Tours and Travels',
-      category: 'Tours & Travels',
-      description: 'Comprehensive travel agency software for booking itineraries, ticketing, holiday packages, lead management, accounts, and supplier vouchers.',
-      websiteUrl: 'https://tour.speshway.site/',
-      adminUrl: '/product/tours-and-travels/dashboard',
-      status: 'active',
-      popularity: 97,
-      imageUrl: '/images/products/tours-and-travels.jpg',
-      features: ['Lead & CRM Management', 'Holiday Package Itinerary Builder', 'Hotel & Flight Booking Registry', 'Supplier & Vendor Accounts', 'Receivables & Invoice Generator'],
-      technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    },
-  ];
-
   const [products, setProducts] = useState(() => {
     try {
-      const cached = localStorage.getItem('speshway_products_cache');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed.map(enrichProductWithImage);
+      const saved = localStorage.getItem('speshway_products');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const clean = parsed.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
+          if (clean.length > 0) return clean;
+        }
       }
-    } catch (e) {}
-    return DEFAULT_CATALOG_PRODUCTS;
+    } catch (e) {
+      console.warn('Error reading speshway_products from localStorage:', e);
+    }
+    return DEFAULT_ADMIN_PROJECTS;
   });
   const [modulesData, setModulesData] = useState({
     hrms: DEFAULT_TEAM_MEMBERS,
@@ -259,12 +79,18 @@ export const SocketProvider = ({ children }) => {
   const refreshProducts = async () => {
     try {
       const prodRes = await api.get('/products');
-      if (prodRes.data?.data && Array.isArray(prodRes.data.data)) {
-        setProducts(prodRes.data.data.map(enrichProductWithImage));
-        return prodRes.data.data;
+      if (prodRes.data?.data && Array.isArray(prodRes.data.data) && prodRes.data.data.length > 0) {
+        const clean = prodRes.data.data.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
+        if (clean.length > 0) {
+          setProducts(clean);
+          try {
+            localStorage.setItem('speshway_products', JSON.stringify(clean));
+          } catch (e) {}
+          return clean;
+        }
       }
     } catch (err) {
-      console.warn('Could not refresh products from API:', err.message);
+      console.warn('Could not refresh products from API, maintaining active projects:', err.message);
     }
   };
 
@@ -340,59 +166,77 @@ export const SocketProvider = ({ children }) => {
 
     // Product events
     newSocket.on('product:added', (newProduct) => {
+      if (!newProduct || typeof newProduct !== 'object') return;
       setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
         const targetId = newProduct.id || newProduct._id;
         const targetSlug = newProduct.slug;
-        const exists = prev.some(
+        const exists = safe.some(
           (p) =>
             (p.id && (p.id === targetId || p.id === targetSlug)) ||
             (p._id && (p._id === targetId || p._id === targetSlug)) ||
             (p.slug && p.slug === targetSlug)
         );
         if (exists) {
-          return prev.map((p) =>
+          const updatedList = safe.map((p) =>
             (p.id && (p.id === targetId || p.id === targetSlug)) ||
             (p._id && (p._id === targetId || p._id === targetSlug)) ||
             (p.slug && p.slug === targetSlug)
-              ? newProduct
+              ? { ...p, ...newProduct }
               : p
           );
+          try {
+            localStorage.setItem('speshway_products', JSON.stringify(updatedList));
+          } catch (e) {}
+          return updatedList;
         }
-        return [newProduct, ...prev];
+        const next = [newProduct, ...safe];
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
       });
-      setToastMessage(`Product added: ${newProduct.name}`);
+      setToastMessage(`Product added: ${newProduct.name || 'New Module'}`);
       setTimeout(() => setToastMessage(null), 4000);
-      refreshProducts();
     });
 
     newSocket.on('product:updated', (updated) => {
-      setProducts((prev) =>
-        prev.map((p) => {
+      if (!updated || typeof updated !== 'object') return;
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.map((p) => {
           const matchId =
-            (p.id && (p.id === updated.id || p.id === updated._id)) ||
-            (p._id && (p._id === updated.id || p._id === updated._id));
-          const matchSlug = p.slug && p.slug === updated.slug;
-          return matchId || matchSlug ? updated : p;
-        })
-      );
-      setToastMessage(`Product updated: ${updated.name}`);
+            (p.id && (p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
+            (p._id && (p._id === updated.id || p._id === updated._id || p._id === updated.slug));
+          const matchSlug = p.slug && (p.slug === updated.slug || p.slug === updated.id);
+          return matchId || matchSlug ? { ...p, ...updated } : p;
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
+      setToastMessage(`Product updated: ${updated.name || 'Module'}`);
       setTimeout(() => setToastMessage(null), 4000);
-      refreshProducts();
     });
 
     newSocket.on('product:deleted', (data) => {
       const targetId = data?.id;
       const targetSlug = data?.slug;
-      setProducts((prev) =>
-        prev.filter((p) => {
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.filter((p) => {
           if (targetId && (p.id === targetId || p._id === targetId || p.slug === targetId)) return false;
           if (targetSlug && (p.slug === targetSlug || p.id === targetSlug)) return false;
           return true;
-        })
-      );
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
       setToastMessage(`Product removed from catalog`);
       setTimeout(() => setToastMessage(null), 4000);
-      refreshProducts();
     });
 
     // HRMS real-time updates
@@ -490,11 +334,11 @@ export const SocketProvider = ({ children }) => {
   const triggerAddProduct = async (productData) => {
     try {
       const res = await api.post('/products', productData);
-      if (res.data?.data) {
-        const newProduct = res.data.data;
-        const targetId = newProduct.id || newProduct._id;
-        const targetSlug = newProduct.slug;
-        setProducts((prev) => [
+      const newProduct = res.data?.data || productData;
+      const targetId = newProduct.id || newProduct._id;
+      const targetSlug = newProduct.slug;
+      setProducts((prev) => {
+        const next = [
           newProduct,
           ...prev.filter(
             (p) =>
@@ -504,60 +348,80 @@ export const SocketProvider = ({ children }) => {
                 (p.slug && p.slug === targetSlug)
               )
           ),
-        ]);
-      }
+        ];
+        localStorage.setItem('speshway_products', JSON.stringify(next));
+        return next;
+      });
       await refreshProducts();
       return res.data;
     } catch (err) {
-      console.error('API addProduct error:', err);
-      throw err;
+      console.warn('API addProduct fallback to local state:', err.message);
+      const newProduct = {
+        id: productData.slug || `prod-${Date.now()}`,
+        status: 'active',
+        ...productData,
+      };
+      setProducts((prev) => {
+        const next = [newProduct, ...prev];
+        localStorage.setItem('speshway_products', JSON.stringify(next));
+        return next;
+      });
+      return { success: true, data: newProduct };
     }
   };
 
   const triggerUpdateProduct = async (id, updates) => {
     try {
       const res = await api.put(`/products/${id}`, updates);
-      if (res.data?.data) {
-        const updated = res.data.data;
-        setProducts((prev) =>
-          prev.map((p) => {
-            const matchId =
-              (p.id && (p.id === id || p.id === updated.id || p.id === updated._id)) ||
-              (p._id && (p._id === id || p._id === updated.id || p._id === updated._id));
-            const matchSlug = p.slug && (p.slug === id || p.slug === updated.slug);
-            return matchId || matchSlug ? updated : p;
-          })
-        );
-      }
-      await refreshProducts();
-      return res.data;
+      const updated = res.data?.data || { id, ...updates };
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.map((p) => {
+          const matchId =
+            (p.id && (p.id === id || p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
+            (p._id && (p._id === id || p._id === updated.id || p._id === updated._id || p._id === updated.slug));
+          const matchSlug = p.slug && (p.slug === id || p.slug === updated.slug || p.slug === updated.id);
+          return matchId || matchSlug ? { ...p, ...updated } : p;
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
+      return res.data || { success: true, data: updated };
     } catch (err) {
-      console.error('API updateProduct error:', err);
-      // Fallback local update
-      setProducts((prev) =>
-        prev.map((p) =>
-          p.id === id || p.slug === id ? { ...p, ...updates } : p
-        )
-      );
-      return { success: true, data: { id, ...updates } };
+      console.warn('API updateProduct fallback to local state:', err.message);
+      const updated = { id, ...updates };
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.map((p) => {
+          const match =
+            (p.id && (p.id === id || p.id === updates.slug)) ||
+            (p.slug && (p.slug === id || p.slug === updates.slug)) ||
+            (p._id && p._id === id);
+          return match ? { ...p, ...updates } : p;
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
+      return { success: true, data: updated };
     }
   };
 
   const triggerDeleteProduct = async (id) => {
     try {
       await api.delete(`/products/${id}`);
-      setProducts((prev) =>
-        prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id)
-      );
-      await refreshProducts();
-      return { success: true };
     } catch (err) {
-      console.error('API deleteProduct error:', err);
-      setProducts((prev) =>
-        prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id)
-      );
-      return { success: true };
+      console.warn('API deleteProduct error, updating local state:', err.message);
     }
+    setProducts((prev) => {
+      const next = prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id);
+      localStorage.setItem('speshway_products', JSON.stringify(next));
+      return next;
+    });
+    return { success: true };
   };
 
   const triggerAddEmployee = async (emp) => {

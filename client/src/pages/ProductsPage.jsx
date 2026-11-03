@@ -27,6 +27,7 @@ import {
   Plane,
   Package,
   Store,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -196,28 +197,23 @@ export const ProductsPage = () => {
                     <span className="product-category-tag">{prod.category}</span>
                   </div>
 
-                  {/* Product Preview Image Banner */}
-                  {(() => {
-                    const bannerSrc = prod.imageUrl || getProductFallbackImage(`${prod.slug || ''} ${prod.id || ''} ${prod.name || ''}`);
-                    if (!bannerSrc) return null;
-                    return (
-                      <div className="catalog-card-image-wrap">
-                        <img
-                          src={bannerSrc}
-                          alt={prod.name}
-                          className="catalog-card-preview-img"
-                          onError={(e) => {
-                            const fallback = getProductFallbackImage(`${prod.slug || ''} ${prod.id || ''} ${prod.name || ''}`);
-                            if (fallback && !e.target.src.endsWith(fallback)) {
-                              e.target.src = fallback;
-                            } else {
-                              e.target.parentElement.style.display = 'none';
-                            }
-                          }}
-                        />
-                      </div>
-                    );
-                  })()}
+                  {prod.imageUrl ? (
+                    <div className="catalog-card-image-wrap">
+                      <img src={prod.imageUrl} alt={prod.name} className="catalog-card-preview-img" />
+                    </div>
+                  ) : (
+                    <div
+                      className="catalog-card-image-placeholder"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/admin/products/edit/${prod.slug || prod.id}`);
+                      }}
+                      title="Admin: Click to upload an image for this project"
+                    >
+                      <ImageIcon size={22} className="placeholder-icon" />
+                      <span>+ Add Project Image</span>
+                    </div>
+                  )}
 
                   <h3 className="catalog-product-name">{prod.name}</h3>
                   <p className="catalog-product-desc">{prod.description}</p>
@@ -257,6 +253,18 @@ export const ProductsPage = () => {
                       title="View Website"
                     >
                       <Globe size={14} /> View Website
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/admin/products/edit/${prod.slug || prod.id}`);
+                      }}
+                      className="catalog-btn-image-action"
+                      title="Admin: Upload or change image for this project"
+                    >
+                      <ImageIcon size={13} />
+                      <span>{prod.imageUrl ? 'Change Image' : 'Add Image'}</span>
                     </button>
 
                     <button

@@ -6,12 +6,14 @@ import { getProducts, getProductById } from '../services/productStore.js';
 
 const router = express.Router();
 
-// Helper to find by MongoDB _id or custom slug
+// Helper to find by MongoDB _id or custom slug or string id
 const getProductQuery = (id) => {
-  if (mongoose.Types.ObjectId.isValid(id)) {
-    return { $or: [{ _id: id }, { slug: id }] };
+  const cleanId = String(id || '').trim();
+  const conditions = [{ slug: cleanId }, { id: cleanId }];
+  if (mongoose.Types.ObjectId.isValid(cleanId)) {
+    conditions.push({ _id: cleanId });
   }
-  return { slug: id };
+  return { $or: conditions };
 };
 
 // @desc    Get all products from MongoDB database (newest first)
@@ -19,29 +21,24 @@ const getProductQuery = (id) => {
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    let products = [];
-    try {
-      products = await Product.find().lean();
-    } catch (dbErr) {
-      console.warn('MongoDB Product.find warning:', dbErr.message);
-    }
-
+    const sortField =
+      req.query.sort === 'popularity'
+        ? { popularity: -1, createdAt: -1 }
+        : { createdAt: -1, popularity: -1 };
+    let products = await Product.find().sort(sortField);
     if (!products || products.length === 0) {
-      products = getProducts();
+      const { getProducts, initialProducts } = await import('../services/productStore.js');
+      products = getProducts ? getProducts() : initialProducts;
     }
-
-    // Sort safely in JavaScript memory (never fails with MongoDB 32MB sort limit)
-    products.sort((a, b) => {
-      if (req.query.sort === 'popularity') {
-        return (b.popularity || 0) - (a.popularity || 0) || new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-      }
-      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0) || (b.popularity || 0) - (a.popularity || 0);
-    });
-
     res.json({ success: true, count: products.length, data: products });
   } catch (err) {
-    const fallback = getProducts();
-    res.json({ success: true, count: fallback.length, data: fallback });
+    try {
+      const { getProducts, initialProducts } = await import('../services/productStore.js');
+      const products = getProducts ? getProducts() : initialProducts;
+      res.json({ success: true, count: products.length, data: products });
+    } catch (fallbackErr) {
+      res.status(500).json({ success: false, message: err.message });
+    }
   }
 });
 
@@ -176,17 +173,32 @@ router.put('/:id', async (req, res) => {
       body.features = body.features.split(',').map((f) => f.trim()).filter(Boolean);
     }
 
-    const updated = await Product.findOneAndUpdate(
-      getProductQuery(req.params.id),
-      body,
-      { new: true, runValidators: true }
+    // 1. Update in-memory store so changes reflect immediately even without MongoDB
+    const { updateProduct: updateMemoryProduct, addProduct: addMemoryProduct } = await import(
+      '../services/productStore.js'
     );
-
-    if (!updated) {
-      return res.status(404).json({ success: false, message: 'Product not found in database' });
+    let memUpdated = updateMemoryProduct(rawId, body);
+    if (!memUpdated) {
+      memUpdated = addMemoryProduct({ ...body, id: rawId, slug: body.slug || rawId });
     }
 
-    const plainUpdated = updated.toJSON ? updated.toJSON() : updated;
+    // 2. Update or upsert in MongoDB database
+    let updated = null;
+    try {
+      updated = await Product.findOneAndUpdate(
+        getProductQuery(rawId),
+        { ...body, slug: body.slug || rawId },
+        { new: true, runValidators: false, upsert: true, setDefaultsOnInsert: true }
+      );
+    } catch (dbErr) {
+      console.warn('MongoDB Product.findOneAndUpdate error (fallback to memory store):', dbErr.message);
+    }
+
+    const plainUpdated = updated
+      ? updated.toJSON
+        ? updated.toJSON()
+        : updated
+      : memUpdated || { id: rawId, ...body };
 
     // Real-time WebSocket broadcast
     const io = getIO();
@@ -195,13 +207,14 @@ router.put('/:id', async (req, res) => {
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product updated in database: "${updated.name}" details refreshed`,
+        text: `Product updated: "${plainUpdated.name || rawId}" details refreshed`,
         time: 'Just now',
       });
     }
 
     res.json({ success: true, data: plainUpdated });
   } catch (err) {
+    console.error('Error in PUT /api/products/:id:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -211,24 +224,31 @@ router.put('/:id', async (req, res) => {
 // @access  Public
 router.delete('/:id', async (req, res) => {
   try {
-    const deleted = await Product.findOneAndDelete(getProductQuery(req.params.id));
-    if (!deleted) {
-      return res.status(404).json({ success: false, message: 'Product not found in database' });
+    const rawId = req.params.id ? decodeURIComponent(req.params.id).trim() : '';
+
+    const { deleteProduct: deleteMemoryProduct } = await import('../services/productStore.js');
+    deleteMemoryProduct(rawId);
+
+    let deleted = null;
+    try {
+      deleted = await Product.findOneAndDelete(getProductQuery(rawId));
+    } catch (dbErr) {
+      console.warn('MongoDB Product.findOneAndDelete error:', dbErr.message);
     }
 
     // Real-time WebSocket broadcast
     const io = getIO();
     if (io) {
-      io.emit('product:deleted', { id: deleted.id, slug: deleted.slug });
+      io.emit('product:deleted', { id: rawId, slug: rawId });
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product "${deleted.name}" permanently deleted from database`,
+        text: `Product "${rawId}" deleted from products catalog`,
         time: 'Just now',
       });
     }
 
-    res.json({ success: true, message: 'Product deleted from database successfully', id: deleted.id, slug: deleted.slug });
+    res.json({ success: true, message: 'Product deleted successfully', id: rawId, slug: rawId });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

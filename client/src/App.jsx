@@ -11,6 +11,7 @@ import { FeaturesPage } from './pages/FeaturesPage';
 import { WhyUsPage } from './pages/WhyUsPage';
 import { PricingPage } from './pages/PricingPage';
 import { ContactPage } from './pages/ContactPage';
+import { FaqPage } from './pages/FaqPage';
 import { GetStartedPage } from './pages/GetStartedPage';
 
 // Admin Portal Pages
@@ -30,28 +31,30 @@ import { DairyDashboard } from './pages/dairy/DairyDashboard';
 import { AneeraDashboard } from './pages/aneera/AneeraDashboard';
 import { NexoraDashboard } from './pages/ecommerce/NexoraDashboard';
 import { SalonDashboard } from './pages/salon/SalonDashboard';
-import { FleetDashboard } from './pages/fleet/FleetDashboard';
-import { GymDashboard } from './pages/gym/GymDashboard';
-import { FlavoraKitchenDashboard } from './pages/restaurant/FlavoraKitchenDashboard';
-import { HrmsDashboard } from './pages/hrms/HrmsDashboard';
-import { JoyEventsDashboard } from './pages/events/JoyEventsDashboard';
-import { RideFlowDashboard } from './pages/bikes/RideFlowDashboard';
+import { ServiceCenterDashboard } from './pages/service/ServiceCenterDashboard';
+import { RealEstateDashboard } from './pages/realestate/RealEstateDashboard';
+import { SchoolDashboard } from './pages/school/SchoolDashboard';
+import { HotelDashboard } from './pages/hotel/HotelDashboard';
 
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
 import { NotFound } from './pages/NotFound';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        <BrowserRouter>
-          <Routes>
+    <ErrorBoundary>
+      <AuthProvider>
+        <SocketProvider>
+          <BrowserRouter>
+            <ErrorBoundary>
+              <Routes>
             {/* 1. SEPARATE PUBLIC WEBSITE PAGES */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/projects" element={<ProductsPage />} />
 
             {/* DEDICATED INDUSTRY ERP DASHBOARDS (Both /dashboard/:slug and /product/:slug/dashboard) */}
             <Route path="/product/speshway-hospitals/dashboard" element={<HospitalDashboard />} />
@@ -110,69 +113,33 @@ export default function App() {
             <Route path="/salon-dashboard" element={<SalonDashboard />} />
             <Route path="/saloon-dashboard" element={<SalonDashboard />} />
 
-            <Route path="/product/fleet-management/dashboard" element={<FleetDashboard />} />
-            <Route path="/product/fleet/dashboard" element={<FleetDashboard />} />
-            <Route path="/dashboard/fleet-management" element={<FleetDashboard />} />
-            <Route path="/dashboard/fleet" element={<FleetDashboard />} />
-            <Route path="/fleet-erp/dashboard" element={<FleetDashboard />} />
-            <Route path="/fleet-dashboard" element={<FleetDashboard />} />
+            {/* Service Center, Real Estate, School & Hotel In-Site ERP Dashboards */}
+            <Route path="/dashboard/service-center" element={<ServiceCenterDashboard />} />
+            <Route path="/product/service-center/dashboard" element={<ServiceCenterDashboard />} />
+            <Route path="/service-center-erp" element={<ServiceCenterDashboard />} />
 
-            <Route path="/product/american-fitness-gym/dashboard" element={<GymDashboard />} />
-            <Route path="/product/american-fitness/dashboard" element={<GymDashboard />} />
-            <Route path="/product/gym/dashboard" element={<GymDashboard />} />
-            <Route path="/dashboard/american-fitness-gym" element={<GymDashboard />} />
-            <Route path="/dashboard/american-fitness" element={<GymDashboard />} />
-            <Route path="/dashboard/gym" element={<GymDashboard />} />
-            <Route path="/gym-erp/dashboard" element={<GymDashboard />} />
-            <Route path="/gym-dashboard" element={<GymDashboard />} />
+            <Route path="/dashboard/real-estate" element={<RealEstateDashboard />} />
+            <Route path="/product/real-estate/dashboard" element={<RealEstateDashboard />} />
+            <Route path="/real-estate-erp" element={<RealEstateDashboard />} />
 
-            <Route path="/product/flavora-kitchen/dashboard" element={<FlavoraKitchenDashboard />} />
-            <Route path="/product/flavora/dashboard" element={<FlavoraKitchenDashboard />} />
-            <Route path="/dashboard/flavora-kitchen" element={<FlavoraKitchenDashboard />} />
-            <Route path="/dashboard/flavora" element={<FlavoraKitchenDashboard />} />
-            <Route path="/restaurant-erp/dashboard" element={<FlavoraKitchenDashboard />} />
-            <Route path="/flavora-dashboard" element={<FlavoraKitchenDashboard />} />
+            <Route path="/dashboard/school-erp" element={<SchoolDashboard />} />
+            <Route path="/product/school-erp/dashboard" element={<SchoolDashboard />} />
+            <Route path="/school-erp" element={<SchoolDashboard />} />
 
-            <Route path="/product/speshway-hrms/dashboard" element={<HrmsDashboard />} />
-            <Route path="/product/speshway-hrms/dashboad" element={<HrmsDashboard />} />
-            <Route path="/product/hrms/dashboard" element={<HrmsDashboard />} />
-            <Route path="/dashboard/speshway-hrms" element={<HrmsDashboard />} />
-            <Route path="/dashboard/hrms" element={<HrmsDashboard />} />
-            <Route path="/hrms-erp/dashboard" element={<HrmsDashboard />} />
-            <Route path="/hrms-dashboard" element={<HrmsDashboard />} />
-
-            <Route path="/product/joy-events/dashboard" element={<JoyEventsDashboard />} />
-            <Route path="/product/joy-events/dashboad" element={<JoyEventsDashboard />} />
-            <Route path="/product/joy_events/dashboard" element={<JoyEventsDashboard />} />
-            <Route path="/product/joy_event-s/dashboard" element={<JoyEventsDashboard />} />
-            <Route path="/product/joy_event-s/dashboad" element={<JoyEventsDashboard />} />
-            <Route path="/product/joy-event/dashboard" element={<JoyEventsDashboard />} />
-            <Route path="/product/eventoza/dashboard" element={<JoyEventsDashboard />} />
-            <Route path="/product/eventoza/dashboad" element={<JoyEventsDashboard />} />
-            <Route path="/dashboard/joy-events" element={<JoyEventsDashboard />} />
-            <Route path="/dashboard/joy_events" element={<JoyEventsDashboard />} />
-            <Route path="/dashboard/joy_event-s" element={<JoyEventsDashboard />} />
-            <Route path="/dashboard/eventoza" element={<JoyEventsDashboard />} />
-            <Route path="/joy-events/dashboard" element={<JoyEventsDashboard />} />
-            <Route path="/events-erp/dashboard" element={<JoyEventsDashboard />} />
-            <Route path="/joy-events-dashboard" element={<JoyEventsDashboard />} />
-
-            <Route path="/product/ride-flow/dashboard" element={<RideFlowDashboard />} />
-            <Route path="/product/ride-flow/dashboad" element={<RideFlowDashboard />} />
-            <Route path="/product/rideflow/dashboard" element={<RideFlowDashboard />} />
-            <Route path="/product/rideflow/dashboad" element={<RideFlowDashboard />} />
-            <Route path="/dashboard/ride-flow" element={<RideFlowDashboard />} />
-            <Route path="/dashboard/rideflow" element={<RideFlowDashboard />} />
-            <Route path="/ride-flow/dashboard" element={<RideFlowDashboard />} />
-            <Route path="/ride-flow-dashboard" element={<RideFlowDashboard />} />
-            <Route path="/bikes-erp/dashboard" element={<RideFlowDashboard />} />
+            <Route path="/dashboard/hotel-erp" element={<HotelDashboard />} />
+            <Route path="/product/hotel-erp/dashboard" element={<HotelDashboard />} />
+            <Route path="/hotel-erp" element={<HotelDashboard />} />
 
             <Route path="/product/:id/dashboard" element={<Navigate to="/dashboard" replace />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/why-us" element={<WhyUsPage />} />
+            <Route path="/about" element={<WhyUsPage />} />
+            <Route path="/about-us" element={<WhyUsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/contact-us" element={<ContactPage />} />
+            <Route path="/faq" element={<FaqPage />} />
             <Route path="/get-started" element={<GetStartedPage />} />
 
             {/* 2. AUTHENTICATION */}
@@ -182,6 +149,9 @@ export default function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminOverview />} />
               <Route path="products" element={<AdminProducts />} />
+              <Route path="projects" element={<AdminProducts />} />
+              <Route path="projects/new" element={<AdminProductForm />} />
+              <Route path="projects/edit/:id" element={<AdminProductForm />} />
               <Route path="products/new" element={<AdminProductForm />} />
               <Route path="products/edit/:id" element={<AdminProductForm />} />
               <Route path="urls" element={<AdminProducts />} />
@@ -204,8 +174,10 @@ export default function App() {
             {/* 5. 404 CATCH-ALL */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </ErrorBoundary>
         </BrowserRouter>
       </SocketProvider>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }

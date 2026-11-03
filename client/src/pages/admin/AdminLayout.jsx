@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 import {
   LayoutDashboard,
   Package,
@@ -19,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export const AdminLayout = () => {
-  const { user, login, logout } = useAuth();
+  const { user, loading, login, logout } = useAuth();
   const navigate = useNavigate();
 
   // Admin login form state
@@ -52,6 +53,15 @@ export const AdminLayout = () => {
     setPassword('');
     navigate('/admin');
   };
+
+  // 0. While reading credentials from local storage
+  if (loading) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc' }}>
+        <div style={{ color: '#00875a', fontWeight: 600, fontSize: '1rem' }}>Loading Admin Console...</div>
+      </div>
+    );
+  }
 
   // 1. If not authenticated as Admin, show the Clean, Simple & Professional Admin Login Page
   if (!user || user.role !== 'admin') {
@@ -185,7 +195,7 @@ export const AdminLayout = () => {
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Package size={18} />
-            <span>Products Management</span>
+            <span>Projects Management</span>
           </NavLink>
 
           <NavLink
@@ -231,15 +241,17 @@ export const AdminLayout = () => {
             <div className="admin-profile-badge">
               <div className="admin-avatar">AD</div>
               <div className="admin-meta">
-                <span className="name">{user.name || 'Administrator'}</span>
-                <span className="email">{user.email || 'admin@gmail.com'}</span>
+                <span className="name">{user?.name || 'Administrator'}</span>
+                <span className="email">{user?.email || 'admin@gmail.com'}</span>
               </div>
             </div>
           </div>
         </header>
 
         <div className="admin-content-inner">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </div>
       </div>
     </div>
