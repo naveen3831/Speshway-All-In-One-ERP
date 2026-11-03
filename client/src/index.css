@@ -4073,13 +4073,16 @@ button {
 /* Images on Public Catalog Cards */
 .catalog-card-image-wrap {
   width: 100%;
-  height: 140px;
+  height: 155px;
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 12px;
-  margin-bottom: 8px;
-  background-color: #f1f5f9;
+  margin-top: 0;
+  margin-bottom: 14px;
+  background-color: #f8fafc;
   border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .catalog-card-preview-img {
@@ -4775,3 +4778,509 @@ body:has(.admin-layout-container)::-webkit-scrollbar {
   width: 0 !important;
   height: 0 !important;
 }
+
+
+/* Fleet Management Dashboard Scrollbar Suppression */
+.fleet-wrapper,
+.fleet-wrapper * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.fleet-wrapper::-webkit-scrollbar,
+.fleet-wrapper *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.fleet-wrapper),
+body:has(.fleet-wrapper) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.fleet-wrapper)::-webkit-scrollbar,
+body:has(.fleet-wrapper)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+/* American Fitness Gym Dashboard Scrollbar Suppression */
+.gym-wrapper,
+.gym-wrapper * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.gym-wrapper::-webkit-scrollbar,
+.gym-wrapper *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.gym-wrapper),
+body:has(.gym-wrapper) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.gym-wrapper)::-webkit-scrollbar,
+body:has(.gym-wrapper)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+/* Flavora Kitchen Dashboard Scrollbar Suppression */
+.flavora-wrapper,
+.flavora-wrapper * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.flavora-wrapper::-webkit-scrollbar,
+.flavora-wrapper *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.flavora-wrapper),
+body:has(.flavora-wrapper) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.flavora-wrapper)::-webkit-scrollbar,
+body:has(.flavora-wrapper)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+/* Speshway HRMS Dashboard Scrollbar Suppression */
+.hrms-wrapper,
+.hrms-wrapper * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.hrms-wrapper::-webkit-scrollbar,
+.hrms-wrapper *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.hrms-wrapper),
+body:has(.hrms-wrapper) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.hrms-wrapper)::-webkit-scrollbar,
+body:has(.hrms-wrapper)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Joy Events Dashboard Scrollbar Suppression */
+.joy-wrapper,
+.joy-wrapper * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.joy-wrapper::-webkit-scrollbar,
+.joy-wrapper *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.joy-wrapper),
+body:has(.joy-wrapper) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.joy-wrapper)::-webkit-scrollbar,
+body:has(.joy-wrapper)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* RideFlow Dashboard Scrollbar Suppression */
+.rf-wrapper,
+.rf-wrapper * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.rf-wrapper::-webkit-scrollbar,
+.rf-wrapper *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html:has(.rf-wrapper),
+body:has(.rf-wrapper) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html:has(.rf-wrapper)::-webkit-scrollbar,
+body:has(.rf-wrapper)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ==========================================================================
+   ENTERPRISE ADMIN DASHBOARDS - BULLETPROOF STICKY SIDEBARS & CARD OVERFLOW PROTECTION
+   Enforces fixed left sidebars (only content scrolls) and stops cards overflowing
+   Across all products: RideFlow, Joy Events, Flavora, HRMS, Gym, Fleet, Salon,
+   Dairy, Aneera, Nexora, Hospital, Travel, Vexa & Core Admin
+   ========================================================================== */
+
+/* 1. Viewport-Locked Container: Stops browser window from scrolling */
+.rf-wrapper,
+.joy-wrapper,
+.flavora-wrapper,
+.hrms-wrapper,
+.gym-wrapper,
+.fleet-wrapper,
+.salon-wrapper,
+.dairy-dashboard-container,
+.aneera-dashboard-container,
+.nexora-wrapper,
+.hosp-erp-root,
+.tat-erp-root,
+.vexa-erp-root,
+.dashboard-layout {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  position: relative !important;
+}
+
+/* 2. Permanent Sticky / Pinned Sidebar: 100vh height, never moves when content scrolls */
+.rf-sidebar,
+.joy-sidebar,
+.flavora-sidebar,
+.hrms-sidebar,
+.gym-sidebar,
+.fleet-sidebar,
+.salon-sidebar,
+.dairy-sidebar,
+.aneera-sidebar,
+.nexora-sidebar,
+.hosp-sidebar,
+.tat-sidebar,
+.vexa-sidebar,
+.dashboard-layout aside {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 50 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.rf-sidebar::-webkit-scrollbar,
+.joy-sidebar::-webkit-scrollbar,
+.flavora-sidebar::-webkit-scrollbar,
+.hrms-sidebar::-webkit-scrollbar,
+.gym-sidebar::-webkit-scrollbar,
+.fleet-sidebar::-webkit-scrollbar,
+.salon-sidebar::-webkit-scrollbar,
+.dairy-sidebar::-webkit-scrollbar,
+.aneera-sidebar::-webkit-scrollbar,
+.nexora-sidebar::-webkit-scrollbar,
+.hosp-sidebar::-webkit-scrollbar,
+.tat-sidebar::-webkit-scrollbar,
+.vexa-sidebar::-webkit-scrollbar,
+.dashboard-layout aside::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+/* 3. Independent Scrolling Main Area: ONLY this area scrolls when user scrolls mouse wheel */
+.rf-main,
+.joy-main,
+.flavora-main,
+.hrms-main,
+.gym-main,
+.fleet-main,
+.salon-main,
+.dairy-main-wrapper,
+.aneera-main-wrapper,
+.nexora-main,
+.hosp-main-wrapper,
+.tat-main-wrapper,
+.vexa-main-wrapper,
+.dashboard-main-content {
+  flex: 1 !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.rf-main::-webkit-scrollbar,
+.joy-main::-webkit-scrollbar,
+.flavora-main::-webkit-scrollbar,
+.hrms-main::-webkit-scrollbar,
+.gym-main::-webkit-scrollbar,
+.fleet-main::-webkit-scrollbar,
+.salon-main::-webkit-scrollbar,
+.dairy-main-wrapper::-webkit-scrollbar,
+.aneera-main-wrapper::-webkit-scrollbar,
+.nexora-main::-webkit-scrollbar,
+.hosp-main-wrapper::-webkit-scrollbar,
+.tat-main-wrapper::-webkit-scrollbar,
+.vexa-main-wrapper::-webkit-scrollbar,
+.dashboard-main-content::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+/* 4. Sticky Topbar inside scrolling content */
+.rf-topbar,
+.joy-topbar,
+.flavora-topbar,
+.hrms-topbar,
+.gym-topbar,
+.fleet-topbar,
+.salon-topbar,
+.dairy-top-navbar,
+.aneera-top-navbar,
+.nexora-topbar,
+.hosp-topbar,
+.tat-topbar,
+.vexa-topbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 40 !important;
+  flex-shrink: 0 !important;
+}
+
+/* 5. Complete Card Overflow & Overfloat Suppression */
+/* Prevents any content from leaking or breaking outside card borders */
+.rf-stat-card,
+.joy-stat-card,
+.flavora-stat-card,
+.hrms-stat-card,
+.gym-stat-card,
+.fleet-stat-card,
+.salon-stat-card,
+.rf-card,
+.joy-card,
+.flavora-card,
+.hrms-card,
+.gym-card,
+.fleet-card,
+.salon-card,
+.dairy-stat-card,
+.dairy-card,
+.aneera-stat-card,
+.aneera-card,
+.nexora-stat-card,
+.nexora-card,
+.hosp-stat-card,
+.hosp-card,
+.tat-card,
+.vexa-stat-card,
+.vexa-card {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.rf-stat-info,
+.joy-stat-info,
+.flavora-stat-info,
+.hrms-stat-info,
+.gym-stat-info,
+.fleet-stat-info,
+.salon-stat-info,
+.dairy-stat-info,
+.aneera-stat-info,
+.nexora-stat-info,
+.hosp-stat-info {
+  min-width: 0 !important;
+  flex: 1 !important;
+  overflow: hidden !important;
+}
+
+.rf-stat-value,
+.joy-stat-value,
+.flavora-stat-value,
+.hrms-stat-value,
+.gym-stat-value,
+.fleet-stat-value,
+.salon-stat-value,
+.dairy-stat-value,
+.aneera-stat-value,
+.nexora-stat-value {
+  font-size: clamp(17px, 1.35vw, 24px) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.rf-stat-label,
+.joy-stat-label,
+.flavora-stat-label,
+.hrms-stat-label,
+.gym-stat-label,
+.fleet-stat-label,
+.salon-stat-label,
+.dairy-stat-label,
+.aneera-stat-label,
+.nexora-stat-label,
+.rf-stat-trend,
+.joy-stat-trend,
+.flavora-stat-trend,
+.hrms-stat-trend,
+.gym-stat-trend,
+.fleet-stat-trend,
+.salon-stat-trend,
+.dairy-stat-trend,
+.aneera-stat-trend {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* Responsive Grid Adapters so 5 KPI Cards never squash & overflow */
+@media (max-width: 1380px) {
+  .rf-stats-grid,
+  .joy-stats-grid,
+  .flavora-stats-grid,
+  .hrms-stats-grid,
+  .gym-stats-grid,
+  .fleet-stats-grid,
+  .salon-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .rf-stats-grid,
+  .joy-stats-grid,
+  .flavora-stats-grid,
+  .hrms-stats-grid,
+  .gym-stats-grid,
+  .fleet-stats-grid,
+  .salon-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Middle Analytics Row Responsive */
+@media (max-width: 1280px) {
+  .rf-analytics-grid,
+  .joy-middle-grid,
+  .flavora-analytics-grid,
+  .hrms-analytics-grid,
+  .gym-analytics-grid,
+  .fleet-analytics-grid,
+  .salon-analytics-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .rf-analytics-grid,
+  .joy-middle-grid,
+  .flavora-analytics-grid,
+  .hrms-analytics-grid,
+  .gym-analytics-grid,
+  .fleet-analytics-grid,
+  .salon-analytics-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Bottom Grid Responsive */
+@media (max-width: 1100px) {
+  .rf-bottom-grid,
+  .joy-bottom-grid,
+  .flavora-bottom-grid,
+  .hrms-bottom-grid,
+  .gym-bottom-grid,
+  .fleet-bottom-grid,
+  .salon-bottom-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Table Responsive Wrappers */
+.rf-table-responsive,
+.joy-table-responsive,
+.flavora-table-responsive,
+.hrms-table-responsive,
+.gym-table-responsive,
+.fleet-table-responsive,
+.salon-table-responsive {
+  width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+
+.rf-table,
+.joy-table,
+.flavora-table,
+.hrms-table,
+.gym-table,
+.fleet-table,
+.salon-table {
+  width: 100% !important;
+  min-width: 480px !important;
+  border-collapse: collapse !important;
+}
+
+.rf-table th,
+.rf-table td,
+.joy-table th,
+.joy-table td,
+.flavora-table th,
+.flavora-table td,
+.hrms-table th,
+.hrms-table td,
+.gym-table th,
+.gym-table td,
+.fleet-table th,
+.fleet-table td,
+.salon-table th,
+.salon-table td {
+  white-space: nowrap !important;
+}
+

@@ -5,6 +5,7 @@ import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket } from '../context/SocketContext';
+import { getProductFallbackImage } from './ProductsPage';
 import {
   Globe,
   Shield,
@@ -75,6 +76,72 @@ export const ProductDetailPage = () => {
     adminUrl: '/product/e-commerce/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
+  } : (id === 'fleet-management' || id === 'fleet' || id?.includes('fleet')) ? {
+    id: 'fleet-management',
+    slug: 'fleet-management',
+    name: 'Fleet Management',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'A smart Fleet Management System designed to simplify vehicle operations, monitor fleet activities, manage drivers and trips, and improve operational efficiency. Track fleet performance, organize vehicle records, and manage transportation operations through one centralized platform.',
+    websiteUrl: 'https://fleet.speshway.com',
+    adminUrl: '/product/fleet-management/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
+  } : (id === 'american-fitness-gym' || id === 'american-fitness' || id?.includes('fitness') || id?.includes('gym')) ? {
+    id: 'american-fitness-gym',
+    slug: 'american-fitness-gym',
+    name: 'American Fitness Gym',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'American Fitness Gym is a modern fitness platform designed to help fitness enthusiasts achieve their health and fitness goals. Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
+    websiteUrl: 'https://americanfitness.speshway.com',
+    adminUrl: '/product/american-fitness-gym/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
+  } : (id === 'flavora-kitchen' || id === 'flavora' || id?.includes('flavora') || id?.includes('kitchen')) ? {
+    id: 'flavora-kitchen',
+    slug: 'flavora-kitchen',
+    name: 'Flavora Kitchen',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Flavora Kitchen is an enterprise cloud kitchen and restaurant management system that streamlines live orders, online deliveries, dining table reservations, recipe costings, kitchen display systems (KDS), and inventory through a centralized digital platform.',
+    websiteUrl: 'https://flavorakitchen.speshway.com',
+    adminUrl: '/product/flavora-kitchen/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
+  } : (id === 'ride-flow' || id === 'rideflow' || id?.includes('ride-flow') || id?.includes('bike')) ? {
+    id: 'ride-flow',
+    slug: 'ride-flow',
+    name: 'RIDE FLOW',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'RideFlow is a modern two-wheeler platform designed to help customers explore bikes, compare models, discover attractive offers, and connect with dealers. It provides a convenient and user-friendly experience for finding the right bike.',
+    websiteUrl: 'https://bike.speshway.site/',
+    adminUrl: '/product/ride-flow/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'Tailwind CSS'],
+    features: ['Bike Listings', 'Bike Categories', 'Bike Comparison', 'Offers & Deals', 'Dealer Information', 'Service Support', 'Customer Assistance'],
+  } : (id === 'joy-events' || id === 'joy_events' || id === 'joy_event-s' || id === 'joy-event' || id?.includes('joy') || id?.includes('eventoza')) ? {
+    id: 'joy-events',
+    slug: 'joy-events',
+    name: "JOY_EVENT'S",
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination. From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
+    websiteUrl: 'https://joyevents.speshway.site',
+    adminUrl: '/product/joy-events/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
+  } : (id === 'speshway-hrms' || id === 'hrms' || id?.includes('hrms')) ? {
+    id: 'speshway-hrms',
+    slug: 'speshway-hrms',
+    name: 'Speshway-HRMS',
+    category: 'Human Resources',
+    status: 'active',
+    description: 'Speshway HRMS is an all-in-one Human Resource Management System designed to simplify workforce management and automate daily HR operations. Manage employees, attendance, leave requests, payroll, recruitment, and performance through a centralized platform.',
+    websiteUrl: 'https://hrms.speshway.com',
+    adminUrl: '/product/speshway-hrms/dashboard',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
   } : (id === 'saloon' || id === 'salon' || id?.includes('salon') || id?.includes('saloon') || id?.includes('spy-salon')) ? {
     id: 'saloon',
     slug: 'saloon',
@@ -121,6 +188,18 @@ export const ProductDetailPage = () => {
         navigate('/product/aneera-silks/dashboard');
       } else if (targetSlug === 'e-commerce' || targetSlug === 'ecommerce' || targetSlug.includes('nexora') || targetSlug.includes('e-com') || targetSlug.includes('ecom')) {
         navigate('/product/e-commerce/dashboard');
+      } else if (targetSlug === 'fleet-management' || targetSlug === 'fleet' || targetSlug.includes('fleet')) {
+        navigate('/product/fleet-management/dashboard');
+      } else if (targetSlug === 'american-fitness-gym' || targetSlug === 'american-fitness' || targetSlug.includes('fitness') || targetSlug.includes('gym')) {
+        navigate('/product/american-fitness-gym/dashboard');
+      } else if (targetSlug === 'flavora-kitchen' || targetSlug === 'flavora' || targetSlug.includes('flavora') || targetSlug.includes('kitchen')) {
+        navigate('/product/flavora-kitchen/dashboard');
+      } else if (targetSlug === 'speshway-hrms' || targetSlug === 'hrms' || targetSlug.includes('hrms')) {
+        navigate('/product/speshway-hrms/dashboard');
+      } else if (targetSlug === 'ride-flow' || targetSlug === 'rideflow' || targetSlug.includes('ride-flow') || targetSlug.includes('bike')) {
+        navigate('/product/ride-flow/dashboard');
+      } else if (targetSlug === 'joy-events' || targetSlug === 'joy_events' || targetSlug === 'joy_event-s' || targetSlug.includes('joy') || targetSlug.includes('eventoza')) {
+        navigate('/product/joy-events/dashboard');
       } else if (targetSlug === 'saloon' || targetSlug === 'salon' || targetSlug.includes('saloon') || targetSlug.includes('salon') || targetSlug.includes('spy-salon')) {
         navigate('/product/saloon/dashboard');
       } else if (targetSlug === 'tours-and-travels' || targetSlug.includes('tour') || targetSlug.includes('travel')) {
@@ -211,11 +290,26 @@ export const ProductDetailPage = () => {
                   <span>Enterprise Edition</span>
                 </div>
                 <div className="preview-icon-giant">
-                  {product.imageUrl ? (
-                    <img src={product.imageUrl} alt={product.name} className="product-hero-custom-img" />
-                  ) : (
-                    <Layers size={64} className="text-icon-green" />
-                  )}
+                  {(() => {
+                    const heroImg = product.imageUrl || getProductFallbackImage(product.slug || product.id);
+                    return heroImg ? (
+                      <img
+                        src={heroImg}
+                        alt={product.name}
+                        className="product-hero-custom-img"
+                        onError={(e) => {
+                          const fallback = getProductFallbackImage(product.slug || product.id);
+                          if (fallback && e.target.src !== fallback) {
+                            e.target.src = fallback;
+                          } else {
+                            e.target.style.display = 'none';
+                          }
+                        }}
+                      />
+                    ) : (
+                      <Layers size={64} className="text-icon-green" />
+                    );
+                  })()}
                 </div>
                 <h3>{product.name}</h3>
                 <p>Real-Time Synchronized &bull; Role-Based Access</p>

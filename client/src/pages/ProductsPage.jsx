@@ -81,6 +81,24 @@ const EXCLUDED_NAMES = new Set([
   'hrms portal',
 ]);
 
+export const getProductFallbackImage = (slugOrIdOrName) => {
+  const s = (slugOrIdOrName || '').toLowerCase();
+  if (s.includes('joy') || s.includes('event')) return '/images/products/joy-events.jpg';
+  if (s.includes('hrms')) return '/images/products/speshway-hrms.jpg';
+  if (s.includes('flavora') || s.includes('kitchen') || s.includes('restaurant')) return '/images/products/flavora-kitchen.jpg';
+  if (s.includes('fitness') || s.includes('gym')) return '/images/products/american-fitness-gym.jpg';
+  if (s.includes('fleet')) return '/images/products/fleet-management.jpg';
+  if (s.includes('ride') || s.includes('bike') || s.includes('flow')) return '/images/products/ride-flow.jpg';
+  if (s.includes('salon') || s.includes('saloon') || s.includes('spy')) return '/images/products/saloon.jpg';
+  if (s.includes('dairy') || s.includes('milk') || s.includes('madhur')) return '/images/products/natural-milk-dairy.jpg';
+  if (s.includes('aneera') || s.includes('silk')) return '/images/products/aneera-silks.jpg';
+  if (s.includes('e-com') || s.includes('ecommerce') || s.includes('e com') || s.includes('nexora')) return '/images/products/e-commerce.jpg';
+  if (s.includes('hospital') || s.includes('hms')) return '/images/products/speshway-hospitals.jpg';
+  if (s.includes('tour') || s.includes('travel')) return '/images/products/tours-and-travels.jpg';
+  if (s.includes('vexa') || s.includes('style')) return '/images/products/vexa-style-hub.png';
+  return '';
+};
+
 export const ProductsPage = () => {
   const { products } = useSocket();
   const [modalMode, setModalMode] = useState(null);
@@ -173,20 +191,33 @@ export const ProductsPage = () => {
                 >
                   <div className="catalog-card-header">
                     <div className={`app-icon-box bg-icon-${prod.color || 'green'}`}>
-                      {prod.imageUrl ? (
-                        <img src={prod.imageUrl} alt={prod.name} className="app-icon-custom-img" />
-                      ) : (
-                        <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={24} />
-                      )}
+                      <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={24} />
                     </div>
                     <span className="product-category-tag">{prod.category}</span>
                   </div>
 
-                  {prod.imageUrl && (
-                    <div className="catalog-card-image-wrap">
-                      <img src={prod.imageUrl} alt={prod.name} className="catalog-card-preview-img" />
-                    </div>
-                  )}
+                  {/* Product Preview Image Banner */}
+                  {(() => {
+                    const bannerSrc = prod.imageUrl || getProductFallbackImage(`${prod.slug || ''} ${prod.id || ''} ${prod.name || ''}`);
+                    if (!bannerSrc) return null;
+                    return (
+                      <div className="catalog-card-image-wrap">
+                        <img
+                          src={bannerSrc}
+                          alt={prod.name}
+                          className="catalog-card-preview-img"
+                          onError={(e) => {
+                            const fallback = getProductFallbackImage(`${prod.slug || ''} ${prod.id || ''} ${prod.name || ''}`);
+                            if (fallback && !e.target.src.endsWith(fallback)) {
+                              e.target.src = fallback;
+                            } else {
+                              e.target.parentElement.style.display = 'none';
+                            }
+                          }}
+                        />
+                      </div>
+                    );
+                  })()}
 
                   <h3 className="catalog-product-name">{prod.name}</h3>
                   <p className="catalog-product-desc">{prod.description}</p>
@@ -259,6 +290,48 @@ const isHospital =
                           prod.name?.toLowerCase().includes('nexora')
                         ) {
                           url = '/product/e-commerce/dashboard';
+                        } else if (
+                          prod.slug === 'fleet-management' ||
+                          prod.slug === 'fleet' ||
+                          prod.slug?.includes('fleet') ||
+                          prod.name?.toLowerCase().includes('fleet')
+                        ) {
+                          url = '/product/fleet-management/dashboard';
+                        } else if (
+                          prod.slug === 'american-fitness-gym' ||
+                          prod.slug === 'american-fitness' ||
+                          prod.slug?.includes('fitness') ||
+                          prod.slug?.includes('gym') ||
+                          prod.name?.toLowerCase().includes('fitness') ||
+                          prod.name?.toLowerCase().includes('gym')
+                        ) {
+                          url = '/product/american-fitness-gym/dashboard';
+                        } else if (
+                          prod.slug === 'flavora-kitchen' ||
+                          prod.slug === 'flavora' ||
+                          prod.slug?.includes('flavora') ||
+                          prod.slug?.includes('kitchen') ||
+                          prod.name?.toLowerCase().includes('flavora') ||
+                          prod.name?.toLowerCase().includes('kitchen')
+                        ) {
+                          url = '/product/flavora-kitchen/dashboard';
+                        } else if (
+                          prod.slug === 'joy-events' ||
+                          prod.slug === 'joy_events' ||
+                          prod.slug === 'joy_event-s' ||
+                          prod.slug?.includes('joy') ||
+                          prod.slug?.includes('eventoza') ||
+                          prod.name?.toLowerCase().includes('joy') ||
+                          prod.name?.toLowerCase().includes('eventoza')
+                        ) {
+                          url = '/product/joy-events/dashboard';
+                        } else if (
+                          prod.slug === 'speshway-hrms' ||
+                          prod.slug === 'hrms' ||
+                          prod.slug?.includes('hrms') ||
+                          prod.name?.toLowerCase().includes('hrms')
+                        ) {
+                          url = '/product/speshway-hrms/dashboard';
                         } else if (
                           prod.slug === 'saloon' ||
                           prod.slug === 'salon' ||

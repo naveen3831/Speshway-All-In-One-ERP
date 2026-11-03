@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 import { getIO } from '../services/socketService.js';
+import { getProducts, getProductById } from '../services/productStore.js';
 
 const router = express.Router();
 
@@ -18,14 +19,29 @@ const getProductQuery = (id) => {
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const sortField =
-      req.query.sort === 'popularity'
-        ? { popularity: -1, createdAt: -1 }
-        : { createdAt: -1, popularity: -1 };
-    const products = await Product.find().sort(sortField);
+    let products = [];
+    try {
+      products = await Product.find().lean();
+    } catch (dbErr) {
+      console.warn('MongoDB Product.find warning:', dbErr.message);
+    }
+
+    if (!products || products.length === 0) {
+      products = getProducts();
+    }
+
+    // Sort safely in JavaScript memory (never fails with MongoDB 32MB sort limit)
+    products.sort((a, b) => {
+      if (req.query.sort === 'popularity') {
+        return (b.popularity || 0) - (a.popularity || 0) || new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      }
+      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0) || (b.popularity || 0) - (a.popularity || 0);
+    });
+
     res.json({ success: true, count: products.length, data: products });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    const fallback = getProducts();
+    res.json({ success: true, count: fallback.length, data: fallback });
   }
 });
 
@@ -34,12 +50,24 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findOne(getProductQuery(req.params.id));
+    let product = null;
+    try {
+      product = await Product.findOne(getProductQuery(req.params.id)).lean();
+    } catch (dbErr) {
+      console.warn('MongoDB Product.findOne warning:', dbErr.message);
+    }
+    if (!product) {
+      product = getProductById(req.params.id);
+    }
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found in database' });
     }
     res.json({ success: true, data: product });
   } catch (err) {
+    const fallback = getProductById(req.params.id);
+    if (fallback) {
+      return res.json({ success: true, data: fallback });
+    }
     res.status(500).json({ success: false, message: err.message });
   }
 });

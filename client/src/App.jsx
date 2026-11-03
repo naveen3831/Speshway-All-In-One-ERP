@@ -30,6 +30,12 @@ import { DairyDashboard } from './pages/dairy/DairyDashboard';
 import { AneeraDashboard } from './pages/aneera/AneeraDashboard';
 import { NexoraDashboard } from './pages/ecommerce/NexoraDashboard';
 import { SalonDashboard } from './pages/salon/SalonDashboard';
+import { FleetDashboard } from './pages/fleet/FleetDashboard';
+import { GymDashboard } from './pages/gym/GymDashboard';
+import { FlavoraKitchenDashboard } from './pages/restaurant/FlavoraKitchenDashboard';
+import { HrmsDashboard } from './pages/hrms/HrmsDashboard';
+import { JoyEventsDashboard } from './pages/events/JoyEventsDashboard';
+import { RideFlowDashboard } from './pages/bikes/RideFlowDashboard';
 
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
@@ -103,6 +109,63 @@ export default function App() {
             <Route path="/salon-erp/dashboard" element={<SalonDashboard />} />
             <Route path="/salon-dashboard" element={<SalonDashboard />} />
             <Route path="/saloon-dashboard" element={<SalonDashboard />} />
+
+            <Route path="/product/fleet-management/dashboard" element={<FleetDashboard />} />
+            <Route path="/product/fleet/dashboard" element={<FleetDashboard />} />
+            <Route path="/dashboard/fleet-management" element={<FleetDashboard />} />
+            <Route path="/dashboard/fleet" element={<FleetDashboard />} />
+            <Route path="/fleet-erp/dashboard" element={<FleetDashboard />} />
+            <Route path="/fleet-dashboard" element={<FleetDashboard />} />
+
+            <Route path="/product/american-fitness-gym/dashboard" element={<GymDashboard />} />
+            <Route path="/product/american-fitness/dashboard" element={<GymDashboard />} />
+            <Route path="/product/gym/dashboard" element={<GymDashboard />} />
+            <Route path="/dashboard/american-fitness-gym" element={<GymDashboard />} />
+            <Route path="/dashboard/american-fitness" element={<GymDashboard />} />
+            <Route path="/dashboard/gym" element={<GymDashboard />} />
+            <Route path="/gym-erp/dashboard" element={<GymDashboard />} />
+            <Route path="/gym-dashboard" element={<GymDashboard />} />
+
+            <Route path="/product/flavora-kitchen/dashboard" element={<FlavoraKitchenDashboard />} />
+            <Route path="/product/flavora/dashboard" element={<FlavoraKitchenDashboard />} />
+            <Route path="/dashboard/flavora-kitchen" element={<FlavoraKitchenDashboard />} />
+            <Route path="/dashboard/flavora" element={<FlavoraKitchenDashboard />} />
+            <Route path="/restaurant-erp/dashboard" element={<FlavoraKitchenDashboard />} />
+            <Route path="/flavora-dashboard" element={<FlavoraKitchenDashboard />} />
+
+            <Route path="/product/speshway-hrms/dashboard" element={<HrmsDashboard />} />
+            <Route path="/product/speshway-hrms/dashboad" element={<HrmsDashboard />} />
+            <Route path="/product/hrms/dashboard" element={<HrmsDashboard />} />
+            <Route path="/dashboard/speshway-hrms" element={<HrmsDashboard />} />
+            <Route path="/dashboard/hrms" element={<HrmsDashboard />} />
+            <Route path="/hrms-erp/dashboard" element={<HrmsDashboard />} />
+            <Route path="/hrms-dashboard" element={<HrmsDashboard />} />
+
+            <Route path="/product/joy-events/dashboard" element={<JoyEventsDashboard />} />
+            <Route path="/product/joy-events/dashboad" element={<JoyEventsDashboard />} />
+            <Route path="/product/joy_events/dashboard" element={<JoyEventsDashboard />} />
+            <Route path="/product/joy_event-s/dashboard" element={<JoyEventsDashboard />} />
+            <Route path="/product/joy_event-s/dashboad" element={<JoyEventsDashboard />} />
+            <Route path="/product/joy-event/dashboard" element={<JoyEventsDashboard />} />
+            <Route path="/product/eventoza/dashboard" element={<JoyEventsDashboard />} />
+            <Route path="/product/eventoza/dashboad" element={<JoyEventsDashboard />} />
+            <Route path="/dashboard/joy-events" element={<JoyEventsDashboard />} />
+            <Route path="/dashboard/joy_events" element={<JoyEventsDashboard />} />
+            <Route path="/dashboard/joy_event-s" element={<JoyEventsDashboard />} />
+            <Route path="/dashboard/eventoza" element={<JoyEventsDashboard />} />
+            <Route path="/joy-events/dashboard" element={<JoyEventsDashboard />} />
+            <Route path="/events-erp/dashboard" element={<JoyEventsDashboard />} />
+            <Route path="/joy-events-dashboard" element={<JoyEventsDashboard />} />
+
+            <Route path="/product/ride-flow/dashboard" element={<RideFlowDashboard />} />
+            <Route path="/product/ride-flow/dashboad" element={<RideFlowDashboard />} />
+            <Route path="/product/rideflow/dashboard" element={<RideFlowDashboard />} />
+            <Route path="/product/rideflow/dashboad" element={<RideFlowDashboard />} />
+            <Route path="/dashboard/ride-flow" element={<RideFlowDashboard />} />
+            <Route path="/dashboard/rideflow" element={<RideFlowDashboard />} />
+            <Route path="/ride-flow/dashboard" element={<RideFlowDashboard />} />
+            <Route path="/ride-flow-dashboard" element={<RideFlowDashboard />} />
+            <Route path="/bikes-erp/dashboard" element={<RideFlowDashboard />} />
 
             <Route path="/product/:id/dashboard" element={<Navigate to="/dashboard" replace />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />

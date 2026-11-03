@@ -83,5 +83,8 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+productSchema.index({ createdAt: -1, popularity: -1 });
+productSchema.index({ popularity: -1, createdAt: -1 });
+
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 export default Product;

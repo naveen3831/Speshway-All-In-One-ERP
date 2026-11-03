@@ -20,7 +20,16 @@ export const Sidebar = () => {
         color: '#f8fafc',
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
+        height: '100vh',
+        maxHeight: '100vh',
+        flexShrink: 0,
+        position: 'relative',
+        top: 0,
+        left: 0,
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
       }}
     >
       <div

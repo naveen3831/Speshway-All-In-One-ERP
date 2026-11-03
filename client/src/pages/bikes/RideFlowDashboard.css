@@ -1,0 +1,1331 @@
+/* ==========================================================================
+   RIDEFLOW - TWO-WHEELER PLATFORM ADMIN DASHBOARD STYLES
+   Exact replica of reference UI with 82px Navbar, Dark Sidebar with Wave,
+   5-card KPI Grid, Analytics Cards & Complete Scrollbar Suppression
+   ========================================================================== */
+
+.rf-wrapper {
+  display: flex;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  background-color: #f8fafc;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #0f172a;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Silk Wave)
+   -------------------------------------------------------------------------- */
+.rf-sidebar {
+  width: 250px;
+  min-width: 250px;
+  height: 100vh;
+  max-height: 100vh;
+  flex-shrink: 0;
+  background-color: #0b1120;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  border-right: 1px solid #1e293b;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rf-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sidebar Brand */
+.rf-brand {
+  padding: 22px 20px 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rf-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rf-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.rf-brand-row {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  line-height: 1.1;
+}
+
+.brand-white {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.rf-brand-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Navigation Items */
+.rf-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.rf-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9.5px 14px;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+}
+
+.rf-nav-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rf-nav-icon {
+  color: #64748b;
+  transition: color 0.18s ease;
+}
+
+.rf-nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #f1f5f9;
+}
+
+.rf-nav-btn:hover .rf-nav-icon {
+  color: #10b981;
+}
+
+/* Active State Pill */
+.rf-nav-btn.active {
+  background-color: #10b981;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.rf-nav-btn.active .rf-nav-icon {
+  color: #ffffff;
+}
+
+.rf-nav-badge {
+  font-size: 11px;
+  font-weight: 700;
+  background-color: #10b981;
+  color: #ffffff;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.rf-nav-btn.active .rf-nav-badge {
+  background-color: #ffffff;
+  color: #10b981;
+}
+
+/* Emerald Green Silk Wave at Bottom Left */
+.rf-sidebar-green-wave {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.rf-wave-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sidebar Footer */
+.rf-sidebar-footer {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #0b1120;
+  z-index: 3;
+}
+
+.rf-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.rf-logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* --------------------------------------------------------------------------
+   2. MAIN DASHBOARD CONTENT AREA
+   -------------------------------------------------------------------------- */
+.rf-main {
+  flex: 1;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: #f8fafc;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rf-main::-webkit-scrollbar {
+  display: none;
+}
+
+/* Topbar with exactly 82px height */
+.rf-topbar {
+  min-height: 82px;
+  height: 82px;
+  padding: 0 32px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.rf-greeting-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.4px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.rf-greeting-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.rf-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Search Box */
+.rf-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 8px 18px;
+  width: 290px;
+  transition: all 0.2s ease;
+}
+
+.rf-search-box:focus-within {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+}
+
+.rf-search-icon {
+  color: #94a3b8;
+}
+
+.rf-search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  color: #0f172a;
+  width: 100%;
+}
+
+.rf-search-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Date Pill */
+.rf-date-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.15s ease;
+}
+
+.rf-date-pill:hover {
+  border-color: #cbd5e1;
+}
+
+/* Notification Bell */
+.rf-icon-btn {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rf-icon-btn:hover {
+  color: #0f172a;
+  border-color: #cbd5e1;
+  background-color: #f8fafc;
+}
+
+.rf-unread-dot {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+/* User Profile */
+.rf-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 6px;
+}
+
+.rf-user-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.rf-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+}
+
+/* Content Container */
+.rf-content {
+  padding: 24px 32px 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   3. KPI STATS ROW (5 Cards Grid)
+   -------------------------------------------------------------------------- */
+.rf-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.rf-stat-card {
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rf-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+}
+
+.rf-stat-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bg-green-light {
+  background-color: #ecfdf5;
+}
+
+.text-green {
+  color: #10b981;
+}
+
+.rf-rupee-symbol {
+  font-size: 22px;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.rf-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.rf-stat-label {
+  font-size: 12.5px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.rf-stat-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  margin: 3px 0;
+}
+
+.rf-stat-trend {
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   4. MIDDLE ANALYTICS ROW (3 Cards: 1.35fr : 1.15fr : 0.95fr)
+   -------------------------------------------------------------------------- */
+.rf-analytics-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1.15fr 0.95fr;
+  gap: 20px;
+}
+
+.rf-card {
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.rf-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.rf-card-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rf-card-icon-title h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rf-card-subtitle {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Bookings Card Chart Toggles */
+.rf-chart-toggles {
+  display: flex;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 4px;
+}
+
+.rf-toggle-pill {
+  border: none;
+  background: transparent;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rf-toggle-pill.active {
+  background-color: #10b981;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.25);
+}
+
+/* Mixed Bar & Line SVG Chart */
+.rf-chart-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rf-svg-chart {
+  width: 100%;
+  height: 200px;
+  overflow: visible;
+}
+
+.chart-label {
+  font-size: 11px;
+  fill: #94a3b8;
+  font-weight: 500;
+}
+
+.chart-day-label {
+  font-size: 11.5px;
+  fill: #64748b;
+  font-weight: 600;
+}
+
+.bar-number {
+  font-size: 11px;
+  fill: #059669;
+  font-weight: 700;
+}
+
+/* Chart Legend */
+.rf-chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 4px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.legend-box-bookings {
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: #a7f3d0;
+}
+
+.legend-line-revenue {
+  width: 22px;
+  height: 3px;
+  background-color: #10b981;
+  position: relative;
+}
+
+.legend-line-revenue::after {
+  content: '';
+  position: absolute;
+  top: -2.5px;
+  left: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #10b981;
+}
+
+/* Donut Chart (Bikes by Category) */
+.rf-donut-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 1;
+  padding: 8px 0;
+}
+
+.donut-graphic-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+}
+
+.donut-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.donut-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.donut-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.donut-sub {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.donut-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+}
+
+.donut-legend-row {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #334155;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.legend-text {
+  flex: 1;
+  color: #475569;
+  font-weight: 500;
+}
+
+.legend-pct {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Quick Actions Card */
+.rf-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.rf-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.rf-action-row:hover {
+  background-color: #ecfdf5;
+  border-color: #d1fae5;
+  transform: translateX(2px);
+}
+
+.action-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #ecfdf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.action-chevron {
+  color: #94a3b8;
+}
+
+/* --------------------------------------------------------------------------
+   5. BOTTOM ROW (Recent Bookings + Recent Service Requests: 50% - 50%)
+   -------------------------------------------------------------------------- */
+.rf-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.rf-btn-view-all {
+  border: none;
+  background: transparent;
+  color: #10b981;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.15s ease;
+}
+
+.rf-btn-view-all:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* Tables */
+.rf-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.rf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.rf-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.rf-table td {
+  padding: 12px 14px;
+  color: #334155;
+  border-bottom: 1px solid #f8fafc;
+  vertical-align: middle;
+}
+
+.rf-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.rf-id-cell {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.rf-customer-name {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.rf-model-cell {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.rf-amount-cell {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Status Pills */
+.rf-status-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.rf-status-confirmed {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.rf-status-scheduled {
+  background-color: #ccfbf1;
+  color: #0f766e;
+}
+
+.rf-status-progress {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.rf-status-pending {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.rf-status-completed {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.rf-stock-badge {
+  background-color: #ecfdf5;
+  color: #059669;
+  font-weight: 700;
+  font-size: 11.5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   6. SUBVIEWS (Bikes, Categories, Bookings, Customers, Dealers, etc.)
+   -------------------------------------------------------------------------- */
+.rf-subview {
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rf-subview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 16px;
+}
+
+.rf-subview-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rf-subview-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.rf-btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #10b981;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rf-btn-primary:hover {
+  background-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.rf-btn-secondary {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.rf-btn-secondary:hover {
+  background-color: #e2e8f0;
+}
+
+/* Categories Grid */
+.rf-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.rf-category-card-item {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cat-color-bar {
+  height: 6px;
+  width: 100%;
+}
+
+.cat-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cat-card-body h3 {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.cat-card-body p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.cat-pct-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #059669;
+  margin-top: 6px;
+}
+
+/* Offers Grid */
+.rf-offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.rf-offer-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rf-offer-tag {
+  align-self: flex-start;
+  background-color: #ecfdf5;
+  color: #059669;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.rf-offer-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rf-offer-discount {
+  font-size: 18px;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.rf-offer-models {
+  font-size: 12.5px;
+  color: #64748b;
+  margin: 0;
+}
+
+.rf-offer-validity {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #94a3b8;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+/* Reviews List */
+.rf-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rf-review-item {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.review-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-author {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.review-rating {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+.review-text {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.review-date {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Notifications List */
+.rf-notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rf-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+}
+
+.rf-notif-item.unread {
+  background-color: #ecfdf5;
+  border-color: #d1fae5;
+}
+
+.notif-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notif-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.notif-content p {
+  font-size: 13px;
+  color: #475569;
+  margin: 0 0 6px 0;
+}
+
+.notif-time {
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Settings Form */
+.rf-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+}
+
+.rf-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rf-form-group label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.rf-form-input {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  color: #0f172a;
+  outline: none;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease;
+}
+
+.rf-form-input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.rf-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   7. MODAL OVERLAY
+   -------------------------------------------------------------------------- */
+.rf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: rfFadeIn 0.2s ease-out forwards;
+}
+
+.rf-modal-box {
+  background-color: #ffffff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: rfScaleUp 0.22s ease-out forwards;
+}
+
+.rf-modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rf-modal-header h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rf-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.rf-modal-close-btn:hover {
+  color: #0f172a;
+}
+
+.rf-modal-body {
+  padding: 24px;
+}
+
+.rf-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@keyframes rfFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rfScaleUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. COMPLETE SCROLLBAR SUPPRESSION FOR RIDEFLOW
+   -------------------------------------------------------------------------- */
+.rf-wrapper,
+.rf-wrapper * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.rf-wrapper::-webkit-scrollbar,
+.rf-wrapper *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .rf-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .rf-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+  .rf-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .rf-wrapper {
+    flex-direction: column;
+  }
+  .rf-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .rf-topbar {
+    padding: 0 16px;
+    height: auto;
+    min-height: 70px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rf-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .rf-content {
+    padding: 16px;
+  }
+}
+
