@@ -1,8 +1,10 @@
 import React from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleGetStarted = () => {
     if (onOpenGetStarted) {
@@ -11,6 +13,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
       navigate('/get-started');
     }
   };
+
+  const isProjectsActive =
+    location.pathname === '/projects' ||
+    location.pathname === '/products' ||
+    location.pathname.startsWith('/product/');
+
+  const isContactActive =
+    location.pathname === '/contact' || location.pathname === '/contact-us';
 
   return (
     <header className="navbar-container">
@@ -30,55 +40,43 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           </div>
         </Link>
 
-        {/* Center Navigation Links - Clean without lines */}
+        {/* Center Navigation Links - HOME, PROJECTS, PRICING, CONTACT US */}
         <nav className="nav-links">
           <NavLink
             to="/"
             end
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
-            Home
+            HOME
           </NavLink>
           <NavLink
-            to="/products"
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            to="/projects"
+            className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
           >
-            Products
-          </NavLink>
-          <NavLink
-            to="/features"
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-          >
-            Features
-          </NavLink>
-          <NavLink
-            to="/why-us"
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-          >
-            Why Us
+            PROJECTS
           </NavLink>
           <NavLink
             to="/pricing"
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
-            Pricing
+            PRICING
           </NavLink>
           <NavLink
             to="/contact"
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            className={({ isActive }) => (isActive || isContactActive ? 'nav-link active' : 'nav-link')}
           >
-            Contact
+            CONTACT US
           </NavLink>
         </nav>
 
-        {/* Right Side Action: Get Started Button Type */}
+        {/* Right Side Action: Get Started Button */}
         <div className="nav-actions">
           <button
             type="button"
             onClick={handleGetStarted}
             className="btn-get-started"
           >
-            Get Started &rarr;
+            Get Started <ArrowRight size={16} />
           </button>
         </div>
       </div>

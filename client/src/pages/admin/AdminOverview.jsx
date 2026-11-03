@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSocket } from '../../context/SocketContext';
 import { Link } from 'react-router-dom';
 import {
@@ -13,10 +13,15 @@ import {
   Clock,
   Inbox,
 } from 'lucide-react';
+import { DEFAULT_ADMIN_PROJECTS } from '../../utils/adminProjects';
 
 export const AdminOverview = () => {
   const { stats, products, activities, modulesData } = useSocket();
   const inquiries = modulesData.demoRequests || [];
+
+  const displayProjects = useMemo(() => {
+    return Array.isArray(products) && products.length > 0 ? products : DEFAULT_ADMIN_PROJECTS;
+  }, [products]);
 
   return (
     <div className="admin-page-view">
@@ -25,12 +30,12 @@ export const AdminOverview = () => {
         <div>
           <h1 className="admin-heading">Executive Dashboard Overview</h1>
           <p className="admin-subtext">
-            Monitor real-time system performance, ERP product catalog, and incoming customer inquiries.
+            Monitor real-time system performance, ERP projects catalog, and incoming customer inquiries.
           </p>
         </div>
         <div className="admin-header-actions">
           <Link to="/admin/products/new" className="btn-hero-primary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
-            <Plus size={16} /> Add Product
+            <Plus size={16} /> Add Project
           </Link>
         </div>
       </div>
@@ -42,8 +47,8 @@ export const AdminOverview = () => {
             <Package size={22} className="text-green" />
           </div>
           <div>
-            <span className="kpi-label">Active ERP Products</span>
-            <span className="kpi-value">{products.length}</span>
+            <span className="kpi-label">Active ERP Projects</span>
+            <span className="kpi-value">{displayProjects.length}</span>
             <span className="kpi-trend positive">&uarr; Synced in Realtime</span>
           </div>
         </div>
@@ -84,16 +89,16 @@ export const AdminOverview = () => {
 
       {/* Two Column Layout: Quick Product List & Real-time Activity Feed */}
       <div className="admin-two-cols">
-        {/* Left: Products Quick Manager */}
+        {/* Left: Projects Quick Manager */}
         <div className="admin-card">
           <div className="admin-card-header">
-            <h3>ERP Applications Catalog ({products.length})</h3>
+            <h3>ERP Projects Catalog ({displayProjects.length})</h3>
             <Link to="/admin/products" className="link-more">
               Manage All &rarr;
             </Link>
           </div>
           <div className="admin-table-compact">
-            {products.slice(0, 6).map((prod) => (
+            {displayProjects.slice(0, 8).map((prod) => (
               <div key={prod.id || prod.slug} className="compact-prod-row">
                 <div className="prod-meta-left">
                   <span className="prod-name-bold">{prod.name}</span>

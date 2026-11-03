@@ -47,9 +47,14 @@ export const AdminProductForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [savedSlug, setSavedSlug] = useState('');
+  const [hasLoadedInitial, setHasLoadedInitial] = useState(false);
 
   useEffect(() => {
-    if (isEditMode && existingProduct) {
+    setHasLoadedInitial(false);
+  }, [id]);
+
+  useEffect(() => {
+    if (isEditMode && existingProduct && !hasLoadedInitial) {
       setFormData({
         name: existingProduct.name || '',
         category: existingProduct.category || 'Human Resources',
@@ -68,19 +73,50 @@ export const AdminProductForm = () => {
         status: existingProduct.status || 'active',
       });
       setSavedSlug(existingProduct.slug || existingProduct.id || existingProduct._id);
+      setHasLoadedInitial(true);
     }
-  }, [isEditMode, existingProduct]);
+  }, [isEditMode, existingProduct, hasLoadedInitial]);
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert('File size exceeds 5MB limit. Please choose a smaller image.');
+      if (file.size > 10 * 1024 * 1024) {
+        alert('File size exceeds 10MB limit. Please choose a smaller image.');
         return;
       }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, imageUrl: reader.result }));
+        const rawData = reader.result;
+        try {
+          const img = new Image();
+          img.onload = () => {
+            const maxDim = 1000;
+            let width = img.width;
+            let height = img.height;
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            const compressed = canvas.toDataURL('image/jpeg', 0.85);
+            setFormData((prev) => ({ ...prev, imageUrl: compressed }));
+          };
+          img.onerror = () => {
+            setFormData((prev) => ({ ...prev, imageUrl: rawData }));
+          };
+          img.src = rawData;
+        } catch (err) {
+          setFormData((prev) => ({ ...prev, imageUrl: rawData }));
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -97,19 +133,38 @@ export const AdminProductForm = () => {
     .filter(Boolean);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.name.trim() || !formData.description.trim()) {
-      alert('Product Name and Short Description are required.');
+    if (e) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    }
+
+    if (!formData.name || !formData.name.trim()) {
+      alert('Please enter a Product Name.');
+      return;
+    }
+    if (!formData.description || !formData.description.trim()) {
+      alert('Please enter a Short Description.');
       return;
     }
 
     setIsSubmitting(true);
     try {
+      let cleanWebsite = (formData.websiteUrl || '').trim();
+      if (cleanWebsite && !/^https?:\/\//i.test(cleanWebsite) && !cleanWebsite.startsWith('/')) {
+        cleanWebsite = `https://${cleanWebsite}`;
+      }
+
       const payload = {
         ...formData,
-        features: featList,
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        longDescription: formData.longDescription ? formData.longDescription.trim() : formData.description.trim(),
+        websiteUrl: cleanWebsite,
+        features: featList.length > 0 ? featList : ['Real-Time Orders', 'Role-Based Access'],
         technologies: techList.length > 0 ? techList : ['React', 'Node.js', 'Express', 'MongoDB'],
       };
+
+      console.log('Submitting product save:', { id, isEditMode, payload });
 
       let targetSlug = savedSlug;
       if (isEditMode) {
@@ -125,8 +180,9 @@ export const AdminProductForm = () => {
 
       setTimeout(() => {
         navigate('/admin/products');
-      }, 600);
+      }, 500);
     } catch (err) {
+      console.error('Error saving product:', err);
       alert('Error saving product: ' + (err.response?.data?.message || err.message));
     } finally {
       setIsSubmitting(false);
@@ -192,7 +248,7 @@ export const AdminProductForm = () => {
       )}
 
       {/* Main Form Form */}
-      <form onSubmit={handleSubmit} className="product-form-layout">
+      <form onSubmit={handleSubmit} noValidate className="product-form-layout">
         <div className="product-form-columns">
           {/* LEFT COLUMN: Main Details */}
           <div className="form-col-main">
@@ -365,9 +421,9 @@ export const AdminProductForm = () => {
               <div className="form-group" style={{ marginTop: '12px' }}>
                 <label>Or Enter Image URL</label>
                 <input
-                  type="url"
+                  type="text"
                   placeholder="https://images.unsplash.com/... or /logo.png"
-                  value={formData.imageUrl.startsWith('data:') ? '' : formData.imageUrl}
+                  value={formData.imageUrl && formData.imageUrl.startsWith('data:') ? '' : (formData.imageUrl || '')}
                   onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                   className="quick-input full-width"
                 />
@@ -391,9 +447,9 @@ export const AdminProductForm = () => {
                   Website URL (Public Landing / Live Portal) *
                 </label>
                 <input
-                  type="url"
+                  type="text"
                   placeholder="https://speshway.com/hrms"
-                  value={formData.websiteUrl}
+                  value={formData.websiteUrl || ''}
                   onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
                   className="quick-input full-width"
                 />
@@ -502,9 +558,10 @@ export const AdminProductForm = () => {
             </button>
             <button
               type="submit"
+              onClick={handleSubmit}
               disabled={isSubmitting}
               className="btn-hero-primary"
-              style={{ minWidth: '180px' }}
+              style={{ minWidth: '180px', cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
             >
               <Save size={16} />
               <span>{isSubmitting ? 'Saving Changes...' : isEditMode ? 'Update Product' : 'Publish Product'}</span>

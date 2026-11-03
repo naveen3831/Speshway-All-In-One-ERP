@@ -1,23 +1,22 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Search,
-  Home,
-  Users,
-  CreditCard,
-  FolderKanban,
-  DollarSign,
-  BarChart2,
-  Settings,
-  FileText,
-  Clock,
-  ArrowRight,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
+import {
+  filterAdminProjects,
+  getDashboardRoute,
+  getProjectIcon,
+  getProjectColor,
+} from '../../utils/adminProjects';
 
 export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
-  const { stats } = useSocket();
+  const { products } = useSocket();
+
+  // Strictly sync laptop mockup tiles with the Admin Dashboard projects
+  const adminProjects = useMemo(() => {
+    return filterAdminProjects(products);
+  }, [products]);
 
   return (
     <section id="home" className="hero-section">
@@ -26,7 +25,7 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="hero-badge-text">
-              &mdash; ONE PLATFORM FOR YOUR BUSINESS &mdash;
+              &mdash; OUR ERP SOLUTIONS &mdash;
             </span>
           </div>
 
@@ -36,176 +35,65 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
           </h1>
 
           <p className="hero-subtitle">
-            Manage Employees, Projects, HR, Payroll, Clients, Finance and more in
-            one simple and powerful platform.
+            A collection of industry-ready ERP solutions to manage your business, operations, and customers — all in one place.
           </p>
 
           <div className="hero-cta-group">
-            <button onClick={onOpenDemo} className="btn-hero-primary">
-              Request a Demo
+            <button onClick={() => navigate('/projects')} className="btn-hero-primary">
+              View All ERPs <ArrowRight size={16} />
             </button>
-            <button onClick={() => navigate('/products')} className="btn-hero-secondary">
-              View All <ArrowRight size={16} />
+            <button onClick={onOpenDemo} className="btn-hero-secondary">
+              Request a Demo
             </button>
           </div>
         </div>
 
-        {/* Right Column: Realistic 3D Laptop & Mobile Mockup with Potted Plant */}
+        {/* Right Column: Sleek 3D Laptop with Dynamic Admin ERP Tiles */}
         <div className="hero-mockup-wrapper">
           <div className="mockup-backdrop-glow"></div>
 
-          <div className="devices-stage">
-            {/* Potted Plant */}
-            <div className="potted-plant left-plant-desk">
-              <svg viewBox="0 0 100 130" className="plant-svg">
-                <path d="M50 85 C30 50 15 20 25 10 C35 5 45 40 50 85" fill="#15803d" />
-                <path d="M50 85 C40 40 45 10 55 5 C62 5 65 35 50 85" fill="#16a34a" />
-                <path d="M50 85 C65 60 85 30 75 20 C65 15 55 50 50 85" fill="#22c55e" />
-                <path d="M50 85 C20 70 10 50 18 42 C26 38 40 65 50 85" fill="#166534" />
-                <path d="M50 85 C80 75 90 60 82 52 C74 48 60 70 50 85" fill="#15803d" />
-                <polygon points="35,85 65,85 60,120 40,120" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="2" />
-                <ellipse cx="50" cy="85" rx="15" ry="3" fill="#e2e8f0" />
-              </svg>
-            </div>
-
+          <div className="devices-stage single-laptop-stage">
             {/* Laptop Device */}
-            <div className="laptop-device">
+            <div className="laptop-device hero-laptop-wide">
               <div className="laptop-screen">
                 <div className="screen-camera"></div>
-                <div className="screen-inner-display">
-                  {/* Laptop Sidebar */}
-                  <div className="laptop-erp-sidebar">
-                    <div className="sidebar-brand-mini">
-                      <img src="/logo.png" alt="Logo" className="mini-brand-img" />
-                      <span className="mini-brand-name">SPESHWAY</span>
-                    </div>
+                <div className="screen-inner-display laptop-screen-erp-display">
+                  <div className="laptop-erp-grid-canvas">
+                    {adminProjects.map((prod) => {
+                      const Icon = getProjectIcon(prod);
+                      const route = getDashboardRoute(prod);
+                      const color = getProjectColor(prod);
 
-                    <div className="sidebar-menu">
-                      <div className="menu-row active">
-                        <Home size={10} />
-                        <span>Home</span>
-                      </div>
-                      <div className="menu-row">
-                        <Users size={10} />
-                        <span>Employees</span>
-                      </div>
-                      <div className="menu-row">
-                        <CreditCard size={10} />
-                        <span>Payroll</span>
-                      </div>
-                      <div className="menu-row">
-                        <FolderKanban size={10} />
-                        <span>Projects</span>
-                      </div>
-                      <div className="menu-row">
-                        <DollarSign size={10} />
-                        <span>Finance</span>
-                      </div>
-                      <div className="menu-row">
-                        <BarChart2 size={10} />
-                        <span>Reports</span>
-                      </div>
-                      <div className="menu-row">
-                        <Settings size={10} />
-                        <span>Settings</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Laptop Main Content */}
-                  <div className="laptop-erp-main">
-                    <div className="erp-topbar">
-                      <div className="erp-search-box">
-                        <Search size={10} color="#94a3b8" />
-                        <span className="search-placeholder">Search...</span>
-                      </div>
-                      <div className="erp-user-profile">
-                        <div className="erp-avatar">JD</div>
-                        <div className="erp-user-meta">
-                          <span className="user-name">John Doe</span>
-                          <span className="user-role">Admin</span>
+                      return (
+                        <div
+                          key={prod.id || prod.slug}
+                          className="laptop-tile-card"
+                          onClick={() => navigate(route)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              navigate(route);
+                            }
+                          }}
+                          title={`Open ${prod.name} Dashboard in this site`}
+                        >
+                          <div className={`laptop-tile-icon-box bg-tile-${color}`}>
+                            {prod.imageUrl ? (
+                              <img
+                                src={prod.imageUrl}
+                                alt={prod.name}
+                                style={{ width: '18px', height: '18px', objectFit: 'contain' }}
+                              />
+                            ) : (
+                              <Icon size={16} className={`text-tile-${color}`} />
+                            )}
+                          </div>
+                          <span className="laptop-tile-name">{prod.name}</span>
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Welcome Banner with growth curve */}
-                    <div className="erp-welcome-banner">
-                      <div className="banner-left">
-                        <span className="welcome-tag">Welcome to</span>
-                        <h4 className="welcome-title">SPESHWAY</h4>
-                        <span className="welcome-sub">ALL IN ONE ERP</span>
-                      </div>
-                      <div className="banner-chart-art">
-                        <svg width="110" height="42" viewBox="0 0 110 42" fill="none">
-                          <path
-                            d="M2 35 C20 30 35 15 55 24 C75 32 90 8 108 12"
-                            stroke="#10b981"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                          />
-                          <path
-                            d="M2 35 C20 30 35 15 55 24 C75 32 90 8 108 12 L108 40 L2 40 Z"
-                            fill="url(#greenGrad)"
-                            opacity="0.2"
-                          />
-                          <defs>
-                            <linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#10b981" />
-                              <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* 3 Metrics Cards inside Laptop */}
-                    <div className="erp-metrics-row">
-                      <div className="metric-box bg-m-green">
-                        <div className="metric-icon-circ c-green">
-                          <Users size={10} />
-                        </div>
-                        <div className="metric-val-wrap">
-                          <span className="metric-m-title">Employees</span>
-                          <span className="metric-m-num">{stats.activeEmployees || 120}</span>
-                        </div>
-                      </div>
-
-                      <div className="metric-box bg-m-purple">
-                        <div className="metric-icon-circ c-purple">
-                          <FolderKanban size={10} />
-                        </div>
-                        <div className="metric-val-wrap">
-                          <span className="metric-m-title">Projects</span>
-                          <span className="metric-m-num">{stats.activeProjects || 45}</span>
-                        </div>
-                      </div>
-
-                      <div className="metric-box bg-m-orange">
-                        <div className="metric-icon-circ c-orange">
-                          <Users size={10} />
-                        </div>
-                        <div className="metric-val-wrap">
-                          <span className="metric-m-title">Clients</span>
-                          <span className="metric-m-num">230</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* 3 Action Module buttons */}
-                    <div className="erp-actions-row">
-                      <div className="action-pill pill-pink">
-                        <CreditCard size={10} color="#ec4899" />
-                        <span>Payroll</span>
-                      </div>
-                      <div className="action-pill pill-blue">
-                        <Clock size={10} color="#3b82f6" />
-                        <span>Tasks</span>
-                      </div>
-                      <div className="action-pill pill-teal">
-                        <FileText size={10} color="#0d9488" />
-                        <span>Reports</span>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -213,25 +101,6 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
                 <div className="laptop-notch"></div>
               </div>
               <div className="laptop-bottom-lip"></div>
-            </div>
-
-            {/* Smartphone Device on Right with uploaded logo */}
-            <div className="phone-device-right">
-              <div className="phone-screen-frame">
-                <div className="phone-dynamic-island"></div>
-                <div className="phone-screen-body">
-                  <div className="phone-brand-centered">
-                    <img
-                      src="/logo.png"
-                      alt="Speshway Phone Logo"
-                      className="phone-brand-img"
-                    />
-                    <span className="phone-app-name">SPESHWAY</span>
-                    <span className="phone-app-sub">ALL IN ONE ERP</span>
-                  </div>
-                </div>
-                <div className="phone-bottom-bar"></div>
-              </div>
             </div>
           </div>
         </div>
