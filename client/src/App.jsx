@@ -11,6 +11,7 @@ import { FeaturesPage } from './pages/FeaturesPage';
 import { WhyUsPage } from './pages/WhyUsPage';
 import { PricingPage } from './pages/PricingPage';
 import { ContactPage } from './pages/ContactPage';
+import { FaqPage } from './pages/FaqPage';
 import { GetStartedPage } from './pages/GetStartedPage';
 
 // Admin Portal Pages
@@ -30,22 +31,30 @@ import { DairyDashboard } from './pages/dairy/DairyDashboard';
 import { AneeraDashboard } from './pages/aneera/AneeraDashboard';
 import { NexoraDashboard } from './pages/ecommerce/NexoraDashboard';
 import { SalonDashboard } from './pages/salon/SalonDashboard';
+import { ServiceCenterDashboard } from './pages/service/ServiceCenterDashboard';
+import { RealEstateDashboard } from './pages/realestate/RealEstateDashboard';
+import { SchoolDashboard } from './pages/school/SchoolDashboard';
+import { HotelDashboard } from './pages/hotel/HotelDashboard';
 
 // Internal Dashboard & Auth
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
 import { NotFound } from './pages/NotFound';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        <BrowserRouter>
-          <Routes>
+    <ErrorBoundary>
+      <AuthProvider>
+        <SocketProvider>
+          <BrowserRouter>
+            <ErrorBoundary>
+              <Routes>
             {/* 1. SEPARATE PUBLIC WEBSITE PAGES */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/projects" element={<ProductsPage />} />
 
             {/* DEDICATED INDUSTRY ERP DASHBOARDS (Both /dashboard/:slug and /product/:slug/dashboard) */}
             <Route path="/product/speshway-hospitals/dashboard" element={<HospitalDashboard />} />
@@ -104,12 +113,33 @@ export default function App() {
             <Route path="/salon-dashboard" element={<SalonDashboard />} />
             <Route path="/saloon-dashboard" element={<SalonDashboard />} />
 
+            {/* Service Center, Real Estate, School & Hotel In-Site ERP Dashboards */}
+            <Route path="/dashboard/service-center" element={<ServiceCenterDashboard />} />
+            <Route path="/product/service-center/dashboard" element={<ServiceCenterDashboard />} />
+            <Route path="/service-center-erp" element={<ServiceCenterDashboard />} />
+
+            <Route path="/dashboard/real-estate" element={<RealEstateDashboard />} />
+            <Route path="/product/real-estate/dashboard" element={<RealEstateDashboard />} />
+            <Route path="/real-estate-erp" element={<RealEstateDashboard />} />
+
+            <Route path="/dashboard/school-erp" element={<SchoolDashboard />} />
+            <Route path="/product/school-erp/dashboard" element={<SchoolDashboard />} />
+            <Route path="/school-erp" element={<SchoolDashboard />} />
+
+            <Route path="/dashboard/hotel-erp" element={<HotelDashboard />} />
+            <Route path="/product/hotel-erp/dashboard" element={<HotelDashboard />} />
+            <Route path="/hotel-erp" element={<HotelDashboard />} />
+
             <Route path="/product/:id/dashboard" element={<Navigate to="/dashboard" replace />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/why-us" element={<WhyUsPage />} />
+            <Route path="/about" element={<WhyUsPage />} />
+            <Route path="/about-us" element={<WhyUsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/contact-us" element={<ContactPage />} />
+            <Route path="/faq" element={<FaqPage />} />
             <Route path="/get-started" element={<GetStartedPage />} />
 
             {/* 2. AUTHENTICATION */}
@@ -119,6 +149,9 @@ export default function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminOverview />} />
               <Route path="products" element={<AdminProducts />} />
+              <Route path="projects" element={<AdminProducts />} />
+              <Route path="projects/new" element={<AdminProductForm />} />
+              <Route path="projects/edit/:id" element={<AdminProductForm />} />
               <Route path="products/new" element={<AdminProductForm />} />
               <Route path="products/edit/:id" element={<AdminProductForm />} />
               <Route path="urls" element={<AdminProducts />} />
@@ -141,8 +174,10 @@ export default function App() {
             {/* 5. 404 CATCH-ALL */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </ErrorBoundary>
         </BrowserRouter>
       </SocketProvider>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }

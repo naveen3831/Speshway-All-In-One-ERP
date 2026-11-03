@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import api from '../services/api';
+import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
 
 const SocketContext = createContext(null);
 
@@ -52,7 +53,21 @@ export const SocketProvider = ({ children }) => {
     },
   ];
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_products');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const clean = parsed.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
+          if (clean.length > 0) return clean;
+        }
+      }
+    } catch (e) {
+      console.warn('Error reading speshway_products from localStorage:', e);
+    }
+    return DEFAULT_ADMIN_PROJECTS;
+  });
   const [modulesData, setModulesData] = useState({
     hrms: DEFAULT_TEAM_MEMBERS,
     tasks: [],
@@ -64,12 +79,18 @@ export const SocketProvider = ({ children }) => {
   const refreshProducts = async () => {
     try {
       const prodRes = await api.get('/products');
-      if (prodRes.data?.data && Array.isArray(prodRes.data.data)) {
-        setProducts(prodRes.data.data);
-        return prodRes.data.data;
+      if (prodRes.data?.data && Array.isArray(prodRes.data.data) && prodRes.data.data.length > 0) {
+        const clean = prodRes.data.data.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
+        if (clean.length > 0) {
+          setProducts(clean);
+          try {
+            localStorage.setItem('speshway_products', JSON.stringify(clean));
+          } catch (e) {}
+          return clean;
+        }
       }
     } catch (err) {
-      console.warn('Could not refresh products from API:', err.message);
+      console.warn('Could not refresh products from API, maintaining active projects:', err.message);
     }
   };
 
@@ -145,59 +166,77 @@ export const SocketProvider = ({ children }) => {
 
     // Product events
     newSocket.on('product:added', (newProduct) => {
+      if (!newProduct || typeof newProduct !== 'object') return;
       setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
         const targetId = newProduct.id || newProduct._id;
         const targetSlug = newProduct.slug;
-        const exists = prev.some(
+        const exists = safe.some(
           (p) =>
             (p.id && (p.id === targetId || p.id === targetSlug)) ||
             (p._id && (p._id === targetId || p._id === targetSlug)) ||
             (p.slug && p.slug === targetSlug)
         );
         if (exists) {
-          return prev.map((p) =>
+          const updatedList = safe.map((p) =>
             (p.id && (p.id === targetId || p.id === targetSlug)) ||
             (p._id && (p._id === targetId || p._id === targetSlug)) ||
             (p.slug && p.slug === targetSlug)
-              ? newProduct
+              ? { ...p, ...newProduct }
               : p
           );
+          try {
+            localStorage.setItem('speshway_products', JSON.stringify(updatedList));
+          } catch (e) {}
+          return updatedList;
         }
-        return [newProduct, ...prev];
+        const next = [newProduct, ...safe];
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
       });
-      setToastMessage(`Product added: ${newProduct.name}`);
+      setToastMessage(`Product added: ${newProduct.name || 'New Module'}`);
       setTimeout(() => setToastMessage(null), 4000);
-      refreshProducts();
     });
 
     newSocket.on('product:updated', (updated) => {
-      setProducts((prev) =>
-        prev.map((p) => {
+      if (!updated || typeof updated !== 'object') return;
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.map((p) => {
           const matchId =
-            (p.id && (p.id === updated.id || p.id === updated._id)) ||
-            (p._id && (p._id === updated.id || p._id === updated._id));
-          const matchSlug = p.slug && p.slug === updated.slug;
-          return matchId || matchSlug ? updated : p;
-        })
-      );
-      setToastMessage(`Product updated: ${updated.name}`);
+            (p.id && (p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
+            (p._id && (p._id === updated.id || p._id === updated._id || p._id === updated.slug));
+          const matchSlug = p.slug && (p.slug === updated.slug || p.slug === updated.id);
+          return matchId || matchSlug ? { ...p, ...updated } : p;
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
+      setToastMessage(`Product updated: ${updated.name || 'Module'}`);
       setTimeout(() => setToastMessage(null), 4000);
-      refreshProducts();
     });
 
     newSocket.on('product:deleted', (data) => {
       const targetId = data?.id;
       const targetSlug = data?.slug;
-      setProducts((prev) =>
-        prev.filter((p) => {
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.filter((p) => {
           if (targetId && (p.id === targetId || p._id === targetId || p.slug === targetId)) return false;
           if (targetSlug && (p.slug === targetSlug || p.id === targetSlug)) return false;
           return true;
-        })
-      );
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
       setToastMessage(`Product removed from catalog`);
       setTimeout(() => setToastMessage(null), 4000);
-      refreshProducts();
     });
 
     // HRMS real-time updates
@@ -295,11 +334,11 @@ export const SocketProvider = ({ children }) => {
   const triggerAddProduct = async (productData) => {
     try {
       const res = await api.post('/products', productData);
-      if (res.data?.data) {
-        const newProduct = res.data.data;
-        const targetId = newProduct.id || newProduct._id;
-        const targetSlug = newProduct.slug;
-        setProducts((prev) => [
+      const newProduct = res.data?.data || productData;
+      const targetId = newProduct.id || newProduct._id;
+      const targetSlug = newProduct.slug;
+      setProducts((prev) => {
+        const next = [
           newProduct,
           ...prev.filter(
             (p) =>
@@ -309,60 +348,80 @@ export const SocketProvider = ({ children }) => {
                 (p.slug && p.slug === targetSlug)
               )
           ),
-        ]);
-      }
+        ];
+        localStorage.setItem('speshway_products', JSON.stringify(next));
+        return next;
+      });
       await refreshProducts();
       return res.data;
     } catch (err) {
-      console.error('API addProduct error:', err);
-      throw err;
+      console.warn('API addProduct fallback to local state:', err.message);
+      const newProduct = {
+        id: productData.slug || `prod-${Date.now()}`,
+        status: 'active',
+        ...productData,
+      };
+      setProducts((prev) => {
+        const next = [newProduct, ...prev];
+        localStorage.setItem('speshway_products', JSON.stringify(next));
+        return next;
+      });
+      return { success: true, data: newProduct };
     }
   };
 
   const triggerUpdateProduct = async (id, updates) => {
     try {
       const res = await api.put(`/products/${id}`, updates);
-      if (res.data?.data) {
-        const updated = res.data.data;
-        setProducts((prev) =>
-          prev.map((p) => {
-            const matchId =
-              (p.id && (p.id === id || p.id === updated.id || p.id === updated._id)) ||
-              (p._id && (p._id === id || p._id === updated.id || p._id === updated._id));
-            const matchSlug = p.slug && (p.slug === id || p.slug === updated.slug);
-            return matchId || matchSlug ? updated : p;
-          })
-        );
-      }
-      await refreshProducts();
-      return res.data;
+      const updated = res.data?.data || { id, ...updates };
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.map((p) => {
+          const matchId =
+            (p.id && (p.id === id || p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
+            (p._id && (p._id === id || p._id === updated.id || p._id === updated._id || p._id === updated.slug));
+          const matchSlug = p.slug && (p.slug === id || p.slug === updated.slug || p.slug === updated.id);
+          return matchId || matchSlug ? { ...p, ...updated } : p;
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
+      return res.data || { success: true, data: updated };
     } catch (err) {
-      console.error('API updateProduct error:', err);
-      // Fallback local update
-      setProducts((prev) =>
-        prev.map((p) =>
-          p.id === id || p.slug === id ? { ...p, ...updates } : p
-        )
-      );
-      return { success: true, data: { id, ...updates } };
+      console.warn('API updateProduct fallback to local state:', err.message);
+      const updated = { id, ...updates };
+      setProducts((prev) => {
+        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        const next = safe.map((p) => {
+          const match =
+            (p.id && (p.id === id || p.id === updates.slug)) ||
+            (p.slug && (p.slug === id || p.slug === updates.slug)) ||
+            (p._id && p._id === id);
+          return match ? { ...p, ...updates } : p;
+        });
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
+        return next;
+      });
+      return { success: true, data: updated };
     }
   };
 
   const triggerDeleteProduct = async (id) => {
     try {
       await api.delete(`/products/${id}`);
-      setProducts((prev) =>
-        prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id)
-      );
-      await refreshProducts();
-      return { success: true };
     } catch (err) {
-      console.error('API deleteProduct error:', err);
-      setProducts((prev) =>
-        prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id)
-      );
-      return { success: true };
+      console.warn('API deleteProduct error, updating local state:', err.message);
     }
+    setProducts((prev) => {
+      const next = prev.filter((p) => p.id !== id && p._id !== id && p.slug !== id);
+      localStorage.setItem('speshway_products', JSON.stringify(next));
+      return next;
+    });
+    return { success: true };
   };
 
   const triggerAddEmployee = async (emp) => {
