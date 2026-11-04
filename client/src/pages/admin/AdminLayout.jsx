@@ -199,6 +199,14 @@ export const AdminLayout = () => {
           </NavLink>
 
           <NavLink
+            to="/admin/home"
+            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
+          >
+            <Globe size={18} />
+            <span>Home Page Options</span>
+          </NavLink>
+
+          <NavLink
             to="/admin/pricing"
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >

@@ -7,6 +7,7 @@ import { seedAdminUser } from './controllers/authController.js';
 import { seedProductsDatabase } from './services/productDatabaseService.js';
 import { seedEmployeesDatabase } from './services/employeeDatabaseService.js';
 import { seedPricingDatabase } from './services/pricingStore.js';
+import { seedHomeDatabase } from './services/homeStore.js';
 
 
 
@@ -22,6 +23,7 @@ connectDB().then(async (connected) => {
   await seedProductsDatabase();
   await seedEmployeesDatabase();
   await seedPricingDatabase();
+  await seedHomeDatabase();
 });
 
 const PORT = process.env.PORT || 5000;

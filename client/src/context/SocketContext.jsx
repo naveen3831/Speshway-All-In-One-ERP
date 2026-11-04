@@ -3,6 +3,31 @@ import { io } from 'socket.io-client';
 import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
 
+export const DEFAULT_HOME_CONTENT = {
+  hero: {
+    badge: '— OUR ERP SOLUTIONS —',
+    titleDark: 'SPESHWAY',
+    titleGreen: 'ALL IN ONE ERP',
+    subtitle: 'A collection of industry-ready ERP solutions to manage your business, operations, and customers — all in one place.',
+    primaryBtnText: 'View All ERPs',
+    primaryBtnLink: '/projects',
+    secondaryBtnText: 'Request a Demo',
+  },
+  stats: {
+    stat1Number: '524+',
+    stat1Label: 'Happy Businesses',
+    stat2Number: '17+',
+    stat2Label: 'ERP Solutions',
+    stat3Number: '99.9%',
+    stat3Label: 'Uptime & Security',
+    stat4Number: '24/7',
+    stat4Label: 'Customer Support',
+  },
+  solutions: {
+    title: 'Our ERP Solutions',
+  },
+};
+
 const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
@@ -108,11 +133,35 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  // Fetch initial products, employees, and inquiries from MongoDB API
+  const [homeContent, setHomeContent] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_home_content');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return DEFAULT_HOME_CONTENT;
+  });
+
+  const refreshHomeContent = async () => {
+    try {
+      const res = await api.get('/home');
+      if (res.data?.data) {
+        setHomeContent(res.data.data);
+        try {
+          localStorage.setItem('speshway_home_content', JSON.stringify(res.data.data));
+        } catch (e) {}
+        return res.data.data;
+      }
+    } catch (err) {
+      console.warn('Could not refresh home content from API:', err.message);
+    }
+  };
+
+  // Fetch initial products, employees, inquiries, and home content from MongoDB API
   useEffect(() => {
     const fetchInitialData = async () => {
       await refreshProducts();
       await refreshInquiries();
+      await refreshHomeContent();
 
       try {
         const empRes = await api.get('/employees');
@@ -324,6 +373,16 @@ export const SocketProvider = ({ children }) => {
           d.id === id || d._id?.toString() === id ? { ...d, status } : d
         ),
       }));
+    });
+
+    // Home page content real-time updates
+    newSocket.on('home:updated', (updatedHome) => {
+      if (updatedHome) {
+        setHomeContent(updatedHome);
+        try {
+          localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+        } catch (e) {}
+      }
     });
 
     setSocket(newSocket);
@@ -565,6 +624,9 @@ export const SocketProvider = ({ children }) => {
         refreshProducts,
         refreshInquiries,
         modulesData,
+        homeContent,
+        refreshHomeContent,
+        setHomeContent,
         triggerAddProduct,
         triggerUpdateProduct,
         triggerDeleteProduct,

@@ -11,8 +11,9 @@ import {
 import './OurErpSolutions.css';
 
 export const OurErpSolutions = () => {
-  const { products } = useSocket();
+  const { products, homeContent } = useSocket();
   const navigate = useNavigate();
+  const sectionTitle = homeContent?.solutions?.title || 'Our ERP Solutions';
 
   // Filter ONLY projects managed in the Admin Dashboard (excludes generic modules)
   const adminProjects = useMemo(() => {
@@ -25,7 +26,7 @@ export const OurErpSolutions = () => {
         {/* Section Header with Clean Dividers */}
         <div className="our-erp-header-row">
           <div className="our-erp-divider-line" />
-          <h2 className="our-erp-title">Our ERP Solutions</h2>
+          <h2 className="our-erp-title">{sectionTitle}</h2>
           <div className="our-erp-divider-line right" />
         </div>
 
