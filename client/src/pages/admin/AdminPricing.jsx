@@ -29,6 +29,7 @@ export const AdminPricing = () => {
   const [saving, setSaving] = useState(false);
   const [savingPlanIdx, setSavingPlanIdx] = useState(null);
   const [savedSuccessIdx, setSavedSuccessIdx] = useState(null);
+  const [cardStatus, setCardStatus] = useState({});
   const [msg, setMsg] = useState(null); // { type: 'success' | 'error', text: '' }
   const [newFeatureInputs, setNewFeatureInputs] = useState({});
 
@@ -171,26 +172,39 @@ export const AdminPricing = () => {
   // Save an individual plan directly from its card
   const handleSaveSinglePlan = async (planIndex) => {
     setSavingPlanIdx(planIndex);
+    setCardStatus((prev) => ({ ...prev, [planIndex]: null }));
     setMsg(null);
     try {
       const plan = plans[planIndex];
       const res = await api.put(`/pricing/${plan.slug}`, plan);
       if (res.data && res.data.success) {
         setSavedSuccessIdx(planIndex);
+        setCardStatus((prev) => ({
+          ...prev,
+          [planIndex]: { type: 'success', text: `Saved! ${plan.name} updated to ${plan.price}` },
+        }));
         setMsg({
           type: 'success',
-          text: `Saved ${plan.name} price (${plan.price})! Updated on website live.`,
+          text: `Saved ${plan.name} plan (${plan.price})! Updated on website live.`,
         });
-        setTimeout(() => setSavedSuccessIdx(null), 3000);
+        setTimeout(() => {
+          setSavedSuccessIdx(null);
+          setCardStatus((prev) => ({ ...prev, [planIndex]: null }));
+        }, 4000);
       }
     } catch (err) {
+      const errMsg = err.response?.data?.message || err.message || `Failed to save ${plans[planIndex]?.name} plan.`;
+      setCardStatus((prev) => ({
+        ...prev,
+        [planIndex]: { type: 'error', text: errMsg },
+      }));
       setMsg({
         type: 'error',
-        text: err.response?.data?.message || `Failed to save ${plans[planIndex]?.name} plan.`,
+        text: errMsg,
       });
     } finally {
       setSavingPlanIdx(null);
-      setTimeout(() => setMsg(null), 5000);
+      setTimeout(() => setMsg(null), 6000);
     }
   };
 
@@ -270,7 +284,33 @@ export const AdminPricing = () => {
         </div>
       </div>
 
-      {/* Alert Notifications */}
+      {/* Floating Global Toast Notification */}
+      {msg && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '24px',
+            right: '24px',
+            zIndex: 99999,
+            padding: '14px 20px',
+            borderRadius: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            backgroundColor: msg.type === 'success' ? '#065f46' : '#991b1b',
+            color: '#ffffff',
+            boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.35)',
+            fontWeight: 600,
+            fontSize: '0.9rem',
+            maxWidth: '450px',
+          }}
+        >
+          {msg.type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
+          <span>{msg.text}</span>
+        </div>
+      )}
+
+      {/* Inline Alert Notifications */}
       {msg && (
         <div
           style={{
@@ -610,6 +650,27 @@ export const AdminPricing = () => {
                     </>
                   )}
                 </button>
+
+                {cardStatus[pIdx] && (
+                  <div
+                    style={{
+                      marginTop: '8px',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      backgroundColor: cardStatus[pIdx].type === 'success' ? '#ecfdf5' : '#fef2f2',
+                      border: `1px solid ${cardStatus[pIdx].type === 'success' ? '#a7f3d0' : '#fecaca'}`,
+                      color: cardStatus[pIdx].type === 'success' ? '#065f46' : '#991b1b',
+                    }}
+                  >
+                    {cardStatus[pIdx].type === 'success' ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
+                    <span>{cardStatus[pIdx].text}</span>
+                  </div>
+                )}
               </div>
             </div>
           );

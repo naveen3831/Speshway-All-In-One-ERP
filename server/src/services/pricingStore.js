@@ -75,25 +75,33 @@ export const getPricingPlans = async () => {
 export const updatePricingPlan = async (slug, data) => {
   const cleanSlug = String(slug || '').toLowerCase().trim();
   
+  // Clone data and strip immutable/meta fields
+  const updatePayload = { ...data };
+  delete updatePayload._id;
+  delete updatePayload.__v;
+  delete updatePayload.createdAt;
+  delete updatePayload.updatedAt;
+  updatePayload.slug = cleanSlug;
+
   // Update memory
   const idx = memoryPricing.findIndex(p => p.slug === cleanSlug);
   if (idx !== -1) {
-    memoryPricing[idx] = { ...memoryPricing[idx], ...data };
+    memoryPricing[idx] = { ...memoryPricing[idx], ...updatePayload };
   } else {
-    memoryPricing.push({ slug: cleanSlug, ...data });
+    memoryPricing.push(updatePayload);
   }
 
   // Update DB
   try {
     const updated = await PricingPlan.findOneAndUpdate(
       { slug: cleanSlug },
-      { $set: data },
+      { $set: updatePayload },
       { new: true, upsert: true, setDefaultsOnInsert: true, lean: true }
     );
-    return updated || memoryPricing[idx];
+    return updated || (idx !== -1 ? memoryPricing[idx] : updatePayload);
   } catch (err) {
     console.warn('[PricingStore] MongoDB update fallback to memory:', err.message);
-    return memoryPricing[idx];
+    return idx !== -1 ? memoryPricing[idx] : updatePayload;
   }
 };
 
