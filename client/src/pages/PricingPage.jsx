@@ -14,7 +14,7 @@ export const PricingPage = () => {
   const tiers = [
     {
       name: 'Starter',
-      price: isAnnual ? '$29' : '$39',
+      price: isAnnual ? '₹2,499' : '₹3,299',
       period: '/user /month',
       desc: 'Ideal for small businesses and growing teams needing core HR & Project tools.',
       features: [
@@ -30,7 +30,7 @@ export const PricingPage = () => {
     },
     {
       name: 'Professional',
-      price: isAnnual ? '$69' : '$89',
+      price: isAnnual ? '₹5,999' : '₹7,999',
       period: '/user /month',
       desc: 'Complete suite for scaling companies that need unified payroll, finance & CRM.',
       features: [
