@@ -1,0 +1,619 @@
+/* =========================================================
+   SANA STAYZ LUXURY HOTEL & PMS ADMIN DASHBOARD
+   Emerald Green & Slate Night Theme with Fixed Sticky Sidebar
+   ========================================================= */
+
+.sana-dashboard-container {
+  display: flex;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  background-color: #f8fafc;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #0f172a;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 1. FIXED STICKY SIDEBAR (Never Scrolls with Page) */
+.sana-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background-color: #061e16;
+  height: 100vh;
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(16, 185, 129, 0.15);
+  z-index: 50;
+  flex-shrink: 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.sana-sidebar-top {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sana-sidebar-top::-webkit-scrollbar {
+  display: none;
+}
+
+/* Brand Header */
+.sana-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 18px 20px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.sana-brand-logo-wrap {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sana-brand-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.sana-brand-sub {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #10b981;
+  letter-spacing: 1.4px;
+  margin-top: 2px;
+}
+
+/* Nav Menu */
+.sana-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 16px 12px;
+  list-style: none;
+  margin: 0;
+}
+
+.sana-nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.sana-nav-btn:hover {
+  background: rgba(16, 185, 129, 0.08);
+  color: #f1f5f9;
+}
+
+.sana-nav-btn.active {
+  background: #10b981;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.sana-nav-btn.active svg {
+  color: #ffffff;
+}
+
+.sana-nav-label {
+  flex: 1;
+}
+
+.sana-nav-badge {
+  background: #047857;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: auto;
+}
+
+.sana-nav-btn.active .sana-nav-badge {
+  background: #ffffff;
+  color: #047857;
+}
+
+/* Sidebar Bottom User & Exit - NO OVERLAPPING */
+.sana-sidebar-bottom {
+  padding: 14px 12px 18px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #061e16;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.sana-btn-portal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.sana-btn-portal:hover {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.sana-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+}
+
+.sana-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.sana-user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sana-user-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #f8fafc;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.sana-user-role {
+  font-size: 11px;
+  color: #10b981;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 2. MAIN SCROLLABLE CONTENT (Only Content Scrolls) */
+.sana-main {
+  flex: 1;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: #f8fafc;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f8fafc;
+}
+
+/* Top Header Bar */
+.sana-header {
+  min-height: 76px;
+  height: 76px;
+  padding: 0 32px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  flex-shrink: 0;
+}
+
+.sana-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sana-page-title {
+  font-size: 21px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+
+.sana-page-sub {
+  font-size: 12.5px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+.sana-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sana-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  width: 250px;
+  color: #64748b;
+}
+
+.sana-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  width: 100%;
+  color: #0f172a;
+}
+
+.sana-badge-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #047857;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 20px;
+}
+
+.sana-icon-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sana-icon-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.sana-bell-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #ef4444;
+}
+
+.sana-btn-site {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #059669;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+}
+
+.sana-btn-site:hover {
+  background: #047857;
+  transform: translateY(-1px);
+}
+
+/* Content Body */
+.sana-content-body {
+  padding: 24px 32px 48px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 4-Card Horizontal Stat Grid */
+.sana-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .sana-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .sana-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sana-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.18s, box-shadow 0.18s;
+  min-width: 0;
+}
+
+.sana-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.sana-stat-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #ecfdf5;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sana-stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sana-stat-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+
+.sana-stat-val {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.sana-stat-trend {
+  font-size: 11px;
+  font-weight: 600;
+  color: #059669;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+/* Charts & Split Grid */
+.sana-charts-grid {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .sana-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Sections (Both .sana-card and .sana-card-section) */
+.sana-card,
+.sana-card-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.sana-card-header,
+.sana-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 14px;
+}
+
+.sana-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.sana-section-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.sana-section-header p {
+  font-size: 12.5px;
+  color: #64748b;
+  margin: 3px 0 0 0;
+}
+
+/* Tables (Both .sana-table-wrap and .sana-table-wrapper) */
+.sana-table-wrap,
+.sana-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #f1f5f9;
+}
+
+.sana-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13.5px;
+}
+
+.sana-data-table th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.sana-data-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.sana-data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.sana-data-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Status Badges */
+.sana-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sana-status-badge.checked-in {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.sana-status-badge.confirmed {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.sana-status-badge.checked-out {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.sana-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.sana-pill.pill-green {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.sana-pill.pill-blue {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.sana-pill.pill-amber {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}

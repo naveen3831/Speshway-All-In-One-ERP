@@ -12,6 +12,13 @@ import {
   GraduationCap,
   Layers,
   Factory,
+  Utensils,
+  Bike,
+  Calendar,
+  Dumbbell,
+  Truck,
+  BookOpen,
+  Bed,
 } from 'lucide-react';
 
 export const iconMap = {
@@ -28,6 +35,13 @@ export const iconMap = {
   GraduationCap,
   Layers,
   Factory,
+  Utensils,
+  Bike,
+  Calendar,
+  Dumbbell,
+  Truck,
+  BookOpen,
+  Bed,
 };
 
 export const EXCLUDED_SLUGS = new Set([
@@ -64,6 +78,108 @@ export const EXCLUDED_NAMES = new Set([
 // Full default enterprise ERP projects managed in the Admin Dashboard
 export const DEFAULT_ADMIN_PROJECTS = [
   {
+    id: 'savitri-sarees',
+    slug: 'savitri-sarees',
+    name: 'Savitri Sarees',
+    category: 'Fashion & Luxury',
+    description: 'Savitri Sarees is a premium online saree shopping platform offering a beautiful collection of traditional and modern sarees, effortless product browsing, secure payment gateways, and seamless order management.',
+    longDescription: 'Complete luxury handloom saree commerce ERP managing master weavers, Silk Mark audits, bridal sari catalogs, loom dispatch batches, and online customer fulfillment.',
+    features: ['Handloom Saree Catalog', 'Silk Mark Certified', 'Loom Weaver Coordination', 'Real-Time Order Tracking', 'Bridal Collections'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://saree.speshway.site/',
+    adminUrl: '/product/savitri-sarees/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg',
+    iconName: 'Sparkles',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'sana-stayz',
+    slug: 'sana-stayz',
+    name: 'Sana Stayz',
+    category: 'Hospitality & Hotels',
+    description: 'Sana Stayz is a modern hotel and accommodation booking platform designed to streamline room reservations, front desk check-in/out, housekeeping, and guest management through an intuitive digital portal.',
+    longDescription: 'End-to-end hospitality property management ERP providing real-time room occupancy grids, keyless check-in, banquet sales, housekeeping rosters, and room service settlements.',
+    features: ['Room Reservations Grid', 'Express Check-In/Out', 'Live Occupancy Telematics', 'Housekeeping Roster', 'Billing & Folio Invoicing'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://hotel.speshway.site/',
+    adminUrl: '/product/sana-stayz/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/sana-stayz.jpg',
+    iconName: 'Bed',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'learnhub',
+    slug: 'learnhub',
+    name: 'LearnHub',
+    category: 'Education & LMS',
+    description: 'LearnHub is a modern online learning management platform designed to help students enroll in industry courses, attend live interactive batches, complete assignments, and receive accredited certificates.',
+    longDescription: 'Enterprise EdTech and online academy ERP featuring interactive live batch schedules, digital grade books, automated fee invoices, quiz modules, and blockchain credentials.',
+    features: ['Course Management & Video Lectures', 'Student Enrollment Pipeline', 'Live Interactive Classrooms', 'Automated Quizzes & Exams', 'Blockchain Certificates'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://lms.speshway.site/',
+    adminUrl: '/product/learnhub/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/learnhub.jpg',
+    iconName: 'GraduationCap',
+    color: 'emerald',
+    status: 'active',
+    popularity: 98,
+  },
+  {
+    id: 'foodway',
+    slug: 'foodway',
+    name: 'FOODWAY',
+    category: 'Food Delivery & Kitchen',
+    description: 'FoodWay is a modern online food ordering platform that helps customers explore nearby partner kitchens, customize dishes, track live deliveries, and order delicious meals seamlessly.',
+    longDescription: 'Next-gen cloud kitchen and food delivery ERP with thermal KOT kitchen display systems, rider telematics dispatch, menu 86 inventory control, and multi-outlet settlements.',
+    features: ['Live Kitchen Display (KDS)', 'Online Food Delivery Workflow', 'Rider Telematics Tracking', 'Multi-Kitchen Settlements', 'Digital POS Invoices'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://foody.speshway.site/',
+    adminUrl: '/product/foodway/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/foodway.jpg',
+    iconName: 'Utensils',
+    color: 'emerald',
+    status: 'active',
+    popularity: 98,
+  },
+  {
+    id: 'tours-and-travels',
+    slug: 'tours-and-travels',
+    name: 'TOURS & TRAVELS',
+    category: 'Bus & Travel Booking',
+    description: 'STAR TOURS & TRAVELS is an online bus ticket booking platform designed to make travel easy with quick bus searches, seat selection, secure online ticketing, and real-time travel updates.',
+    longDescription: 'Interstate passenger transit and bus fleet ERP covering seat layout matrix, online booking dispatch, route rostering, GPS bus tracking, and passenger manifests.',
+    features: ['Online Bus Ticketing Engine', 'Seat Selection Matrix', 'Fleet GPS Telematics', 'Interstate Route Rosters', 'Automated Boarding Passes'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://bus.speshway.site/',
+    adminUrl: '/product/tours-and-travels/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/tours-and-travels.jpg',
+    iconName: 'Plane',
+    color: 'cyan',
+    status: 'active',
+    popularity: 97,
+  },
+  {
+    id: 'ride-flow',
+    slug: 'ride-flow',
+    name: 'RIDE FLOW',
+    category: 'Human Resources',
+    description: 'RideFlow is a modern two-wheeler platform designed to help customers explore bikes, compare models, discover attractive offers, and connect with dealers.',
+    longDescription: 'RideFlow Two-Wheeler ERP provides digital bike showroom management, dealership networks, online test ride and bike bookings, customer inquiries, and sales analytics.',
+    features: ['Bike Listings', 'Bike Categories', 'Bike Comparison', 'Offers & Deals', 'Dealer Directory', 'Service Support'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
+    websiteUrl: 'https://bike.speshway.site/',
+    adminUrl: '/product/ride-flow/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/ride-flow.jpg',
+    iconName: 'Bike',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
     id: 'speshway-hospitals',
     slug: 'speshway-hospitals',
     name: 'Speshway Hospitals',
@@ -73,27 +189,12 @@ export const DEFAULT_ADMIN_PROJECTS = [
     features: ['Diagnostic Lab Reports & Pathology', 'Patient Admissions & Inpatient Directory', 'OPD / IPD Doctor Scheduling', 'Real-Time Bed & Ward Occupancy', 'Pharmacy & Blood Bank Inventory', 'EHR & Digital Health Records'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth'],
     websiteUrl: 'https://speshway.com/hospitals',
-    adminUrl: '/dashboard/speshway-hospitals',
+    adminUrl: '/product/speshway-hospitals/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/speshway-hospitals.jpg',
     iconName: 'Building2',
     color: 'rose',
     status: 'active',
     popularity: 99,
-  },
-  {
-    id: 'tours-and-travels',
-    slug: 'tours-and-travels',
-    name: 'Tours & Travels ERP',
-    category: 'Tours & Travels',
-    description: 'Comprehensive travel agency software for booking itineraries, ticketing, holiday packages, lead management, accounts, and supplier vouchers.',
-    longDescription: 'End-to-end ERP for travel agencies and tour operators: itinerary planning, flight and hotel vouchers, customer lead pipeline, and automated accounts.',
-    features: ['Lead & CRM Management', 'Holiday Package Itinerary Builder', 'Hotel & Flight Booking Registry', 'Supplier & Vendor Accounts', 'Receivables & Invoice Generator'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/tours-and-travels',
-    adminUrl: '/dashboard/tours-and-travels',
-    iconName: 'Plane',
-    color: 'cyan',
-    status: 'active',
-    popularity: 97,
   },
   {
     id: 'natural-milk-dairy',
@@ -104,8 +205,9 @@ export const DEFAULT_ADMIN_PROJECTS = [
     longDescription: 'Complete dairy operations ERP providing farm-to-door delivery tracking, automated daily subscriptions, real-time inventory for milk and milk byproducts, temperature-controlled warehouse logging, and seamless payments.',
     features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/natural-milk-dairy',
-    adminUrl: '/dashboard/natural-milk-dairy',
+    websiteUrl: 'https://dairy.speshway.site/',
+    adminUrl: '/product/natural-milk-dairy/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/natural-milk-dairy.jpg',
     iconName: 'Package',
     color: 'emerald',
     status: 'active',
@@ -121,7 +223,8 @@ export const DEFAULT_ADMIN_PROJECTS = [
     features: ['Variant & Size Matrix', 'Omnichannel Orders', 'Showroom POS Integration', 'Fabric & Material Supply Chain', 'Seasonal Sales Analytics'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/vexa-style-hub',
-    adminUrl: '/dashboard/vexa-style-hub',
+    adminUrl: '/product/vexa-style-hub/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/vexa-style-hub.png',
     iconName: 'Store',
     color: 'purple',
     status: 'active',
@@ -137,7 +240,8 @@ export const DEFAULT_ADMIN_PROJECTS = [
     features: ['Luxury Saree Catalog', 'Silk Mark Certification', 'Real-Time Order Tracking', 'Role-Based Access', 'Bridal Customization', 'Secure Payments'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://aneerasilks.com',
-    adminUrl: '/dashboard/aneera-silks',
+    adminUrl: '/product/aneera-silks/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/aneera-silks.jpg',
     iconName: 'Sparkles',
     color: 'rose',
     status: 'active',
@@ -153,7 +257,8 @@ export const DEFAULT_ADMIN_PROJECTS = [
     features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://nexora.speshway.com',
-    adminUrl: '/dashboard/e-commerce',
+    adminUrl: '/product/e-commerce/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/e-commerce.jpg',
     iconName: 'ShoppingCart',
     color: 'blue',
     status: 'active',
@@ -169,75 +274,97 @@ export const DEFAULT_ADMIN_PROJECTS = [
     features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://spysalon.speshway.com',
-    adminUrl: '/dashboard/saloon',
+    adminUrl: '/product/saloon/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/saloon.jpg',
     iconName: 'Scissors',
     color: 'amber',
     status: 'active',
     popularity: 99,
   },
   {
-    id: 'service-center',
-    slug: 'service-center',
-    name: 'Service Center ERP',
-    category: 'Operations',
-    description: 'Dedicated appliance and electronics repair management suite covering service tickets, technician dispatches, warranty tracking, spare parts inventory, and invoicing.',
-    longDescription: 'End-to-end Service Center operations suite featuring live technician dispatching, customer job card generation, spare parts stock control, and SLA monitoring.',
-    features: ['Job Card & Ticket Registry', 'Technician Dispatch Board', 'Spare Parts Inventory', 'Warranty & AMC Tracking', 'Customer Invoice Generator'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/service-center',
-    adminUrl: '/dashboard/service-center',
-    iconName: 'Wrench',
+    id: 'fleet-management',
+    slug: 'fleet-management',
+    name: 'Fleet Management',
+    category: 'Human Resources',
+    description: 'A smart Fleet Management System designed to simplify vehicle operations, monitor fleet activities, manage drivers and trips, and improve operational efficiency.',
+    longDescription: 'Track fleet performance, organize vehicle records, fuel dispensation audits, and manage transportation operations through one centralized platform.',
+    features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://fleet.speshway.site/',
+    adminUrl: '/product/fleet-management/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/fleet-management.jpg',
+    iconName: 'Truck',
     color: 'emerald',
     status: 'active',
-    popularity: 96,
+    popularity: 99,
   },
   {
-    id: 'real-estate',
-    slug: 'real-estate',
-    name: 'Real Estate ERP',
-    category: 'Operations',
-    description: 'Unified property management and construction ERP for real estate developers, leasing agencies, tenant accounts, unit inventories, and payment milestones.',
-    longDescription: 'Complete real estate development and asset management ERP: project phase monitoring, unit availability matrix, lead CRM, and automated tenant billing.',
-    features: ['Property & Unit Matrix', 'Tenant Leasing & Contracts', 'Payment Milestone Tracker', 'Maintenance Work Orders', 'Commission & Brokerage Logs'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/real-estate',
-    adminUrl: '/dashboard/real-estate',
-    iconName: 'Home',
-    color: 'green',
+    id: 'american-fitness-gym',
+    slug: 'american-fitness-gym',
+    name: 'AMERICAN FITNESS GYM',
+    category: 'Human Resources',
+    description: 'American Fitness Gym is a modern fitness platform designed to help fitness enthusiasts achieve their health and fitness goals.',
+    longDescription: 'Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
+    features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://speshway.com/',
+    adminUrl: '/product/american-fitness-gym/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/american-fitness-gym.jpg',
+    iconName: 'Dumbbell',
+    color: 'emerald',
     status: 'active',
-    popularity: 95,
+    popularity: 99,
   },
   {
-    id: 'school-erp',
-    slug: 'school-erp',
-    name: 'School ERP',
-    category: 'Productivity',
-    description: 'Modern campus and school management ERP for student enrollments, attendance, timetables, examinations, fee collection, and parent-teacher communication.',
-    longDescription: 'Cloud-first education management ERP providing student information systems (SIS), dynamic timetable generation, grade books, automated fee invoices, and campus alerts.',
-    features: ['Student Admissions & SIS', 'Biometric Attendance Logging', 'Fee Schedules & Online Payments', 'Exam Gradebook & Report Cards', 'Parent Portal Notifications'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/school-erp',
-    adminUrl: '/dashboard/school-erp',
-    iconName: 'GraduationCap',
-    color: 'blue',
+    id: 'flavora-kitchen',
+    slug: 'flavora-kitchen',
+    name: 'FLAVORA KITCHEN',
+    category: 'Human Resources',
+    description: 'Flavora Kitchen is an enterprise cloud kitchen and restaurant management system that streamlines live orders, online deliveries, dining table reservations, recipe costings, kitchen display systems (KDS), and inventory through a centralized digital platform.',
+    longDescription: 'Full-stack restaurant POS, automated thermal KOT routing, ingredient consumption logs, and multi-aggregator food delivery dispatch.',
+    features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://restaurant.speshway.site/',
+    adminUrl: '/product/flavora-kitchen/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/flavora-kitchen.jpg',
+    iconName: 'Utensils',
+    color: 'emerald',
     status: 'active',
-    popularity: 94,
+    popularity: 99,
   },
   {
-    id: 'hotel-erp',
-    slug: 'hotel-erp',
-    name: 'Hotel ERP',
-    category: 'Operations',
-    description: 'Hospitality and resort property management system (PMS) covering room reservations, front desk check-in/out, housekeeping, restaurant POS, and banquet bookings.',
-    longDescription: 'Comprehensive hotel management ERP: real-time room occupancy grid, guest check-in automation, housekeeping status, restaurant POS integration, and night audit reporting.',
-    features: ['Front Desk Check-in / Check-out', 'Room Reservation Grid', 'Housekeeping Roster', 'Restaurant & Room Service POS', 'Billing & Folio Management'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/hotel-erp',
-    adminUrl: '/dashboard/hotel-erp',
-    iconName: 'Building2',
-    color: 'amber',
+    id: 'speshway-hrms',
+    slug: 'speshway-hrms',
+    name: 'SPESHWAY-HRMS',
+    category: 'Human Resources',
+    description: 'Speshway HRMS is an all-in-one Human Resource Management System designed to simplify workforce management and automate daily HR operations.',
+    longDescription: 'Manage employees, attendance, leave requests, payroll, recruitment, and performance through a centralized platform.',
+    features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://speshwayhrms.com/',
+    adminUrl: '/product/speshway-hrms/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/speshway-hrms.jpg',
+    iconName: 'Layers',
+    color: 'emerald',
     status: 'active',
-    popularity: 95,
+    popularity: 99,
+  },
+  {
+    id: 'joy-events',
+    slug: 'joy-events',
+    name: "JOY_EVENT'S",
+    category: 'Human Resources',
+    description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination.',
+    longDescription: 'From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
+    features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://joyevents.speshway.site/',
+    adminUrl: '/product/joy-events/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/joy-events.jpg',
+    iconName: 'Calendar',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
   },
 ];
 
@@ -248,12 +375,18 @@ export const filterAdminProjects = (products) => {
   if (!Array.isArray(products) || products.length === 0) {
     return DEFAULT_ADMIN_PROJECTS;
   }
-  const filtered = products.filter((p) => {
-    const slug = (p.slug || p.id || '').toLowerCase();
-    const name = (p.name || '').toLowerCase().trim();
-    return !EXCLUDED_SLUGS.has(slug) && !EXCLUDED_NAMES.has(name);
+
+  const valid = products.filter((p) => {
+    if (!p || typeof p !== 'object') return false;
+    const slug = String(p.slug || p.id || '').toLowerCase().trim();
+    const name = String(p.name || '').toLowerCase().trim();
+    if (!slug && !name) return false;
+    if (EXCLUDED_SLUGS.has(slug)) return false;
+    if (EXCLUDED_NAMES.has(name)) return false;
+    return true;
   });
-  return filtered.length > 0 ? filtered : DEFAULT_ADMIN_PROJECTS;
+
+  return valid.length > 0 ? valid : DEFAULT_ADMIN_PROJECTS;
 };
 
 /**
@@ -263,21 +396,8 @@ export const getDashboardRoute = (prod) => {
   if (prod.adminUrl && prod.adminUrl !== '/admin/products' && prod.adminUrl.startsWith('/')) {
     return prod.adminUrl;
   }
-  const slug = (prod.slug || prod.id || '').toLowerCase();
-  if (slug.includes('hospital')) return '/dashboard/speshway-hospitals';
-  if (slug.includes('travel') || slug.includes('tour')) return '/dashboard/tours-and-travels';
-  if (slug.includes('dairy') || slug.includes('milk')) return '/dashboard/natural-milk-dairy';
-  if (slug.includes('vexa') || slug.includes('style') || slug.includes('fashion') || slug.includes('apparel')) {
-    return '/dashboard/vexa-style-hub';
-  }
-  if (slug.includes('aneera') || slug.includes('silk')) return '/dashboard/aneera-silks';
-  if (slug.includes('e-com') || slug.includes('nexora') || slug.includes('store')) return '/dashboard/e-commerce';
-  if (slug.includes('salon') || slug.includes('saloon')) return '/dashboard/saloon';
-  if (slug.includes('service')) return '/dashboard/service-center';
-  if (slug.includes('estate') || slug.includes('real')) return '/dashboard/real-estate';
-  if (slug.includes('school')) return '/dashboard/school-erp';
-  if (slug.includes('hotel') || slug.includes('resort')) return '/dashboard/hotel-erp';
-  return `/dashboard/${slug}`;
+  const slug = (prod.slug || prod.id || '').toLowerCase().trim();
+  return `/product/${slug}/dashboard`;
 };
 
 /**
@@ -289,17 +409,22 @@ export const getProjectIcon = (prod) => {
   }
   const slug = (prod.slug || prod.id || '').toLowerCase();
   const cat = (prod.category || '').toLowerCase();
-  if (slug.includes('hospital') || cat.includes('health') || cat.includes('hospital')) return Building2;
+  if (slug.includes('saree') || slug.includes('silk') || slug.includes('aneera')) return Sparkles;
+  if (slug.includes('hotel') || slug.includes('stayz')) return Bed;
+  if (slug.includes('learn') || slug.includes('lms') || cat.includes('education')) return GraduationCap;
+  if (slug.includes('food') || slug.includes('kitchen')) return Utensils;
+  if (slug.includes('ride') || slug.includes('bike')) return Bike;
+  if (slug.includes('joy') || slug.includes('event')) return Calendar;
+  if (slug.includes('gym') || slug.includes('fitness')) return Dumbbell;
+  if (slug.includes('fleet') || slug.includes('truck')) return Truck;
+  if (slug.includes('hospital') || cat.includes('health')) return Building2;
   if (slug.includes('travel') || slug.includes('tour') || cat.includes('travel')) return Plane;
-  if (slug.includes('dairy') || slug.includes('milk') || cat.includes('dairy')) return Package;
-  if (slug.includes('vexa') || cat.includes('fashion') || cat.includes('apparel')) return Store;
-  if (slug.includes('aneera') || slug.includes('silk')) return Sparkles;
-  if (slug.includes('e-com') || slug.includes('nexora') || cat.includes('commerce')) return ShoppingCart;
-  if (slug.includes('salon') || slug.includes('saloon') || cat.includes('beauty')) return Scissors;
-  if (slug.includes('service') || cat.includes('repair')) return Wrench;
-  if (slug.includes('estate') || cat.includes('property')) return Home;
-  if (slug.includes('school') || cat.includes('education')) return GraduationCap;
-  if (slug.includes('hotel') || cat.includes('hospitality')) return Building2;
+  if (slug.includes('dairy') || slug.includes('milk')) return Package;
+  if (slug.includes('vexa') || cat.includes('fashion')) return Store;
+  if (slug.includes('e-com') || slug.includes('store')) return ShoppingCart;
+  if (slug.includes('salon') || slug.includes('saloon')) return Scissors;
+  if (slug.includes('service')) return Wrench;
+  if (slug.includes('hrms')) return Layers;
   return Layers;
 };
 
@@ -308,20 +433,8 @@ export const getProjectIcon = (prod) => {
  */
 export const getProjectColor = (prod) => {
   const c = (prod.color || '').toLowerCase();
-  if (['blue', 'rose', 'green', 'purple', 'amber', 'cyan', 'indigo', 'emerald', 'teal'].includes(c)) {
+  if (['blue', 'rose', 'green', 'purple', 'amber', 'cyan', 'indigo', 'emerald', 'teal', 'orange'].includes(c)) {
     return c;
   }
-  const slug = (prod.slug || prod.id || '').toLowerCase();
-  if (slug.includes('hospital')) return 'rose';
-  if (slug.includes('travel')) return 'cyan';
-  if (slug.includes('dairy')) return 'emerald';
-  if (slug.includes('vexa')) return 'purple';
-  if (slug.includes('aneera')) return 'rose';
-  if (slug.includes('e-com')) return 'blue';
-  if (slug.includes('salon')) return 'amber';
-  if (slug.includes('service')) return 'emerald';
-  if (slug.includes('estate')) return 'green';
-  if (slug.includes('school')) return 'blue';
-  if (slug.includes('hotel')) return 'amber';
   return 'emerald';
 };

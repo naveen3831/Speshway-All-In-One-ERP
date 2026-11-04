@@ -2,14 +2,20 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 import { getIO } from '../services/socketService.js';
+import { uploadToCloudinary } from '../services/cloudinaryService.js';
 import { getProducts, getProductById } from '../services/productStore.js';
 
 const router = express.Router();
 
-// Helper to find by MongoDB _id or custom slug or string id
+// Helper to find by MongoDB _id or custom slug or string id or name
 const getProductQuery = (id) => {
   const cleanId = String(id || '').trim();
-  const conditions = [{ slug: cleanId }, { id: cleanId }];
+  const conditions = [
+    { slug: cleanId },
+    { slug: new RegExp('^' + cleanId + '$', 'i') },
+    { id: cleanId },
+    { name: new RegExp('^' + cleanId + '$', 'i') },
+  ];
   if (mongoose.Types.ObjectId.isValid(cleanId)) {
     conditions.push({ _id: cleanId });
   }
@@ -108,6 +114,11 @@ router.post('/', async (req, res) => {
       finalSlug = `${finalSlug}-${Date.now().toString().slice(-4)}`;
     }
 
+    let finalImageUrl = imageUrl || '';
+    if (finalImageUrl) {
+      finalImageUrl = await uploadToCloudinary(finalImageUrl);
+    }
+
     const createdProduct = await Product.create({
       name: name.trim(),
       slug: finalSlug,
@@ -126,7 +137,7 @@ router.post('/', async (req, res) => {
         : ['React', 'Node.js', 'Express', 'MongoDB', 'Socket.IO'],
       websiteUrl: websiteUrl || '',
       adminUrl: adminUrl || '/admin/products',
-      imageUrl: imageUrl || '',
+      imageUrl: finalImageUrl || '',
       iconName: iconName || 'Layers',
       color: color || 'green',
       status: status || 'active',
@@ -169,6 +180,10 @@ router.put('/:id', async (req, res) => {
     if (body.technologies && typeof body.technologies === 'string') {
       body.technologies = body.technologies.split(',').map((t) => t.trim()).filter(Boolean);
     }
+    if (body.imageUrl) {
+      body.imageUrl = await uploadToCloudinary(body.imageUrl);
+    }
+
     if (body.features && typeof body.features === 'string') {
       body.features = body.features.split(',').map((f) => f.trim()).filter(Boolean);
     }
@@ -182,16 +197,28 @@ router.put('/:id', async (req, res) => {
       memUpdated = addMemoryProduct({ ...body, id: rawId, slug: body.slug || rawId });
     }
 
-    // 2. Update or upsert in MongoDB database
+    // 2. Update or insert in MongoDB database
     let updated = null;
     try {
-      updated = await Product.findOneAndUpdate(
-        getProductQuery(rawId),
-        { ...body, slug: body.slug || rawId },
-        { new: true, runValidators: false, upsert: true, setDefaultsOnInsert: true }
-      );
+      let existingDoc = await Product.findOne(getProductQuery(rawId));
+      if (!existingDoc && body.name) {
+        existingDoc = await Product.findOne({ name: new RegExp('^' + body.name.trim() + '$', 'i') });
+      }
+
+      if (existingDoc) {
+        Object.assign(existingDoc, body);
+        if (body.slug) existingDoc.slug = body.slug;
+        if (body.imageUrl) existingDoc.imageUrl = body.imageUrl;
+        updated = await existingDoc.save();
+      } else {
+        updated = await Product.create({
+          ...body,
+          id: rawId,
+          slug: body.slug || rawId.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+        });
+      }
     } catch (dbErr) {
-      console.warn('MongoDB Product.findOneAndUpdate error (fallback to memory store):', dbErr.message);
+      console.warn('MongoDB Product update error (fallback to memory store):', dbErr.message);
     }
 
     const plainUpdated = updated

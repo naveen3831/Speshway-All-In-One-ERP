@@ -5,6 +5,31 @@ import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
 
 const SocketContext = createContext(null);
 
+export const isSameProduct = (p, target) => {
+  if (!p || !target) return false;
+  const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (p === target) return true;
+  if (p._id && target._id && String(p._id) === String(target._id)) return true;
+  if (p.id && target.id && String(p.id) === String(target.id)) return true;
+  if (p.slug && target.slug && String(p.slug) === String(target.slug)) return true;
+
+  const normPId = norm(p.id);
+  const normPSlug = norm(p.slug);
+  const normPName = norm(p.name);
+
+  const normTId = norm(target.id || target._id);
+  const normTSlug = norm(target.slug);
+  const normTName = norm(target.name);
+
+  if (normPId && (normPId === normTId || normPId === normTSlug)) return true;
+  if (normPSlug && (normPSlug === normTSlug || normPSlug === normTId)) return true;
+  if (normPName && normTName && normPName === normTName) return true;
+  if (normPName && (normPName === normTSlug || normPName === normTId)) return true;
+  if (normTName && (normTName === normPSlug || normTName === normPId)) return true;
+
+  return false;
+};
+
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -204,17 +229,19 @@ export const SocketProvider = ({ children }) => {
       if (!updated || typeof updated !== 'object') return;
       setProducts((prev) => {
         const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        let matched = false;
         const next = safe.map((p) => {
-          const matchId =
-            (p.id && (p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
-            (p._id && (p._id === updated.id || p._id === updated._id || p._id === updated.slug));
-          const matchSlug = p.slug && (p.slug === updated.slug || p.slug === updated.id);
-          return matchId || matchSlug ? { ...p, ...updated } : p;
+          if (isSameProduct(p, updated)) {
+            matched = true;
+            return { ...p, ...updated };
+          }
+          return p;
         });
+        const finalList = matched ? next : [updated, ...next];
         try {
-          localStorage.setItem('speshway_products', JSON.stringify(next));
+          localStorage.setItem('speshway_products', JSON.stringify(finalList));
         } catch (e) {}
-        return next;
+        return finalList;
       });
       setToastMessage(`Product updated: ${updated.name || 'Module'}`);
       setTimeout(() => setToastMessage(null), 4000);
@@ -371,42 +398,52 @@ export const SocketProvider = ({ children }) => {
   };
 
   const triggerUpdateProduct = async (id, updates) => {
+    const targetObj = { id, slug: updates.slug || id, ...updates };
+
+    // 1. Optimistic update: instantly update React state and localStorage so all UI reflects the new image immediately
+    setProducts((prev) => {
+      const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+      let matched = false;
+      const next = safe.map((p) => {
+        if (isSameProduct(p, targetObj)) {
+          matched = true;
+          return { ...p, ...updates };
+        }
+        return p;
+      });
+      const finalList = matched ? next : [targetObj, ...next];
+      try {
+        localStorage.setItem('speshway_products', JSON.stringify(finalList));
+      } catch (e) {}
+      return finalList;
+    });
+
+    // 2. Persist to MongoDB Atlas & Cloudinary CDN
     try {
-      const res = await api.put(`/products/${id}`, updates);
-      const updated = res.data?.data || { id, ...updates };
+      const res = await api.put(`/products/${encodeURIComponent(id)}`, updates);
+      const serverUpdated = res.data?.data || targetObj;
+
       setProducts((prev) => {
         const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        let matched = false;
         const next = safe.map((p) => {
-          const matchId =
-            (p.id && (p.id === id || p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
-            (p._id && (p._id === id || p._id === updated.id || p._id === updated._id || p._id === updated.slug));
-          const matchSlug = p.slug && (p.slug === id || p.slug === updated.slug || p.slug === updated.id);
-          return matchId || matchSlug ? { ...p, ...updated } : p;
+          if (isSameProduct(p, serverUpdated) || isSameProduct(p, targetObj)) {
+            matched = true;
+            return { ...p, ...serverUpdated };
+          }
+          return p;
         });
+        const finalList = matched ? next : [serverUpdated, ...next];
         try {
-          localStorage.setItem('speshway_products', JSON.stringify(next));
+          localStorage.setItem('speshway_products', JSON.stringify(finalList));
         } catch (e) {}
-        return next;
+        return finalList;
       });
-      return res.data || { success: true, data: updated };
+
+      return res.data || { success: true, data: serverUpdated };
     } catch (err) {
-      console.warn('API updateProduct fallback to local state:', err.message);
-      const updated = { id, ...updates };
-      setProducts((prev) => {
-        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
-        const next = safe.map((p) => {
-          const match =
-            (p.id && (p.id === id || p.id === updates.slug)) ||
-            (p.slug && (p.slug === id || p.slug === updates.slug)) ||
-            (p._id && p._id === id);
-          return match ? { ...p, ...updates } : p;
-        });
-        try {
-          localStorage.setItem('speshway_products', JSON.stringify(next));
-        } catch (e) {}
-        return next;
-      });
-      return { success: true, data: updated };
+      console.warn('API updateProduct network error, preserved optimistic local state:', err.message);
+      return { success: true, data: targetObj };
     }
   };
 

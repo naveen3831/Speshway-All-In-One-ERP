@@ -15,6 +15,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
+import { getProductFallbackImage } from '../../pages/ProductsPage';
 import './ProjectsSection.css';
 
 const iconMap = {
@@ -231,11 +232,14 @@ export const ProjectsSection = ({ onSelectProduct }) => {
                 {/* Top: Icon & Category */}
                 <div className="project-card-header">
                   <div className={`project-icon-box bg-icon-${prod.color || 'green'}`}>
-                    {prod.imageUrl ? (
-                      <img src={prod.imageUrl} alt={prod.name} className="app-icon-custom-img" />
-                    ) : (
-                      <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={24} />
-                    )}
+                    {(() => {
+                      const displayImg = prod.imageUrl || getProductFallbackImage(prod.slug || prod.id || prod.name);
+                      return displayImg ? (
+                        <img src={displayImg} alt={prod.name} className="app-icon-custom-img" />
+                      ) : (
+                        <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={24} />
+                      );
+                    })()}
                   </div>
                   <div className="project-badges">
                     <span className="project-category-tag">{prod.category}</span>

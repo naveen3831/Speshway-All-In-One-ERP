@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useSocket } from '../../context/SocketContext';
+import { useSocket, isSameProduct } from '../../context/SocketContext';
 import {
   ArrowLeft,
   Save,
@@ -27,7 +27,7 @@ export const AdminProductForm = () => {
 
   const isEditMode = Boolean(id);
   const existingProduct = isEditMode
-    ? products.find((p) => p.id === id || p.slug === id || p._id === id)
+    ? products.find((p) => isSameProduct(p, { id, slug: id, name: id }))
     : null;
 
   const [formData, setFormData] = useState({

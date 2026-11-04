@@ -4,7 +4,7 @@ import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
-import { useSocket } from '../context/SocketContext';
+import { useSocket, isSameProduct } from '../context/SocketContext';
 import { getProductFallbackImage } from './ProductsPage';
 import {
   Globe,
@@ -31,8 +31,69 @@ export const ProductDetailPage = () => {
   const navigate = useNavigate();
 
   // Robust product lookup with instant fallback if socket/DB is still connecting
-  const foundProduct = products && products.length > 0 ? products.find((p) => p.slug === id || p.id === id) : null;
-  const product = foundProduct || (id === 'speshway-hospitals' || id === 'hospitals' || id?.includes('hospital') ? {
+  
+  const foundProduct = products && products.length > 0 ? products.find((p) => isSameProduct(p, { id, slug: id, name: id })) : null;
+  const product = foundProduct || (id === 'savitri-sarees' || id?.includes('savitri') || id?.includes('saree') ? {
+    id: 'savitri-sarees',
+    slug: 'savitri-sarees',
+    name: 'Savitri Sarees',
+    category: 'Fashion & Luxury',
+    status: 'active',
+    description: 'Savitri Sarees is a premium online saree shopping platform offering a beautiful collection of traditional and modern sarees, effortless product browsing, secure payment gateways, and seamless order management.',
+    websiteUrl: 'https://saree.speshway.site/',
+    adminUrl: '/product/savitri-sarees/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    features: ['Handloom Saree Catalog', 'Silk Mark Certified', 'Loom Weaver Coordination', 'Real-Time Order Tracking', 'Bridal Collections'],
+  } : (id === 'sana-stayz' || id?.includes('sana') || id?.includes('stayz')) ? {
+    id: 'sana-stayz',
+    slug: 'sana-stayz',
+    name: 'Sana Stayz',
+    category: 'Hospitality & Hotels',
+    status: 'active',
+    description: 'Sana Stayz is a modern hotel and accommodation booking platform designed to streamline room reservations, front desk check-in/out, housekeeping, and guest management through an intuitive digital portal.',
+    websiteUrl: 'https://hotel.speshway.site/',
+    adminUrl: '/product/sana-stayz/dashboard',
+    imageUrl: '/images/products/sana-stayz.jpg',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    features: ['Room Reservations Grid', 'Express Check-In/Out', 'Live Occupancy Telematics', 'Housekeeping Roster', 'Billing & Folio Invoicing'],
+  } : (id === 'learnhub' || id?.includes('learn') || id?.includes('lms')) ? {
+    id: 'learnhub',
+    slug: 'learnhub',
+    name: 'LearnHub',
+    category: 'Education & LMS',
+    status: 'active',
+    description: 'LearnHub is a modern online learning management platform designed to help students enroll in industry courses, attend live interactive batches, complete assignments, and receive accredited certificates.',
+    websiteUrl: 'https://lms.speshway.site/',
+    adminUrl: '/product/learnhub/dashboard',
+    imageUrl: '/images/products/learnhub.jpg',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    features: ['Course Management & Video Lectures', 'Student Enrollment Pipeline', 'Live Interactive Classrooms', 'Automated Quizzes & Exams', 'Blockchain Certificates'],
+  } : (id === 'foodway' || id?.includes('foodway') || id?.includes('foody')) ? {
+    id: 'foodway',
+    slug: 'foodway',
+    name: 'FOODWAY',
+    category: 'Food Delivery & Kitchen',
+    status: 'active',
+    description: 'FoodWay is a modern online food ordering platform that helps customers explore nearby partner kitchens, customize dishes, track live deliveries, and order delicious meals seamlessly.',
+    websiteUrl: 'https://foody.speshway.site/',
+    adminUrl: '/product/foodway/dashboard',
+    imageUrl: '/images/products/foodway.jpg',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    features: ['Live Kitchen Display (KDS)', 'Online Food Delivery Workflow', 'Rider Telematics Tracking', 'Multi-Kitchen Settlements', 'Digital POS Invoices'],
+  } : (id === 'tours-travels' || id === 'tours-and-travels' || id?.includes('tour') || id?.includes('travel') || id?.includes('bus')) ? {
+    id: 'tours-and-travels',
+    slug: 'tours-and-travels',
+    name: 'TOURS & TRAVELS',
+    category: 'Bus & Travel Booking',
+    status: 'active',
+    description: 'STAR TOURS & TRAVELS is an online bus ticket booking platform designed to make travel easy with quick bus searches, seat selection, secure online ticketing, and real-time travel updates.',
+    websiteUrl: 'https://bus.speshway.site/',
+    adminUrl: '/product/tours-and-travels/dashboard',
+    imageUrl: '/images/products/tours-and-travels.jpg',
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    features: ['Online Bus Ticketing Engine', 'Seat Selection Matrix', 'Fleet GPS Telematics', 'Interstate Route Rosters', 'Automated Boarding Passes'],
+  } : (id === 'speshway-hospitals' || id === 'hospitals' || id?.includes('hospital')) ? {
     id: 'speshway-hospitals',
     slug: 'speshway-hospitals',
     name: 'Speshway Hospitals',
@@ -180,37 +241,28 @@ export const ProductDetailPage = () => {
     if (e && e.preventDefault) e.preventDefault();
     try {
       const targetSlug = (product?.slug || id || '').toLowerCase();
-      if (targetSlug === 'speshway-hospitals' || targetSlug === 'hospitals' || targetSlug.includes('hospital')) {
-        navigate('/dashboard/speshway-hospitals');
-      } else if (targetSlug === 'natural-milk-dairy' || targetSlug === 'madhur-dairy' || targetSlug.includes('dairy') || targetSlug.includes('milk')) {
-        navigate('/product/natural-milk-dairy/dashboard');
-      } else if (targetSlug === 'aneera-silks' || targetSlug === 'aneera' || targetSlug.includes('aneera') || targetSlug.includes('silk')) {
-        navigate('/product/aneera-silks/dashboard');
-      } else if (targetSlug === 'e-commerce' || targetSlug === 'ecommerce' || targetSlug.includes('nexora') || targetSlug.includes('e-com') || targetSlug.includes('ecom')) {
-        navigate('/product/e-commerce/dashboard');
-      } else if (targetSlug === 'fleet-management' || targetSlug === 'fleet' || targetSlug.includes('fleet')) {
-        navigate('/product/fleet-management/dashboard');
-      } else if (targetSlug === 'american-fitness-gym' || targetSlug === 'american-fitness' || targetSlug.includes('fitness') || targetSlug.includes('gym')) {
-        navigate('/product/american-fitness-gym/dashboard');
-      } else if (targetSlug === 'flavora-kitchen' || targetSlug === 'flavora' || targetSlug.includes('flavora') || targetSlug.includes('kitchen')) {
-        navigate('/product/flavora-kitchen/dashboard');
-      } else if (targetSlug === 'speshway-hrms' || targetSlug === 'hrms' || targetSlug.includes('hrms')) {
-        navigate('/product/speshway-hrms/dashboard');
-      } else if (targetSlug === 'ride-flow' || targetSlug === 'rideflow' || targetSlug.includes('ride-flow') || targetSlug.includes('bike')) {
-        navigate('/product/ride-flow/dashboard');
-      } else if (targetSlug === 'joy-events' || targetSlug === 'joy_events' || targetSlug === 'joy_event-s' || targetSlug.includes('joy') || targetSlug.includes('eventoza')) {
-        navigate('/product/joy-events/dashboard');
-      } else if (targetSlug === 'saloon' || targetSlug === 'salon' || targetSlug.includes('saloon') || targetSlug.includes('salon') || targetSlug.includes('spy-salon')) {
-        navigate('/product/saloon/dashboard');
-      } else if (targetSlug === 'tours-and-travels' || targetSlug.includes('tour') || targetSlug.includes('travel')) {
-        navigate('/dashboard/tours-and-travels');
-      } else if (targetSlug === 'vexa-style-hub' || targetSlug.includes('vexa') || targetSlug.includes('style-hub')) {
-        navigate('/dashboard/vexa-style-hub');
-      } else if (product?.adminUrl && product.adminUrl.startsWith('/') && product.adminUrl !== '/admin/products') {
-        navigate(product.adminUrl);
-      } else {
-        navigate('/dashboard');
-      }
+      let url = '/product/' + targetSlug + '/dashboard';
+
+      if (targetSlug.includes('savitri') || targetSlug.includes('saree')) url = '/product/savitri-sarees/dashboard';
+      else if (targetSlug.includes('sana') || targetSlug.includes('stayz')) url = '/product/sana-stayz/dashboard';
+      else if (targetSlug.includes('learn') || targetSlug.includes('lms')) url = '/product/learnhub/dashboard';
+      else if (targetSlug.includes('food')) url = '/product/foodway/dashboard';
+      else if (targetSlug.includes('tour') || targetSlug.includes('travel') || targetSlug.includes('bus')) url = '/product/tours-and-travels/dashboard';
+      else if (targetSlug.includes('hospital')) url = '/product/speshway-hospitals/dashboard';
+      else if (targetSlug.includes('dairy') || targetSlug.includes('milk')) url = '/product/natural-milk-dairy/dashboard';
+      else if (targetSlug.includes('aneera') || targetSlug.includes('silk')) url = '/product/aneera-silks/dashboard';
+      else if (targetSlug.includes('e-com') || targetSlug.includes('ecommerce') || targetSlug.includes('nexora')) url = '/product/e-commerce/dashboard';
+      else if (targetSlug.includes('fleet')) url = '/product/fleet-management/dashboard';
+      else if (targetSlug.includes('fitness') || targetSlug.includes('gym')) url = '/product/american-fitness-gym/dashboard';
+      else if (targetSlug.includes('flavora') || targetSlug.includes('kitchen')) url = '/product/flavora-kitchen/dashboard';
+      else if (targetSlug.includes('hrms')) url = '/product/speshway-hrms/dashboard';
+      else if (targetSlug.includes('ride') || targetSlug.includes('bike') || targetSlug.includes('flow')) url = '/product/ride-flow/dashboard';
+      else if (targetSlug.includes('joy') || targetSlug.includes('event')) url = '/product/joy-events/dashboard';
+      else if (targetSlug.includes('salon') || targetSlug.includes('saloon')) url = '/product/saloon/dashboard';
+      else if (targetSlug.includes('vexa') || targetSlug.includes('style-hub')) url = '/product/vexa-style-hub/dashboard';
+      else if (product?.adminUrl && product.adminUrl.startsWith('/') && product.adminUrl !== '/admin/products') url = product.adminUrl;
+
+      navigate(url);
     } catch (err) {
       console.error('Error opening admin dashboard:', err);
     }

@@ -3,7 +3,10 @@
    ========================================================================== */
 .ind-erp-root {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  overflow: hidden;
   background-color: #f8fafc;
   font-family: inherit;
   color: #0f172a;
@@ -12,12 +15,22 @@
 /* Sidebar */
 .ind-sidebar {
   width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
   background-color: #0f172a;
   color: #f8fafc;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   border-right: 1px solid #1e293b;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  z-index: 50;
 }
 
 .ind-sidebar-brand {
@@ -117,6 +130,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 .ind-back-home-btn {
@@ -144,10 +159,14 @@
 /* Main Area */
 .ind-main-area {
   flex: 1;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   min-width: 0;
+  background-color: #f8fafc;
 }
 
 /* Header Topbar */

@@ -1,5 +1,73 @@
 export const initialProducts = [
   {
+    id: 'savitri-sarees',
+    name: 'Savitri Sarees',
+    slug: 'savitri-sarees',
+    category: 'Fashion & Luxury',
+    description: 'Savitri Sarees is a premium online saree shopping platform offering a beautiful collection of handloom, bridal, and festive sarees.',
+    longDescription: 'Savitri Sarees ERP empowers handloom textile weavers, master artisans, and bridal showrooms with catalog variant tracking, silk mark authentication, and artisan payouts.',
+    features: ['Handloom Artisan Registry', 'Pure Silk Mark Verification', 'Bridal Customization Engine', 'Loom Batch Inventory Tracking', 'Multi-Store POS Integration', 'Customer Loyalty & Wishlists'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
+    websiteUrl: 'https://saree.speshway.site/',
+    adminUrl: '/product/savitri-sarees/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg',
+    iconName: 'Sparkles',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'sana-stayz',
+    name: 'Sana Stayz',
+    slug: 'sana-stayz',
+    category: 'Operations',
+    description: 'Sana Stayz is a modern hotel and accommodation booking platform designed to streamline room reservations, guest check-ins, and hospitality services.',
+    longDescription: 'Sana Stayz Hospitality PMS & ERP provides room occupancy grids, housekeeping shift scheduling, dining POS integration, and real-time night audit reporting.',
+    features: ['Room Availability Matrix', 'Instant Guest Check-in/Check-out', 'Housekeeping Roster & Logs', 'Restaurant & Room Dining POS', 'Automated Folio Invoicing', 'Guest Feedback & Reviews'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
+    websiteUrl: 'https://hotel.speshway.site/',
+    adminUrl: '/product/sana-stayz/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/sana-stayz.jpg',
+    iconName: 'Building2',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'learnhub',
+    name: 'LearnHub',
+    slug: 'learnhub',
+    category: 'Productivity',
+    description: 'LearnHub is a modern online learning management platform designed to help students discover courses, track learning progress, and access high-quality educational resources.',
+    longDescription: 'LearnHub EdTech Enterprise ERP provides interactive video classroom streaming, AI quiz scoring, automated completion certificates, and instructor royalty payouts.',
+    features: ['Video Course Streaming LMS', 'Live Interactive Classrooms', 'Quiz Engine & Auto-Grading', 'Digital Certificate Verification', 'Instructor Royalty Accounting', 'Student Discussion Forums'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
+    websiteUrl: 'https://lms.speshway.site/',
+    adminUrl: '/product/learnhub/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/learnhub.jpg',
+    iconName: 'GraduationCap',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'foodway',
+    name: 'FOODWAY',
+    slug: 'foodway',
+    category: 'Operations',
+    description: 'FoodWay is a modern online food ordering platform that helps customers discover dishes, order food, and track deliveries smoothly.',
+    longDescription: 'FoodWay Cloud Kitchen & Delivery Network ERP centralizes real-time delivery GPS telematics, live kitchen display system (KDS), thermal KOT printing, and digital rider settlements.',
+    features: ['Live Order Dispatch & Telematics', 'Kitchen Display System (KDS)', 'Thermal KOT Station Printing', 'Menu Recipe Margins & Inventory', 'Digital Rider Route Allocation', 'Daily Settlement Statements'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
+    websiteUrl: 'https://foody.speshway.site/',
+    adminUrl: '/product/foodway/dashboard',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/foodway.jpg',
+    iconName: 'Utensils',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
     id: 'ride-flow',
     name: 'RIDE FLOW',
     slug: 'ride-flow',
@@ -18,7 +86,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'Tailwind CSS'],
     websiteUrl: 'https://bike.speshway.site/',
     adminUrl: '/product/ride-flow/dashboard',
-    imageUrl: '/images/products/ride-flow.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/ride-flow.jpg',
     iconName: 'Bike',
     color: 'emerald',
     status: 'active',
@@ -35,7 +103,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     websiteUrl: 'https://joyevents.speshway.site',
     adminUrl: '/product/joy-events/dashboard',
-    imageUrl: '/images/products/joy-events.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/joy-events.jpg',
     iconName: 'Calendar',
     color: 'emerald',
     status: 'active',
@@ -52,7 +120,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     websiteUrl: 'https://hrms.speshway.com',
     adminUrl: '/product/speshway-hrms/dashboard',
-    imageUrl: '/images/products/speshway-hrms.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/speshway-hrms.jpg',
     iconName: 'Users',
     color: 'green',
     status: 'active',
@@ -70,7 +138,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     websiteUrl: 'https://flavorakitchen.speshway.com',
     adminUrl: '/product/flavora-kitchen/dashboard',
-    imageUrl: '/images/products/flavora-kitchen.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/flavora-kitchen.jpg',
     iconName: 'Utensils',
     color: 'orange',
     status: 'active',
@@ -88,7 +156,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     websiteUrl: 'https://americanfitness.speshway.com',
     adminUrl: '/product/american-fitness-gym/dashboard',
-    imageUrl: '/images/products/american-fitness-gym.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/american-fitness-gym.jpg',
     iconName: 'Dumbbell',
     color: 'emerald',
     status: 'active',
@@ -106,7 +174,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     websiteUrl: 'https://fleet.speshway.com',
     adminUrl: '/product/fleet-management/dashboard',
-    imageUrl: '/images/products/fleet-management.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/fleet-management.jpg',
     iconName: 'Truck',
     color: 'emerald',
     status: 'active',
@@ -124,7 +192,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'JWT Auth', 'REST API'],
     websiteUrl: 'https://speshway.com/hospitals',
     adminUrl: '/product/speshway-hospitals/dashboard',
-    imageUrl: '/images/products/speshway-hospitals.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/speshway-hospitals.jpg',
     iconName: 'Building2',
     color: 'green',
     status: 'active',
@@ -141,7 +209,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/tours-and-travels',
     adminUrl: '/product/tours-and-travels/dashboard',
-    imageUrl: '/images/products/tours-and-travels.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/tours-and-travels.jpg',
     iconName: 'Plane',
     color: 'cyan',
     status: 'active',
@@ -158,7 +226,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/natural-milk-dairy',
     adminUrl: '/product/natural-milk-dairy/dashboard',
-    imageUrl: '/images/products/natural-milk-dairy.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/natural-milk-dairy.jpg',
     iconName: 'Package',
     color: 'emerald',
     status: 'active',
@@ -175,7 +243,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/vexa-style-hub',
     adminUrl: '/product/vexa-style-hub/dashboard',
-    imageUrl: '/images/products/vexa-style-hub.png',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/vexa-style-hub.png',
     iconName: 'Store',
     color: 'purple',
     status: 'active',
@@ -192,7 +260,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://aneerasilks.com',
     adminUrl: '/product/aneera-silks/dashboard',
-    imageUrl: '/images/products/aneera-silks.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/aneera-silks.jpg',
     iconName: 'Sparkles',
     color: 'rose',
     status: 'active',
@@ -209,7 +277,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     websiteUrl: 'https://nexora.speshway.com',
     adminUrl: '/product/e-commerce/dashboard',
-    imageUrl: '/images/products/e-commerce.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/e-commerce.jpg',
     iconName: 'ShoppingCart',
     color: 'red',
     status: 'active',
@@ -226,7 +294,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     websiteUrl: 'https://spysalon.speshway.com',
     adminUrl: '/product/saloon/dashboard',
-    imageUrl: '/images/products/saloon.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/saloon.jpg',
     iconName: 'Scissors',
     color: 'amber',
     status: 'active',
@@ -242,7 +310,7 @@ export const initialProducts = [
     features: ['Job Card & Ticket Registry', 'Technician Dispatch Board', 'Spare Parts Inventory', 'Warranty & AMC Tracking', 'Customer Invoice Generator'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/service-center',
-    adminUrl: '/dashboard/service-center',
+    adminUrl: '/product/service-center/dashboard',
     imageUrl: '',
     iconName: 'Wrench',
     color: 'emerald',
@@ -259,7 +327,7 @@ export const initialProducts = [
     features: ['Property & Unit Matrix', 'Tenant Leasing & Contracts', 'Payment Milestone Tracker', 'Maintenance Work Orders', 'Commission & Brokerage Logs'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/real-estate',
-    adminUrl: '/dashboard/real-estate',
+    adminUrl: '/product/real-estate/dashboard',
     imageUrl: '',
     iconName: 'Home',
     color: 'green',
@@ -276,7 +344,7 @@ export const initialProducts = [
     features: ['Student Admissions & SIS', 'Biometric Attendance Logging', 'Fee Schedules & Online Payments', 'Exam Gradebook & Report Cards', 'Parent Portal Notifications'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/school-erp',
-    adminUrl: '/dashboard/school-erp',
+    adminUrl: '/product/school-erp/dashboard',
     imageUrl: '',
     iconName: 'GraduationCap',
     color: 'blue',
@@ -293,7 +361,7 @@ export const initialProducts = [
     features: ['Front Desk Check-in / Check-out', 'Room Reservation Grid', 'Housekeeping Roster', 'Restaurant & Room Service POS', 'Billing & Folio Management'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     websiteUrl: 'https://speshway.com/hotel-erp',
-    adminUrl: '/dashboard/hotel-erp',
+    adminUrl: '/product/hotel-erp/dashboard',
     imageUrl: '',
     iconName: 'Building2',
     color: 'amber',
@@ -304,10 +372,22 @@ export const initialProducts = [
 
 let productsMemory = [...initialProducts];
 
+const normalize = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
 export const getProducts = () => productsMemory;
 
-export const getProductById = (id) =>
-  productsMemory.find((p) => p.id === id || p.slug === id);
+export const getProductById = (id) => {
+  const normId = normalize(id);
+  return productsMemory.find(
+    (p) =>
+      p.id === id ||
+      p.slug === id ||
+      p._id === id ||
+      normalize(p.slug) === normId ||
+      normalize(p.name) === normId ||
+      normalize(p.id) === normId
+  );
+};
 
 export const addProduct = (productData) => {
   const newProduct = {
@@ -326,7 +406,16 @@ export const addProduct = (productData) => {
 };
 
 export const updateProduct = (id, updates) => {
-  const index = productsMemory.findIndex((p) => p.id === id || p.slug === id);
+  const normId = normalize(id);
+  const index = productsMemory.findIndex(
+    (p) =>
+      p.id === id ||
+      p.slug === id ||
+      p._id === id ||
+      normalize(p.slug) === normId ||
+      normalize(p.name) === normId ||
+      normalize(p.id) === normId
+  );
   if (index === -1) return null;
   productsMemory[index] = {
     ...productsMemory[index],
@@ -342,7 +431,16 @@ export const updateProduct = (id, updates) => {
 };
 
 export const deleteProduct = (id) => {
-  const index = productsMemory.findIndex((p) => p.id === id || p.slug === id);
+  const normId = normalize(id);
+  const index = productsMemory.findIndex(
+    (p) =>
+      p.id === id ||
+      p.slug === id ||
+      p._id === id ||
+      normalize(p.slug) === normId ||
+      normalize(p.name) === normId ||
+      normalize(p.id) === normId
+  );
   if (index === -1) return false;
   productsMemory.splice(index, 1);
   return true;

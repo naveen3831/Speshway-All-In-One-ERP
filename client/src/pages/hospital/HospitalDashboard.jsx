@@ -639,19 +639,573 @@ Certified by Speshway Hospital Diagnostic Information System
             </div>
           )}
 
-          {/* OTHER TABS FALLBACK */}
-          {activeTab !== 'lab' && activeTab !== 'dashboard' && activeTab !== 'patients' && (
-            <div className="hosp-empty-view-card">
-              <div className="hosp-empty-circ">
-                <Building2 size={32} className="text-emerald" />
+          {/* TAB: DOCTORS */}
+          {activeTab === 'doctors' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Consultant Physicians &amp; Surgeons Roster</h3>
+                  <span className="table-subtitle">Senior faculty, OPD consulting hours, room allocation, and active inpatient rounds</span>
+                </div>
               </div>
-              <h2>{navMenuItems.find((m) => m.id === activeTab)?.label || 'Hospital Department'}</h2>
-              <p>
-                Department operational workflows, real-time telemetry, and staff scheduling are connected to the central hospital network.
-              </p>
-              <button onClick={() => setActiveTab('lab')} className="btn-export-csv" style={{ marginTop: '16px' }}>
-                &larr; Return to Diagnostic Lab Reports
-              </button>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Doctor ID</th>
+                      <th>Specialist Name</th>
+                      <th>Clinical Specialty</th>
+                      <th>Consultation Cabin</th>
+                      <th>OPD Schedule</th>
+                      <th>Active Cases</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { id: 'DOC-101', name: 'Dr. Sarah Al-Mansoor', spec: 'Interventional Cardiology', cabin: 'OPD Suite 201', opd: '09:00 AM - 01:00 PM', active: 18, status: 'In OPD' },
+                      { id: 'DOC-102', name: 'Dr. Elizabeth Brooks', spec: 'Clinical Endocrinology & Diabetology', cabin: 'OPD Suite 108', opd: '10:00 AM - 02:00 PM', active: 14, status: 'In OPD' },
+                      { id: 'DOC-103', name: 'Dr. Anita Desai', spec: 'Obstetrics & Gynaecology', cabin: 'Maternity Wing C-04', opd: '08:30 AM - 01:30 PM', active: 22, status: 'In OT 2' },
+                      { id: 'DOC-104', name: 'Dr. Rajesh Sundaram', spec: 'Pulmonology & Critical Care', cabin: 'ICU Block B', opd: '02:00 PM - 06:00 PM', active: 11, status: 'ICU Rounds' },
+                      { id: 'DOC-105', name: 'Dr. Ritu Chopra', spec: 'Radiology & Imaging', cabin: 'Imaging Wing Diagnostic B', opd: '08:00 AM - 04:00 PM', active: 31, status: 'Reporting' },
+                    ].map((d) => (
+                      <tr key={d.id}>
+                        <td><span className="code-badge">{d.id}</span></td>
+                        <td><strong>{d.name}</strong></td>
+                        <td>{d.spec}</td>
+                        <td>{d.cabin}</td>
+                        <td>{d.opd}</td>
+                        <td><strong>{d.active} Inpatients</strong></td>
+                        <td><span className="hosp-status-badge ready">{d.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: APPOINTMENTS */}
+          {activeTab === 'appointments' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Outpatient (OPD) Appointment Queue</h3>
+                  <span className="table-subtitle">Live token queue, doctor consultation slots, and patient intake status</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Token #</th>
+                      <th>Patient Name</th>
+                      <th>Age / Sex</th>
+                      <th>Consulting Doctor</th>
+                      <th>Department</th>
+                      <th>Time Slot</th>
+                      <th>Visit Type</th>
+                      <th>Queue Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { token: 'TKN-081', patient: 'Kunal Singhania', age: '38 / M', doc: 'Dr. Sarah Al-Mansoor', dept: 'Cardiology', time: '10:30 AM', type: 'Follow-up', status: 'In Consultation' },
+                      { token: 'TKN-082', patient: 'Meera Chawla', age: '45 / F', doc: 'Dr. Elizabeth Brooks', dept: 'Endocrinology', time: '10:45 AM', type: 'First Visit', status: 'Waiting in Lounge' },
+                      { token: 'TKN-083', patient: 'Arun Varma', age: '62 / M', doc: 'Dr. Rajesh Sundaram', dept: 'Pulmonology', time: '11:00 AM', type: 'Post-discharge Review', status: 'Vitals Recorded' },
+                      { token: 'TKN-084', patient: 'Pooja Hegde', age: '29 / F', doc: 'Dr. Anita Desai', dept: 'Obstetrics', time: '11:15 AM', type: 'Prenatal Routine', status: 'Waiting' },
+                    ].map((a) => (
+                      <tr key={a.token}>
+                        <td><span className="code-badge">{a.token}</span></td>
+                        <td><strong>{a.patient}</strong></td>
+                        <td>{a.age}</td>
+                        <td>{a.doc}</td>
+                        <td>{a.dept}</td>
+                        <td>{a.time}</td>
+                        <td>{a.type}</td>
+                        <td>
+                          <span className={`hosp-status-badge ${a.status.includes('In Consultation') ? 'ready' : 'in-analysis'}`}>
+                            {a.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: DEPARTMENTS */}
+          {activeTab === 'departments' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Clinical &amp; Surgical Departments</h3>
+                  <span className="table-subtitle">Bed capacity, department heads, and nursing station metrics</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Dept Code</th>
+                      <th>Department Name</th>
+                      <th>Head of Department (HOD)</th>
+                      <th>Total Beds</th>
+                      <th>Occupied Beds</th>
+                      <th>Occupancy Rate</th>
+                      <th>On-Duty Staff</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { code: 'DPT-CARD', name: 'Cardiology & Cath Lab', hod: 'Dr. Sarah Al-Mansoor', beds: 45, occ: 39, rate: '86.7%', staff: 14 },
+                      { code: 'DPT-PULM', name: 'Pulmonology & Respiratory ICU', hod: 'Dr. Rajesh Sundaram', beds: 30, occ: 27, rate: '90.0%', staff: 11 },
+                      { code: 'DPT-OBGYN', name: 'Obstetrics & Neonatal Care (NICU)', hod: 'Dr. Anita Desai', beds: 40, occ: 34, rate: '85.0%', staff: 16 },
+                      { code: 'DPT-ONCO', name: 'Medical Oncology & Daycare Chemo', hod: 'Dr. Elizabeth Brooks', beds: 25, occ: 21, rate: '84.0%', staff: 9 },
+                      { code: 'DPT-ORTHO', name: 'Orthopaedics & Joint Replacement', hod: 'Dr. Vivek Menon', beds: 35, occ: 28, rate: '80.0%', staff: 10 },
+                    ].map((dp) => (
+                      <tr key={dp.code}>
+                        <td><span className="code-badge">{dp.code}</span></td>
+                        <td><strong>{dp.name}</strong></td>
+                        <td>{dp.hod}</td>
+                        <td>{dp.beds} Beds</td>
+                        <td><strong>{dp.occ} Patients</strong></td>
+                        <td><span className="hosp-status-badge ready">{dp.rate}</span></td>
+                        <td>{dp.staff} Personnel</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: ROOMS & BEDS */}
+          {activeTab === 'rooms' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Inpatient Beds &amp; ICU Allocation</h3>
+                  <span className="table-subtitle">Real-time room occupancy, oxygen telemetry, and nursing call bells</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Room / Bed No</th>
+                      <th>Ward &amp; Wing</th>
+                      <th>Category</th>
+                      <th>Patient Name</th>
+                      <th>Attending Nurse</th>
+                      <th>Daily Tariff</th>
+                      <th>Bed Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { bed: 'ICU-B03', ward: 'Critical Care ICU Wing B', cat: 'Intensive Care Bed', patient: 'Vikram Malhotra', nurse: 'Sister Bindu', tariff: '₹14,500', status: 'Occupied (Ventilator)' },
+                      { bed: 'RM-304', ward: 'Cardiology Private Suite', cat: 'Single AC Deluxe', patient: 'Eleanor Vance', nurse: 'Sister Rosamma', tariff: '₹6,500', status: 'Occupied' },
+                      { bed: 'RM-412', ward: 'Executive Floor 4', cat: 'Presidential Suite', patient: 'Marcus Chen', nurse: 'Sister Kavitha', tariff: '₹12,000', status: 'Occupied' },
+                      { bed: 'RM-208', ward: 'General Medical Ward', cat: 'Twin Sharing', patient: 'David Kowalski', nurse: 'Nurse Alex', tariff: '₹3,200', status: 'Occupied' },
+                      { bed: 'RM-215', ward: 'Maternity Wing A', cat: 'Private Birthing Suite', patient: 'Vacant', nurse: 'Sister Bindu', tariff: '₹8,000', status: 'Ready & Sanitized' },
+                    ].map((rm) => (
+                      <tr key={rm.bed}>
+                        <td><span className="code-badge">{rm.bed}</span></td>
+                        <td>{rm.ward}</td>
+                        <td><strong>{rm.cat}</strong></td>
+                        <td>{rm.patient}</td>
+                        <td>{rm.nurse}</td>
+                        <td>{rm.tariff}</td>
+                        <td>
+                          <span className={`hosp-status-badge ${rm.status.includes('Occupied') ? 'ready' : 'in-analysis'}`}>
+                            {rm.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: PHARMACY */}
+          {activeTab === 'pharmacy' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Hospital Formulary &amp; Pharmacy Dispensary</h3>
+                  <span className="table-subtitle">Controlled substances, antibiotic stewardship stock, and batch expiry tracking</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Drug SKU</th>
+                      <th>Medication &amp; Strength</th>
+                      <th>Category</th>
+                      <th>Batch No</th>
+                      <th>Units in Stock</th>
+                      <th>Unit Price</th>
+                      <th>Expiry Date</th>
+                      <th>Stock Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { sku: 'MED-CEFTR-1G', name: 'Ceftriaxone Sodium IV 1g', cat: 'Injectable Antibiotic', batch: 'BT-99014', stock: 450, price: '₹165', exp: '2028-06', status: 'Normal' },
+                      { sku: 'MED-ATOR-20', name: 'Atorvastatin Calcium 20mg', cat: 'Cardiovascular', batch: 'BT-88201', stock: 1200, price: '₹18', exp: '2027-11', status: 'Normal' },
+                      { sku: 'MED-MERO-1G', name: 'Meropenem Trihydrate 1g IV', cat: 'Broad-Spectrum Antibiotic', batch: 'BT-77402', stock: 85, price: '₹850', exp: '2027-04', status: 'Reorder Warning' },
+                      { sku: 'MED-ENX-40', name: 'Enoxaparin Sodium 40mg/0.4mL', cat: 'Anticoagulant Pre-filled', batch: 'BT-66109', stock: 310, price: '₹420', exp: '2028-02', status: 'Normal' },
+                      { sku: 'MED-INS-GLAR', name: 'Insulin Glargine 100 IU/mL', cat: 'Diabetic Care Pens', batch: 'BT-55320', stock: 140, price: '₹680', exp: '2027-08', status: 'Normal' },
+                    ].map((ph) => (
+                      <tr key={ph.sku}>
+                        <td><span className="code-badge">{ph.sku}</span></td>
+                        <td><strong>{ph.name}</strong></td>
+                        <td>{ph.cat}</td>
+                        <td>{ph.batch}</td>
+                        <td><strong>{ph.stock} Units</strong></td>
+                        <td>{ph.price}</td>
+                        <td>{ph.exp}</td>
+                        <td>
+                          <span className={`hosp-status-badge ${ph.status === 'Normal' ? 'ready' : 'in-analysis'}`}>
+                            {ph.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: BLOOD BANK */}
+          {activeTab === 'bloodbank' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Transfusion Medicine &amp; Blood Bank Reserve</h3>
+                  <span className="table-subtitle">Packed Red Blood Cells (PRBC), Platelets, Fresh Frozen Plasma (FFP) inventories</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Blood Group</th>
+                      <th>Component Type</th>
+                      <th>Units Available</th>
+                      <th>Cross-Matched Reserved</th>
+                      <th>Storage Cold Temp</th>
+                      <th>Critical Threshold</th>
+                      <th>Inventory Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { grp: 'O Positive (O+)', comp: 'Packed Red Blood Cells (PRBC)', units: 28, res: 6, temp: '4.2°C', crit: 10, status: 'Adequate' },
+                      { grp: 'O Negative (O-)', comp: 'Universal Donor PRBC', units: 4, res: 2, temp: '4.0°C', crit: 8, status: 'Critical Shortage' },
+                      { grp: 'A Positive (A+)', comp: 'Packed Red Blood Cells (PRBC)', units: 22, res: 4, temp: '4.1°C', crit: 10, status: 'Adequate' },
+                      { grp: 'B Positive (B+)', comp: 'Fresh Frozen Plasma (FFP)', units: 35, res: 8, temp: '-22.5°C', crit: 15, status: 'Adequate' },
+                      { grp: 'AB Negative (AB-)', comp: 'Platelet Concentrate', units: 2, res: 1, temp: '22.0°C Agitator', crit: 4, status: 'Donor Recall Active' },
+                    ].map((b, i) => (
+                      <tr key={i}>
+                        <td><strong style={{ fontSize: '1rem', color: '#e11d48' }}>{b.grp}</strong></td>
+                        <td>{b.comp}</td>
+                        <td><strong style={{ fontSize: '1.05rem' }}>{b.units} Units</strong></td>
+                        <td>{b.res} Units</td>
+                        <td>{b.temp}</td>
+                        <td>{b.crit} Units</td>
+                        <td>
+                          <span className={`hosp-status-badge ${b.status === 'Adequate' ? 'ready' : 'urgent'}`}>
+                            {b.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: AMBULANCE */}
+          {activeTab === 'ambulance' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Emergency Ambulance Fleet &amp; GPS Telematics</h3>
+                  <span className="table-subtitle">Cardiac Advanced Life Support (ALS) and Basic Life Support (BLS) responder units</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Ambulance Code</th>
+                      <th>Registration Plate</th>
+                      <th>Fleet Capability</th>
+                      <th>Driver Name</th>
+                      <th>Paramedic Assigned</th>
+                      <th>Current GPS Location</th>
+                      <th>Dispatch Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { code: 'AMB-01 (ALS)', reg: 'KA-01-EA-4401', cap: 'Advanced Cardiac ICU on Wheels', driver: 'Mahesh Kumar', paramedic: 'Rohan Sharma, EMT', loc: 'Base Station Bay 1', status: 'Station Ready' },
+                      { code: 'AMB-02 (ALS)', reg: 'KA-01-EA-4402', cap: 'Advanced Trauma Resuscitation', driver: 'Syed Rizwan', paramedic: 'Priya Pillai, EMT', loc: 'Outer Ring Rd, Marathahalli (ETA 12m)', status: 'Active Emergency Trip' },
+                      { code: 'AMB-03 (BLS)', reg: 'KA-01-EA-4403', cap: 'Patient Transport & Oxygen Support', driver: 'Gopal Reddy', paramedic: 'Kiran Das, EMT', loc: 'Base Station Bay 2', status: 'Station Ready' },
+                      { code: 'AMB-04 (NEO)', reg: 'KA-01-EA-4404', cap: 'Neonatal Transport Incubator', driver: 'Anil Jadhav', paramedic: 'Sister Bindu, NICU', loc: 'Manipal Hospital Transfer', status: 'En Route Hospital' },
+                    ].map((amb) => (
+                      <tr key={amb.code}>
+                        <td><span className="code-badge">{amb.code}</span></td>
+                        <td><strong>{amb.reg}</strong></td>
+                        <td>{amb.cap}</td>
+                        <td>{amb.driver}</td>
+                        <td>{amb.paramedic}</td>
+                        <td>{amb.loc}</td>
+                        <td>
+                          <span className={`hosp-status-badge ${amb.status.includes('Ready') ? 'ready' : 'urgent'}`}>
+                            {amb.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: STAFF MANAGEMENT */}
+          {activeTab === 'staff' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Clinical Nursing &amp; Hospital Staff Roster</h3>
+                  <span className="table-subtitle">Registered nurses, ward attendants, clinical technicians, and support staff</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Staff ID</th>
+                      <th>Staff Full Name</th>
+                      <th>Designation / Role</th>
+                      <th>Department Station</th>
+                      <th>Shift Timings</th>
+                      <th>Contact Phone</th>
+                      <th>Duty Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { id: 'STF-301', name: 'Sister Bindu Nair', role: 'Head Nurse (ICU)', dept: 'Critical Care ICU', shift: 'Morning (07:00 - 15:30)', phone: '+91 98450-22114', status: 'On Floor Duty' },
+                      { id: 'STF-302', name: 'Samir Khan, MLT', role: 'Senior Pathology Technologist', dept: 'Pathology Diagnostics', shift: 'General (09:00 - 18:00)', phone: '+91 98200-88776', status: 'In Lab' },
+                      { id: 'STF-303', name: 'Sister Rosamma Philip', role: 'Senior Staff Nurse', dept: 'Cardiology Ward 3', shift: 'Morning (07:00 - 15:30)', phone: '+91 97110-44332', status: 'On Floor Duty' },
+                      { id: 'STF-304', name: 'Karthik Rao, R.Ph', role: 'Chief Clinical Pharmacist', dept: 'Central Pharmacy', shift: 'General (08:30 - 17:30)', phone: '+91 99000-55441', status: 'Dispensary' },
+                      { id: 'STF-305', name: 'Rohan Sharma, EMT', role: 'Emergency Medical Tech', dept: 'Emergency & Trauma ER', shift: 'Night On-Call', phone: '+91 94440-99887', status: 'Ambulance Bay' },
+                    ].map((st) => (
+                      <tr key={st.id}>
+                        <td><span className="code-badge">{st.id}</span></td>
+                        <td><strong>{st.name}</strong></td>
+                        <td>{st.role}</td>
+                        <td>{st.dept}</td>
+                        <td>{st.shift}</td>
+                        <td>{st.phone}</td>
+                        <td><span className="hosp-status-badge ready">{st.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: ATTENDANCE */}
+          {activeTab === 'attendance' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Biometric Shift Punch Logs &amp; Attendance</h3>
+                  <span className="table-subtitle">Turnstile facial recognition and RFID badge time-clock synchronizations</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Staff Code</th>
+                      <th>Employee Name</th>
+                      <th>Department</th>
+                      <th>Shift Assigned</th>
+                      <th>Clock-In Timestamp</th>
+                      <th>Biometric Gate</th>
+                      <th>Shift Verification</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { code: 'DOC-101', name: 'Dr. Sarah Al-Mansoor', dept: 'Cardiology', shift: 'Morning Shift', in: '08:42 AM', gate: 'Doctors Private Entrance G-1', status: 'On Time (Biometric)' },
+                      { code: 'DOC-102', name: 'Dr. Elizabeth Brooks', dept: 'Endocrinology', shift: 'Morning Shift', in: '09:12 AM', gate: 'Doctors Private Entrance G-1', status: 'On Time (Biometric)' },
+                      { code: 'STF-301', name: 'Sister Bindu Nair', dept: 'ICU Critical Care', shift: 'Morning Shift', in: '06:54 AM', gate: 'Staff Turnstile Gate 3', status: 'Early Clock-in' },
+                      { code: 'STF-302', name: 'Samir Khan, MLT', dept: 'Pathology Diagnostics', shift: 'General Shift', in: '08:55 AM', gate: 'Diagnostic Wing Gate 2', status: 'On Time (Biometric)' },
+                    ].map((at) => (
+                      <tr key={at.code}>
+                        <td><span className="code-badge">{at.code}</span></td>
+                        <td><strong>{at.name}</strong></td>
+                        <td>{at.dept}</td>
+                        <td>{at.shift}</td>
+                        <td><strong>{at.in}</strong></td>
+                        <td>{at.gate}</td>
+                        <td><span className="hosp-status-badge ready">{at.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: DUTY ROSTER */}
+          {activeTab === 'dutyroster' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Clinical Duty &amp; Night Call Roster</h3>
+                  <span className="table-subtitle">Consultant coverage, Code Blue emergency team, and resident physician rotations</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Department Block</th>
+                      <th>Lead Consultant</th>
+                      <th>Senior Resident Dr</th>
+                      <th>Nursing Shift In-Charge</th>
+                      <th>Code Blue Responder</th>
+                      <th>Night On-Call Dr</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { dept: 'Cardiology & Cath Lab', lead: 'Dr. Sarah Al-Mansoor', res: 'Dr. Pradeep V.', inCharge: 'Sister Rosamma', codeBlue: 'Active Lead', night: 'Dr. Sarah (On-Call)' },
+                      { dept: 'ICU & Critical Care', lead: 'Dr. Rajesh Sundaram', res: 'Dr. Meenakshi K.', inCharge: 'Sister Bindu Nair', codeBlue: 'ICU Intensivist Team', night: 'Dr. Rajesh Sundaram' },
+                      { dept: 'Emergency & Trauma ER', lead: 'Dr. Michael Vance', res: 'Dr. Tarun Sen', inCharge: 'Sister Kavitha', codeBlue: 'ER Fast Response Team', night: 'Dr. Michael Vance' },
+                      { dept: 'Obstetrics & Labour Room', lead: 'Dr. Anita Desai', res: 'Dr. Shweta Rao', inCharge: 'Sister Mary Joseph', codeBlue: 'OBGYN OT Standby', night: 'Dr. Shweta Rao' },
+                    ].map((ro, i) => (
+                      <tr key={i}>
+                        <td><strong>{ro.dept}</strong></td>
+                        <td>{ro.lead}</td>
+                        <td>{ro.res}</td>
+                        <td>{ro.inCharge}</td>
+                        <td><span className="hosp-status-badge urgent">{ro.codeBlue}</span></td>
+                        <td>{ro.night}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: ROLES & PERMISSIONS */}
+          {activeTab === 'roles' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Hospital RBAC &amp; Clinical Security Privileges</h3>
+                  <span className="table-subtitle">Prescribing authority, narcotics sign-off, diagnostic report verification clearance</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Access Tier</th>
+                      <th>Role Description</th>
+                      <th>Department Scope</th>
+                      <th>EHR Write Access</th>
+                      <th>Controlled Drug Sign-off</th>
+                      <th>Staff Assigned</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { tier: 'Tier 1 - Chief Medical Officer', role: 'CMO & Medical Director', scope: 'Hospital Wide', ehr: 'Full Unrestricted', drugs: 'Full Sign-off & Audit', count: '2 Officers' },
+                      { tier: 'Tier 2 - Consultant Physician', role: 'Attending Specialists & Surgeons', scope: 'Respective Department', ehr: 'Clinical Notes, Rx, OT Orders', drugs: 'Prescription Level', count: '38 Doctors' },
+                      { tier: 'Tier 3 - Nursing Supervisor', role: 'Head Nurses & Ward In-Charges', scope: 'Assigned Floor/Ward', ehr: 'Vitals, MAR Dispensing Logs', drugs: 'Witness Double Verification', count: '14 Nurses' },
+                      { tier: 'Tier 4 - Laboratory Diagnostician', role: 'Pathologists & Radiologists', scope: 'Central Diagnostics', ehr: 'Diagnostic Findings & Signoff', drugs: 'No Access', count: '8 Technologists' },
+                    ].map((rl, i) => (
+                      <tr key={i}>
+                        <td><strong style={{ color: '#059669' }}>{rl.tier}</strong></td>
+                        <td>{rl.role}</td>
+                        <td>{rl.scope}</td>
+                        <td>{rl.ehr}</td>
+                        <td><span className="hosp-status-badge ready">{rl.drugs}</span></td>
+                        <td>{rl.count}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: BILLING & PAYMENTS */}
+          {activeTab === 'billing' && (
+            <div className="hosp-table-card">
+              <div className="table-header-flex">
+                <div className="table-title-wrap">
+                  <h3>Inpatient Folios, TPA Insurance &amp; Discharge Billing</h3>
+                  <span className="table-subtitle">Pre-authorization status, room tariffs, surgical consumables, and final discharge settled</span>
+                </div>
+              </div>
+              <div className="hosp-table-wrapper">
+                <table className="hosp-data-table">
+                  <thead>
+                    <tr>
+                      <th>Bill / Folio #</th>
+                      <th>Patient Name</th>
+                      <th>Admission Date</th>
+                      <th>Room Charges</th>
+                      <th>Procedures / OT</th>
+                      <th>Pharmacy &amp; Lab</th>
+                      <th>Insurance TPA Claim</th>
+                      <th>Patient Share</th>
+                      <th>Payment Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { bill: 'IPB-2024-991', patient: 'Eleanor Vance', date: '2024-10-24', room: '₹39,000', ot: '₹65,000', ph: '₹14,250', tpa: '₹1,00,000 (Star Health Approved)', pat: '₹18,250', status: 'Pre-Auth Approved' },
+                      { bill: 'IPB-2024-992', patient: 'Vikram Malhotra', date: '2024-10-26', room: '₹87,000', ot: '₹1,20,000', ph: '₹34,800', tpa: '₹2,10,000 (HDFC Ergo Pending)', pat: '₹31,800', status: 'TPA Processing' },
+                      { bill: 'IPB-2024-993', patient: 'James Wilson', date: '2024-10-28', room: '₹26,000', ot: '₹0 (Diagnostic)', ph: '₹8,500', tpa: '₹0 (Self Pay)', pat: '₹34,500', status: 'Settled (Credit Card)' },
+                      { bill: 'IPB-2024-994', patient: 'David Kowalski', date: '2024-10-27', room: '₹19,200', ot: '₹42,000', ph: '₹11,400', tpa: '₹60,000 (ICICI Lombard Approved)', pat: '₹12,600', status: 'Ready for Discharge' },
+                    ].map((bl) => (
+                      <tr key={bl.bill}>
+                        <td><span className="code-badge">{bl.bill}</span></td>
+                        <td><strong>{bl.patient}</strong></td>
+                        <td>{bl.date}</td>
+                        <td>{bl.room}</td>
+                        <td>{bl.ot}</td>
+                        <td>{bl.ph}</td>
+                        <td><strong style={{ color: '#2563eb' }}>{bl.tpa}</strong></td>
+                        <td><strong style={{ color: '#059669' }}>{bl.pat}</strong></td>
+                        <td><span className="hosp-status-badge ready">{bl.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </main>

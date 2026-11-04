@@ -2,7 +2,10 @@
 
 .hosp-erp-root {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  overflow: hidden;
   background-color: #f8fafc;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: #1e293b;
@@ -154,6 +157,10 @@
 /* 2. MAIN CONTENT WRAPPER */
 .hosp-main-wrapper {
   flex: 1;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   min-width: 0;

@@ -34,126 +34,28 @@ export const ProductDetailModal = ({ product, onClose }) => {
   const handleViewAdminDashboard = () => {
     onClose();
     const slug = (product?.slug || product?.id || '').toLowerCase();
-    if (
-      slug === 'speshway-hospitals' ||
-      slug === 'hospitals' ||
-      slug.includes('hospital') ||
-      product.name?.toLowerCase().includes('hospital') ||
-      product.adminUrl?.toLowerCase().includes('hospital')
-    ) {
-      navigate('/dashboard/speshway-hospitals');
-      return;
-    }
-    if (
-      slug === 'aneera-silks' ||
-      slug === 'aneera' ||
-      slug.includes('aneera') ||
-      slug.includes('silk') ||
-      product.name?.toLowerCase().includes('aneera') ||
-      product.name?.toLowerCase().includes('silk')
-    ) {
-      navigate('/product/aneera-silks/dashboard');
-      return;
-    }
-    if (
-      slug === 'e-commerce' ||
-      slug === 'ecommerce' ||
-      slug.includes('nexora') ||
-      slug.includes('e-com') ||
-      product.name?.toLowerCase().includes('e commerce') ||
-      product.name?.toLowerCase().includes('ecommerce') ||
-      product.name?.toLowerCase().includes('nexora')
-    ) {
-      navigate('/product/e-commerce/dashboard');
-      return;
-    }
-    if (
-      slug === 'fleet-management' ||
-      slug === 'fleet' ||
-      slug.includes('fleet') ||
-      product.name?.toLowerCase().includes('fleet')
-    ) {
-      navigate('/product/fleet-management/dashboard');
-      return;
-    }
-    if (
-      slug === 'american-fitness-gym' ||
-      slug === 'american-fitness' ||
-      slug.includes('fitness') ||
-      slug.includes('gym') ||
-      product.name?.toLowerCase().includes('fitness') ||
-      product.name?.toLowerCase().includes('gym')
-    ) {
-      navigate('/product/american-fitness-gym/dashboard');
-      return;
-    }
-    if (
-      slug === 'flavora-kitchen' ||
-      slug === 'flavora' ||
-      slug.includes('flavora') ||
-      slug.includes('kitchen') ||
-      product.name?.toLowerCase().includes('flavora') ||
-      product.name?.toLowerCase().includes('kitchen')
-    ) {
-      navigate('/product/flavora-kitchen/dashboard');
-      return;
-    }
-    if (
-      slug === 'joy-events' ||
-      slug === 'joy_events' ||
-      slug === 'joy_event-s' ||
-      slug.includes('joy') ||
-      slug.includes('eventoza') ||
-      product.name?.toLowerCase().includes('joy') ||
-      product.name?.toLowerCase().includes('eventoza')
-    ) {
-      navigate('/product/joy-events/dashboard');
-      return;
-    }
-    if (
-      slug === 'speshway-hrms' ||
-      slug === 'hrms' ||
-      slug.includes('hrms') ||
-      product.name?.toLowerCase().includes('hrms')
-    ) {
-      navigate('/product/speshway-hrms/dashboard');
-      return;
-    }
-    if (
-      slug === 'saloon' ||
-      slug === 'salon' ||
-      slug.includes('saloon') ||
-      slug.includes('salon') ||
-      slug.includes('spy-salon') ||
-      product.name?.toLowerCase().includes('saloon') ||
-      product.name?.toLowerCase().includes('salon')
-    ) {
-      navigate('/product/saloon/dashboard');
-      return;
-    }
-    if (
-      slug === 'natural-milk-dairy' ||
-      slug === 'madhur-dairy' ||
-      slug.includes('dairy') ||
-      product.name?.toLowerCase().includes('dairy') ||
-      product.name?.toLowerCase().includes('milk')
-    ) {
-      navigate('/dashboard/natural-milk-dairy');
-      return;
-    }
-    if (slug === 'tours-and-travels' || slug.includes('tour') || slug.includes('travel')) {
-      navigate('/dashboard/tours-and-travels');
-      return;
-    }
-    if (slug === 'vexa-style-hub' || slug.includes('vexa') || slug.includes('style-hub')) {
-      navigate('/dashboard/vexa-style-hub');
-      return;
-    }
-    if (product.adminUrl && product.adminUrl.startsWith('/') && product.adminUrl !== '/admin/products') {
-      navigate(product.adminUrl);
-    } else {
-      navigate('/dashboard');
-    }
+    let url = '/product/' + slug + '/dashboard';
+
+    if (slug.includes('savitri') || slug.includes('saree')) url = '/product/savitri-sarees/dashboard';
+    else if (slug.includes('sana') || slug.includes('stayz')) url = '/product/sana-stayz/dashboard';
+    else if (slug.includes('learn') || slug.includes('lms')) url = '/product/learnhub/dashboard';
+    else if (slug.includes('food')) url = '/product/foodway/dashboard';
+    else if (slug.includes('tour') || slug.includes('travel') || slug.includes('bus')) url = '/product/tours-and-travels/dashboard';
+    else if (slug.includes('hospital')) url = '/product/speshway-hospitals/dashboard';
+    else if (slug.includes('dairy') || slug.includes('milk')) url = '/product/natural-milk-dairy/dashboard';
+    else if (slug.includes('aneera') || slug.includes('silk')) url = '/product/aneera-silks/dashboard';
+    else if (slug.includes('nexora') || slug.includes('e-com') || slug.includes('ecommerce')) url = '/product/e-commerce/dashboard';
+    else if (slug.includes('fleet')) url = '/product/fleet-management/dashboard';
+    else if (slug.includes('fitness') || slug.includes('gym')) url = '/product/american-fitness-gym/dashboard';
+    else if (slug.includes('flavora') || slug.includes('kitchen')) url = '/product/flavora-kitchen/dashboard';
+    else if (slug.includes('hrms')) url = '/product/speshway-hrms/dashboard';
+    else if (slug.includes('ride') || slug.includes('bike') || slug.includes('flow')) url = '/product/ride-flow/dashboard';
+    else if (slug.includes('joy') || slug.includes('event')) url = '/product/joy-events/dashboard';
+    else if (slug.includes('salon') || slug.includes('saloon')) url = '/product/saloon/dashboard';
+    else if (slug.includes('vexa') || slug.includes('style-hub')) url = '/product/vexa-style-hub/dashboard';
+    else if (product?.adminUrl && product.adminUrl.startsWith('/') && product.adminUrl !== '/admin/products') url = product.adminUrl;
+
+    navigate(url);
   };
 
   const handleOpenFullPage = () => {

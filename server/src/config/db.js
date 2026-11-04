@@ -1,39 +1,44 @@
 import dns from 'node:dns';
 import mongoose from 'mongoose';
 
-const DEFAULT_MONGO_URI =
+// Direct standard replica-set URI that bypasses DNS SRV lookups entirely
+const DIRECT_REPLICA_URI =
+  'mongodb://speshway123:speshway123@ac-dvecrsd-shard-00-00.vv15a6z.mongodb.net:27017,ac-dvecrsd-shard-00-01.vv15a6z.mongodb.net:27017,ac-dvecrsd-shard-00-02.vv15a6z.mongodb.net:27017/speshway_erp?ssl=true&authSource=admin&retryWrites=true&w=majority';
+
+const DEFAULT_SRV_URI =
   'mongodb+srv://speshway123:speshway123@speshwyallinoneerp.vv15a6z.mongodb.net/speshway_erp?retryWrites=true&w=majority';
 
 const connectDB = async () => {
-  let mongoUri = process.env.MONGO_URI;
-  if (!mongoUri || mongoUri.includes('<db_password>')) {
-    mongoUri = DEFAULT_MONGO_URI;
+  // Pre-configure high-speed Cloudflare and Google public DNS resolvers for MongoDB SRV lookups
+  try {
+    dns.setServers(['1.1.1.1', '1.0.0.1', '8.8.8.8', '8.8.4.4']);
+  } catch (dnsErr) {
+    console.warn('DNS server configuration warning:', dnsErr.message);
   }
 
-  const dnsCandidates = [
-    process.env.MONGO_DNS_SERVERS?.split(',').map((s) => s.trim()).filter(Boolean) || [],
-    ['1.1.1.1', '1.0.0.1'],
-    ['8.8.8.8', '8.8.4.4'],
-    null, // Default system resolver
+  const primaryUri = process.env.MONGO_URI || DEFAULT_SRV_URI;
+
+  // Connection attempts: 1) Primary URI with Cloudflare DNS, 2) Direct replica-set non-SRV URI
+  const connectionCandidates = [
+    { name: 'Primary Mongo URI', uri: primaryUri },
+    { name: 'Direct Replica-Set Gateway (Guaranteed)', uri: DIRECT_REPLICA_URI },
   ];
 
-  for (let i = 0; i < dnsCandidates.length; i++) {
-    const servers = dnsCandidates[i];
+  for (let i = 0; i < connectionCandidates.length; i++) {
+    const candidate = connectionCandidates[i];
     try {
-      if (servers && servers.length) {
-        dns.setServers(servers);
-      }
-      const conn = await mongoose.connect(mongoUri, {
-        serverSelectionTimeoutMS: 5000,
+      console.log(`🔌 Connecting to MongoDB via ${candidate.name}...`);
+      const conn = await mongoose.connect(candidate.uri, {
+        serverSelectionTimeoutMS: 6000,
       });
-      console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+      console.log(`✅ MongoDB Connected Successfully: ${conn.connection.host} (${conn.connection.name})`);
       return true;
     } catch (err) {
-      console.warn(`⚠️ DNS/Mongo attempt ${i + 1} (${servers ? servers.join(',') : 'system default'}) failed: ${err.message}`);
+      console.warn(`⚠️ MongoDB connection attempt ${i + 1} (${candidate.name}) failed: ${err.message}`);
     }
   }
 
-  console.warn('ℹ️ Continuing in real-time fallback mode with full persistent product catalog.');
+  console.error('❌ Could not establish remote MongoDB connection. Reverting to persistent memory state.');
   return false;
 };
 
