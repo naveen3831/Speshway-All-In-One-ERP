@@ -378,11 +378,15 @@ export const getProducts = () => productsMemory;
 
 export const getProductById = (id) => {
   const normId = normalize(id);
+  const cleanId = String(id || '').trim().toLowerCase();
   return productsMemory.find(
     (p) =>
       p.id === id ||
       p.slug === id ||
       p._id === id ||
+      p._id?.toString() === id ||
+      p.slug?.toLowerCase() === cleanId ||
+      p.id?.toLowerCase() === cleanId ||
       normalize(p.slug) === normId ||
       normalize(p.name) === normId ||
       normalize(p.id) === normId
@@ -407,11 +411,15 @@ export const addProduct = (productData) => {
 
 export const updateProduct = (id, updates) => {
   const normId = normalize(id);
+  const cleanId = String(id || '').trim().toLowerCase();
   const index = productsMemory.findIndex(
     (p) =>
       p.id === id ||
       p.slug === id ||
       p._id === id ||
+      p._id?.toString() === id ||
+      p.slug?.toLowerCase() === cleanId ||
+      p.id?.toLowerCase() === cleanId ||
       normalize(p.slug) === normId ||
       normalize(p.name) === normId ||
       normalize(p.id) === normId

@@ -27,62 +27,35 @@ export const seedProductsDatabase = async () => {
       console.log(`✅ Successfully seeded ${cleanedProducts.length} products to MongoDB Atlas database!`);
     } else {
       console.log(`📦 MongoDB database connected: ${count} active products stored in database.`);
-
-      // 1. Maintain standardized in-site admin dashboard URLs
-      const adminMappings = [
-        { filter: { slug: { $regex: /hospital/i } }, adminUrl: '/product/speshway-hospitals/dashboard' },
-        { filter: { slug: { $regex: /travel|tour|bus/i } }, adminUrl: '/product/tours-and-travels/dashboard' },
-        { filter: { slug: { $regex: /dairy|milk/i } }, adminUrl: '/product/natural-milk-dairy/dashboard' },
-        { filter: { slug: { $regex: /aneera|silk/i } }, adminUrl: '/product/aneera-silks/dashboard' },
-        { filter: { slug: { $regex: /e-commerce|ecommerce|nexora/i } }, adminUrl: '/product/e-commerce/dashboard' },
-        { filter: { slug: { $regex: /saloon|salon|spy-salon/i } }, adminUrl: '/product/saloon/dashboard' },
-        { filter: { slug: { $regex: /fleet/i } }, adminUrl: '/product/fleet-management/dashboard' },
-        { filter: { slug: { $regex: /fitness|gym/i } }, adminUrl: '/product/american-fitness-gym/dashboard' },
-        { filter: { slug: { $regex: /flavora|kitchen/i } }, adminUrl: '/product/flavora-kitchen/dashboard' },
-        { filter: { slug: { $regex: /joy|eventoza/i } }, adminUrl: '/product/joy-events/dashboard' },
-        { filter: { slug: { $regex: /speshway-hrms|hrms/i } }, adminUrl: '/product/speshway-hrms/dashboard' },
-        { filter: { slug: { $regex: /ride-flow|rideflow|bike/i } }, adminUrl: '/product/ride-flow/dashboard' },
-        { filter: { slug: { $regex: /vexa/i } }, adminUrl: '/product/vexa-style-hub/dashboard' },
-        { filter: { slug: { $regex: /savitri|saree/i } }, adminUrl: '/product/savitri-sarees/dashboard' },
-        { filter: { slug: { $regex: /sana|stayz/i } }, adminUrl: '/product/sana-stayz/dashboard' },
-        { filter: { slug: { $regex: /learn|lms/i } }, adminUrl: '/product/learnhub/dashboard' },
-        { filter: { slug: { $regex: /foodway|foody/i } }, adminUrl: '/product/foodway/dashboard' },
-      ];
-
-      for (const m of adminMappings) {
-        await Product.updateMany(m.filter, { $set: { adminUrl: m.adminUrl } });
-      }
-
-      // 2. Only provide default image URLs if the product does NOT have any image uploaded by user
-      const defaultImageFallbacks = [
-        { filter: { slug: { $regex: /hospital/i } }, defaultImg: '/images/products/speshway-hospitals.jpg' },
-        { filter: { slug: { $regex: /travel|tour|bus/i } }, defaultImg: '/images/products/tours-and-travels.jpg' },
-        { filter: { slug: { $regex: /dairy|milk/i } }, defaultImg: '/images/products/natural-milk-dairy.jpg' },
-        { filter: { slug: { $regex: /aneera|silk/i } }, defaultImg: '/images/products/aneera-silks.jpg' },
-        { filter: { slug: { $regex: /e-commerce|ecommerce|nexora/i } }, defaultImg: '/images/products/e-commerce.jpg' },
-        { filter: { slug: { $regex: /saloon|salon|spy-salon/i } }, defaultImg: '/images/products/saloon.jpg' },
-        { filter: { slug: { $regex: /fleet/i } }, defaultImg: '/images/products/fleet-management.jpg' },
-        { filter: { slug: { $regex: /fitness|gym/i } }, defaultImg: '/images/products/american-fitness-gym.jpg' },
-        { filter: { slug: { $regex: /flavora|kitchen/i } }, defaultImg: '/images/products/flavora-kitchen.jpg' },
-        { filter: { slug: { $regex: /joy|eventoza/i } }, defaultImg: '/images/products/joy-events.jpg' },
-        { filter: { slug: { $regex: /speshway-hrms|hrms/i } }, defaultImg: '/images/products/speshway-hrms.jpg' },
-        { filter: { slug: { $regex: /ride-flow|rideflow|bike/i } }, defaultImg: '/images/products/ride-flow.jpg' },
-        { filter: { slug: { $regex: /vexa/i } }, defaultImg: '/images/products/vexa-style-hub.png' },
-        { filter: { slug: { $regex: /savitri|saree/i } }, defaultImg: '/images/products/savitri-sarees.jpg' },
-        { filter: { slug: { $regex: /sana|stayz/i } }, defaultImg: '/images/products/sana-stayz.jpg' },
-        { filter: { slug: { $regex: /learn|lms/i } }, defaultImg: '/images/products/learnhub.jpg' },
-        { filter: { slug: { $regex: /foodway|foody/i } }, defaultImg: '/images/products/foodway.jpg' },
-      ];
-
-      for (const d of defaultImageFallbacks) {
+      const ensureProductDefaults = async (regex, adminUrl, defaultImageUrl) => {
+        await Product.updateMany({ slug: { $regex: regex } }, { $set: { adminUrl } });
+        // Only set default imageUrl if product does not already have an imageUrl (preserves user uploaded/updated images)
         await Product.updateMany(
           {
-            ...d.filter,
-            $or: [{ imageUrl: { $exists: false } }, { imageUrl: null }, { imageUrl: '' }]
+            slug: { $regex: regex },
+            $or: [{ imageUrl: { $exists: false } }, { imageUrl: '' }, { imageUrl: null }]
           },
-          { $set: { imageUrl: d.defaultImg } }
+          { $set: { imageUrl: defaultImageUrl } }
         );
-      }
+      };
+
+      await ensureProductDefaults(/hospital/i, '/product/speshway-hospitals/dashboard', '/images/products/speshway-hospitals.jpg');
+      await ensureProductDefaults(/travel|tour|bus/i, '/product/tours-and-travels/dashboard', '/images/products/tours-and-travels.jpg');
+      await ensureProductDefaults(/dairy|milk/i, '/product/natural-milk-dairy/dashboard', '/images/products/natural-milk-dairy.jpg');
+      await ensureProductDefaults(/aneera|silk/i, '/product/aneera-silks/dashboard', '/images/products/aneera-silks.jpg');
+      await ensureProductDefaults(/e-commerce|ecommerce|nexora/i, '/product/e-commerce/dashboard', '/images/products/e-commerce.jpg');
+      await ensureProductDefaults(/saloon|salon|spy-salon/i, '/product/saloon/dashboard', '/images/products/saloon.jpg');
+      await ensureProductDefaults(/fleet/i, '/product/fleet-management/dashboard', '/images/products/fleet-management.jpg');
+      await ensureProductDefaults(/fitness|gym/i, '/product/american-fitness-gym/dashboard', '/images/products/american-fitness-gym.jpg');
+      await ensureProductDefaults(/flavora|kitchen/i, '/product/flavora-kitchen/dashboard', '/images/products/flavora-kitchen.jpg');
+      await ensureProductDefaults(/joy|eventoza/i, '/product/joy-events/dashboard', '/images/products/joy-events.jpg');
+      await ensureProductDefaults(/speshway-hrms|hrms/i, '/product/speshway-hrms/dashboard', '/images/products/speshway-hrms.jpg');
+      await ensureProductDefaults(/ride-flow|rideflow|bike/i, '/product/ride-flow/dashboard', '/images/products/ride-flow.jpg');
+      await ensureProductDefaults(/vexa/i, '/product/vexa-style-hub/dashboard', '/images/products/vexa-style-hub.png');
+      await ensureProductDefaults(/savitri|saree/i, '/product/savitri-sarees/dashboard', 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg');
+      await ensureProductDefaults(/sana|stayz/i, '/product/sana-stayz/dashboard', '/images/products/sana-stayz.jpg');
+      await ensureProductDefaults(/learn|lms/i, '/product/learnhub/dashboard', '/images/products/learnhub.jpg');
+      await ensureProductDefaults(/foodway|foody/i, '/product/foodway/dashboard', '/images/products/foodway.jpg');
 
       const joyExists = await Product.findOne({ slug: { $regex: /joy|eventoza/i } });
       if (!joyExists) {

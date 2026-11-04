@@ -359,41 +359,53 @@ export const SocketProvider = ({ children }) => {
   }, []);
 
   const triggerAddProduct = async (productData) => {
+    const tempId = productData.slug || `prod-${Date.now()}`;
+    const optimisticProduct = {
+      id: tempId,
+      slug: tempId,
+      status: 'active',
+      ...productData,
+    };
+
+    // 1. Instant optimistic state update with 0ms delay
+    setProducts((prev) => {
+      const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+      const next = [optimisticProduct, ...safe];
+      try {
+        localStorage.setItem('speshway_products', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+
+    // 2. Persist to API with timeout and non-blocking background refresh
     try {
-      const res = await api.post('/products', productData);
-      const newProduct = res.data?.data || productData;
+      const res = await api.post('/products', productData, { timeout: 3500 });
+      const newProduct = res.data?.data || optimisticProduct;
       const targetId = newProduct.id || newProduct._id;
       const targetSlug = newProduct.slug;
+
       setProducts((prev) => {
         const next = [
           newProduct,
           ...prev.filter(
             (p) =>
               !(
-                (p.id && (p.id === targetId || p.id === targetSlug)) ||
-                (p._id && (p._id === targetId || p._id === targetSlug)) ||
-                (p.slug && p.slug === targetSlug)
+                (p.id && (p.id === targetId || p.id === tempId || p.id === targetSlug)) ||
+                (p._id && (p._id === targetId || p._id === tempId || p._id === targetSlug)) ||
+                (p.slug && (p.slug === targetSlug || p.slug === tempId))
               )
           ),
         ];
-        localStorage.setItem('speshway_products', JSON.stringify(next));
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
         return next;
       });
-      await refreshProducts();
-      return res.data;
+      refreshProducts().catch(() => {});
+      return res.data || { success: true, data: newProduct };
     } catch (err) {
-      console.warn('API addProduct fallback to local state:', err.message);
-      const newProduct = {
-        id: productData.slug || `prod-${Date.now()}`,
-        status: 'active',
-        ...productData,
-      };
-      setProducts((prev) => {
-        const next = [newProduct, ...prev];
-        localStorage.setItem('speshway_products', JSON.stringify(next));
-        return next;
-      });
-      return { success: true, data: newProduct };
+      console.warn('API addProduct saved locally:', err.message);
+      return { success: true, data: optimisticProduct };
     }
   };
 
@@ -440,9 +452,10 @@ export const SocketProvider = ({ children }) => {
         return finalList;
       });
 
+      refreshProducts().catch(() => {});
       return res.data || { success: true, data: serverUpdated };
     } catch (err) {
-      console.warn('API updateProduct network error, preserved optimistic local state:', err.message);
+      console.warn('API updateProduct saved locally (server offline or delayed):', err.message);
       return { success: true, data: targetObj };
     }
   };

@@ -1572,67 +1572,107 @@ button {
   color: #ffffff;
 }
 
-/* Dedicated Product Detail Page */
+/* Dedicated Product Detail Page - Full-Page Modern Layout */
 .product-page-detail-wrapper {
-  max-width: 1140px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f8fafc;
+}
+
+/* Full-width Hero Banner Section */
+.product-detail-hero-section {
+  width: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 50%, #e6f7ef 100%);
+  border-bottom: 1px solid #e2e8f0;
+  padding: 56px 0 68px 0;
+}
+
+.detail-hero-container {
+  max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
-  padding: 32px 24px 80px 24px;
-}
-
-.back-link-btn {
-  display: inline-flex;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
   align-items: center;
-  gap: 6px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 28px;
 }
 
-.back-link-btn:hover {
-  color: var(--primary-green);
-}
-
+/* Backward compatibility for product-detail-hero */
 .product-detail-hero {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 40px;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
   align-items: center;
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-  border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 44px;
-  margin-bottom: 40px;
+  width: 100%;
+  padding: 40px;
 }
 
 .product-detail-h1 {
-  font-size: 2.6rem;
+  font-size: 3.2rem;
   font-weight: 800;
   color: var(--text-dark);
-  margin: 10px 0 16px 0;
-  line-height: 1.15;
+  margin: 12px 0 18px 0;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
 }
 
 .product-detail-sub {
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   color: var(--text-slate);
-  line-height: 1.6;
-  margin-bottom: 28px;
+  line-height: 1.65;
+  margin-bottom: 32px;
+  max-width: 680px;
 }
 
 .detail-actions-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
+  align-items: center;
 }
 
 .product-hero-card-preview {
   background-color: #ffffff;
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
   padding: 32px;
   text-align: center;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.preview-card-prod-name {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 16px 0 6px 0;
+}
+
+.preview-card-prod-sub {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* Full Page Body Content Container */
+.detail-body-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 48px auto 80px auto;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.detail-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .preview-top-badge {
@@ -4278,8 +4318,9 @@ button {
 
 .form-img-preview {
   width: 100%;
-  max-height: 180px;
+  aspect-ratio: 16 / 6;
   object-fit: cover;
+  object-position: center;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
@@ -4347,7 +4388,7 @@ button {
 /* Images on Public Catalog Cards */
 .catalog-card-image-wrap {
   width: 100%;
-  height: 155px;
+  aspect-ratio: 16 / 6;
   border-radius: 10px;
   overflow: hidden;
   margin-top: 0;
@@ -4362,7 +4403,9 @@ button {
 .catalog-card-preview-img {
   width: 100%;
   height: 100%;
+  aspect-ratio: 16 / 6;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.3s ease;
 }
 
@@ -4373,7 +4416,7 @@ button {
 /* Placeholder when no image is uploaded yet */
 .catalog-card-image-placeholder {
   width: 100%;
-  height: 110px;
+  aspect-ratio: 16 / 6;
   border-radius: 10px;
   border: 1.5px dashed #cbd5e1;
   background-color: #f8fafc;
@@ -4432,12 +4475,14 @@ button {
 
 /* Product Detail Hero Custom Image */
 .product-hero-custom-img {
-  max-width: 100%;
-  max-height: 160px;
+  width: 100%;
+  max-height: 200px;
+  aspect-ratio: 16 / 9;
   object-fit: contain;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   margin: 0 auto;
+  display: block;
 }
 
 /* Admin Card Custom Image */

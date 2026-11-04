@@ -1,11 +1,72 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import Product from '../models/Product.js';
 import { getIO } from '../services/socketService.js';
-import { uploadToCloudinary } from '../services/cloudinaryService.js';
-import { getProducts, getProductById } from '../services/productStore.js';
+import { getProducts, getProductById, updateProduct as updateMemoryProduct, addProduct as addMemoryProduct } from '../services/productStore.js';
+import { uploadToCloudinary, isCloudinaryConfigured } from '../services/cloudinaryService.js';
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Helper to save base64 image data to Cloudinary (primary) or client public directory (fallback)
+const saveBase64Image = async (dataUrl, slug) => {
+  try {
+    if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
+      return dataUrl;
+    }
+
+    const safeSlug = (slug || 'product').toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+
+    // 1. Primary: Upload directly to Cloudinary if configured
+    if (isCloudinaryConfigured()) {
+      try {
+        const cloudResult = await uploadToCloudinary(dataUrl, {
+          folder: 'speshway_products',
+          publicId: `${safeSlug}-${Date.now()}`,
+        });
+
+        if (cloudResult && (cloudResult.url || cloudResult.secure_url)) {
+          const finalUrl = cloudResult.url || cloudResult.secure_url;
+          console.log(`[Cloudinary] Successfully stored image for ${safeSlug}: ${finalUrl}`);
+          return finalUrl;
+        }
+      } catch (cloudErr) {
+        console.warn('[Cloudinary] Upload failed, falling back to local file storage:', cloudErr.message);
+      }
+    }
+
+    // 2. Fallback: Save to local client public folder
+    const matches = dataUrl.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) return dataUrl;
+
+    let ext = matches[1].toLowerCase();
+    if (ext === 'jpeg') ext = 'jpg';
+    if (ext.includes('svg')) ext = 'svg';
+    const base64Data = matches[2];
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const filename = `${safeSlug}-${Date.now()}.${ext}`;
+
+    // Target directory: client/public/images/products
+    const publicProductsDir = path.resolve(__dirname, '../../../client/public/images/products');
+    if (!fs.existsSync(publicProductsDir)) {
+      fs.mkdirSync(publicProductsDir, { recursive: true });
+    }
+
+    const filePath = path.join(publicProductsDir, filename);
+    fs.writeFileSync(filePath, buffer);
+
+    return `/images/products/${filename}`;
+  } catch (err) {
+    console.warn('Could not save base64 image to public directory, preserving as data URL:', err.message);
+    return dataUrl;
+  }
+};
 
 // Helper to find by MongoDB _id or custom slug or string id or name
 const getProductQuery = (id) => {
@@ -91,6 +152,7 @@ router.post('/', async (req, res) => {
       websiteUrl,
       adminUrl,
       imageUrl,
+      price,
       iconName,
       color,
       status,
@@ -116,7 +178,12 @@ router.post('/', async (req, res) => {
 
     let finalImageUrl = imageUrl || '';
     if (finalImageUrl) {
-      finalImageUrl = await uploadToCloudinary(finalImageUrl);
+      if (typeof finalImageUrl === 'string' && finalImageUrl.startsWith('data:image/')) {
+        finalImageUrl = await saveBase64Image(finalImageUrl, finalSlug);
+      } else {
+        const cloud = await uploadToCloudinary(finalImageUrl, 'speshway_products');
+        finalImageUrl = (cloud && typeof cloud === 'object') ? (cloud.url || cloud.secure_url || finalImageUrl) : (cloud || finalImageUrl);
+      }
     }
 
     const createdProduct = await Product.create({
@@ -138,6 +205,7 @@ router.post('/', async (req, res) => {
       websiteUrl: websiteUrl || '',
       adminUrl: adminUrl || '/admin/products',
       imageUrl: finalImageUrl || '',
+      price: price ? String(price).trim() : '',
       iconName: iconName || 'Layers',
       color: color || 'green',
       status: status || 'active',
@@ -180,18 +248,21 @@ router.put('/:id', async (req, res) => {
     if (body.technologies && typeof body.technologies === 'string') {
       body.technologies = body.technologies.split(',').map((t) => t.trim()).filter(Boolean);
     }
-    if (body.imageUrl) {
-      body.imageUrl = await uploadToCloudinary(body.imageUrl);
-    }
 
     if (body.features && typeof body.features === 'string') {
       body.features = body.features.split(',').map((f) => f.trim()).filter(Boolean);
     }
 
+    if (body.imageUrl) {
+      if (typeof body.imageUrl === 'string' && body.imageUrl.startsWith('data:image/')) {
+        body.imageUrl = await saveBase64Image(body.imageUrl, body.slug || rawId);
+      } else {
+        const cloud = await uploadToCloudinary(body.imageUrl, 'speshway_products');
+        body.imageUrl = (cloud && typeof cloud === 'object') ? (cloud.url || cloud.secure_url || body.imageUrl) : (cloud || body.imageUrl);
+      }
+    }
+
     // 1. Update in-memory store so changes reflect immediately even without MongoDB
-    const { updateProduct: updateMemoryProduct, addProduct: addMemoryProduct } = await import(
-      '../services/productStore.js'
-    );
     let memUpdated = updateMemoryProduct(rawId, body);
     if (!memUpdated) {
       memUpdated = addMemoryProduct({ ...body, id: rawId, slug: body.slug || rawId });
@@ -253,9 +324,6 @@ router.delete('/:id', async (req, res) => {
   try {
     const rawId = req.params.id ? decodeURIComponent(req.params.id).trim() : '';
 
-    const { deleteProduct: deleteMemoryProduct } = await import('../services/productStore.js');
-    deleteMemoryProduct(rawId);
-
     let deleted = null;
     try {
       deleted = await Product.findOneAndDelete(getProductQuery(rawId));
@@ -263,19 +331,29 @@ router.delete('/:id', async (req, res) => {
       console.warn('MongoDB Product.findOneAndDelete error:', dbErr.message);
     }
 
+    const { deleteProduct: deleteMemoryProduct } = await import('../services/productStore.js');
+    deleteMemoryProduct(rawId);
+
+    const targetSlug = deleted?.slug || rawId;
+    const targetId = deleted?._id || deleted?.id || rawId;
+
     // Real-time WebSocket broadcast
     const io = getIO();
     if (io) {
-      io.emit('product:deleted', { id: rawId, slug: rawId });
+      io.emit('product:deleted', { id: targetId, slug: targetSlug });
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product "${rawId}" deleted from products catalog`,
+        text: `Product deleted: "${deleted?.name || rawId}" removed`,
         time: 'Just now',
       });
     }
 
-    res.json({ success: true, message: 'Product deleted successfully', id: rawId, slug: rawId });
+    res.json({
+      success: true,
+      message: `Product "${deleted?.name || rawId}" permanently deleted`,
+      deletedId: targetId,
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

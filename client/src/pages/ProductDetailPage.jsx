@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
@@ -29,6 +29,13 @@ export const ProductDetailPage = () => {
   const { products } = useSocket();
   const [modalMode, setModalMode] = useState(null);
   const navigate = useNavigate();
+
+  // Scroll to top whenever the product detail page opens or ID changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, [id]);
 
   // Robust product lookup with instant fallback if socket/DB is still connecting
   
@@ -304,9 +311,9 @@ export const ProductDetailPage = () => {
       />
 
       <main className="product-page-detail-wrapper">
-        <div className="detail-container">
-          {/* Product Hero Banner */}
-          <div className="product-detail-hero">
+        {/* Full-width Product Hero Banner Section */}
+        <section className="product-detail-hero-section">
+          <div className="detail-hero-container">
             <div className="detail-hero-left">
               <div className="modal-badge-row">
                 <span className="product-category-tag">{product.category}</span>
@@ -327,10 +334,10 @@ export const ProductDetailPage = () => {
                 <button
                   onClick={handleOpenAdminDashboard}
                   className="btn-product-action btn-view-admin"
-                  title="Open Admin Dashboard in this site"
+                  title="View ERP"
                 >
                   <Shield size={18} />
-                  <span>View Admin Dashboard</span>
+                  <span>View ERP</span>
                 </button>
               </div>
             </div>
@@ -363,8 +370,8 @@ export const ProductDetailPage = () => {
                     );
                   })()}
                 </div>
-                <h3>{product.name}</h3>
-                <p>Real-Time Synchronized &bull; Role-Based Access</p>
+                <h3 className="preview-card-prod-name">{product.name}</h3>
+                <p className="preview-card-prod-sub">Real-Time Synchronized &bull; Role-Based Access</p>
                 <div className="preview-stats-bar">
                   <div>
                     <span className="p-num">99.9%</span>
@@ -382,6 +389,10 @@ export const ProductDetailPage = () => {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Content Body Sections */}
+        <div className="detail-body-container">
 
           {/* SECTION: TECHNOLOGIES USED (CRITICAL USER REQUIREMENT) */}
           <section className="tech-stack-deep-section">

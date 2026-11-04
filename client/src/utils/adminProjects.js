@@ -438,3 +438,45 @@ export const getProjectColor = (prod) => {
   }
   return 'emerald';
 };
+
+
+/**
+ * Resolves the public website URL for an ERP product so visitors can open its live website.
+ */
+export const getWebsiteUrl = (prod) => {
+  if (!prod) return 'https://speshway.com';
+
+  // 1. Direct websiteUrl / liveUrl / landingUrl / url property
+  const directUrl = prod.websiteUrl || prod.liveUrl || prod.landingUrl || prod.url;
+  if (directUrl && typeof directUrl === 'string' && directUrl.trim()) {
+    const trimmed = directUrl.trim();
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    if (trimmed.startsWith('/')) return trimmed;
+    return `https://${trimmed}`;
+  }
+
+  // 2. Smart fallbacks based on slug, id, or name
+  const slug = (prod.slug || prod.id || '').toLowerCase();
+  const name = (prod.name || '').toLowerCase();
+
+  if (slug.includes('bike') || slug.includes('ride') || name.includes('ride flow')) return 'https://bike.speshway.site/';
+  if (slug.includes('joy') || slug.includes('event') || name.includes('joy')) return 'https://joyevents.speshway.site';
+  if (slug.includes('food') || name.includes('foodway')) return 'https://foodway.speshway.site';
+  if (slug.includes('hrms') || name.includes('hrms')) return 'https://hrms.speshway.com';
+  if (slug.includes('flavora') || slug.includes('kitchen') || name.includes('flavora')) return 'https://flavorakitchen.speshway.com';
+  if (slug.includes('gym') || slug.includes('fitness') || name.includes('fitness') || name.includes('american')) return 'https://americanfitness.speshway.com';
+  if (slug.includes('fleet') || name.includes('fleet')) return 'https://fleet.speshway.com';
+  if (slug.includes('hospital') || name.includes('hospital')) return 'https://speshway.com/hospitals';
+  if (slug.includes('travel') || slug.includes('tour') || name.includes('travel')) return 'https://speshway.com/tours-and-travels';
+  if (slug.includes('dairy') || slug.includes('milk') || name.includes('dairy')) return 'https://speshway.com/natural-milk-dairy';
+  if (slug.includes('vexa') || slug.includes('style') || name.includes('vexa')) return 'https://speshway.com/vexa-style-hub';
+  if (slug.includes('aneera') || slug.includes('silk') || name.includes('aneera')) return 'https://aneerasilks.com';
+  if (slug.includes('salon') || slug.includes('saloon') || slug.includes('spy') || name.includes('salon')) return 'https://spysalon.speshway.com';
+  if (slug.includes('nexora') || slug.includes('commerce') || name.includes('nexora')) return 'https://nexora.speshway.com';
+  if (slug.includes('service') || name.includes('service')) return 'https://speshway.com/service-center';
+  if (slug.includes('estate') || slug.includes('real') || name.includes('real estate')) return 'https://speshway.com/real-estate';
+  if (slug.includes('school') || name.includes('school')) return 'https://speshway.com/school-erp';
+  if (slug.includes('hotel') || name.includes('hotel')) return 'https://speshway.com/hotel-erp';
+
+  return `https://speshway.com/${slug}`;
+};

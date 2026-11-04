@@ -50,6 +50,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    price: {
+      type: String,
+      default: '',
+    },
     color: {
       type: String,
       default: 'green',

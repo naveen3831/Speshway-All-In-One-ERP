@@ -4,6 +4,7 @@ import userRoutes from './userRoutes.js';
 import productRoutes from './productRoutes.js';
 import employeeRoutes from './employeeRoutes.js';
 import inquiryRoutes from './inquiryRoutes.js';
+import pricingRoutes from './pricingRoutes.js';
 import { liveState } from '../services/socketService.js';
 import { getProducts } from '../services/productStore.js';
 import { uploadToCloudinary } from '../services/cloudinaryService.js';
@@ -46,5 +47,6 @@ router.use('/users', userRoutes);
 router.use('/employees', employeeRoutes);
 router.use('/products', productRoutes);
 router.use('/inquiries', inquiryRoutes);
+router.use('/pricing', pricingRoutes);
 
 export default router;

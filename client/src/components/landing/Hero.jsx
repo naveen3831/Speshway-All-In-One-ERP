@@ -5,6 +5,7 @@ import { useSocket } from '../../context/SocketContext';
 import {
   filterAdminProjects,
   getDashboardRoute,
+  getWebsiteUrl,
   getProjectIcon,
   getProjectColor,
 } from '../../utils/adminProjects';
@@ -17,6 +18,17 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
   const adminProjects = useMemo(() => {
     return filterAdminProjects(products);
   }, [products]);
+
+  const handleCardClick = (prod) => {
+    const websiteUrl = getWebsiteUrl(prod);
+    if (websiteUrl) {
+      if (/^https?:\/\//i.test(websiteUrl)) {
+        window.open(websiteUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        navigate(websiteUrl);
+      }
+    }
+  };
 
   return (
     <section id="home" className="hero-section">
@@ -61,23 +73,23 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
                   <div className="laptop-erp-grid-canvas">
                     {adminProjects.map((prod) => {
                       const Icon = getProjectIcon(prod);
-                      const route = getDashboardRoute(prod);
                       const color = getProjectColor(prod);
 
                       return (
                         <div
                           key={prod.id || prod.slug}
                           className="laptop-tile-card"
-                          onClick={() => navigate(route)}
+                          onClick={() => handleCardClick(prod)}
                           role="button"
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                               e.preventDefault();
-                              navigate(route);
+                              handleCardClick(prod);
                             }
                           }}
-                          title={`Open ${prod.name} Dashboard in this site`}
+                          title={`Open ${prod.name} Website`}
+                          aria-label={`Open ${prod.name} website`}
                         >
                           <div className={`laptop-tile-icon-box bg-tile-${color}`}>
                             {prod.imageUrl ? (

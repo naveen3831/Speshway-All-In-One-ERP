@@ -1,60 +1,120 @@
 import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Configure Cloudinary with environment variables and verified credentials
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Robust .env discovery regardless of process.cwd()
+const candidateEnvPaths = [
+  path.resolve(__dirname, '../../../server/.env'),
+  path.resolve(__dirname, '../../.env'),
+  path.resolve(process.cwd(), 'server/.env'),
+  path.resolve(process.cwd(), '.env'),
+];
+
+for (const p of candidateEnvPaths) {
+  if (fs.existsSync(p)) {
+    dotenv.config({ path: p, override: false });
+  }
+}
+
+// User-provided Cloudinary credentials with env overrides
+const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'ddgjubbbx';
+const API_KEY = process.env.CLOUDINARY_API_KEY || '731672495256651';
+const API_SECRET = process.env.CLOUDINARY_API_SECRET || 'KT-7u5p3eD-kuZBEOsFWe5ZKWyw';
+
+// Configure Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'ddgjubbbx',
-  api_key: process.env.CLOUDINARY_API_KEY || '731672495256651',
-  api_secret: process.env.CLOUDINARY_API_SECRET || 'KT-7u5p3eD-kuZBEOsFWe5ZKWyw',
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret: API_SECRET,
   secure: true,
 });
 
 /**
- * Uploads an image (base64 data URI or remote HTTP/HTTPS URL) directly to Cloudinary.
- * Returns the permanent HTTPS CDN URL.
+ * Check if Cloudinary credentials are fully configured
  */
-export const uploadToCloudinary = async (imageInput, folder = 'speshway_products') => {
-  if (!imageInput || typeof imageInput !== 'string') return imageInput;
+export const isCloudinaryConfigured = () => {
+  return Boolean(CLOUD_NAME && API_KEY && API_SECRET);
+};
 
-  const trimmed = imageInput.trim();
-
-  // If already hosted on Cloudinary, return as-is
-  if (trimmed.includes('res.cloudinary.com')) {
-    return trimmed;
+/**
+ * Upload an image (base64 data URL, file path, or remote URL) to Cloudinary
+ * Handles both:
+ *  - uploadToCloudinary(dataUrl, { folder: 'speshway_products' }) => { success: true, url: '...' }
+ *  - uploadToCloudinary(dataUrl, 'speshway_products') => 'https://...'
+ */
+export const uploadToCloudinary = async (fileData, options = {}) => {
+  const isFolderString = typeof options === 'string';
+  if (!fileData) {
+    return isFolderString ? '' : { success: false, url: null, error: 'No image data provided' };
   }
 
-  // Must be either a base64 data URI or a remote HTTP(S) URL
-  const isBase64 = trimmed.startsWith('data:image/');
-  const isRemoteHttp = trimmed.startsWith('http://') || trimmed.startsWith('https://');
+  const trimmed = typeof fileData === 'string' ? fileData.trim() : fileData;
+  if (typeof trimmed === 'string' && trimmed.includes('res.cloudinary.com')) {
+    return isFolderString ? trimmed : { success: true, url: trimmed, secure_url: trimmed };
+  }
 
-  if (!isBase64 && !isRemoteHttp) {
-    return trimmed;
+  if (!isCloudinaryConfigured()) {
+    console.warn('[Cloudinary] Missing credentials, skipping remote upload');
+    return isFolderString ? trimmed : { success: false, url: null, error: 'Cloudinary not configured' };
   }
 
   try {
-    console.log(`☁️ Uploading project image (${Math.round(trimmed.length / 1024)} KB) to Cloudinary...`);
+    const folder = isFolderString ? options : options.folder || 'speshway_products';
+    const publicId = isFolderString ? undefined : options.publicId;
 
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'ddgjubbbx',
-      api_key: process.env.CLOUDINARY_API_KEY || '731672495256651',
-      api_secret: process.env.CLOUDINARY_API_SECRET || 'KT-7u5p3eD-kuZBEOsFWe5ZKWyw',
-      secure: true,
-    });
-
-    const result = await cloudinary.uploader.upload(trimmed, {
-      folder: folder,
+    const uploadOptions = {
+      folder,
       resource_type: 'auto',
-      allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'svg', 'gif', 'avif'],
-    });
+      overwrite: true,
+      invalidate: true,
+    };
+    if (publicId) uploadOptions.public_id = publicId;
+
+    const result = await cloudinary.uploader.upload(trimmed, uploadOptions);
 
     if (result && result.secure_url) {
-      console.log(`✅ Uploaded to Cloudinary CDN successfully: ${result.secure_url}`);
-      return result.secure_url;
+      console.log(`[Cloudinary] Image uploaded successfully to ${result.secure_url}`);
+      if (isFolderString) return result.secure_url;
+      return {
+        success: true,
+        url: result.secure_url,
+        secure_url: result.secure_url,
+        public_id: result.public_id,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+      };
     }
-  } catch (err) {
-    console.error('⚠️ Cloudinary upload error:', err.message);
+  } catch (error) {
+    console.error('[Cloudinary] Upload failed:', error.message);
   }
 
-  return trimmed;
+  if (isFolderString) return trimmed;
+  return { success: false, url: null, error: 'Upload failed' };
 };
 
-export default cloudinary;
+/**
+ * Delete an image from Cloudinary by its public ID
+ */
+export const deleteFromCloudinary = async (publicId) => {
+  if (!isCloudinaryConfigured() || !publicId) return { success: false };
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+    return { success: result.result === 'ok' };
+  } catch (error) {
+    console.error('[Cloudinary] Deletion error:', error.message);
+    return { success: false, error: error.message };
+  }
+};
+
+export default {
+  cloudinary,
+  isCloudinaryConfigured,
+  uploadToCloudinary,
+  deleteFromCloudinary,
+};

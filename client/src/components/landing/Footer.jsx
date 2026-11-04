@@ -82,16 +82,6 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             <h4 className="footer-col-title">Platform</h4>
             <ul className="footer-links-list">
               <li>
-                <Link to="/features" className="footer-link">
-                  Key Capabilities
-                </Link>
-              </li>
-              <li>
-                <Link to="/why-us" className="footer-link">
-                  Why Choose Speshway
-                </Link>
-              </li>
-              <li>
                 <Link to="/pricing" className="footer-link">
                   Pricing &amp; Plans
                 </Link>
@@ -111,11 +101,6 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                   </Link>
                 )}
               </li>
-              <li>
-                <Link to="/features" className="footer-link">
-                  Real-Time Synchronization
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -123,16 +108,6 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
           <div className="pro-footer-col">
             <h4 className="footer-col-title">Portals &amp; Support</h4>
             <ul className="footer-links-list">
-              <li>
-                <Link to="/admin" className="footer-link">
-                  Admin Console
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" className="footer-link">
-                  Employee Staff Login
-                </Link>
-              </li>
               <li>
                 <Link to="/contact" className="footer-link">
                   24/7 Enterprise Help Desk
