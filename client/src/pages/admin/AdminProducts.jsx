@@ -268,19 +268,17 @@ export const AdminProducts = () => {
                       {pStatus}
                     </span>
                   </div>
-                  <div className="admin-prod-card-actions">
-                    <button
-                      onClick={(e) => handleDelete(pSlug, pName, e)}
-                      className="card-action-icon delete"
-                      title="Delete Project"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
                 </div>
 
                 <div className="admin-prod-card-body">
-                  <h3 className="admin-prod-card-title">{pName}</h3>
+                  <h3
+                    className="admin-prod-card-title"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/product/${pSlug}`)}
+                    title={`View public page for ${pName}`}
+                  >
+                    {pName}
+                  </h3>
                   <p className="admin-prod-card-desc">{pDesc}</p>
                 </div>
 
@@ -318,14 +316,11 @@ export const AdminProducts = () => {
 
                 <div className="admin-prod-card-footer">
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/product/${pSlug}`);
-                    }}
-                    className="card-btn-view-details"
-                    title="Open dedicated public page"
+                    onClick={(e) => handleDelete(prod.id || prod.slug || prod._id || pSlug, pName, e)}
+                    className="card-btn-delete"
+                    title="Delete Product"
                   >
-                    <Eye size={14} /> Full Details
+                    <Trash2 size={14} /> Delete Product
                   </button>
                   <button
                     onClick={(e) => handleEditProduct(prod, e)}
