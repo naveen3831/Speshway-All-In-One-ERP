@@ -13,7 +13,7 @@ import {
   Globe,
   Smartphone,
   Layers,
-  ArrowRight,
+  Check,
   Eye,
 } from 'lucide-react';
 
@@ -28,6 +28,8 @@ export const AdminPricing = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [savingPlanIdx, setSavingPlanIdx] = useState(null);
+  const [savedSuccessIdx, setSavedSuccessIdx] = useState(null);
   const [msg, setMsg] = useState(null); // { type: 'success' | 'error', text: '' }
   const [newFeatureInputs, setNewFeatureInputs] = useState({});
 
@@ -41,7 +43,6 @@ export const AdminPricing = () => {
       }
     } catch (err) {
       console.warn('Could not fetch pricing from backend, using defaults:', err.message);
-      // Fallback defaults
       setPlans([
         {
           slug: 'website',
@@ -132,7 +133,6 @@ export const AdminPricing = () => {
   const handlePopularToggle = (index) => {
     setPlans((prev) => {
       const next = [...prev];
-      // Only one plan can be most popular
       return next.map((p, i) => ({
         ...p,
         popular: i === index ? !p.popular : false,
@@ -169,16 +169,49 @@ export const AdminPricing = () => {
     });
   };
 
+  // Save an individual plan directly from its card
+  const handleSaveSinglePlan = async (planIndex) => {
+    setSavingPlanIdx(planIndex);
+    setMsg(null);
+    try {
+      const plan = plans[planIndex];
+      const res = await api.put(`/pricing/${plan.slug}`, plan);
+      if (res.data && res.data.success) {
+        setSavedSuccessIdx(planIndex);
+        setMsg({
+          type: 'success',
+          text: `Saved ${plan.name} price (${plan.price})! Updated on website live.`,
+        });
+        setTimeout(() => setSavedSuccessIdx(null), 3000);
+      }
+    } catch (err) {
+      setMsg({
+        type: 'error',
+        text: err.response?.data?.message || `Failed to save ${plans[planIndex]?.name} plan.`,
+      });
+    } finally {
+      setSavingPlanIdx(null);
+      setTimeout(() => setMsg(null), 5000);
+    }
+  };
+
+  // Save all plans in bulk
   const handleSaveAll = async () => {
     setSaving(true);
     setMsg(null);
     try {
       const res = await api.put('/pricing', { plans });
       if (res.data && res.data.success) {
-        setMsg({ type: 'success', text: 'Pricing details saved and updated across the website in real time!' });
+        setMsg({
+          type: 'success',
+          text: 'All pricing changes saved successfully! Updated across website in real-time.',
+        });
       }
     } catch (err) {
-      setMsg({ type: 'error', text: err.response?.data?.message || 'Failed to save pricing plans. Please try again.' });
+      setMsg({
+        type: 'error',
+        text: err.response?.data?.message || 'Failed to save pricing plans. Please try again.',
+      });
     } finally {
       setSaving(false);
       setTimeout(() => setMsg(null), 6000);
@@ -195,7 +228,7 @@ export const AdminPricing = () => {
       const res = await api.post('/pricing/reset');
       if (res.data && res.data.data) {
         setPlans(res.data.data);
-        setMsg({ type: 'success', text: 'Pricing plans successfully reset to defaults!' });
+        setMsg({ type: 'success', text: 'Pricing plans reset to standard defaults!' });
       }
     } catch (err) {
       setMsg({ type: 'error', text: 'Failed to reset pricing. Please try again.' });
@@ -215,34 +248,62 @@ export const AdminPricing = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Header Row */}
-      <div className="admin-page-header">
-        <div>
-          <h1 className="admin-heading">Pricing &amp; Plans Management</h1>
-          <p className="admin-subtext">
-            Update pricing amounts, plan names, descriptions, and feature lists. Changes sync across the live website and public <code>/pricing</code> page instantly.
+      {/* Header Row - RESPONSIVE & NEVER CUT OFF */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px',
+          marginBottom: '20px',
+          paddingBottom: '16px',
+          borderBottom: '1px solid #e2e8f0',
+        }}
+      >
+        <div style={{ flex: '1 1 300px' }}>
+          <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
+            Pricing &amp; Plans Management
+          </h1>
+          <p className="admin-subtext" style={{ margin: 0 }}>
+            Change prices, features, or plan details below. Click <strong>Save Changes</strong> on any card or the top bar to update the live website.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           <button
             type="button"
             onClick={handleResetDefaults}
             disabled={saving}
             className="btn-secondary-action"
             title="Reset to default plans"
+            style={{ padding: '8px 14px', borderRadius: '8px', cursor: 'pointer' }}
           >
-            <RotateCcw size={16} /> Reset
+            <RotateCcw size={15} /> Reset
           </button>
 
           <button
             type="button"
             onClick={handleSaveAll}
             disabled={saving}
-            className="btn-add-primary"
-            title="Save pricing changes to database"
+            style={{
+              padding: '10px 22px',
+              backgroundColor: '#00875a',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '8px',
+              fontWeight: 700,
+              fontSize: '0.92rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 2px 8px rgba(0, 135, 90, 0.3)',
+            }}
+            title="Save all pricing changes across all cards"
           >
-            <Save size={16} /> {saving ? 'Saving...' : 'Save Price Details'}
+            <Save size={16} /> {saving ? 'Saving...' : 'Save All Changes'}
           </button>
         </div>
       </div>
@@ -260,6 +321,7 @@ export const AdminPricing = () => {
             backgroundColor: msg.type === 'success' ? '#ecfdf5' : '#fef2f2',
             border: `1px solid ${msg.type === 'success' ? '#a7f3d0' : '#fecaca'}`,
             color: msg.type === 'success' ? '#065f46' : '#991b1b',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
           }}
         >
           {msg.type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
@@ -268,20 +330,34 @@ export const AdminPricing = () => {
       )}
 
       {/* Grid of Pricing Tiers for Editing */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginBottom: '30px' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '20px',
+          marginBottom: '35px',
+        }}
+      >
         {plans.map((plan, pIdx) => {
           const Icon = ICON_MAP[plan.slug] || Layers;
+          const isSavingThis = savingPlanIdx === pIdx;
+          const isSavedSuccess = savedSuccessIdx === pIdx;
+
           return (
             <div
               key={plan.slug || pIdx}
               className="admin-card"
               style={{
-                border: plan.popular ? '2px solid #00875a' : '1px solid #e2e8f0',
+                border: plan.popular ? '2px solid #00875a' : '1px solid #cbd5e1',
                 borderRadius: '16px',
-                padding: '20px',
+                padding: '22px',
                 backgroundColor: '#ffffff',
                 position: 'relative',
-                boxShadow: plan.popular ? '0 8px 24px -4px rgba(0, 135, 90, 0.12)' : '0 1px 4px rgba(15, 23, 42, 0.04)',
+                display: 'flex',
+                flexDirection: 'column',
+                boxShadow: plan.popular
+                  ? '0 8px 24px -4px rgba(0, 135, 90, 0.15)'
+                  : '0 2px 8px rgba(15, 23, 42, 0.05)',
               }}
             >
               {/* Popular Tag */}
@@ -293,13 +369,14 @@ export const AdminPricing = () => {
                     right: '16px',
                     backgroundColor: '#00875a',
                     color: '#ffffff',
-                    padding: '3px 10px',
+                    padding: '3px 12px',
                     borderRadius: '9999px',
                     fontSize: '0.72rem',
                     fontWeight: 700,
                     display: 'flex',
                     alignItems: 'center',
                     gap: '4px',
+                    boxShadow: '0 2px 6px rgba(0, 135, 90, 0.3)',
                   }}
                 >
                   <Sparkles size={12} /> Most Popular
@@ -310,8 +387,8 @@ export const AdminPricing = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
                 <div
                   style={{
-                    width: '38px',
-                    height: '38px',
+                    width: '40px',
+                    height: '40px',
                     borderRadius: '10px',
                     backgroundColor: plan.popular ? '#dcfce7' : '#eff6ff',
                     color: plan.popular ? '#00875a' : '#2563eb',
@@ -320,20 +397,28 @@ export const AdminPricing = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <Icon size={20} />
+                  <Icon size={22} />
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>
                     {plan.name} Plan
                   </h3>
                   <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Order: #{plan.order || pIdx + 1}</span>
                 </div>
               </div>
 
-              {/* Price Field - PROMINENT */}
+              {/* Price Field - PROMINENT & CLEAR */}
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
-                  Price Amount * (e.g. ₹80,000 or ₹1,00,000)
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    color: '#1e293b',
+                    marginBottom: '6px',
+                  }}
+                >
+                  Price Amount * (e.g. ₹85,000 or ₹1,00,000)
                 </label>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <input
@@ -344,14 +429,15 @@ export const AdminPricing = () => {
                     style={{
                       flex: 1,
                       padding: '10px 14px',
-                      fontSize: '1.25rem',
+                      fontSize: '1.3rem',
                       fontWeight: 800,
                       color: '#0f172a',
                       borderRadius: '8px',
-                      border: '1.5px solid #cbd5e1',
+                      border: '2px solid #00875a',
                       backgroundColor: '#f8fafc',
+                      outline: 'none',
                     }}
-                    placeholder="₹80,000"
+                    placeholder="₹85,000"
                   />
                   <input
                     type="text"
@@ -447,11 +533,11 @@ export const AdminPricing = () => {
               </div>
 
               {/* Features List Editor */}
-              <div>
+              <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
                   Included Features ({plan.features?.length || 0})
                 </label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px', maxHeight: '180px', overflowY: 'auto' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px', maxHeight: '160px', overflowY: 'auto' }}>
                   {(plan.features || []).map((feat, fIdx) => (
                     <div
                       key={fIdx}
@@ -520,12 +606,55 @@ export const AdminPricing = () => {
                   </button>
                 </div>
               </div>
+
+              {/* PROMINENT "SAVE CHANGES" OPTION ON THIS CARD */}
+              <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => handleSaveSinglePlan(pIdx)}
+                  disabled={isSavingThis || saving}
+                  style={{
+                    width: '100%',
+                    padding: '12px 18px',
+                    backgroundColor: isSavedSuccess ? '#059669' : '#00875a',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '10px',
+                    fontWeight: 700,
+                    fontSize: '0.92rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 2px 8px rgba(0, 135, 90, 0.3)',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {isSavedSuccess ? (
+                    <>
+                      <Check size={18} />
+                      <span>Saved Successfully!</span>
+                    </>
+                  ) : isSavingThis ? (
+                    <>
+                      <Save size={18} />
+                      <span>Saving Changes...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save size={18} />
+                      <span>Save Changes</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Floating Action Bar */}
+      {/* Floating Bottom Action Bar */}
       <div
         style={{
           position: 'sticky',
@@ -535,16 +664,18 @@ export const AdminPricing = () => {
           padding: '14px 24px',
           borderRadius: '14px',
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
+          gap: '12px',
           boxShadow: '0 12px 30px rgba(0, 0, 0, 0.25)',
           zIndex: 50,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Eye size={18} className="text-emerald" />
-          <span style={{ fontSize: '0.9rem' }}>
-            Updates apply instantly to the live public <a href="/pricing" target="_blank" rel="noreferrer" style={{ color: '#34d399', textDecoration: 'underline' }}>/pricing</a> page upon saving.
+          <Eye size={18} style={{ color: '#34d399' }} />
+          <span style={{ fontSize: '0.88rem' }}>
+            Saving updates the live <a href="/pricing" target="_blank" rel="noreferrer" style={{ color: '#34d399', textDecoration: 'underline', fontWeight: 600 }}>/pricing</a> page in real time.
           </span>
         </div>
 
@@ -557,17 +688,17 @@ export const AdminPricing = () => {
             color: '#ffffff',
             border: 'none',
             borderRadius: '8px',
-            padding: '10px 22px',
+            padding: '10px 24px',
             fontWeight: 700,
-            fontSize: '0.9rem',
+            fontSize: '0.92rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            boxShadow: '0 2px 8px rgba(0, 135, 90, 0.4)',
+            boxShadow: '0 2px 10px rgba(0, 135, 90, 0.4)',
           }}
         >
-          <Save size={16} /> {saving ? 'Saving Changes...' : 'Save All Price Changes'}
+          <Save size={18} /> {saving ? 'Saving All...' : 'Save Changes'}
         </button>
       </div>
     </div>

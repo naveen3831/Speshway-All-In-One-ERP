@@ -54,3 +54,4 @@ const pricingPlanSchema = new mongoose.Schema(
 const PricingPlan = mongoose.models.PricingPlan || mongoose.model('PricingPlan', pricingPlanSchema);
 
 export default PricingPlan;
+
