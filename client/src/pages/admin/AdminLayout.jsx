@@ -7,7 +7,6 @@ import {
   Package,
   CreditCard,
   Globe,
-  Users,
   Inbox,
   Settings,
   LogOut,
@@ -205,14 +204,6 @@ export const AdminLayout = () => {
           >
             <CreditCard size={18} />
             <span>Pricing Plans</span>
-          </NavLink>
-
-          <NavLink
-            to="/admin/users"
-            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
-          >
-            <Users size={18} />
-            <span>Users &amp; Staff</span>
           </NavLink>
 
           <NavLink
