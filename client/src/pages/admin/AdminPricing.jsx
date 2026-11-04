@@ -11,7 +11,6 @@ import {
   Smartphone,
   Layers,
   Check,
-  Eye,
 } from 'lucide-react';
 
 const ICON_MAP = {
@@ -24,7 +23,6 @@ export const AdminPricing = () => {
   const { socket } = useSocket();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [savingPlanIdx, setSavingPlanIdx] = useState(null);
   const [savedSuccessIdx, setSavedSuccessIdx] = useState(null);
   const [newFeatureInputs, setNewFeatureInputs] = useState({});
@@ -181,38 +179,6 @@ export const AdminPricing = () => {
       console.error(`Failed to save ${plans[planIndex]?.name} plan:`, err);
     } finally {
       setSavingPlanIdx(null);
-    }
-  };
-
-  // Save all plans in bulk
-  const handleSaveAll = async () => {
-    setSaving(true);
-    try {
-      await api.put('/pricing', { plans });
-    } catch (err) {
-      console.error('Failed to save all pricing plans:', err);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleResetDefaults = async () => {
-    if (!window.confirm('Reset all pricing plans to standard Speshway defaults (₹80,000 / ₹1,00,000 / ₹1,30,000)?')) {
-      return;
-    }
-    setSaving(true);
-    setMsg(null);
-    try {
-      const res = await api.post('/pricing/reset');
-      if (res.data && res.data.data) {
-        setPlans(res.data.data);
-        setMsg({ type: 'success', text: 'Pricing plans reset to standard defaults!' });
-      }
-    } catch (err) {
-      setMsg({ type: 'error', text: 'Failed to reset pricing. Please try again.' });
-    } finally {
-      setSaving(false);
-      setTimeout(() => setMsg(null), 5000);
     }
   };
 
@@ -532,7 +498,7 @@ export const AdminPricing = () => {
                 <button
                   type="button"
                   onClick={() => handleSaveSinglePlan(pIdx)}
-                  disabled={isSavingThis || saving}
+                  disabled={isSavingThis}
                   style={{
                     width: '100%',
                     padding: '12px 18px',
@@ -572,54 +538,6 @@ export const AdminPricing = () => {
             </div>
           );
         })}
-      </div>
-
-      {/* Floating Bottom Action Bar */}
-      <div
-        style={{
-          position: 'sticky',
-          bottom: '20px',
-          backgroundColor: '#0f172a',
-          color: '#ffffff',
-          padding: '14px 24px',
-          borderRadius: '14px',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px',
-          boxShadow: '0 12px 30px rgba(0, 0, 0, 0.25)',
-          zIndex: 50,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Eye size={18} style={{ color: '#34d399' }} />
-          <span style={{ fontSize: '0.88rem' }}>
-            Saving updates the live <a href="/pricing" target="_blank" rel="noreferrer" style={{ color: '#34d399', textDecoration: 'underline', fontWeight: 600 }}>/pricing</a> page in real time.
-          </span>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleSaveAll}
-          disabled={saving}
-          style={{
-            backgroundColor: '#00875a',
-            color: '#ffffff',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '10px 24px',
-            fontWeight: 700,
-            fontSize: '0.92rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            boxShadow: '0 2px 10px rgba(0, 135, 90, 0.4)',
-          }}
-        >
-          <Save size={18} /> {saving ? 'Saving All...' : 'Save Changes'}
-        </button>
       </div>
     </div>
   );
