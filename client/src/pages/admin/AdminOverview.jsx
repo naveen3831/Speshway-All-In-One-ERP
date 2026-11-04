@@ -33,14 +33,7 @@ export const AdminOverview = () => {
             Monitor real-time system performance, ERP projects catalog, and incoming customer inquiries.
           </p>
         </div>
-        <div className="admin-header-actions" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <Link
-            to="/admin/home"
-            className="btn-secondary-action"
-            style={{ padding: '9px 16px', fontSize: '0.88rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
-          >
-            <Globe size={15} /> Edit Home Page
-          </Link>
+        <div className="admin-header-actions">
           <Link to="/admin/products/new" className="btn-hero-primary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
             <Plus size={16} /> Add Project
           </Link>
