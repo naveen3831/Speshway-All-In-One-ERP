@@ -6,8 +6,6 @@ import {
   Save,
   Plus,
   Trash2,
-  CheckCircle2,
-  AlertCircle,
   Sparkles,
   Globe,
   Smartphone,
@@ -29,8 +27,6 @@ export const AdminPricing = () => {
   const [saving, setSaving] = useState(false);
   const [savingPlanIdx, setSavingPlanIdx] = useState(null);
   const [savedSuccessIdx, setSavedSuccessIdx] = useState(null);
-  const [cardStatus, setCardStatus] = useState({});
-  const [msg, setMsg] = useState(null); // { type: 'success' | 'error', text: '' }
   const [newFeatureInputs, setNewFeatureInputs] = useState({});
 
   // Fetch pricing plans from backend
@@ -172,62 +168,31 @@ export const AdminPricing = () => {
   // Save an individual plan directly from its card
   const handleSaveSinglePlan = async (planIndex) => {
     setSavingPlanIdx(planIndex);
-    setCardStatus((prev) => ({ ...prev, [planIndex]: null }));
-    setMsg(null);
     try {
       const plan = plans[planIndex];
       const res = await api.put(`/pricing/${plan.slug}`, plan);
       if (res.data && res.data.success) {
         setSavedSuccessIdx(planIndex);
-        setCardStatus((prev) => ({
-          ...prev,
-          [planIndex]: { type: 'success', text: `Saved! ${plan.name} updated to ${plan.price}` },
-        }));
-        setMsg({
-          type: 'success',
-          text: `Saved ${plan.name} plan (${plan.price})! Updated on website live.`,
-        });
         setTimeout(() => {
           setSavedSuccessIdx(null);
-          setCardStatus((prev) => ({ ...prev, [planIndex]: null }));
-        }, 4000);
+        }, 2000);
       }
     } catch (err) {
-      const errMsg = err.response?.data?.message || err.message || `Failed to save ${plans[planIndex]?.name} plan.`;
-      setCardStatus((prev) => ({
-        ...prev,
-        [planIndex]: { type: 'error', text: errMsg },
-      }));
-      setMsg({
-        type: 'error',
-        text: errMsg,
-      });
+      console.error(`Failed to save ${plans[planIndex]?.name} plan:`, err);
     } finally {
       setSavingPlanIdx(null);
-      setTimeout(() => setMsg(null), 6000);
     }
   };
 
   // Save all plans in bulk
   const handleSaveAll = async () => {
     setSaving(true);
-    setMsg(null);
     try {
-      const res = await api.put('/pricing', { plans });
-      if (res.data && res.data.success) {
-        setMsg({
-          type: 'success',
-          text: 'All pricing changes saved successfully! Updated across website in real-time.',
-        });
-      }
+      await api.put('/pricing', { plans });
     } catch (err) {
-      setMsg({
-        type: 'error',
-        text: err.response?.data?.message || 'Failed to save pricing plans. Please try again.',
-      });
+      console.error('Failed to save all pricing plans:', err);
     } finally {
       setSaving(false);
-      setTimeout(() => setMsg(null), 6000);
     }
   };
 
@@ -283,53 +248,6 @@ export const AdminPricing = () => {
           </p>
         </div>
       </div>
-
-      {/* Floating Global Toast Notification */}
-      {msg && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '24px',
-            right: '24px',
-            zIndex: 99999,
-            padding: '14px 20px',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            backgroundColor: msg.type === 'success' ? '#065f46' : '#991b1b',
-            color: '#ffffff',
-            boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.35)',
-            fontWeight: 600,
-            fontSize: '0.9rem',
-            maxWidth: '450px',
-          }}
-        >
-          {msg.type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
-          <span>{msg.text}</span>
-        </div>
-      )}
-
-      {/* Inline Alert Notifications */}
-      {msg && (
-        <div
-          style={{
-            padding: '14px 18px',
-            borderRadius: '10px',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            backgroundColor: msg.type === 'success' ? '#ecfdf5' : '#fef2f2',
-            border: `1px solid ${msg.type === 'success' ? '#a7f3d0' : '#fecaca'}`,
-            color: msg.type === 'success' ? '#065f46' : '#991b1b',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-          }}
-        >
-          {msg.type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
-          <span style={{ fontWeight: 600 }}>{msg.text}</span>
-        </div>
-      )}
 
       {/* Grid of Pricing Tiers for Editing */}
       <div
@@ -636,12 +554,12 @@ export const AdminPricing = () => {
                   {isSavedSuccess ? (
                     <>
                       <Check size={18} />
-                      <span>Saved Successfully!</span>
+                      <span>Saved!</span>
                     </>
                   ) : isSavingThis ? (
                     <>
                       <Save size={18} />
-                      <span>Saving Changes...</span>
+                      <span>Saving...</span>
                     </>
                   ) : (
                     <>
@@ -650,27 +568,6 @@ export const AdminPricing = () => {
                     </>
                   )}
                 </button>
-
-                {cardStatus[pIdx] && (
-                  <div
-                    style={{
-                      marginTop: '8px',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      fontSize: '0.8rem',
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      backgroundColor: cardStatus[pIdx].type === 'success' ? '#ecfdf5' : '#fef2f2',
-                      border: `1px solid ${cardStatus[pIdx].type === 'success' ? '#a7f3d0' : '#fecaca'}`,
-                      color: cardStatus[pIdx].type === 'success' ? '#065f46' : '#991b1b',
-                    }}
-                  >
-                    {cardStatus[pIdx].type === 'success' ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
-                    <span>{cardStatus[pIdx].text}</span>
-                  </div>
-                )}
               </div>
             </div>
           );
