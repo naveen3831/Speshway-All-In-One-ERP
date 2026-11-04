@@ -86,3 +86,4 @@ const homeContentSchema = new mongoose.Schema(
 const HomeContent = mongoose.models.HomeContent || mongoose.model('HomeContent', homeContentSchema);
 
 export default HomeContent;
+

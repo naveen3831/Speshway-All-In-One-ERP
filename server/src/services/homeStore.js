@@ -65,10 +65,16 @@ export const updateHomeContent = async (newData) => {
   };
 
   // Persist to MongoDB
+  const sanitized = { ...memoryHomeContent };
+  delete sanitized._id;
+  delete sanitized.__v;
+  delete sanitized.createdAt;
+  delete sanitized.updatedAt;
+
   try {
     const updated = await HomeContent.findOneAndUpdate(
       { key: 'main_home' },
-      { $set: memoryHomeContent },
+      { $set: sanitized },
       { new: true, upsert: true, setDefaultsOnInsert: true, lean: true }
     );
     return updated || memoryHomeContent;
@@ -108,3 +114,4 @@ export default {
   updateHomeContent,
   seedHomeDatabase,
 };
+
