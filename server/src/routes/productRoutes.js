@@ -1,15 +1,81 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import Product from '../models/Product.js';
 import { getIO } from '../services/socketService.js';
-import { getProducts, getProductById } from '../services/productStore.js';
+import { getProducts, getProductById, updateProduct as updateMemoryProduct, addProduct as addMemoryProduct } from '../services/productStore.js';
+import { uploadToCloudinary, isCloudinaryConfigured } from '../services/cloudinaryService.js';
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Helper to save base64 image data to Cloudinary (primary) or client public directory (fallback)
+const saveBase64Image = async (dataUrl, slug) => {
+  try {
+    if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
+      return dataUrl;
+    }
+
+    const safeSlug = (slug || 'product').toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+
+    // 1. Primary: Upload directly to Cloudinary if configured
+    if (isCloudinaryConfigured()) {
+      try {
+        const cloudResult = await uploadToCloudinary(dataUrl, {
+          folder: 'speshway_erp/products',
+          publicId: `${safeSlug}-${Date.now()}`,
+        });
+
+        if (cloudResult.success && cloudResult.url) {
+          console.log(`[Cloudinary] Successfully stored image for ${safeSlug}: ${cloudResult.url}`);
+          return cloudResult.url;
+        }
+      } catch (cloudErr) {
+        console.warn('[Cloudinary] Upload failed, falling back to local file storage:', cloudErr.message);
+      }
+    }
+
+    // 2. Fallback: Save to local client public folder
+    const matches = dataUrl.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) return dataUrl;
+
+    let ext = matches[1].toLowerCase();
+    if (ext === 'jpeg') ext = 'jpg';
+    if (ext.includes('svg')) ext = 'svg';
+    const base64Data = matches[2];
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const filename = `${safeSlug}-${Date.now()}.${ext}`;
+
+    // Target directory: client/public/images/products
+    const publicProductsDir = path.resolve(__dirname, '../../../client/public/images/products');
+    if (!fs.existsSync(publicProductsDir)) {
+      fs.mkdirSync(publicProductsDir, { recursive: true });
+    }
+
+    const filePath = path.join(publicProductsDir, filename);
+    fs.writeFileSync(filePath, buffer);
+
+    return `/images/products/${filename}`;
+  } catch (err) {
+    console.warn('Could not save base64 image to public directory, preserving as data URL:', err.message);
+    return dataUrl;
+  }
+};
+
 
 // Helper to find by MongoDB _id or custom slug or string id
 const getProductQuery = (id) => {
   const cleanId = String(id || '').trim();
-  const conditions = [{ slug: cleanId }, { id: cleanId }];
+  const conditions = [
+    { slug: cleanId },
+    { slug: { $regex: new RegExp("^" + cleanId + "$", "i") } },
+    { id: cleanId },
+  ];
   if (mongoose.Types.ObjectId.isValid(cleanId)) {
     conditions.push({ _id: cleanId });
   }
@@ -85,6 +151,7 @@ router.post('/', async (req, res) => {
       websiteUrl,
       adminUrl,
       imageUrl,
+      price,
       iconName,
       color,
       status,
@@ -126,7 +193,8 @@ router.post('/', async (req, res) => {
         : ['React', 'Node.js', 'Express', 'MongoDB', 'Socket.IO'],
       websiteUrl: websiteUrl || '',
       adminUrl: adminUrl || '/admin/products',
-      imageUrl: imageUrl || '',
+      imageUrl: (imageUrl && typeof imageUrl === 'string' && imageUrl.startsWith('data:image/')) ? await saveBase64Image(imageUrl, finalSlug) : (imageUrl || ''),
+      price: price ? String(price).trim() : '',
       iconName: iconName || 'Layers',
       color: color || 'green',
       status: status || 'active',
@@ -173,10 +241,11 @@ router.put('/:id', async (req, res) => {
       body.features = body.features.split(',').map((f) => f.trim()).filter(Boolean);
     }
 
+    if (body.imageUrl && typeof body.imageUrl === 'string' && body.imageUrl.startsWith('data:image/')) {
+      body.imageUrl = await saveBase64Image(body.imageUrl, body.slug || rawId);
+    }
+
     // 1. Update in-memory store so changes reflect immediately even without MongoDB
-    const { updateProduct: updateMemoryProduct, addProduct: addMemoryProduct } = await import(
-      '../services/productStore.js'
-    );
     let memUpdated = updateMemoryProduct(rawId, body);
     if (!memUpdated) {
       memUpdated = addMemoryProduct({ ...body, id: rawId, slug: body.slug || rawId });
@@ -188,7 +257,7 @@ router.put('/:id', async (req, res) => {
       updated = await Product.findOneAndUpdate(
         getProductQuery(rawId),
         { ...body, slug: body.slug || rawId },
-        { new: true, runValidators: false, upsert: true, setDefaultsOnInsert: true }
+        { new: true, runValidators: false, upsert: true, setDefaultsOnInsert: true, lean: true }
       );
     } catch (dbErr) {
       console.warn('MongoDB Product.findOneAndUpdate error (fallback to memory store):', dbErr.message);
@@ -250,6 +319,26 @@ router.delete('/:id', async (req, res) => {
 
     res.json({ success: true, message: 'Product deleted successfully', id: rawId, slug: rawId });
   } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// @desc    Upload image directly to Cloudinary (or local storage fallback)
+// @route   POST /api/products/upload-image
+// @access  Public
+router.post('/upload-image', async (req, res) => {
+  try {
+    const { image, dataUrl, slug } = req.body;
+    const fileToUpload = image || dataUrl;
+
+    if (!fileToUpload) {
+      return res.status(400).json({ success: false, message: 'No image data provided' });
+    }
+
+    const url = await saveBase64Image(fileToUpload, slug || 'upload');
+    res.json({ success: true, url });
+  } catch (err) {
+    console.error('Error in /api/products/upload-image:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });

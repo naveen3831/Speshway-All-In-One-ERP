@@ -22,6 +22,7 @@ import { AdminProductForm } from './pages/admin/AdminProductForm';
 import { AdminUsers } from './pages/admin/AdminUsers';
 import { AdminInquiries } from './pages/admin/AdminInquiries';
 import { AdminSettings } from './pages/admin/AdminSettings';
+import { AdminPricing } from './pages/admin/AdminPricing';
 
 // Dedicated Industry ERP Dashboards
 import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
@@ -42,6 +43,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
 import { NotFound } from './pages/NotFound';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { ScrollToTop } from './components/common/ScrollToTop';
 
 export default function App() {
   return (
@@ -49,6 +51,7 @@ export default function App() {
       <AuthProvider>
         <SocketProvider>
           <BrowserRouter>
+            <ScrollToTop />
             <ErrorBoundary>
               <Routes>
             {/* 1. SEPARATE PUBLIC WEBSITE PAGES */}
@@ -157,6 +160,7 @@ export default function App() {
               <Route path="urls" element={<AdminProducts />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="inquiries" element={<AdminInquiries />} />
+              <Route path="pricing" element={<AdminPricing />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 
