@@ -254,13 +254,40 @@ router.put('/:id', async (req, res) => {
     // 2. Update or upsert in MongoDB database
     let updated = null;
     try {
-      updated = await Product.findOneAndUpdate(
-        getProductQuery(rawId),
-        { ...body, slug: body.slug || rawId },
-        { new: true, runValidators: false, upsert: true, setDefaultsOnInsert: true, lean: true }
-      );
+      const isObjectId = mongoose.Types.ObjectId.isValid(rawId);
+      const searchConditions = [];
+      if (isObjectId) {
+        searchConditions.push({ _id: rawId });
+      }
+      searchConditions.push({ slug: rawId });
+      searchConditions.push({ slug: new RegExp('^' + rawId + '$', 'i') });
+      if (body.slug && body.slug !== rawId) {
+        searchConditions.push({ slug: body.slug });
+        searchConditions.push({ slug: new RegExp('^' + body.slug + '$', 'i') });
+      }
+      if (body.name) {
+        searchConditions.push({ name: new RegExp('^' + body.name + '$', 'i') });
+      }
+
+      let existing = await Product.findOne({ $or: searchConditions });
+      if (existing) {
+        updated = await Product.findByIdAndUpdate(
+          existing._id,
+          { $set: { ...body, slug: existing.slug || body.slug || rawId } },
+          { new: true, runValidators: false, lean: true }
+        );
+      } else {
+        const cleanSlug = (body.slug || rawId).toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+        updated = await Product.create({
+          ...body,
+          slug: cleanSlug,
+        });
+        if (updated && updated.toObject) {
+          updated = updated.toObject();
+        }
+      }
     } catch (dbErr) {
-      console.warn('MongoDB Product.findOneAndUpdate error (fallback to memory store):', dbErr.message);
+      console.warn('MongoDB Product update error (fallback to memory store):', dbErr.message);
     }
 
     const plainUpdated = updated

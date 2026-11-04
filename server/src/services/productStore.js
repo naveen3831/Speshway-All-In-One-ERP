@@ -334,15 +334,19 @@ export const addProduct = (productData) => {
   return newProduct;
 };
 
-export const updateProduct = (id, updates) => {
+export const updateProduct = (id, updates = {}) => {
   const cleanId = String(id || '').trim().toLowerCase();
+  const cleanSlug = String(updates.slug || '').trim().toLowerCase();
+  const cleanName = String(updates.name || '').trim().toLowerCase();
+
   const index = productsMemory.findIndex(
     (p) =>
       p.id === id ||
       p.slug === id ||
       p._id?.toString() === id ||
-      p.slug?.toLowerCase() === cleanId ||
-      p.id?.toLowerCase() === cleanId
+      (cleanId && (p.slug?.toLowerCase() === cleanId || p.id?.toLowerCase() === cleanId)) ||
+      (cleanSlug && (p.slug?.toLowerCase() === cleanSlug || p.id?.toLowerCase() === cleanSlug)) ||
+      (cleanName && p.name?.toLowerCase() === cleanName)
   );
   if (index === -1) return null;
   productsMemory[index] = {

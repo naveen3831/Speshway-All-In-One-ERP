@@ -251,19 +251,37 @@ export const SocketProvider = ({ children }) => {
 
     newSocket.on('product:updated', (updated) => {
       if (!updated || typeof updated !== 'object') return;
+      const uId = String(updated.id || '').trim().toLowerCase();
+      const uMongoId = String(updated._id || '').trim().toLowerCase();
+      const uSlug = String(updated.slug || '').trim().toLowerCase();
+      const uName = String(updated.name || '').trim().toLowerCase();
+
       setProducts((prev) => {
         const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+        let matched = false;
         const next = safe.map((p) => {
-          const matchId =
-            (p.id && (p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
-            (p._id && (p._id === updated.id || p._id === updated._id || p._id === updated.slug));
-          const matchSlug = p.slug && (p.slug === updated.slug || p.slug === updated.id);
-          return matchId || matchSlug ? { ...p, ...updated } : p;
+          const pId = String(p.id || '').trim().toLowerCase();
+          const pMongoId = String(p._id || '').trim().toLowerCase();
+          const pSlug = String(p.slug || '').trim().toLowerCase();
+          const pName = String(p.name || '').trim().toLowerCase();
+
+          const isMatch =
+            (uId && (pId === uId || pMongoId === uId || pSlug === uId)) ||
+            (uMongoId && (pId === uMongoId || pMongoId === uMongoId || pSlug === uMongoId)) ||
+            (uSlug && (pId === uSlug || pMongoId === uSlug || pSlug === uSlug)) ||
+            (uName && pName === uName);
+
+          if (isMatch) {
+            matched = true;
+            return { ...p, ...updated };
+          }
+          return p;
         });
+        const finalList = matched ? next : [updated, ...next];
         try {
-          localStorage.setItem('speshway_products', JSON.stringify(next));
+          localStorage.setItem('speshway_products', JSON.stringify(finalList));
         } catch (e) {}
-        return next;
+        return finalList;
       });
       setToastMessage(`Product updated: ${updated.name || 'Module'}`);
       setTimeout(() => setToastMessage(null), 4000);
@@ -442,22 +460,42 @@ export const SocketProvider = ({ children }) => {
   };
 
   const triggerUpdateProduct = async (id, updates) => {
+    const cleanId = String(id || '').trim().toLowerCase();
+    const cleanSlug = String(updates.slug || '').trim().toLowerCase();
+    const cleanName = String(updates.name || '').trim().toLowerCase();
+
+    const isMatch = (p) => {
+      if (!p || typeof p !== 'object') return false;
+      const pId = String(p.id || '').trim().toLowerCase();
+      const pMongoId = String(p._id || '').trim().toLowerCase();
+      const pSlug = String(p.slug || '').trim().toLowerCase();
+      const pName = String(p.name || '').trim().toLowerCase();
+
+      return (
+        (cleanId && (pId === cleanId || pMongoId === cleanId || pSlug === cleanId)) ||
+        (cleanSlug && (pId === cleanSlug || pMongoId === cleanSlug || pSlug === cleanSlug)) ||
+        (cleanName && pName === cleanName)
+      );
+    };
+
     const updated = { id, ...updates };
 
     // 1. Instantly update local state and localStorage with 0ms delay!
     setProducts((prev) => {
       const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+      let found = false;
       const next = safe.map((p) => {
-        const matchId =
-          (p.id && (p.id === id || p.id === updates.slug)) ||
-          (p._id && (p._id === id || p._id === updates.slug)) ||
-          (p.slug && (p.slug === id || p.slug === updates.slug));
-        return matchId ? { ...p, ...updates } : p;
+        if (isMatch(p)) {
+          found = true;
+          return { ...p, ...updates };
+        }
+        return p;
       });
+      const finalList = found ? next : [{ id, ...updates }, ...next];
       try {
-        localStorage.setItem('speshway_products', JSON.stringify(next));
+        localStorage.setItem('speshway_products', JSON.stringify(finalList));
       } catch (e) {}
-      return next;
+      return finalList;
     });
 
     // 2. Persist to API in background with quick timeout and non-blocking sync
@@ -467,20 +505,26 @@ export const SocketProvider = ({ children }) => {
         const serverData = res.data.data;
         setProducts((prev) => {
           const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+          let found = false;
           const next = safe.map((p) => {
-            const matchId =
-              (p.id && (p.id === id || p.id === serverData.id || p.id === serverData.slug)) ||
-              (p._id && (p._id === id || p._id === serverData._id || p._id === serverData.slug)) ||
-              (p.slug && (p.slug === id || p.slug === serverData.slug));
-            return matchId ? { ...p, ...serverData } : p;
+            if (
+              isMatch(p) ||
+              (serverData.id && String(p.id) === String(serverData.id)) ||
+              (serverData._id && String(p._id) === String(serverData._id)) ||
+              (serverData.slug && String(p.slug).toLowerCase() === String(serverData.slug).toLowerCase())
+            ) {
+              found = true;
+              return { ...p, ...serverData };
+            }
+            return p;
           });
+          const finalList = found ? next : [serverData, ...next];
           try {
-            localStorage.setItem('speshway_products', JSON.stringify(next));
+            localStorage.setItem('speshway_products', JSON.stringify(finalList));
           } catch (e) {}
-          return next;
+          return finalList;
         });
       }
-      refreshProducts().catch(() => {});
       return res.data || { success: true, data: updated };
     } catch (err) {
       console.warn('API updateProduct saved locally (server offline or delayed):', err.message);

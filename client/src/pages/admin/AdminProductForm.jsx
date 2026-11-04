@@ -197,7 +197,8 @@ export const AdminProductForm = () => {
 
       let targetSlug = savedSlug;
       if (isEditMode) {
-        await triggerUpdateProduct(id, payload);
+        const updateId = existingProduct?._id || existingProduct?.id || existingProduct?.slug || id;
+        await triggerUpdateProduct(updateId, payload);
         targetSlug = existingProduct?.slug || id;
         setSuccessMsg(`Product "${formData.name}" updated successfully across all public and admin pages!`);
       } else {
@@ -209,7 +210,7 @@ export const AdminProductForm = () => {
 
       setTimeout(() => {
         navigate('/admin/products');
-      }, 150);
+      }, 500);
     } catch (err) {
       console.error('Error saving product:', err);
       alert('Error saving product: ' + (err.response?.data?.message || err.message));
@@ -598,7 +599,6 @@ export const AdminProductForm = () => {
             </button>
             <button
               type="submit"
-              onClick={handleSubmit}
               disabled={isSubmitting}
               className="btn-hero-primary"
               style={{ minWidth: '180px', cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
