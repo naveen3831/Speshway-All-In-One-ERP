@@ -97,10 +97,19 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
                                 src={prod.imageUrl}
                                 alt={prod.name}
                                 style={{ width: '18px', height: '18px', objectFit: 'contain' }}
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  if (e.currentTarget.nextSibling) {
+                                    e.currentTarget.nextSibling.style.display = 'block';
+                                  }
+                                }}
                               />
-                            ) : (
-                              <Icon size={16} className={`text-tile-${color}`} />
-                            )}
+                            ) : null}
+                            <Icon
+                              size={16}
+                              className={`text-tile-${color}`}
+                              style={{ display: prod.imageUrl ? 'none' : 'block' }}
+                            />
                           </div>
                           <span className="laptop-tile-name">{prod.name}</span>
                         </div>
