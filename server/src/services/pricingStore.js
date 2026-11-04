@@ -124,6 +124,17 @@ export const updateAllPricingPlans = async (plans) => {
   return results;
 };
 
+export const deletePricingPlan = async (slug) => {
+  const cleanSlug = String(slug || '').toLowerCase().trim();
+  memoryPricing = memoryPricing.filter((p) => p.slug !== cleanSlug);
+  try {
+    await PricingPlan.findOneAndDelete({ slug: cleanSlug });
+  } catch (err) {
+    console.warn('[PricingStore] MongoDB delete error:', err.message);
+  }
+  return memoryPricing;
+};
+
 export const seedPricingDatabase = async () => {
   try {
     const count = await PricingPlan.countDocuments();

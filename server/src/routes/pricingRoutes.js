@@ -4,6 +4,7 @@ import {
   getPricingPlans,
   updatePricingPlan,
   updateAllPricingPlans,
+  deletePricingPlan,
   DEFAULT_PRICING_PLANS,
 } from '../services/pricingStore.js';
 
@@ -75,6 +76,31 @@ router.put('/:slug', async (req, res) => {
     }
 
     res.json({ success: true, data: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// @desc    Delete a specific pricing plan
+// @route   DELETE /api/pricing/:slug
+// @access  Public (Admin)
+router.delete('/:slug', async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const remaining = await deletePricingPlan(slug);
+
+    const io = getIO();
+    if (io) {
+      io.emit('pricing:updated', remaining);
+      io.emit('activity:new', {
+        id: Date.now(),
+        type: 'pricing',
+        text: `Pricing plan "${slug}" deleted`,
+        time: 'Just now',
+      });
+    }
+
+    res.json({ success: true, message: 'Plan deleted successfully', data: remaining });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
