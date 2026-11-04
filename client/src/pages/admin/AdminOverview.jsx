@@ -42,7 +42,12 @@ export const AdminOverview = () => {
 
       {/* KPI Stats Cards */}
       <div className="admin-kpi-grid">
-        <div className="admin-kpi-card">
+        <Link
+          to="/admin/products"
+          className="admin-kpi-card"
+          style={{ textDecoration: 'none', cursor: 'pointer' }}
+          title="Open Projects Management"
+        >
           <div className="kpi-icon-wrap bg-green-subtle">
             <Package size={22} className="text-green" />
           </div>
@@ -51,7 +56,7 @@ export const AdminOverview = () => {
             <span className="kpi-value">{displayProjects.length}</span>
             <span className="kpi-trend positive">&uarr; Synced in Realtime</span>
           </div>
-        </div>
+        </Link>
 
         <div className="admin-kpi-card">
           <div className="kpi-icon-wrap bg-blue-subtle">
