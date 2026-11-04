@@ -4,7 +4,6 @@ import { useSocket } from '../../context/SocketContext';
 import {
   CreditCard,
   Save,
-  RotateCcw,
   Plus,
   Trash2,
   CheckCircle2,
@@ -266,45 +265,8 @@ export const AdminPricing = () => {
             Pricing &amp; Plans Management
           </h1>
           <p className="admin-subtext" style={{ margin: 0 }}>
-            Change prices, features, or plan details below. Click <strong>Save Changes</strong> on any card or the top bar to update the live website.
+            Change prices, features, or plan details below. Click <strong>Save Changes</strong> on any card to update the live website.
           </p>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-          <button
-            type="button"
-            onClick={handleResetDefaults}
-            disabled={saving}
-            className="btn-secondary-action"
-            title="Reset to default plans"
-            style={{ padding: '8px 14px', borderRadius: '8px', cursor: 'pointer' }}
-          >
-            <RotateCcw size={15} /> Reset
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSaveAll}
-            disabled={saving}
-            style={{
-              padding: '10px 22px',
-              backgroundColor: '#00875a',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '8px',
-              fontWeight: 700,
-              fontSize: '0.92rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              whiteSpace: 'nowrap',
-              boxShadow: '0 2px 8px rgba(0, 135, 90, 0.3)',
-            }}
-            title="Save all pricing changes across all cards"
-          >
-            <Save size={16} /> {saving ? 'Saving...' : 'Save All Changes'}
-          </button>
         </div>
       </div>
 
