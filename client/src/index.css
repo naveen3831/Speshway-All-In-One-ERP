@@ -1950,7 +1950,7 @@ button {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 60px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .pricing-card {
@@ -1960,12 +1960,15 @@ button {
   padding: 36px 30px;
   position: relative;
   box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .pricing-card.popular-tier {
   border: 2px solid var(--primary-green);
-  box-shadow: var(--shadow-xl);
-  transform: scale(1.03);
+  box-shadow: var(--shadow-md);
+  transform: none;
 }
 
 .popular-badge {

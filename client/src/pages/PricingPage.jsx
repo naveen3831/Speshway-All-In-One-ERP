@@ -23,6 +23,7 @@ export const PricingPage = () => {
         'Leave & Attendance Tracking',
         'Task & Project Boards',
         'Standard Email Support',
+        'Continuous Cloud Backups',
       ],
       popular: false,
       btnText: 'Start 14-Day Free Trial',
