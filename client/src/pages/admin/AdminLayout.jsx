@@ -227,6 +227,14 @@ export const AdminLayout = () => {
           <button onClick={handleLogout} className="admin-btn-logout">
             <LogOut size={15} /> Sign Out
           </button>
+
+          <div className="admin-sidebar-profile">
+            <div className="admin-avatar">AD</div>
+            <div className="profile-meta">
+              <span className="profile-name">{user?.name || 'Speshway Administrator'}</span>
+              <span className="profile-email">{user?.email || 'admin@gmail.com'}</span>
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -235,16 +243,6 @@ export const AdminLayout = () => {
         <header className="admin-topbar">
           <div className="topbar-left">
             <span className="topbar-title">Speshway Administrative Dashboard</span>
-          </div>
-
-          <div className="topbar-right">
-            <div className="admin-profile-badge">
-              <div className="admin-avatar">AD</div>
-              <div className="admin-meta">
-                <span className="name">{user?.name || 'Administrator'}</span>
-                <span className="email">{user?.email || 'admin@gmail.com'}</span>
-              </div>
-            </div>
           </div>
         </header>
 
