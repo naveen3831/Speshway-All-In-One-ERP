@@ -1,68 +1,111 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import { useSocket } from '../context/SocketContext';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { Check, Sparkles, Globe, Smartphone, Layers } from 'lucide-react';
 
+const DEFAULT_TIERS = [
+  {
+    slug: 'website',
+    name: 'Website',
+    icon: Globe,
+    price: '₹80,000',
+    period: '',
+    desc: 'Complete responsive Web ERP application accessible on any browser, desktop, or tablet.',
+    features: [
+      'Full Web ERP Application',
+      'Role-Based Admin & Staff Access',
+      'Real-Time Cloud Synchronization',
+      'Customer Portal & Lead Inquiries',
+      'Reports, Analytics & Data Export',
+      'Custom Domain & SSL Security',
+    ],
+    popular: false,
+    btnText: 'Get Started with Website',
+  },
+  {
+    slug: 'mobile-app',
+    name: 'Mobile App',
+    icon: Smartphone,
+    price: '₹1,00,000',
+    period: '',
+    desc: 'Dedicated native Android and iOS mobile applications for your team and customers on the go.',
+    features: [
+      'Native Android & iOS Applications',
+      'Push Notifications & Instant Alerts',
+      'Offline Synchronization & Caching',
+      'Camera QR & Barcode Scanner',
+      'Biometric & Fingerprint Login',
+      'Google Play & Apple Store Setup',
+    ],
+    popular: false,
+    btnText: 'Get Started with Mobile App',
+  },
+  {
+    slug: 'website-mobile-app',
+    name: 'Website + Mobile App',
+    icon: Layers,
+    price: '₹1,30,000',
+    period: '',
+    desc: 'Complete unified omnichannel solution with synchronized Web ERP and Native Mobile Apps.',
+    features: [
+      'Complete Web ERP + Android & iOS Apps',
+      'Seamless Cross-Platform Real-Time Sync',
+      'Unified Admin Control Center',
+      'Customer Booking & Ordering Suite',
+      'Dedicated Cloud Architecture & API',
+      '24/7 Priority Support & Maintenance',
+    ],
+    popular: true,
+    btnText: 'Get Complete Suite',
+  },
+];
+
 export const PricingPage = () => {
   const navigate = useNavigate();
   const [modalMode, setModalMode] = useState(null);
+  const [tiers, setTiers] = useState(DEFAULT_TIERS);
+  const { socket } = useSocket();
 
-  const tiers = [
-    {
-      name: 'Website',
-      icon: Globe,
-      price: '₹80,000',
-      period: '',
-      desc: 'Complete responsive Web ERP application accessible on any browser, desktop, or tablet.',
-      features: [
-        'Full Web ERP Application',
-        'Role-Based Admin & Staff Access',
-        'Real-Time Cloud Synchronization',
-        'Customer Portal & Lead Inquiries',
-        'Reports, Analytics & Data Export',
-        'Custom Domain & SSL Security',
-      ],
-      popular: false,
-      btnText: 'Get Started with Website',
-    },
-    {
-      name: 'Mobile App',
-      icon: Smartphone,
-      price: '₹1,00,000',
-      period: '',
-      desc: 'Dedicated native Android and iOS mobile applications for your team and customers on the go.',
-      features: [
-        'Native Android & iOS Applications',
-        'Push Notifications & Instant Alerts',
-        'Offline Synchronization & Caching',
-        'Camera QR & Barcode Scanner',
-        'Biometric & Fingerprint Login',
-        'Google Play & Apple Store Setup',
-      ],
-      popular: false,
-      btnText: 'Get Started with Mobile App',
-    },
-    {
-      name: 'Website + Mobile App',
-      icon: Layers,
-      price: '₹1,30,000',
-      period: '',
-      desc: 'Complete unified omnichannel solution with synchronized Web ERP and Native Mobile Apps.',
-      features: [
-        'Complete Web ERP + Android & iOS Apps',
-        'Seamless Cross-Platform Real-Time Sync',
-        'Unified Admin Control Center',
-        'Customer Booking & Ordering Suite',
-        'Dedicated Cloud Architecture & API',
-        '24/7 Priority Support & Maintenance',
-      ],
-      popular: true,
-      btnText: 'Get Complete Suite',
-    },
-  ];
+  useEffect(() => {
+    let mounted = true;
+    api.get('/pricing')
+      .then((res) => {
+        if (mounted && res.data && res.data.data && res.data.data.length > 0) {
+          const mapped = res.data.data.map((item) => ({
+            ...item,
+            icon: item.slug === 'website' ? Globe : item.slug === 'mobile-app' ? Smartphone : Layers,
+          }));
+          setTiers(mapped);
+        }
+      })
+      .catch((err) => console.warn('Using default pricing plans:', err.message));
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handlePricingUpdated = (updatedPlans) => {
+      if (Array.isArray(updatedPlans) && updatedPlans.length > 0) {
+        const mapped = updatedPlans.map((item) => ({
+          ...item,
+          icon: item.slug === 'website' ? Globe : item.slug === 'mobile-app' ? Smartphone : Layers,
+        }));
+        setTiers(mapped);
+      }
+    };
+    socket.on('pricing:updated', handlePricingUpdated);
+    return () => {
+      socket.off('pricing:updated', handlePricingUpdated);
+    };
+  }, [socket]);
 
   return (
     <div className="landing-wrapper">

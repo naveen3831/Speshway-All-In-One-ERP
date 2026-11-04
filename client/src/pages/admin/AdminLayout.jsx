@@ -5,6 +5,7 @@ import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 import {
   LayoutDashboard,
   Package,
+  CreditCard,
   Globe,
   Users,
   Inbox,
@@ -196,6 +197,14 @@ export const AdminLayout = () => {
           >
             <Package size={18} />
             <span>Projects Management</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/pricing"
+            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
+          >
+            <CreditCard size={18} />
+            <span>Pricing Plans</span>
           </NavLink>
 
           <NavLink

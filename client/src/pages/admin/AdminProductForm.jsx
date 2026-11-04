@@ -59,6 +59,7 @@ export const AdminProductForm = () => {
     websiteUrl: 'https://speshway.com/',
     adminUrl: '/admin/products',
     imageUrl: '',
+    price: '',
     color: 'green',
     status: 'active',
   });
@@ -88,6 +89,7 @@ export const AdminProductForm = () => {
         websiteUrl: activeProduct.websiteUrl || '',
         adminUrl: activeProduct.adminUrl || '/admin/products',
         imageUrl: activeProduct.imageUrl || '',
+        price: activeProduct.price || '',
         color: activeProduct.color || 'green',
         status: activeProduct.status || 'active',
       });
@@ -306,6 +308,17 @@ export const AdminProductForm = () => {
                   placeholder="Concise 1-2 sentence overview..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="quick-input full-width"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Pricing / Investment Tier (e.g. ₹80,000, ₹1,20,000 or Contact Sales)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. ₹80,000"
+                  value={formData.price || ''}
+                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   className="quick-input full-width"
                 />
               </div>
