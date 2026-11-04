@@ -970,7 +970,7 @@ button {
 .stats-bar-container.stats-3-grid,
 .stats-bar-container.stats-4-grid {
   max-width: 1240px;
-  margin: -16px auto 0 auto;
+  margin: 24px auto 0 auto;
   background-color: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
