@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSocket } from '../../context/SocketContext';
 import api from '../../services/api';
 import {
-  ArrowLeft,
   Save,
   Globe,
   Shield,
@@ -233,16 +232,9 @@ export const AdminProductForm = () => {
 
   return (
     <div className="admin-page-view product-form-page-view">
-      {/* Top Breadcrumb & Navigation */}
+      {/* Top Header */}
       <div className="admin-page-header form-page-header">
         <div>
-          <button
-            type="button"
-            onClick={() => navigate('/admin/products')}
-            className="back-link-btn"
-          >
-            <ArrowLeft size={16} /> Back to Products Management
-          </button>
           <h1 className="admin-heading">
             {isEditMode ? `Edit Product: ${formData.name || 'Module'}` : 'Add New ERP Application'}
           </h1>
