@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSocket } from '../../context/SocketContext';
+import api from '../../services/api';
 import {
   ArrowLeft,
   Save,
@@ -27,8 +28,26 @@ export const AdminProductForm = () => {
 
   const isEditMode = Boolean(id);
   const existingProduct = isEditMode
-    ? products.find((p) => p.id === id || p.slug === id || p._id === id)
+    ? products.find((p) => p.id === id || p.slug === id || p._id === id || p.slug?.toLowerCase() === id?.toLowerCase())
     : null;
+  const [directFetchedProduct, setDirectFetchedProduct] = useState(null);
+  const [userRemovedImage, setUserRemovedImage] = useState(false);
+
+  useEffect(() => {
+    if (isEditMode && !existingProduct && !directFetchedProduct) {
+      api.get(`/products/${id}`)
+        .then((res) => {
+          if (res.data?.data) {
+            setDirectFetchedProduct(res.data.data);
+          }
+        })
+        .catch((err) => {
+          console.warn('Direct fetch product fallback warning:', err.message);
+        });
+    }
+  }, [isEditMode, id, existingProduct, directFetchedProduct]);
+
+  const activeProduct = existingProduct || directFetchedProduct;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -54,32 +73,33 @@ export const AdminProductForm = () => {
   }, [id]);
 
   useEffect(() => {
-    if (isEditMode && existingProduct && !hasLoadedInitial) {
+    if (isEditMode && activeProduct && !hasLoadedInitial) {
       setFormData({
-        name: existingProduct.name || '',
-        category: existingProduct.category || 'Human Resources',
-        description: existingProduct.description || '',
-        longDescription: existingProduct.longDescription || existingProduct.description || '',
-        features: Array.isArray(existingProduct.features)
-          ? existingProduct.features.join(', ')
-          : existingProduct.features || '',
-        technologies: Array.isArray(existingProduct.technologies)
-          ? existingProduct.technologies.join(', ')
-          : existingProduct.technologies || '',
-        websiteUrl: existingProduct.websiteUrl || '',
-        adminUrl: existingProduct.adminUrl || '/admin/products',
-        imageUrl: existingProduct.imageUrl || '',
-        color: existingProduct.color || 'green',
-        status: existingProduct.status || 'active',
+        name: activeProduct.name || '',
+        category: activeProduct.category || 'Human Resources',
+        description: activeProduct.description || '',
+        longDescription: activeProduct.longDescription || activeProduct.description || '',
+        features: Array.isArray(activeProduct.features)
+          ? activeProduct.features.join(', ')
+          : activeProduct.features || '',
+        technologies: Array.isArray(activeProduct.technologies)
+          ? activeProduct.technologies.join(', ')
+          : activeProduct.technologies || '',
+        websiteUrl: activeProduct.websiteUrl || '',
+        adminUrl: activeProduct.adminUrl || '/admin/products',
+        imageUrl: activeProduct.imageUrl || '',
+        color: activeProduct.color || 'green',
+        status: activeProduct.status || 'active',
       });
-      setSavedSlug(existingProduct.slug || existingProduct.id || existingProduct._id);
+      setSavedSlug(activeProduct.slug || activeProduct.id || activeProduct._id);
       setHasLoadedInitial(true);
     }
-  }, [isEditMode, existingProduct, hasLoadedInitial]);
+  }, [isEditMode, activeProduct, hasLoadedInitial]);
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      setUserRemovedImage(false);
       if (file.size > 10 * 1024 * 1024) {
         alert('File size exceeds 10MB limit. Please choose a smaller image.');
         return;
@@ -154,8 +174,15 @@ export const AdminProductForm = () => {
         cleanWebsite = `https://${cleanWebsite}`;
       }
 
+      let finalImageUrl = formData.imageUrl;
+      if (!finalImageUrl && activeProduct?.imageUrl && !userRemovedImage) {
+        finalImageUrl = activeProduct.imageUrl;
+      }
+
       const payload = {
         ...formData,
+        slug: savedSlug || activeProduct?.slug || id,
+        imageUrl: finalImageUrl || '',
         name: formData.name.trim(),
         description: formData.description.trim(),
         longDescription: formData.longDescription ? formData.longDescription.trim() : formData.description.trim(),
@@ -180,7 +207,7 @@ export const AdminProductForm = () => {
 
       setTimeout(() => {
         navigate('/admin/products');
-      }, 500);
+      }, 150);
     } catch (err) {
       console.error('Error saving product:', err);
       alert('Error saving product: ' + (err.response?.data?.message || err.message));
@@ -392,7 +419,7 @@ export const AdminProductForm = () => {
                   />
                   <button
                     type="button"
-                    onClick={() => setFormData({ ...formData, imageUrl: '' })}
+                    onClick={() => { setUserRemovedImage(true); setFormData((prev) => ({ ...prev, imageUrl: '' })); }}
                     className="btn-remove-preview-img"
                     title="Remove Image"
                   >
@@ -424,7 +451,7 @@ export const AdminProductForm = () => {
                   type="text"
                   placeholder="https://images.unsplash.com/... or /logo.png"
                   value={formData.imageUrl && formData.imageUrl.startsWith('data:') ? '' : (formData.imageUrl || '')}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  onChange={(e) => { setUserRemovedImage(false); setFormData((prev) => ({ ...prev, imageUrl: e.target.value })); }}
                   className="quick-input full-width"
                 />
                 <span className="input-hint">Direct link to an image file (PNG, JPG, WebP, SVG).</span>

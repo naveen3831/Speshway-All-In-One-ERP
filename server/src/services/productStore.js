@@ -306,8 +306,17 @@ let productsMemory = [...initialProducts];
 
 export const getProducts = () => productsMemory;
 
-export const getProductById = (id) =>
-  productsMemory.find((p) => p.id === id || p.slug === id);
+export const getProductById = (id) => {
+  const cleanId = String(id || '').trim().toLowerCase();
+  return productsMemory.find(
+    (p) =>
+      p.id === id ||
+      p.slug === id ||
+      p._id?.toString() === id ||
+      p.slug?.toLowerCase() === cleanId ||
+      p.id?.toLowerCase() === cleanId
+  );
+};
 
 export const addProduct = (productData) => {
   const newProduct = {
@@ -326,7 +335,15 @@ export const addProduct = (productData) => {
 };
 
 export const updateProduct = (id, updates) => {
-  const index = productsMemory.findIndex((p) => p.id === id || p.slug === id);
+  const cleanId = String(id || '').trim().toLowerCase();
+  const index = productsMemory.findIndex(
+    (p) =>
+      p.id === id ||
+      p.slug === id ||
+      p._id?.toString() === id ||
+      p.slug?.toLowerCase() === cleanId ||
+      p.id?.toLowerCase() === cleanId
+  );
   if (index === -1) return null;
   productsMemory[index] = {
     ...productsMemory[index],

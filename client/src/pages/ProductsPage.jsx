@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
@@ -106,6 +106,13 @@ export const ProductsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const navigate = useNavigate();
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, []);
 
   // Filter out the 12 generic application modules
   const availableProducts = (products || []).filter((p) => {
@@ -255,17 +262,6 @@ export const ProductsPage = () => {
                       <Globe size={14} /> View Website
                     </button>
 
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/admin/products/edit/${prod.slug || prod.id}`);
-                      }}
-                      className="catalog-btn-image-action"
-                      title="Admin: Upload or change image for this project"
-                    >
-                      <ImageIcon size={13} />
-                      <span>{prod.imageUrl ? 'Change Image' : 'Add Image'}</span>
-                    </button>
 
                     <button
                       onClick={(e) => {
@@ -374,9 +370,9 @@ const isHospital =
                         navigate(url);
                       }}
                       className="catalog-btn-link admin-color"
-                      title="View Admin Dashboard in this site"
+                      title="View ERP"
                     >
-                      <Shield size={14} /> Admin Dashboard
+                      <Shield size={14} /> View ERP
                     </button>
                   </div>
                 </div>

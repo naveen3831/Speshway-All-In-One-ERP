@@ -332,80 +332,99 @@ export const SocketProvider = ({ children }) => {
   }, []);
 
   const triggerAddProduct = async (productData) => {
+    const tempId = productData.slug || `prod-${Date.now()}`;
+    const optimisticProduct = {
+      id: tempId,
+      slug: tempId,
+      status: 'active',
+      ...productData,
+    };
+
+    // 1. Instant optimistic state update with 0ms delay
+    setProducts((prev) => {
+      const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+      const next = [optimisticProduct, ...safe];
+      try {
+        localStorage.setItem('speshway_products', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+
+    // 2. Persist to API with timeout and non-blocking background refresh
     try {
-      const res = await api.post('/products', productData);
-      const newProduct = res.data?.data || productData;
+      const res = await api.post('/products', productData, { timeout: 3500 });
+      const newProduct = res.data?.data || optimisticProduct;
       const targetId = newProduct.id || newProduct._id;
       const targetSlug = newProduct.slug;
+
       setProducts((prev) => {
         const next = [
           newProduct,
           ...prev.filter(
             (p) =>
               !(
-                (p.id && (p.id === targetId || p.id === targetSlug)) ||
-                (p._id && (p._id === targetId || p._id === targetSlug)) ||
-                (p.slug && p.slug === targetSlug)
+                (p.id && (p.id === targetId || p.id === tempId || p.id === targetSlug)) ||
+                (p._id && (p._id === targetId || p._id === tempId || p._id === targetSlug)) ||
+                (p.slug && (p.slug === targetSlug || p.slug === tempId))
               )
           ),
         ];
-        localStorage.setItem('speshway_products', JSON.stringify(next));
+        try {
+          localStorage.setItem('speshway_products', JSON.stringify(next));
+        } catch (e) {}
         return next;
       });
-      await refreshProducts();
-      return res.data;
+      refreshProducts().catch(() => {});
+      return res.data || { success: true, data: newProduct };
     } catch (err) {
-      console.warn('API addProduct fallback to local state:', err.message);
-      const newProduct = {
-        id: productData.slug || `prod-${Date.now()}`,
-        status: 'active',
-        ...productData,
-      };
-      setProducts((prev) => {
-        const next = [newProduct, ...prev];
-        localStorage.setItem('speshway_products', JSON.stringify(next));
-        return next;
-      });
-      return { success: true, data: newProduct };
+      console.warn('API addProduct saved locally:', err.message);
+      return { success: true, data: optimisticProduct };
     }
   };
 
   const triggerUpdateProduct = async (id, updates) => {
-    try {
-      const res = await api.put(`/products/${id}`, updates);
-      const updated = res.data?.data || { id, ...updates };
-      setProducts((prev) => {
-        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
-        const next = safe.map((p) => {
-          const matchId =
-            (p.id && (p.id === id || p.id === updated.id || p.id === updated._id || p.id === updated.slug)) ||
-            (p._id && (p._id === id || p._id === updated.id || p._id === updated._id || p._id === updated.slug));
-          const matchSlug = p.slug && (p.slug === id || p.slug === updated.slug || p.slug === updated.id);
-          return matchId || matchSlug ? { ...p, ...updated } : p;
-        });
-        try {
-          localStorage.setItem('speshway_products', JSON.stringify(next));
-        } catch (e) {}
-        return next;
+    const updated = { id, ...updates };
+
+    // 1. Instantly update local state and localStorage with 0ms delay!
+    setProducts((prev) => {
+      const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+      const next = safe.map((p) => {
+        const matchId =
+          (p.id && (p.id === id || p.id === updates.slug)) ||
+          (p._id && (p._id === id || p._id === updates.slug)) ||
+          (p.slug && (p.slug === id || p.slug === updates.slug));
+        return matchId ? { ...p, ...updates } : p;
       });
+      try {
+        localStorage.setItem('speshway_products', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+
+    // 2. Persist to API in background with quick timeout and non-blocking sync
+    try {
+      const res = await api.put(`/products/${id}`, updates, { timeout: 3500 });
+      if (res.data?.data) {
+        const serverData = res.data.data;
+        setProducts((prev) => {
+          const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
+          const next = safe.map((p) => {
+            const matchId =
+              (p.id && (p.id === id || p.id === serverData.id || p.id === serverData.slug)) ||
+              (p._id && (p._id === id || p._id === serverData._id || p._id === serverData.slug)) ||
+              (p.slug && (p.slug === id || p.slug === serverData.slug));
+            return matchId ? { ...p, ...serverData } : p;
+          });
+          try {
+            localStorage.setItem('speshway_products', JSON.stringify(next));
+          } catch (e) {}
+          return next;
+        });
+      }
+      refreshProducts().catch(() => {});
       return res.data || { success: true, data: updated };
     } catch (err) {
-      console.warn('API updateProduct fallback to local state:', err.message);
-      const updated = { id, ...updates };
-      setProducts((prev) => {
-        const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
-        const next = safe.map((p) => {
-          const match =
-            (p.id && (p.id === id || p.id === updates.slug)) ||
-            (p.slug && (p.slug === id || p.slug === updates.slug)) ||
-            (p._id && p._id === id);
-          return match ? { ...p, ...updates } : p;
-        });
-        try {
-          localStorage.setItem('speshway_products', JSON.stringify(next));
-        } catch (e) {}
-        return next;
-      });
+      console.warn('API updateProduct saved locally (server offline or delayed):', err.message);
       return { success: true, data: updated };
     }
   };

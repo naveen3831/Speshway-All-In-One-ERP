@@ -45,24 +45,28 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           <NavLink
             to="/"
             end
+            onClick={() => window.scrollTo(0, 0)}
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
             HOME
           </NavLink>
           <NavLink
             to="/projects"
+            onClick={() => window.scrollTo(0, 0)}
             className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
           >
             PROJECTS
           </NavLink>
           <NavLink
             to="/pricing"
+            onClick={() => window.scrollTo(0, 0)}
             className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
           >
             PRICING
           </NavLink>
           <NavLink
             to="/contact"
+            onClick={() => window.scrollTo(0, 0)}
             className={({ isActive }) => (isActive || isContactActive ? 'nav-link active' : 'nav-link')}
           >
             CONTACT US

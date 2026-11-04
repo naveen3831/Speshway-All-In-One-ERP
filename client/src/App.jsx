@@ -42,6 +42,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
 import { NotFound } from './pages/NotFound';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { ScrollToTop } from './components/common/ScrollToTop';
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
       <AuthProvider>
         <SocketProvider>
           <BrowserRouter>
+            <ScrollToTop />
             <ErrorBoundary>
               <Routes>
             {/* 1. SEPARATE PUBLIC WEBSITE PAGES */}
