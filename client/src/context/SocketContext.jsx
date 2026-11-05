@@ -26,6 +26,9 @@ export const DEFAULT_HOME_CONTENT = {
   solutions: {
     title: 'Our ERP Solutions',
   },
+  navbar: {
+    showPricing: true,
+  },
 };
 
 const SocketContext = createContext(null);

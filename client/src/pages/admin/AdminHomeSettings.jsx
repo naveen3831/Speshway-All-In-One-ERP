@@ -39,6 +39,9 @@ export const AdminHomeSettings = () => {
     solutions: {
       title: homeContent?.solutions?.title || DEFAULT_HOME_CONTENT.solutions.title,
     },
+    navbar: {
+      showPricing: homeContent?.navbar?.showPricing !== undefined ? homeContent.navbar.showPricing : true,
+    },
   }));
 
   // Sync if socket updates
@@ -49,6 +52,7 @@ export const AdminHomeSettings = () => {
         hero: { ...prev.hero, ...(homeContent.hero || {}) },
         stats: { ...prev.stats, ...(homeContent.stats || {}) },
         solutions: { ...prev.solutions, ...(homeContent.solutions || {}) },
+        navbar: { ...prev.navbar, ...(homeContent.navbar || {}) },
       }));
     }
   }, [homeContent]);

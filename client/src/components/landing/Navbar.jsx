@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useSocket } from '../../context/SocketContext';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { homeContent } = useSocket();
+
+  // Determine whether Pricing should be visible in navbar
+  const [showPricing, setShowPricing] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
+    return true;
+  });
+
+  useEffect(() => {
+    const syncVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+      if (stored !== null) {
+        setShowPricing(stored === 'true');
+      } else if (homeContent?.navbar?.showPricing !== undefined) {
+        setShowPricing(Boolean(homeContent.navbar.showPricing));
+      }
+    };
+
+    syncVisibility();
+    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('storage', syncVisibility);
+    return () => {
+      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('storage', syncVisibility);
+    };
+  }, [homeContent?.navbar?.showPricing]);
 
   const handleGetStarted = () => {
     if (onOpenGetStarted) {
@@ -57,13 +86,15 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             PROJECTS
           </NavLink>
-          <NavLink
-            to="/pricing"
-            onClick={() => window.scrollTo(0, 0)}
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-          >
-            PRICING
-          </NavLink>
+          {showPricing && (
+            <NavLink
+              to="/pricing"
+              onClick={() => window.scrollTo(0, 0)}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              PRICING
+            </NavLink>
+          )}
           <NavLink
             to="/contact"
             onClick={() => window.scrollTo(0, 0)}
