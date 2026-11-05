@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useSocket } from '../../context/SocketContext';
 import {
+  ArrowLeft,
   Save,
   Plus,
   Trash2,
@@ -544,84 +545,208 @@ export const AdminPricing = () => {
         ))}
       </div>
 
-      {/* Details & Edit Modal Dialog */}
+      {/* Full-Screen Details & Edit Modal Dialog */}
       {selectedPlan && (
         <div
-          onClick={handleCloseModal}
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 9999,
-            backgroundColor: 'rgba(15, 23, 42, 0.65)',
-            backdropFilter: 'blur(4px)',
+            zIndex: 99999,
+            backgroundColor: '#f8fafc',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px',
+            flexDirection: 'column',
+            width: '100vw',
+            height: '100vh',
+            overflow: 'hidden',
           }}
         >
+          {/* Top Fullscreen Header Bar */}
           <div
-            onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: '#ffffff',
-              borderRadius: '20px',
-              maxWidth: '560px',
-              width: '100%',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              padding: '30px',
-              boxShadow: '0 20px 45px rgba(0, 0, 0, 0.25)',
-              position: 'relative',
+              borderBottom: '1px solid #e2e8f0',
+              padding: '14px 28px',
               display: 'flex',
-              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              flexShrink: 0,
+              boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)',
             }}
           >
-            {/* Modal Header */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingBottom: '16px',
-                marginBottom: '20px',
-                borderBottom: '1px solid #e2e8f0',
-              }}
-            >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: '#f1f5f9',
+                  border: '1px solid #cbd5e1',
+                  color: '#334155',
+                  padding: '7px 14px',
+                  borderRadius: '8px',
+                  fontSize: '0.84rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#e2e8f0';
+                  e.currentTarget.style.color = '#0f172a';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f1f5f9';
+                  e.currentTarget.style.color = '#334155';
+                }}
+                title="Back to Pricing Plans"
+              >
+                <ArrowLeft size={16} /> Back to Pricing Plans
+              </button>
+
+              <div style={{ height: '22px', width: '1px', backgroundColor: '#e2e8f0' }} />
+
               <div>
                 <span
                   style={{
-                    fontSize: '0.74rem',
+                    fontSize: '0.72rem',
                     fontWeight: 700,
                     color: '#00875a',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
+                    letterSpacing: '0.6px',
+                    display: 'block',
+                    lineHeight: 1,
                   }}
                 >
                   {isEditingInModal ? 'Editing Plan' : 'Plan Overview'}
                 </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
-                  <h2 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 800, color: '#0f172a' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '3px' }}>
+                  <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
                     {isEditingInModal ? modalDraft?.name : selectedPlan.name} Plan
                   </h2>
-                  {selectedPlan.popular && !isEditingInModal && (
+                  {selectedPlan.popular && (
                     <span
                       style={{
                         backgroundColor: '#dcfce7',
                         color: '#166534',
-                        padding: '2px 8px',
+                        padding: '2px 9px',
                         borderRadius: '9999px',
-                        fontSize: '0.72rem',
+                        fontSize: '0.7rem',
                         fontWeight: 700,
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '4px',
                       }}
                     >
-                      <Sparkles size={11} /> Popular
+                      <Sparkles size={11} /> Most Popular
                     </span>
                   )}
                 </div>
               </div>
+            </div>
+
+            {/* Top Right Action Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {isEditingInModal ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalDraft(JSON.parse(JSON.stringify(selectedPlan)));
+                      setIsEditingInModal(false);
+                    }}
+                    style={{
+                      padding: '8px 16px',
+                      backgroundColor: '#ffffff',
+                      border: '1px solid #cbd5e1',
+                      color: '#475569',
+                      borderRadius: '8px',
+                      fontSize: '0.84rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveModalDraft}
+                    disabled={isSaving}
+                    style={{
+                      padding: '8px 20px',
+                      backgroundColor: saveSuccess ? '#059669' : '#00875a',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '0.86rem',
+                      fontWeight: 700,
+                      cursor: isSaving ? 'wait' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      boxShadow: '0 2px 8px rgba(0, 135, 90, 0.25)',
+                    }}
+                  >
+                    {isSaving ? (
+                      'Saving...'
+                    ) : saveSuccess ? (
+                      <>
+                        <Check size={16} /> Saved!
+                      </>
+                    ) : (
+                      <>
+                        <Save size={16} /> Save Plan Changes
+                      </>
+                    )}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleDeletePlan}
+                    style={{
+                      padding: '8px 16px',
+                      backgroundColor: '#fef2f2',
+                      color: '#ef4444',
+                      border: '1px solid #fecaca',
+                      borderRadius: '8px',
+                      fontSize: '0.84rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                    }}
+                  >
+                    <Trash2 size={14} /> Delete Plan
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalDraft(JSON.parse(JSON.stringify(selectedPlan)));
+                      setIsEditingInModal(true);
+                    }}
+                    style={{
+                      padding: '8px 20px',
+                      backgroundColor: '#00875a',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '0.86rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <Edit2 size={14} /> Edit Details
+                  </button>
+                </>
+              )}
+
               <button
                 type="button"
                 onClick={handleCloseModal}
@@ -632,12 +757,39 @@ export const AdminPricing = () => {
                   cursor: 'pointer',
                   padding: '6px',
                   borderRadius: '6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: '4px',
                 }}
-                title="Close modal"
+                title="Close"
               >
                 <X size={20} />
               </button>
             </div>
+          </div>
+
+          {/* Full-Screen Scrollable Content Area */}
+          <div
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '32px 24px 60px 24px',
+              backgroundColor: '#f8fafc',
+            }}
+          >
+            <div
+              style={{
+                maxWidth: '860px',
+                margin: '0 auto',
+                backgroundColor: '#ffffff',
+                borderRadius: '16px',
+                border: '1px solid #e2e8f0',
+                padding: '36px',
+                boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
+              }}
+            >
+            
 
             {/* Modal Content: EDIT MODE */}
             {isEditingInModal && modalDraft ? (
@@ -1146,7 +1298,8 @@ export const AdminPricing = () => {
             )}
           </div>
         </div>
-      )}
+      </div>
+    )}
     </div>
   );
 };
