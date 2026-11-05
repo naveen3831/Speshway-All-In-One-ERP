@@ -1,8 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp, ShieldCheck, CheckCircle2, Globe, Heart, MapPin, Phone, Mail } from 'lucide-react';
+import { useSocket } from '../../context/SocketContext';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
+  const { homeContent } = useSocket();
+
+  // Pricing visibility state
+  const [showPricing, setShowPricing] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
+    return true;
+  });
+
+  useEffect(() => {
+    const syncVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+      if (stored !== null) {
+        setShowPricing(stored === 'true');
+      } else if (homeContent?.navbar?.showPricing !== undefined) {
+        setShowPricing(Boolean(homeContent.navbar.showPricing));
+      }
+    };
+
+    syncVisibility();
+    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('storage', syncVisibility);
+    return () => {
+      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('storage', syncVisibility);
+    };
+  }, [homeContent?.navbar?.showPricing]);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -50,28 +80,28 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             <h4 className="footer-col-title">ERP Applications</h4>
             <ul className="footer-links-list">
               <li>
-                <Link to="/product/hrms" className="footer-link">
-                  HRMS &amp; Attendance
+                <Link to="/product/speshway-hrms/dashboard" className="footer-link">
+                  Speshway HRMS &amp; Payroll
                 </Link>
               </li>
               <li>
-                <Link to="/product/payroll" className="footer-link">
-                  Payroll &amp; Tax Automation
+                <Link to="/product/dairy-erp/dashboard" className="footer-link">
+                  Natural Milk Dairy ERP
                 </Link>
               </li>
               <li>
-                <Link to="/product/projects" className="footer-link">
-                  Project &amp; Milestone Hub
+                <Link to="/product/nexora-ecommerce/dashboard" className="footer-link">
+                  Nexora E-Commerce Suite
                 </Link>
               </li>
               <li>
-                <Link to="/product/crm" className="footer-link">
-                  Client &amp; Deal CRM
+                <Link to="/product/aneera-sarees/dashboard" className="footer-link">
+                  Aneera Sarees Admin
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="footer-link footer-link-highlight">
-                  View All ERP Products &rarr;
+                <Link to="/projects" className="footer-link-highlight">
+                  View All 17+ Systems &rarr;
                 </Link>
               </li>
             </ul>
@@ -81,11 +111,13 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
           <div className="pro-footer-col">
             <h4 className="footer-col-title">Platform</h4>
             <ul className="footer-links-list">
-              <li>
-                <Link to="/pricing" className="footer-link">
-                  Pricing &amp; Plans
-                </Link>
-              </li>
+              {showPricing && (
+                <li>
+                  <Link to="/pricing" className="footer-link">
+                    Pricing &amp; Plans
+                  </Link>
+                </li>
+              )}
               <li>
                 {onOpenDemo ? (
                   <button
@@ -137,39 +169,26 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
         </div>
       </div>
 
-      {/* Bottom Sub-Footer Bar */}
+      {/* Bottom Legal & Copyright Bar */}
       <div className="pro-footer-bottom">
-        <div className="pro-footer-bottom-container">
+        <div className="pro-footer-bottom-inner">
           <div className="footer-copyright">
-            &copy; {new Date().getFullYear()} Speshway All In One ERP. Built for modern enterprise operations.
+            <span>&copy; {new Date().getFullYear()} Speshway All In One ERP. All rights reserved.</span>
           </div>
 
           <div className="footer-legal-links">
-            <Link to="/contact" className="legal-link">
-              Privacy Policy
-            </Link>
-            <span className="legal-sep">&bull;</span>
-            <Link to="/contact" className="legal-link">
-              Terms of Service
-            </Link>
-            <span className="legal-sep">&bull;</span>
-            <Link to="/contact" className="legal-link">
-              Security Compliance
-            </Link>
-            <span className="legal-sep">&bull;</span>
-            <Link to="/contact" className="legal-link">
-              SLA Status
-            </Link>
+            <span className="footer-meta-tag">Enterprise Cloud Infrastructure</span>
+            <span className="footer-divider">&bull;</span>
+            <span className="footer-meta-tag">Hyderabad, India</span>
           </div>
 
           <button
             type="button"
             onClick={scrollToTop}
             className="footer-back-to-top"
-            title="Back to Top"
-            aria-label="Scroll back to top"
+            title="Scroll back to top"
           >
-            <span>Back to Top</span>
+            <span>Back to top</span>
             <ArrowUp size={14} />
           </button>
         </div>
@@ -177,5 +196,3 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
     </footer>
   );
 };
-
-export default Footer;

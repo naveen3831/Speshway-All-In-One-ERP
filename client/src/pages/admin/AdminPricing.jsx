@@ -100,8 +100,8 @@ export const AdminPricing = () => {
 
     setToggleNotice(
       nextVal
-        ? 'Pricing option is now VISIBLE on Home Navbar'
-        : 'Pricing option is now HIDDEN from Home Navbar'
+        ? 'Pricing option & /pricing page are now VISIBLE and ACTIVE'
+        : 'Pricing option & /pricing page are now completely HIDDEN'
     );
     setTimeout(() => setToggleNotice(''), 3500);
 
@@ -354,8 +354,8 @@ export const AdminPricing = () => {
             }}
             title={
               showPricingInNavbar
-                ? 'Click to turn OFF: hide Pricing option in Home Navbar'
-                : 'Click to turn ON: show Pricing option in Home Navbar'
+                ? 'Click to turn OFF: hide Pricing option and /pricing page'
+                : 'Click to turn ON: show Pricing option and /pricing page'
             }
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -385,7 +385,7 @@ export const AdminPricing = () => {
                     lineHeight: 1,
                   }}
                 >
-                  Home Navbar Pricing Option
+                  Pricing Option & Public Page
                 </span>
                 <span
                   style={{
@@ -396,7 +396,7 @@ export const AdminPricing = () => {
                     lineHeight: 1.2,
                   }}
                 >
-                  {showPricingInNavbar ? 'Visible in Navbar (ON)' : 'Hidden from Navbar (OFF)'}
+                  {showPricingInNavbar ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
                 </span>
               </div>
             </div>
@@ -450,7 +450,7 @@ export const AdminPricing = () => {
                 fontWeight: 500,
               }}
             >
-              Click button to toggle visibility in home navbar
+              Click button to toggle Pricing option & page visibility across website
             </span>
           )}
         </div>
