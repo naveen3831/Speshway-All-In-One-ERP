@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUp, ShieldCheck, CheckCircle2, Globe, Heart } from 'lucide-react';
+import { ArrowUp, ShieldCheck, CheckCircle2, Globe, Heart, MapPin, Phone, Mail } from 'lucide-react';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
   const scrollToTop = () => {
@@ -77,7 +77,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             </ul>
           </div>
 
-          {/* Column 3: Platform & Solutions */}
+          {/* Column 3: Platform */}
           <div className="pro-footer-col">
             <h4 className="footer-col-title">Platform</h4>
             <ul className="footer-links-list">
@@ -101,13 +101,6 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                   </Link>
                 )}
               </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Portals & Company */}
-          <div className="pro-footer-col">
-            <h4 className="footer-col-title">Portals &amp; Support</h4>
-            <ul className="footer-links-list">
               <li>
                 <Link to="/contact" className="footer-link">
                   24/7 Enterprise Help Desk
@@ -119,6 +112,27 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 </Link>
               </li>
             </ul>
+          </div>
+
+          {/* Column 4: Contact (matching Image 2) */}
+          <div className="pro-footer-col footer-contact-col">
+            <h4 className="footer-col-title">Contact</h4>
+            <div className="footer-contact-list">
+              <div className="footer-contact-item">
+                <MapPin size={18} className="footer-contact-icon" />
+                <span className="footer-contact-text">
+                  T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032
+                </span>
+              </div>
+              <a href="tel:+919100006020" className="footer-contact-item footer-contact-link">
+                <Phone size={18} className="footer-contact-icon" />
+                <span className="footer-contact-text">+91 9100006020</span>
+              </a>
+              <a href="mailto:info@speshway.com" className="footer-contact-item footer-contact-link">
+                <Mail size={18} className="footer-contact-icon" />
+                <span className="footer-contact-text">info@speshway.com</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
