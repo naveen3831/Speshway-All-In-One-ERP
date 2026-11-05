@@ -4947,6 +4947,34 @@ a.admin-kpi-card:hover {
   max-width: 330px;
 }
 
+.footer-social-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.footer-social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #141c2e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.22s ease;
+}
+
+.footer-social-btn:hover {
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
 .footer-status-pill {
   display: inline-flex;
   align-items: center;
