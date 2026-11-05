@@ -10,7 +10,7 @@ export const initialProducts = [
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
     websiteUrl: 'https://saree.speshway.site/',
     adminUrl: '/product/savitri-sarees/dashboard',
-    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793792633/speshway_products/savitri-sarees.jpg',
     iconName: 'Sparkles',
     color: 'emerald',
     status: 'active',

@@ -107,10 +107,25 @@ export const SocketProvider = ({ children }) => {
       if (prodRes.data?.data && Array.isArray(prodRes.data.data) && prodRes.data.data.length > 0) {
         const clean = prodRes.data.data.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
         if (clean.length > 0) {
-          setProducts(clean);
-          try {
-            localStorage.setItem('speshway_products', JSON.stringify(clean));
-          } catch (e) {}
+          setProducts((prev) => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            const merged = clean.map((serverItem) => {
+              const localMatch = safePrev.find((p) => isSameProduct(p, serverItem));
+              if (localMatch) {
+                return {
+                  ...localMatch,
+                  ...serverItem,
+                  // Keep latest valid image (whether from server or user edit)
+                  imageUrl: serverItem.imageUrl || localMatch.imageUrl || '',
+                };
+              }
+              return serverItem;
+            });
+            try {
+              localStorage.setItem('speshway_products', JSON.stringify(merged));
+            } catch (e) {}
+            return merged;
+          });
           return clean;
         }
       }
@@ -377,9 +392,9 @@ export const SocketProvider = ({ children }) => {
       return next;
     });
 
-    // 2. Persist to API with timeout and non-blocking background refresh
+    // 2. Persist to API with generous 60s timeout for Cloudinary image uploads
     try {
-      const res = await api.post('/products', productData, { timeout: 3500 });
+      const res = await api.post('/products', productData, { timeout: 60000 });
       const newProduct = res.data?.data || optimisticProduct;
       const targetId = newProduct.id || newProduct._id;
       const targetSlug = newProduct.slug;
@@ -401,7 +416,6 @@ export const SocketProvider = ({ children }) => {
         } catch (e) {}
         return next;
       });
-      refreshProducts().catch(() => {});
       return res.data || { success: true, data: newProduct };
     } catch (err) {
       console.warn('API addProduct saved locally:', err.message);
@@ -430,9 +444,9 @@ export const SocketProvider = ({ children }) => {
       return finalList;
     });
 
-    // 2. Persist to MongoDB Atlas & Cloudinary CDN
+    // 2. Persist to MongoDB Atlas & Cloudinary CDN with 60s timeout
     try {
-      const res = await api.put(`/products/${encodeURIComponent(id)}`, updates);
+      const res = await api.put(`/products/${encodeURIComponent(id)}`, updates, { timeout: 60000 });
       const serverUpdated = res.data?.data || targetObj;
 
       setProducts((prev) => {
@@ -452,7 +466,6 @@ export const SocketProvider = ({ children }) => {
         return finalList;
       });
 
-      refreshProducts().catch(() => {});
       return res.data || { success: true, data: serverUpdated };
     } catch (err) {
       console.warn('API updateProduct saved locally (server offline or delayed):', err.message);

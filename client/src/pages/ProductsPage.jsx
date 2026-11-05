@@ -86,7 +86,7 @@ const EXCLUDED_NAMES = new Set([
 
 export const getProductFallbackImage = (slugOrIdOrName) => {
   const s = (slugOrIdOrName || '').toLowerCase();
-  if (s.includes('savitri') || s.includes('saree')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg';
+  if (s.includes('savitri') || s.includes('saree')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793792633/speshway_products/savitri-sarees.jpg';
   if (s.includes('sana') || s.includes('stayz')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788538/speshway_products/sana-stayz.jpg';
   if (s.includes('learn') || s.includes('lms')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/learnhub.jpg';
   if (s.includes('food') || s.includes('kitchen-cloud')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788534/speshway_products/foodway.jpg';

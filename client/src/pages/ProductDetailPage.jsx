@@ -49,7 +49,7 @@ export const ProductDetailPage = () => {
     description: 'Savitri Sarees is a premium online saree shopping platform offering a beautiful collection of traditional and modern sarees, effortless product browsing, secure payment gateways, and seamless order management.',
     websiteUrl: 'https://saree.speshway.site/',
     adminUrl: '/product/savitri-sarees/dashboard',
-    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg',
+    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793792633/speshway_products/savitri-sarees.jpg',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
     features: ['Handloom Saree Catalog', 'Silk Mark Certified', 'Loom Weaver Coordination', 'Real-Time Order Tracking', 'Bridal Collections'],
   } : (id === 'sana-stayz' || id?.includes('sana') || id?.includes('stayz')) ? {

@@ -52,7 +52,7 @@ export const seedProductsDatabase = async () => {
       await ensureProductDefaults(/speshway-hrms|hrms/i, '/product/speshway-hrms/dashboard', '/images/products/speshway-hrms.jpg');
       await ensureProductDefaults(/ride-flow|rideflow|bike/i, '/product/ride-flow/dashboard', '/images/products/ride-flow.jpg');
       await ensureProductDefaults(/vexa/i, '/product/vexa-style-hub/dashboard', '/images/products/vexa-style-hub.png');
-      await ensureProductDefaults(/savitri|saree/i, '/product/savitri-sarees/dashboard', 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793790390/speshway_products/savitri-sarees.jpg');
+      await ensureProductDefaults(/savitri|saree/i, '/product/savitri-sarees/dashboard', 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793792633/speshway_products/savitri-sarees.jpg');
       await ensureProductDefaults(/sana|stayz/i, '/product/sana-stayz/dashboard', '/images/products/sana-stayz.jpg');
       await ensureProductDefaults(/learn|lms/i, '/product/learnhub/dashboard', '/images/products/learnhub.jpg');
       await ensureProductDefaults(/foodway|foody/i, '/product/foodway/dashboard', '/images/products/foodway.jpg');

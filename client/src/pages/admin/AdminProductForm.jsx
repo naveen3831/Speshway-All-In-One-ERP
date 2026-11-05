@@ -197,7 +197,10 @@ export const AdminProductForm = () => {
 
       let targetSlug = savedSlug;
       if (isEditMode) {
-        await triggerUpdateProduct(id, payload);
+        const updateRes = await triggerUpdateProduct(id, payload);
+        if (updateRes?.data?.imageUrl) {
+          setFormData((prev) => ({ ...prev, imageUrl: updateRes.data.imageUrl }));
+        }
         targetSlug = existingProduct?.slug || id;
         setSuccessMsg(`Product "${formData.name}" updated successfully across all public and admin pages!`);
       } else {
@@ -209,7 +212,7 @@ export const AdminProductForm = () => {
 
       setTimeout(() => {
         navigate('/admin/products');
-      }, 150);
+      }, 700);
     } catch (err) {
       console.error('Error saving product:', err);
       alert('Error saving product: ' + (err.response?.data?.message || err.message));
@@ -604,7 +607,7 @@ export const AdminProductForm = () => {
               style={{ minWidth: '180px', cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
             >
               <Save size={16} />
-              <span>{isSubmitting ? 'Saving Changes...' : isEditMode ? 'Update Product' : 'Publish Product'}</span>
+              <span>{isSubmitting ? 'Uploading to Cloudinary & Saving...' : isEditMode ? 'Update Product' : 'Publish Product'}</span>
             </button>
           </div>
         </div>
