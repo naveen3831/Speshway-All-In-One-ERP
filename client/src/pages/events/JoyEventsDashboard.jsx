@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate } from 'react-router-dom';
-import {
   Home,
   Calendar,
   Ticket,
@@ -36,6 +34,7 @@ import {
   CheckCircle2,
   AlertCircle,
   X,
+  ArrowLeft,
 } from 'lucide-react';
 import './JoyEventsDashboard.css';
 
@@ -261,7 +260,8 @@ export const JoyEventsDashboard = () => {
     <div className="joy-wrapper">
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
       <aside className="joy-sidebar">
-        {/* Brand Header */}
+        <div className="joy-sidebar-top">
+          {/* Brand Header */}
         <div className="joy-brand">
           <div className="joy-logo-container">
             <JoyEventsLogoIcon />
@@ -295,44 +295,21 @@ export const JoyEventsDashboard = () => {
             );
           })}
         </nav>
-
-        {/* Emerald Green Silk Wave at Bottom Left matching screenshot */}
-        <div className="joy-sidebar-green-wave">
-          <svg viewBox="0 0 250 90" fill="none" xmlns="http://www.w3.org/2000/svg" className="joy-wave-svg">
-            <path
-              d="M0 60 C50 40, 110 90, 160 50 C210 10, 240 70, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradJoy1)"
-            />
-            <path
-              d="M0 72 C70 52, 130 95, 180 65 C220 35, 245 78, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradJoy2)"
-              opacity="0.85"
-            />
-            <defs>
-              <linearGradient id="greenSilkGradJoy1" x1="0" y1="20" x2="250" y2="70" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#10b981" />
-                <stop offset="0.6" stopColor="#059669" />
-                <stop offset="1" stopColor="#047857" stopOpacity="0.95" />
-              </linearGradient>
-              <linearGradient id="greenSilkGradJoy2" x1="0" y1="40" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#059669" />
-                <stop offset="0.7" stopColor="#047857" />
-                <stop offset="1" stopColor="#022C22" />
-              </linearGradient>
-            </defs>
-          </svg>
         </div>
 
-        {/* Sidebar Footer Logout */}
-        <div className="joy-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/joy_event-s')}
-            className="joy-logout-btn"
-            title="Exit Joy Events Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        {/* Sidebar Pinned Bottom */}
+        <div className="joy-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="joy-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="joy-user-profile">
+            <div className="joy-avatar">JE</div>
+            <div className="joy-user-info">
+              <span className="joy-user-name">Event Director</span>
+              <span className="joy-user-role">Joy Events & Weddings HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

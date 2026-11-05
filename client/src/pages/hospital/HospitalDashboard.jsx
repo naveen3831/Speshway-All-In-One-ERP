@@ -1,8 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import {
-  useNavigate,
-  Link } from 'react-router-dom';
-import {
   LayoutDashboard,
   Users,
   UserCheck,
@@ -278,7 +275,8 @@ Certified by Speshway Hospital Diagnostic Information System
       {/* 1. LEFT SIDEBAR */}
       <aside className="hosp-sidebar">
         {/* Brand Header */}
-        <div className="hosp-sidebar-brand">
+        <div className="hosp-sidebar-top">
+          <div className="hosp-sidebar-brand">
           <div className="hosp-logo-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <rect width="24" height="24" rx="6" fill="#059669" />
@@ -313,17 +311,21 @@ Certified by Speshway Hospital Diagnostic Information System
             );
           })}
         </nav>
+        </div>
 
         {/* Sidebar Footer Logout */}
-        <div className="hosp-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/speshway-hospitals')}
-            className="hosp-nav-item logout"
-            title="Return to Speshway ERP Catalog"
-          >
-            <LogOut size={18} className="hosp-nav-icon" />
-            <span className="hosp-nav-label">Logout</span>
+        <div className="hosp-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="hosp-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="hosp-user-profile">
+            <div className="hosp-avatar">SH</div>
+            <div className="hosp-user-info">
+              <span className="hosp-user-name">Chief Medical Admin</span>
+              <span className="hosp-user-role">Speshway Hospitals HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate,
-  Link } from 'react-router-dom';
-import {
   LayoutGrid,
   Star,
   ShoppingCart,
@@ -400,7 +397,8 @@ export const NexoraDashboard = () => {
       {/* 1. LEFT SIDEBAR */}
       <aside className="nexora-sidebar">
         {/* Brand Header with Red Logo and white bold text */}
-        <div className="nexora-brand">
+        <div className="nexora-sidebar-top">
+          <div className="nexora-brand">
           <div className="nexora-logo-container">
             <NexoraLogoIcon />
           </div>
@@ -435,17 +433,21 @@ export const NexoraDashboard = () => {
             );
           })}
         </nav>
+        </div>
 
         {/* Sidebar Footer Logout */}
-        <div className="nexora-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/e-commerce')}
-            className="nexora-logout-btn"
-            title="Exit Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        <div className="nexora-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="nexora-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="nexora-user-profile">
+            <div className="nexora-avatar">NX</div>
+            <div className="nexora-user-info">
+              <span className="nexora-user-name">E-Commerce Admin</span>
+              <span className="nexora-user-role">Nexora Online Store HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

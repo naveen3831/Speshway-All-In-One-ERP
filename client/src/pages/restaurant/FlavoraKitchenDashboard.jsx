@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate } from 'react-router-dom';
-import {
   LayoutGrid,
   ShoppingCart,
   Calendar,
@@ -243,7 +241,8 @@ export const FlavoraKitchenDashboard = () => {
     <div className="flavora-wrapper">
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
       <aside className="flavora-sidebar">
-        {/* Brand Header */}
+        <div className="flavora-sidebar-top">
+          {/* Brand Header */}
         <div className="flavora-brand">
           <div className="flavora-logo-container">
             <FlavoraLogoIcon />
@@ -274,44 +273,21 @@ export const FlavoraKitchenDashboard = () => {
             );
           })}
         </nav>
-
-        {/* Emerald Green Silk Ribbon Wave at bottom left */}
-        <div className="flavora-sidebar-green-wave">
-          <svg viewBox="0 0 250 90" fill="none" xmlns="http://www.w3.org/2000/svg" className="flavora-wave-svg">
-            <path
-              d="M0 60 C50 40, 110 90, 160 50 C210 10, 240 70, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradFlav1)"
-            />
-            <path
-              d="M0 72 C70 52, 130 95, 180 65 C220 35, 245 78, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradFlav2)"
-              opacity="0.85"
-            />
-            <defs>
-              <linearGradient id="greenSilkGradFlav1" x1="0" y1="20" x2="250" y2="70" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#10b981" />
-                <stop offset="0.6" stopColor="#059669" />
-                <stop offset="1" stopColor="#047857" stopOpacity="0.95" />
-              </linearGradient>
-              <linearGradient id="greenSilkGradFlav2" x1="0" y1="40" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#059669" />
-                <stop offset="0.7" stopColor="#047857" />
-                <stop offset="1" stopColor="#022C22" />
-              </linearGradient>
-            </defs>
-          </svg>
         </div>
 
-        {/* Sidebar Footer Logout */}
-        <div className="flavora-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/flavora-kitchen')}
-            className="flavora-logout-btn"
-            title="Exit Flavora Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        {/* Sidebar Pinned Bottom */}
+        <div className="flavora-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="flavora-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="flavora-user-profile">
+            <div className="flavora-avatar">FK</div>
+            <div className="flavora-user-info">
+              <span className="flavora-user-name">Executive Chef Lead</span>
+              <span className="flavora-user-role">Flavora Cloud Kitchen HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

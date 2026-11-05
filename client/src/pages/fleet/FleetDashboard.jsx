@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate,
-  Link } from 'react-router-dom';
-import {
   LayoutGrid,
   CreditCard,
   ShieldCheck,
@@ -256,7 +253,8 @@ export const FleetDashboard = () => {
     <div className="fleet-wrapper">
       {/* 1. LEFT SIDEBAR */}
       <aside className="fleet-sidebar">
-        {/* Brand Header */}
+        <div className="fleet-sidebar-top">
+          {/* Brand Header */}
         <div className="fleet-brand">
           <div className="fleet-logo-container">
             <FleetLogoIcon />
@@ -286,44 +284,21 @@ export const FleetDashboard = () => {
             );
           })}
         </nav>
-
-        {/* Decorative Green Silk Wave at Sidebar Bottom matching reference image */}
-        <div className="fleet-sidebar-green-wave">
-          <svg viewBox="0 0 250 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="fleet-wave-svg">
-            <path
-              d="M0 50 Q70 10, 140 45 T250 30 L250 80 L0 80 Z"
-              fill="url(#greenSilkGrad1)"
-              opacity="0.85"
-            />
-            <path
-              d="M0 65 Q80 30, 160 60 T250 45 L250 80 L0 80 Z"
-              fill="url(#greenSilkGrad2)"
-            />
-            <defs>
-              <linearGradient id="greenSilkGrad1" x1="0" y1="20" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#A7F3D0" stopOpacity="0.4" />
-                <stop offset="0.5" stopColor="#10B981" stopOpacity="0.75" />
-                <stop offset="1" stopColor="#047857" stopOpacity="0.95" />
-              </linearGradient>
-              <linearGradient id="greenSilkGrad2" x1="0" y1="40" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#059669" />
-                <stop offset="0.7" stopColor="#047857" />
-                <stop offset="1" stopColor="#022C22" />
-              </linearGradient>
-            </defs>
-          </svg>
         </div>
 
-        {/* Sidebar Footer Logout */}
-        <div className="fleet-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/fleet-management')}
-            className="fleet-logout-btn"
-            title="Exit Fleet Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        {/* Sidebar Pinned Bottom */}
+        <div className="fleet-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="fleet-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="fleet-user-profile">
+            <div className="fleet-avatar">FM</div>
+            <div className="fleet-user-info">
+              <span className="fleet-user-name">Fleet Commander</span>
+              <span className="fleet-user-role">Logistics Operations HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

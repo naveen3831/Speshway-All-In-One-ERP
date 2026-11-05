@@ -1,190 +1,4 @@
-/* ==========================================================================
-   JOY EVENTS - ENTERPRISE ADMIN DASHBOARD STYLES
-   Exact replica of reference UI with 82px Navbar, Dark Sidebar with Wave,
-   5-card KPI Grid, Analytics Cards & Complete Scrollbar Suppression
-   ========================================================================== */
 
-.joy-wrapper {
-  display: flex;
-  height: 100vh;
-  max-height: 100vh;
-  width: 100%;
-  background-color: #f8fafc;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #0f172a;
-  overflow: hidden;
-  position: relative;
-}
-
-/* --------------------------------------------------------------------------
-   1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Silk Wave)
-   -------------------------------------------------------------------------- */
-.joy-sidebar {
-  width: 250px;
-  min-width: 250px;
-  height: 100vh;
-  max-height: 100vh;
-  flex-shrink: 0;
-  background-color: #0b1120;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 50;
-  border-right: 1px solid #1e293b;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.joy-sidebar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Sidebar Brand */
-.joy-brand {
-  padding: 22px 20px 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.joy-logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.joy-brand-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.joy-brand-row {
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
-  line-height: 1.1;
-}
-
-.brand-white {
-  font-size: 20px;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.5px;
-}
-
-.brand-emerald {
-  font-size: 20px;
-  font-weight: 800;
-  color: #10b981;
-  letter-spacing: -0.5px;
-}
-
-.joy-brand-subtitle {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.8px;
-  color: #64748b;
-  margin-top: 4px;
-}
-
-/* Navigation Items */
-.joy-nav {
-  flex: 1;
-  padding: 16px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  overflow-y: auto;
-  z-index: 2;
-}
-
-.joy-nav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 9.5px 14px;
-  border-radius: 9999px;
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  text-align: left;
-}
-
-.joy-nav-btn-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.joy-nav-icon {
-  color: #64748b;
-  transition: color 0.18s ease;
-}
-
-.joy-nav-btn:hover {
-  background-color: rgba(255, 255, 255, 0.04);
-  color: #f1f5f9;
-}
-
-.joy-nav-btn:hover .joy-nav-icon {
-  color: #10b981;
-}
-
-/* Active State Pill */
-.joy-nav-btn.active {
-  background-color: #10b981;
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-}
-
-.joy-nav-btn.active .joy-nav-icon {
-  color: #ffffff;
-}
-
-.joy-nav-badge {
-  font-size: 11px;
-  font-weight: 700;
-  background-color: #10b981;
-  color: #ffffff;
-  padding: 1px 7px;
-  border-radius: 9999px;
-  min-width: 20px;
-  text-align: center;
-}
-
-.joy-nav-btn.active .joy-nav-badge {
-  background-color: #ffffff;
-  color: #10b981;
-}
-
-/* Emerald Green Silk Wave at Bottom Left */
-.joy-sidebar-green-wave {
-  position: absolute;
-  bottom: 50px;
-  left: 0;
-  width: 100%;
-  height: 85px;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.joy-wave-svg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 /* Sidebar Footer */
 .joy-sidebar-footer {
@@ -1323,3 +1137,142 @@
   }
 }
 
+
+
+/* ==========================================================================
+   UNIFIED SAVITRI SAREES SIDEBAR STANDARD (.joy-*)
+   ========================================================================== */
+.joy-sidebar {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  justify-content: space-between !important;
+}
+
+.joy-sidebar-top {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.joy-sidebar-top::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Nav Item Pill Shape (Matching Image 2 Standard) */
+.joy-nav-btn, .joy-nav-item {
+  border-radius: 9999px !important;
+}
+
+.joy-nav-btn.active, .joy-nav-item.active {
+  background: #10b981 !important;
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+.joy-nav-btn.active svg, .joy-nav-item.active svg {
+  color: #ffffff !important;
+}
+
+.joy-nav-badge, .joy-badge {
+  background: #047857 !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 12px !important;
+}
+
+.joy-nav-btn.active .joy-nav-badge,
+.joy-nav-item.active .joy-badge {
+  background: #ffffff !important;
+  color: #047857 !important;
+}
+
+/* Unified Sidebar Bottom Pinned Area (NO WAVE, NO OVERLAP) */
+.joy-sidebar-bottom {
+  padding: 14px 12px 18px 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #0b1120 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.joy-btn-portal {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 9px 14px !important;
+  border-radius: 8px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+
+.joy-btn-portal:hover {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.joy-user-profile {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 6px 4px !important;
+}
+
+.joy-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 13px !important;
+  flex-shrink: 0 !important;
+}
+
+.joy-user-info {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.joy-user-name {
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.joy-user-role {
+  font-size: 11px !important;
+  color: #10b981 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}

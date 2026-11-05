@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate,
-  Link } from 'react-router-dom';
-import {
   LayoutGrid,
   Scissors,
   FileText,
@@ -345,14 +342,18 @@ export const AneeraDashboard = () => {
         </div>
 
         {/* Sidebar Footer Logout */}
-        <div className="aneera-sidebar-footer">
-          <button
-            className="aneera-logout-btn"
-            onClick={() => navigate('/product/aneera-silks')}
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        <div className="aneera-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="aneera-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="aneera-user-profile">
+            <div className="aneera-avatar">AS</div>
+            <div className="aneera-user-info">
+              <span className="aneera-user-name">Master Silk Curator</span>
+              <span className="aneera-user-role">Aneera Silks HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

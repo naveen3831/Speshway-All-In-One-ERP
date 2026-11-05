@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate } from 'react-router-dom';
-import {
   Home,
   Bike,
   Tag,
@@ -35,6 +33,7 @@ import {
   AlertCircle,
   HelpCircle,
   Zap,
+  ArrowLeft,
 } from 'lucide-react';
 import './RideFlowDashboard.css';
 
@@ -264,7 +263,8 @@ export const RideFlowDashboard = () => {
     <div className="rf-wrapper">
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Silk Wave) */}
       <aside className="rf-sidebar">
-        {/* Brand Header */}
+        <div className="rf-sidebar-top">
+          {/* Brand Header */}
         <div className="rf-brand">
           <div className="rf-logo-container">
             <RideFlowLogoIcon />
@@ -297,44 +297,21 @@ export const RideFlowDashboard = () => {
             );
           })}
         </nav>
-
-        {/* Emerald Green Silk Wave at Bottom Left */}
-        <div className="rf-sidebar-green-wave">
-          <svg viewBox="0 0 250 90" fill="none" xmlns="http://www.w3.org/2000/svg" className="rf-wave-svg">
-            <path
-              d="M0 60 C50 40, 110 90, 160 50 C210 10, 240 70, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradRf1)"
-            />
-            <path
-              d="M0 72 C70 52, 130 95, 180 65 C220 35, 245 78, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradRf2)"
-              opacity="0.85"
-            />
-            <defs>
-              <linearGradient id="greenSilkGradRf1" x1="0" y1="20" x2="250" y2="70" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#10b981" />
-                <stop offset="0.6" stopColor="#059669" />
-                <stop offset="1" stopColor="#047857" stopOpacity="0.95" />
-              </linearGradient>
-              <linearGradient id="greenSilkGradRf2" x1="0" y1="40" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#059669" />
-                <stop offset="0.7" stopColor="#047857" />
-                <stop offset="1" stopColor="#022C22" />
-              </linearGradient>
-            </defs>
-          </svg>
         </div>
 
-        {/* Sidebar Footer Logout */}
-        <div className="rf-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/ride-flow')}
-            className="rf-logout-btn"
-            title="Exit RideFlow Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        {/* Sidebar Pinned Bottom */}
+        <div className="rf-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="rf-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="rf-user-profile">
+            <div className="rf-avatar">RF</div>
+            <div className="rf-user-info">
+              <span className="rf-user-name">RideFlow Manager</span>
+              <span className="rf-user-role">Smart 2-Wheeler Fleet HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

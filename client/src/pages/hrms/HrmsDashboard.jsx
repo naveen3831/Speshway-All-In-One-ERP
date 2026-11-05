@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate } from 'react-router-dom';
-import {
   LayoutGrid,
   Users,
   CalendarCheck,
@@ -173,7 +171,8 @@ export const HrmsDashboard = () => {
     <div className="hrms-wrapper">
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
       <aside className="hrms-sidebar">
-        {/* Brand Header */}
+        <div className="hrms-sidebar-top">
+          {/* Brand Header */}
         <div className="hrms-brand">
           <div className="hrms-logo-container">
             <HrmsLogoIcon />
@@ -207,44 +206,21 @@ export const HrmsDashboard = () => {
             );
           })}
         </nav>
-
-        {/* Emerald Green Silk Wave at Bottom Left */}
-        <div className="hrms-sidebar-green-wave">
-          <svg viewBox="0 0 250 90" fill="none" xmlns="http://www.w3.org/2000/svg" className="hrms-wave-svg">
-            <path
-              d="M0 60 C50 40, 110 90, 160 50 C210 10, 240 70, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradHrms1)"
-            />
-            <path
-              d="M0 72 C70 52, 130 95, 180 65 C220 35, 245 78, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradHrms2)"
-              opacity="0.85"
-            />
-            <defs>
-              <linearGradient id="greenSilkGradHrms1" x1="0" y1="20" x2="250" y2="70" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#10b981" />
-                <stop offset="0.6" stopColor="#059669" />
-                <stop offset="1" stopColor="#047857" stopOpacity="0.95" />
-              </linearGradient>
-              <linearGradient id="greenSilkGradHrms2" x1="0" y1="40" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#059669" />
-                <stop offset="0.7" stopColor="#047857" />
-                <stop offset="1" stopColor="#022C22" />
-              </linearGradient>
-            </defs>
-          </svg>
         </div>
 
-        {/* Sidebar Footer Logout */}
-        <div className="hrms-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/speshway-hrms')}
-            className="hrms-logout-btn"
-            title="Exit Speshway HRMS Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        {/* Sidebar Pinned Bottom */}
+        <div className="hrms-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="hrms-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="hrms-user-profile">
+            <div className="hrms-avatar">HR</div>
+            <div className="hrms-user-info">
+              <span className="hrms-user-name">Human Resources Lead</span>
+              <span className="hrms-user-role">Speshway HRMS Global HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

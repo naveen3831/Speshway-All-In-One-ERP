@@ -1,201 +1,4 @@
-/* ==========================================================================
-   SPY SALON JUBILEE HILLS STUDIO ADMIN PANEL STYLES
-   Scoped exclusively under .salon- to avoid conflicts with other modules.
-   ========================================================================== */
 
-:root {
-  --salon-navy: #0b1120;
-  --salon-navy-light: #151d32;
-  --salon-navy-hover: #1e293b;
-  --salon-green: #10b981;
-  --salon-green-hover: #059669;
-  --salon-green-light: #ecfdf5;
-  --salon-green-border: #a7f3d0;
-  --salon-gold: #d97706;
-  --salon-gold-light: #fef3c7;
-  --salon-blue-light: #eff6ff;
-  --salon-blue-text: #2563eb;
-  --salon-amber-light: #fef3c7;
-  --salon-amber-text: #d97706;
-  --salon-bg: #f8fafc;
-  --salon-card-bg: #ffffff;
-  --salon-text-dark: #0f172a;
-  --salon-text-muted: #64748b;
-  --salon-border: #e2e8f0;
-  --salon-radius: 14px;
-}
-
-/* Base Wrapper */
-.salon-wrapper {
-  display: flex;
-  height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
-  width: 100%;
-  background-color: var(--salon-bg);
-  color: var(--salon-text-dark);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  box-sizing: border-box;
-}
-
-.salon-wrapper * {
-  box-sizing: border-box;
-}
-
-/* ==========================================================================
-   1. LEFT SIDEBAR (Dark Navy #0b1120 with Gold Wave)
-   ========================================================================== */
-.salon-sidebar {
-  width: 260px;
-  min-width: 260px;
-  background-color: var(--salon-navy);
-  color: #f1f5f9;
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  z-index: 100;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Brand Header */
-.salon-brand {
-  padding: 22px 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.salon-logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.salon-brand-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.salon-brand-title {
-  font-size: 1.22rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  line-height: 1.1;
-}
-
-.salon-brand-subtitle {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #f59e0b;
-  margin-top: 2px;
-}
-
-.salon-brand-tag {
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: #94a3b8;
-  margin-top: 1px;
-}
-
-/* Navigation Menu */
-.salon-nav {
-  padding: 16px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  flex: 1;
-  overflow-y: auto;
-  position: relative;
-  z-index: 2;
-}
-
-.salon-nav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: none;
-  background: transparent;
-  color: #94a3b8;
-  font-size: 0.92rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-}
-
-.salon-nav-btn-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.salon-nav-icon {
-  flex-shrink: 0;
-  color: #94a3b8;
-  transition: color 0.2s ease;
-}
-
-.salon-nav-btn:hover {
-  background-color: var(--salon-navy-light);
-  color: #ffffff;
-}
-
-.salon-nav-btn:hover .salon-nav-icon {
-  color: #ffffff;
-}
-
-.salon-nav-btn.active {
-  background-color: var(--salon-green);
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-}
-
-.salon-nav-btn.active .salon-nav-icon {
-  color: #ffffff;
-}
-
-.salon-nav-badge {
-  background-color: var(--salon-green);
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
-
-.salon-nav-btn.active .salon-nav-badge {
-  background-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-}
-
-/* Decorative Gold Wave at bottom of sidebar */
-.salon-sidebar-gold-wave {
-  position: absolute;
-  bottom: 50px;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.85;
-}
-
-.salon-wave-svg {
-  width: 100%;
-  height: 60px;
-  display: block;
-}
 
 /* Sidebar Footer */
 .salon-sidebar-footer {
@@ -1208,4 +1011,143 @@ body:has(.salon-wrapper)::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
+}
+
+
+/* ==========================================================================
+   UNIFIED SAVITRI SAREES SIDEBAR STANDARD (.salon-*)
+   ========================================================================== */
+.salon-sidebar {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  justify-content: space-between !important;
+}
+
+.salon-sidebar-top {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.salon-sidebar-top::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Nav Item Pill Shape (Matching Image 2 Standard) */
+.salon-nav-btn, .salon-nav-item {
+  border-radius: 9999px !important;
+}
+
+.salon-nav-btn.active, .salon-nav-item.active {
+  background: #10b981 !important;
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+.salon-nav-btn.active svg, .salon-nav-item.active svg {
+  color: #ffffff !important;
+}
+
+.salon-nav-badge, .salon-badge {
+  background: #047857 !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 12px !important;
+}
+
+.salon-nav-btn.active .salon-nav-badge,
+.salon-nav-item.active .salon-badge {
+  background: #ffffff !important;
+  color: #047857 !important;
+}
+
+/* Unified Sidebar Bottom Pinned Area (NO WAVE, NO OVERLAP) */
+.salon-sidebar-bottom {
+  padding: 14px 12px 18px 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #0b1120 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.salon-btn-portal {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 9px 14px !important;
+  border-radius: 8px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+
+.salon-btn-portal:hover {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.salon-user-profile {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 6px 4px !important;
+}
+
+.salon-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 13px !important;
+  flex-shrink: 0 !important;
+}
+
+.salon-user-info {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.salon-user-name {
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.salon-user-role {
+  font-size: 11px !important;
+  color: #10b981 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }

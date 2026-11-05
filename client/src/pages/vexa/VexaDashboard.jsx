@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useNavigate,
-  Link } from 'react-router-dom';
-import {
   LayoutDashboard,
   Target,
   Users,
@@ -33,6 +30,7 @@ import {
   AlertCircle,
   Download,
   Check,
+  ArrowLeft,
 } from 'lucide-react';
 import './VexaDashboard.css';
 
@@ -305,7 +303,8 @@ export const VexaDashboard = () => {
       {/* 1. SIDEBAR MATCHING USER'S SCREENSHOT */}
       <aside className="vexa-sidebar">
         {/* Brand Header with Hanger Logo */}
-        <div className="vexa-sidebar-header">
+        <div className="vexa-sidebar-top">
+          <div className="vexa-sidebar-header">
           <div className="vexa-brand-wrap">
             <div className="vexa-logo-hanger">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -347,17 +346,21 @@ export const VexaDashboard = () => {
             );
           })}
         </nav>
+        </div>
 
         {/* Sidebar Footer Logout (Sign Out button matching Image 2) */}
-        <div className="vexa-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/vexa-style-hub')}
-            className="vexa-btn-logout-sidebar"
-            title="Return to Product Page"
-          >
-            <LogOut size={15} />
-            <span>Sign Out</span>
+        <div className="vexa-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="vexa-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="vexa-user-profile">
+            <div className="vexa-avatar">VX</div>
+            <div className="vexa-user-info">
+              <span className="vexa-user-name">Fashion Store Lead</span>
+              <span className="vexa-user-role">Vexa Style Hub HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 
