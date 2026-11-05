@@ -7,7 +7,6 @@ import {
   Package,
   CreditCard,
   Globe,
-  Users,
   Inbox,
   Settings,
   LogOut,
@@ -200,19 +199,19 @@ export const AdminLayout = () => {
           </NavLink>
 
           <NavLink
+            to="/admin/home"
+            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
+          >
+            <Globe size={18} />
+            <span>Home Page Options</span>
+          </NavLink>
+
+          <NavLink
             to="/admin/pricing"
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <CreditCard size={18} />
             <span>Pricing Plans</span>
-          </NavLink>
-
-          <NavLink
-            to="/admin/users"
-            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
-          >
-            <Users size={18} />
-            <span>Users &amp; Staff</span>
           </NavLink>
 
           <NavLink
@@ -236,6 +235,14 @@ export const AdminLayout = () => {
           <button onClick={handleLogout} className="admin-btn-logout">
             <LogOut size={15} /> Sign Out
           </button>
+
+          <div className="admin-sidebar-profile">
+            <div className="admin-avatar">AD</div>
+            <div className="profile-meta">
+              <span className="profile-name">{user?.name || 'Speshway Administrator'}</span>
+              <span className="profile-email">{user?.email || 'admin@gmail.com'}</span>
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -244,16 +251,6 @@ export const AdminLayout = () => {
         <header className="admin-topbar">
           <div className="topbar-left">
             <span className="topbar-title">Speshway Administrative Dashboard</span>
-          </div>
-
-          <div className="topbar-right">
-            <div className="admin-profile-badge">
-              <div className="admin-avatar">AD</div>
-              <div className="admin-meta">
-                <span className="name">{user?.name || 'Administrator'}</span>
-                <span className="email">{user?.email || 'admin@gmail.com'}</span>
-              </div>
-            </div>
           </div>
         </header>
 

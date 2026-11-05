@@ -23,6 +23,7 @@ import { AdminUsers } from './pages/admin/AdminUsers';
 import { AdminInquiries } from './pages/admin/AdminInquiries';
 import { AdminSettings } from './pages/admin/AdminSettings';
 import { AdminPricing } from './pages/admin/AdminPricing';
+import { AdminHomeSettings } from './pages/admin/AdminHomeSettings';
 
 // Dedicated Industry ERP Dashboards
 import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
@@ -238,6 +239,7 @@ export default function App() {
               <Route path="users" element={<AdminUsers />} />
               <Route path="inquiries" element={<AdminInquiries />} />
               <Route path="pricing" element={<AdminPricing />} />
+              <Route path="home" element={<AdminHomeSettings />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 

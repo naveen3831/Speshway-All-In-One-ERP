@@ -12,7 +12,15 @@ import {
 
 export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
-  const { products } = useSocket();
+  const { products, homeContent } = useSocket();
+  const heroData = homeContent?.hero || {};
+
+  const badgeText = heroData.badge || '— OUR ERP SOLUTIONS —';
+  const titleDark = heroData.titleDark || 'SPESHWAY';
+  const titleGreen = heroData.titleGreen || 'ALL IN ONE ERP';
+  const subtitle = heroData.subtitle || 'A collection of industry-ready ERP solutions to manage your business, operations, and customers — all in one place.';
+  const primaryBtnText = heroData.primaryBtnText || 'View All ERPs';
+  const secondaryBtnText = heroData.secondaryBtnText || 'Request a Demo';
 
   // Strictly sync laptop mockup tiles with the Admin Dashboard projects
   const adminProjects = useMemo(() => {
@@ -37,25 +45,25 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="hero-badge-text">
-              &mdash; OUR ERP SOLUTIONS &mdash;
+              {badgeText}
             </span>
           </div>
 
           <h1 className="hero-heading">
-            <span className="hero-heading-dark">SPESHWAY</span>
-            <span className="hero-heading-green">ALL IN ONE ERP</span>
+            <span className="hero-heading-dark">{titleDark} </span>
+            <span className="hero-heading-green">{titleGreen}</span>
           </h1>
 
           <p className="hero-subtitle">
-            A collection of industry-ready ERP solutions to manage your business, operations, and customers — all in one place.
+            {subtitle}
           </p>
 
           <div className="hero-cta-group">
-            <button onClick={() => navigate('/projects')} className="btn-hero-primary">
-              View All ERPs <ArrowRight size={16} />
+            <button onClick={() => navigate(heroData.primaryBtnLink || '/projects')} className="btn-hero-primary">
+              {primaryBtnText} <ArrowRight size={16} />
             </button>
             <button onClick={onOpenDemo} className="btn-hero-secondary">
-              Request a Demo
+              {secondaryBtnText}
             </button>
           </div>
         </div>
@@ -97,10 +105,19 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
                                 src={prod.imageUrl}
                                 alt={prod.name}
                                 style={{ width: '18px', height: '18px', objectFit: 'contain' }}
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  if (e.currentTarget.nextSibling) {
+                                    e.currentTarget.nextSibling.style.display = 'block';
+                                  }
+                                }}
                               />
-                            ) : (
-                              <Icon size={16} className={`text-tile-${color}`} />
-                            )}
+                            ) : null}
+                            <Icon
+                              size={16}
+                              className={`text-tile-${color}`}
+                              style={{ display: prod.imageUrl ? 'none' : 'block' }}
+                            />
                           </div>
                           <span className="laptop-tile-name">{prod.name}</span>
                         </div>

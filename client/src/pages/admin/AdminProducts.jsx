@@ -26,7 +26,6 @@ import {
   LayoutGrid,
   List,
   Eye,
-  Cpu,
   X,
   Building2,
   Plane,
@@ -348,64 +347,27 @@ export const AdminProducts = () => {
                       {pStatus}
                     </span>
                   </div>
-                  <div className="admin-prod-card-actions">
-                    <button
-                      onClick={(e) => handleDelete(pSlug, pName, e)}
-                      className="card-action-icon delete"
-                      title="Delete Project"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
                 </div>
 
                 <div className="admin-prod-card-body">
-                  <h3 className="admin-prod-card-title">{pName}</h3>
+                  <h3
+                    className="admin-prod-card-title"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/product/${pSlug}`)}
+                    title={`View public page for ${pName}`}
+                  >
+                    {pName}
+                  </h3>
                   <p className="admin-prod-card-desc">{pDesc}</p>
-                </div>
-
-                {techList.length > 0 && (
-                  <div className="card-tech-chips-row">
-                    <span className="card-tech-label"><Cpu size={11} /> Tech:</span>
-                    {techList.slice(0, 3).map((t, idx) => (
-                      <span key={idx} className="card-tech-chip">{String(t)}</span>
-                    ))}
-                    {techList.length > 3 && (
-                      <span className="card-tech-more">+{techList.length - 3}</span>
-                    )}
-                  </div>
-                )}
-
-                <div className="admin-prod-urls-box">
-                  <div className="card-url-item">
-                    <div className="url-item-label">
-                      <Globe size={13} className="text-icon-green" />
-                      <span>Website URL</span>
-                    </div>
-                    <a
-                      href={pUrl || '#'}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="url-item-link"
-                      title={pUrl}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span>{pUrl || 'Not configured'}</span>
-                      <ExternalLink size={11} />
-                    </a>
-                  </div>
                 </div>
 
                 <div className="admin-prod-card-footer">
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/product/${pSlug}`);
-                    }}
-                    className="card-btn-view-details"
-                    title="Open dedicated public page"
+                    onClick={(e) => handleDelete(prod.id || prod.slug || prod._id || pSlug, pName, e)}
+                    className="card-btn-delete"
+                    title="Delete Product"
                   >
-                    <Eye size={14} /> Full Details
+                    <Trash2 size={14} /> Delete Product
                   </button>
                   <button
                     onClick={(e) => {

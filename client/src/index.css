@@ -970,7 +970,7 @@ button {
 .stats-bar-container.stats-3-grid,
 .stats-bar-container.stats-4-grid {
   max-width: 1240px;
-  margin: -16px auto 0 auto;
+  margin: 24px auto 0 auto;
   background-color: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
@@ -1950,7 +1950,7 @@ button {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 60px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .pricing-card {
@@ -1960,12 +1960,15 @@ button {
   padding: 36px 30px;
   position: relative;
   box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .pricing-card.popular-tier {
   border: 2px solid var(--primary-green);
-  box-shadow: var(--shadow-xl);
-  transform: scale(1.03);
+  box-shadow: var(--shadow-md);
+  transform: none;
 }
 
 .popular-badge {
@@ -2188,6 +2191,61 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  transition: all 0.2s;
+}
+
+.admin-btn-logout:hover {
+  background-color: rgba(248, 113, 113, 0.15);
+  color: #fca5a5;
+}
+
+.admin-sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1px solid #1e293b;
+}
+
+.admin-sidebar-profile .admin-avatar {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background-color: #00875a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-sidebar-profile .profile-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.admin-sidebar-profile .profile-meta .profile-name {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-sidebar-profile .profile-meta .profile-email {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .admin-main-wrap {
@@ -2294,6 +2352,13 @@ button {
   align-items: center;
   gap: 16px;
   box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+a.admin-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px -4px rgba(15, 23, 42, 0.08);
+  border-color: #cbd5e1;
 }
 
 .kpi-icon-wrap {
@@ -4038,6 +4103,31 @@ button {
   border-color: #047857;
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+}
+
+.card-btn-delete {
+  flex: 1;
+  padding: 9px 14px;
+  background-color: #fef2f2;
+  color: #dc2626;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid #fecaca;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card-btn-delete:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
 }
 
 /* Category Filter Pills in Admin */

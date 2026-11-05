@@ -3,6 +3,31 @@ import { io } from 'socket.io-client';
 import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
 
+export const DEFAULT_HOME_CONTENT = {
+  hero: {
+    badge: '— OUR ERP SOLUTIONS —',
+    titleDark: 'SPESHWAY',
+    titleGreen: 'ALL IN ONE ERP',
+    subtitle: 'A collection of industry-ready ERP solutions to manage your business, operations, and customers — all in one place.',
+    primaryBtnText: 'View All ERPs',
+    primaryBtnLink: '/projects',
+    secondaryBtnText: 'Request a Demo',
+  },
+  stats: {
+    stat1Number: '524+',
+    stat1Label: 'Happy Businesses',
+    stat2Number: '17+',
+    stat2Label: 'ERP Solutions',
+    stat3Number: '99.9%',
+    stat3Label: 'Uptime & Security',
+    stat4Number: '24/7',
+    stat4Label: 'Customer Support',
+  },
+  solutions: {
+    title: 'Our ERP Solutions',
+  },
+};
+
 const SocketContext = createContext(null);
 
 export const isSameProduct = (p, target) => {
@@ -148,11 +173,35 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  // Fetch initial products, employees, and inquiries from MongoDB API
+  const [homeContent, setHomeContent] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_home_content');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return DEFAULT_HOME_CONTENT;
+  });
+
+  const refreshHomeContent = async () => {
+    try {
+      const res = await api.get('/home');
+      if (res.data?.data) {
+        setHomeContent(res.data.data);
+        try {
+          localStorage.setItem('speshway_home_content', JSON.stringify(res.data.data));
+        } catch (e) {}
+        return res.data.data;
+      }
+    } catch (err) {
+      console.warn('Could not refresh home content from API:', err.message);
+    }
+  };
+
+  // Fetch initial products, employees, inquiries, and home content from MongoDB API
   useEffect(() => {
     const fetchInitialData = async () => {
       await refreshProducts();
       await refreshInquiries();
+      await refreshHomeContent();
 
       try {
         const empRes = await api.get('/employees');
@@ -242,11 +291,28 @@ export const SocketProvider = ({ children }) => {
 
     newSocket.on('product:updated', (updated) => {
       if (!updated || typeof updated !== 'object') return;
+      const uId = String(updated.id || '').trim().toLowerCase();
+      const uMongoId = String(updated._id || '').trim().toLowerCase();
+      const uSlug = String(updated.slug || '').trim().toLowerCase();
+      const uName = String(updated.name || '').trim().toLowerCase();
+
       setProducts((prev) => {
         const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
         let matched = false;
         const next = safe.map((p) => {
-          if (isSameProduct(p, updated)) {
+          const pId = String(p.id || '').trim().toLowerCase();
+          const pMongoId = String(p._id || '').trim().toLowerCase();
+          const pSlug = String(p.slug || '').trim().toLowerCase();
+          const pName = String(p.name || '').trim().toLowerCase();
+
+          const isMatch =
+            isSameProduct(p, updated) ||
+            (uId && (pId === uId || pMongoId === uId || pSlug === uId)) ||
+            (uMongoId && (pId === uMongoId || pMongoId === uMongoId || pSlug === uMongoId)) ||
+            (uSlug && (pId === uSlug || pMongoId === uSlug || pSlug === uSlug)) ||
+            (uName && pName === uName);
+
+          if (isMatch) {
             matched = true;
             return { ...p, ...updated };
           }
@@ -368,6 +434,16 @@ export const SocketProvider = ({ children }) => {
       }));
     });
 
+    // Home page content real-time updates
+    newSocket.on('home:updated', (updatedHome) => {
+      if (updatedHome) {
+        setHomeContent(updatedHome);
+        try {
+          localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+        } catch (e) {}
+      }
+    });
+
     setSocket(newSocket);
 
     return () => newSocket.close();
@@ -424,20 +500,39 @@ export const SocketProvider = ({ children }) => {
   };
 
   const triggerUpdateProduct = async (id, updates) => {
+    const cleanId = String(id || '').trim().toLowerCase();
+    const cleanSlug = String(updates.slug || '').trim().toLowerCase();
+    const cleanName = String(updates.name || '').trim().toLowerCase();
+
+    const isMatch = (p) => {
+      if (!p || typeof p !== 'object') return false;
+      const pId = String(p.id || '').trim().toLowerCase();
+      const pMongoId = String(p._id || '').trim().toLowerCase();
+      const pSlug = String(p.slug || '').trim().toLowerCase();
+      const pName = String(p.name || '').trim().toLowerCase();
+
+      return (
+        isSameProduct(p, { id, slug: updates.slug || id, ...updates }) ||
+        (cleanId && (pId === cleanId || pMongoId === cleanId || pSlug === cleanId)) ||
+        (cleanSlug && (pId === cleanSlug || pMongoId === cleanSlug || pSlug === cleanSlug)) ||
+        (cleanName && pName === cleanName)
+      );
+    };
+
     const targetObj = { id, slug: updates.slug || id, ...updates };
 
     // 1. Optimistic update: instantly update React state and localStorage so all UI reflects the new image immediately
     setProducts((prev) => {
       const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
-      let matched = false;
+      let found = false;
       const next = safe.map((p) => {
-        if (isSameProduct(p, targetObj)) {
-          matched = true;
+        if (isMatch(p)) {
+          found = true;
           return { ...p, ...updates };
         }
         return p;
       });
-      const finalList = matched ? next : [targetObj, ...next];
+      const finalList = found ? next : [targetObj, ...next];
       try {
         localStorage.setItem('speshway_products', JSON.stringify(finalList));
       } catch (e) {}
@@ -447,26 +542,31 @@ export const SocketProvider = ({ children }) => {
     // 2. Persist to MongoDB Atlas & Cloudinary CDN with 60s timeout
     try {
       const res = await api.put(`/products/${encodeURIComponent(id)}`, updates, { timeout: 60000 });
-      const serverUpdated = res.data?.data || targetObj;
+      const serverData = res.data?.data || targetObj;
 
       setProducts((prev) => {
         const safe = Array.isArray(prev) ? prev.filter((p) => p && typeof p === 'object') : [];
-        let matched = false;
+        let found = false;
         const next = safe.map((p) => {
-          if (isSameProduct(p, serverUpdated) || isSameProduct(p, targetObj)) {
-            matched = true;
-            return { ...p, ...serverUpdated };
+          if (
+            isMatch(p) ||
+            (serverData.id && String(p.id) === String(serverData.id)) ||
+            (serverData._id && String(p._id) === String(serverData._id)) ||
+            (serverData.slug && String(p.slug).toLowerCase() === String(serverData.slug).toLowerCase())
+          ) {
+            found = true;
+            return { ...p, ...serverData };
           }
           return p;
         });
-        const finalList = matched ? next : [serverUpdated, ...next];
+        const finalList = found ? next : [serverData, ...next];
         try {
           localStorage.setItem('speshway_products', JSON.stringify(finalList));
         } catch (e) {}
         return finalList;
       });
 
-      return res.data || { success: true, data: serverUpdated };
+      return res.data || { success: true, data: serverData };
     } catch (err) {
       console.warn('API updateProduct saved locally (server offline or delayed):', err.message);
       return { success: true, data: targetObj };
@@ -609,6 +709,9 @@ export const SocketProvider = ({ children }) => {
         refreshProducts,
         refreshInquiries,
         modulesData,
+        homeContent,
+        refreshHomeContent,
+        setHomeContent,
         triggerAddProduct,
         triggerUpdateProduct,
         triggerDeleteProduct,

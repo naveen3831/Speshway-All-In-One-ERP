@@ -6,81 +6,26 @@ import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
-import { Check, Sparkles, Globe, Smartphone, Layers } from 'lucide-react';
-
-const DEFAULT_TIERS = [
-  {
-    slug: 'website',
-    name: 'Website',
-    icon: Globe,
-    price: '₹80,000',
-    period: '',
-    desc: 'Complete responsive Web ERP application accessible on any browser, desktop, or tablet.',
-    features: [
-      'Full Web ERP Application',
-      'Role-Based Admin & Staff Access',
-      'Real-Time Cloud Synchronization',
-      'Customer Portal & Lead Inquiries',
-      'Reports, Analytics & Data Export',
-      'Custom Domain & SSL Security',
-    ],
-    popular: false,
-    btnText: 'Get Started with Website',
-  },
-  {
-    slug: 'mobile-app',
-    name: 'Mobile App',
-    icon: Smartphone,
-    price: '₹1,00,000',
-    period: '',
-    desc: 'Dedicated native Android and iOS mobile applications for your team and customers on the go.',
-    features: [
-      'Native Android & iOS Applications',
-      'Push Notifications & Instant Alerts',
-      'Offline Synchronization & Caching',
-      'Camera QR & Barcode Scanner',
-      'Biometric & Fingerprint Login',
-      'Google Play & Apple Store Setup',
-    ],
-    popular: false,
-    btnText: 'Get Started with Mobile App',
-  },
-  {
-    slug: 'website-mobile-app',
-    name: 'Website + Mobile App',
-    icon: Layers,
-    price: '₹1,30,000',
-    period: '',
-    desc: 'Complete unified omnichannel solution with synchronized Web ERP and Native Mobile Apps.',
-    features: [
-      'Complete Web ERP + Android & iOS Apps',
-      'Seamless Cross-Platform Real-Time Sync',
-      'Unified Admin Control Center',
-      'Customer Booking & Ordering Suite',
-      'Dedicated Cloud Architecture & API',
-      '24/7 Priority Support & Maintenance',
-    ],
-    popular: true,
-    btnText: 'Get Complete Suite',
-  },
-];
+import { Check, Sparkles } from 'lucide-react';
 
 export const PricingPage = () => {
   const navigate = useNavigate();
-  const [modalMode, setModalMode] = useState(null);
-  const [tiers, setTiers] = useState(DEFAULT_TIERS);
   const { socket } = useSocket();
+  const [modalMode, setModalMode] = useState(null);
+  const [isAnnual, setIsAnnual] = useState(true);
+  const [livePlans, setLivePlans] = useState(null);
 
   useEffect(() => {
     let mounted = true;
     api.get('/pricing')
       .then((res) => {
         if (mounted && res.data && res.data.data && res.data.data.length > 0) {
-          const mapped = res.data.data.map((item) => ({
-            ...item,
-            icon: item.slug === 'website' ? Globe : item.slug === 'mobile-app' ? Smartphone : Layers,
-          }));
-          setTiers(mapped);
+          const hasOld = res.data.data.some(
+            (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+          );
+          if (!hasOld) {
+            setLivePlans(res.data.data);
+          }
         }
       })
       .catch((err) => console.warn('Using default pricing plans:', err.message));
@@ -94,11 +39,12 @@ export const PricingPage = () => {
     if (!socket) return;
     const handlePricingUpdated = (updatedPlans) => {
       if (Array.isArray(updatedPlans) && updatedPlans.length > 0) {
-        const mapped = updatedPlans.map((item) => ({
-          ...item,
-          icon: item.slug === 'website' ? Globe : item.slug === 'mobile-app' ? Smartphone : Layers,
-        }));
-        setTiers(mapped);
+        const hasOld = updatedPlans.some(
+          (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+        );
+        if (!hasOld) {
+          setLivePlans(updatedPlans);
+        }
       }
     };
     socket.on('pricing:updated', handlePricingUpdated);
@@ -106,6 +52,74 @@ export const PricingPage = () => {
       socket.off('pricing:updated', handlePricingUpdated);
     };
   }, [socket]);
+
+  const defaultTiers = [
+    {
+      slug: 'starter',
+      name: 'Starter',
+      price: isAnnual ? '₹2,499' : '₹3,299',
+      period: '/user /month',
+      desc: 'Ideal for small businesses and growing teams needing core HR & Project tools.',
+      features: [
+        'Up to 25 Active Employees',
+        'HRMS & Directory Portal',
+        'Leave & Attendance Tracking',
+        'Task & Project Boards',
+        'Standard Email Support',
+        'Continuous Cloud Backups',
+      ],
+      popular: false,
+      btnText: 'Start 14-Day Free Trial',
+    },
+    {
+      slug: 'professional',
+      name: 'Professional',
+      price: isAnnual ? '₹5,999' : '₹7,999',
+      period: '/user /month',
+      desc: 'Complete suite for scaling companies that need unified payroll, finance & CRM.',
+      features: [
+        'Up to 200 Employees',
+        'Full Payroll & Tax Automation',
+        'Finance, Invoicing & Expenses',
+        'Client CRM & Deal Pipelines',
+        'Asset Management & Devices',
+        'Priority 24/7 Live Support',
+      ],
+      popular: true,
+      btnText: 'Get Started with Pro',
+    },
+    {
+      slug: 'enterprise',
+      name: 'Enterprise',
+      price: 'Custom',
+      period: 'tailored quote',
+      desc: 'For large organizations demanding custom SLAs, dedicated infrastructure & audit.',
+      features: [
+        'Unlimited Employees & Users',
+        'Custom ERP Module Development',
+        'Dedicated Cloud Instance / VPC',
+        '24/7 Dedicated Account Manager',
+        'SSO / SAML / Active Directory',
+        'Custom Data Retention SLAs',
+      ],
+      popular: false,
+      btnText: 'Contact Enterprise Sales',
+    },
+  ];
+
+  const tiers = livePlans
+    ? livePlans.map((plan) => {
+        let price = plan.price;
+        if (!isAnnual) {
+          if (plan.slug === 'starter' && plan.price === '₹2,499') price = '₹3,299';
+          if (plan.slug === 'professional' && plan.price === '₹5,999') price = '₹7,999';
+        }
+        return {
+          ...plan,
+          price,
+        };
+      })
+    : defaultTiers;
 
   return (
     <div className="landing-wrapper">
@@ -124,6 +138,18 @@ export const PricingPage = () => {
             No hidden fees. Scale your ERP applications as your team and revenues grow.
           </p>
 
+          <div className="billing-toggle">
+            <span className={!isAnnual ? 'active' : ''}>Monthly</span>
+            <button
+              onClick={() => setIsAnnual(!isAnnual)}
+              className={`toggle-pill ${isAnnual ? 'annual' : ''}`}
+            >
+              <div className="toggle-thumb"></div>
+            </button>
+            <span className={isAnnual ? 'active' : ''}>
+              Annual <span className="discount-tag">Save 25%</span>
+            </span>
+          </div>
         </section>
 
         <section className="pricing-cards-section">
@@ -138,15 +164,12 @@ export const PricingPage = () => {
                     <Sparkles size={12} /> Most Popular
                   </div>
                 )}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  {tier.icon && <tier.icon size={22} className={tier.popular ? 'text-icon-green' : 'text-icon-blue'} />}
-                  <h3 className="tier-name" style={{ margin: 0 }}>{tier.name}</h3>
-                </div>
+                <h3 className="tier-name">{tier.name}</h3>
                 <p className="tier-desc">{tier.desc}</p>
 
                 <div className="tier-price-row">
                   <span className="tier-price">{tier.price}</span>
-                  {tier.period ? <span className="tier-period">{tier.period}</span> : null}
+                  <span className="tier-period">{tier.period}</span>
                 </div>
 
                 <button

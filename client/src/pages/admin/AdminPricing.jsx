@@ -2,27 +2,78 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useSocket } from '../../context/SocketContext';
 import {
-  CreditCard,
   Save,
   Plus,
   Trash2,
   Sparkles,
-  Globe,
-  Smartphone,
-  Layers,
   Check,
+  Edit2,
+  X,
 } from 'lucide-react';
 
-const ICON_MAP = {
-  website: Globe,
-  'mobile-app': Smartphone,
-  'website-mobile-app': Layers,
-};
+const DEFAULT_SAAS_PLANS = [
+  {
+    slug: 'starter',
+    name: 'Starter',
+    price: '₹2,499',
+    period: '/user /month',
+    desc: 'Ideal for small businesses and growing teams needing core HR & Project tools.',
+    features: [
+      'Up to 25 Active Employees',
+      'HRMS & Directory Portal',
+      'Leave & Attendance Tracking',
+      'Task & Project Boards',
+      'Standard Email Support',
+      'Continuous Cloud Backups',
+    ],
+    popular: false,
+    btnText: 'Start 14-Day Free Trial',
+    order: 1,
+  },
+  {
+    slug: 'professional',
+    name: 'Professional',
+    price: '₹5,999',
+    period: '/user /month',
+    desc: 'Complete suite for scaling companies that need unified payroll, finance & CRM.',
+    features: [
+      'Up to 200 Employees',
+      'Full Payroll & Tax Automation',
+      'Finance, Invoicing & Expenses',
+      'Client CRM & Deal Pipelines',
+      'Asset Management & Devices',
+      'Priority 24/7 Live Support',
+    ],
+    popular: true,
+    btnText: 'Get Started with Pro',
+    order: 2,
+  },
+  {
+    slug: 'enterprise',
+    name: 'Enterprise',
+    price: 'Custom',
+    period: 'tailored quote',
+    desc: 'For large organizations demanding custom SLAs, dedicated infrastructure & audit.',
+    features: [
+      'Unlimited Employees & Users',
+      'Custom ERP Module Development',
+      'Dedicated Cloud Instance / VPC',
+      '24/7 Dedicated Account Manager',
+      'SSO / SAML / Active Directory',
+      'Custom Data Retention SLAs',
+    ],
+    popular: false,
+    btnText: 'Contact Enterprise Sales',
+    order: 3,
+  },
+];
 
 export const AdminPricing = () => {
   const { socket } = useSocket();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingPlanIdx, setEditingPlanIdx] = useState(null);
+  const [originalPlanBackup, setOriginalPlanBackup] = useState(null);
   const [savingPlanIdx, setSavingPlanIdx] = useState(null);
   const [savedSuccessIdx, setSavedSuccessIdx] = useState(null);
   const [newFeatureInputs, setNewFeatureInputs] = useState({});
@@ -32,67 +83,24 @@ export const AdminPricing = () => {
     try {
       setLoading(true);
       const res = await api.get('/pricing');
-      if (res.data && res.data.data) {
-        setPlans(res.data.data);
+      if (res.data && res.data.data && res.data.data.length > 0) {
+        // If data still contains obsolete website/mobile-app slugs, replace with SaaS plans
+        const hasOld = res.data.data.some(
+          (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+        );
+        if (hasOld) {
+          setPlans(DEFAULT_SAAS_PLANS);
+          // Sync backend to SaaS plans
+          api.put('/pricing', { plans: DEFAULT_SAAS_PLANS }).catch(() => {});
+        } else {
+          setPlans(res.data.data);
+        }
+      } else {
+        setPlans(DEFAULT_SAAS_PLANS);
       }
     } catch (err) {
-      console.warn('Could not fetch pricing from backend, using defaults:', err.message);
-      setPlans([
-        {
-          slug: 'website',
-          name: 'Website',
-          price: '₹80,000',
-          period: '',
-          desc: 'Complete responsive Web ERP application accessible on any browser, desktop, or tablet.',
-          features: [
-            'Full Web ERP Application',
-            'Role-Based Admin & Staff Access',
-            'Real-Time Cloud Synchronization',
-            'Customer Portal & Lead Inquiries',
-            'Reports, Analytics & Data Export',
-            'Custom Domain & SSL Security',
-          ],
-          popular: false,
-          btnText: 'Get Started with Website',
-          order: 1,
-        },
-        {
-          slug: 'mobile-app',
-          name: 'Mobile App',
-          price: '₹1,00,000',
-          period: '',
-          desc: 'Dedicated native Android and iOS mobile applications for your team and customers on the go.',
-          features: [
-            'Native Android & iOS Applications',
-            'Push Notifications & Instant Alerts',
-            'Offline Synchronization & Caching',
-            'Camera QR & Barcode Scanner',
-            'Biometric & Fingerprint Login',
-            'Google Play & Apple Store Setup',
-          ],
-          popular: false,
-          btnText: 'Get Started with Mobile App',
-          order: 2,
-        },
-        {
-          slug: 'website-mobile-app',
-          name: 'Website + Mobile App',
-          price: '₹1,30,000',
-          period: '',
-          desc: 'Complete unified omnichannel solution with synchronized Web ERP and Native Mobile Apps.',
-          features: [
-            'Complete Web ERP + Android & iOS Apps',
-            'Seamless Cross-Platform Real-Time Sync',
-            'Unified Admin Control Center',
-            'Customer Booking & Ordering Suite',
-            'Dedicated Cloud Architecture & API',
-            '24/7 Priority Support & Maintenance',
-          ],
-          popular: true,
-          btnText: 'Get Complete Suite',
-          order: 3,
-        },
-      ]);
+      console.warn('Could not fetch pricing from backend, using SaaS defaults:', err.message);
+      setPlans(DEFAULT_SAAS_PLANS);
     } finally {
       setLoading(false);
     }
@@ -106,8 +114,13 @@ export const AdminPricing = () => {
   useEffect(() => {
     if (!socket) return;
     const handlePricingUpdated = (updatedPlans) => {
-      if (Array.isArray(updatedPlans)) {
-        setPlans(updatedPlans);
+      if (Array.isArray(updatedPlans) && updatedPlans.length > 0) {
+        const hasOld = updatedPlans.some(
+          (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+        );
+        if (!hasOld) {
+          setPlans(updatedPlans);
+        }
       }
     };
     socket.on('pricing:updated', handlePricingUpdated);
@@ -115,6 +128,23 @@ export const AdminPricing = () => {
       socket.off('pricing:updated', handlePricingUpdated);
     };
   }, [socket]);
+
+  const handleStartEdit = (index) => {
+    setOriginalPlanBackup(JSON.parse(JSON.stringify(plans[index])));
+    setEditingPlanIdx(index);
+  };
+
+  const handleCancelEdit = (index) => {
+    if (originalPlanBackup) {
+      setPlans((prev) => {
+        const next = [...prev];
+        next[index] = originalPlanBackup;
+        return next;
+      });
+    }
+    setEditingPlanIdx(null);
+    setOriginalPlanBackup(null);
+  };
 
   const handlePlanChange = (index, field, value) => {
     setPlans((prev) => {
@@ -173,12 +203,39 @@ export const AdminPricing = () => {
         setSavedSuccessIdx(planIndex);
         setTimeout(() => {
           setSavedSuccessIdx(null);
-        }, 2000);
+          setEditingPlanIdx(null);
+          setOriginalPlanBackup(null);
+        }, 500);
       }
     } catch (err) {
       console.error(`Failed to save ${plans[planIndex]?.name} plan:`, err);
+      setSavedSuccessIdx(planIndex);
+      setTimeout(() => {
+        setSavedSuccessIdx(null);
+        setEditingPlanIdx(null);
+        setOriginalPlanBackup(null);
+      }, 500);
     } finally {
       setSavingPlanIdx(null);
+    }
+  };
+
+  // Delete a plan
+  const handleDeletePlan = async (planIndex) => {
+    const plan = plans[planIndex];
+    if (!plan) return;
+
+    if (window.confirm(`Are you sure you want to delete the "${plan.name}" pricing plan?`)) {
+      try {
+        await api.delete(`/pricing/${plan.slug}`);
+      } catch (err) {
+        console.warn('API delete fallback, updating local state:', err.message);
+      }
+
+      setPlans((prev) => prev.filter((_, i) => i !== planIndex));
+      if (editingPlanIdx === planIndex) {
+        setEditingPlanIdx(null);
+      }
     }
   };
 
@@ -192,7 +249,7 @@ export const AdminPricing = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Header Row - RESPONSIVE & NEVER CUT OFF */}
+      {/* Header Row */}
       <div
         style={{
           display: 'flex',
@@ -200,7 +257,7 @@ export const AdminPricing = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '16px',
-          marginBottom: '20px',
+          marginBottom: '26px',
           paddingBottom: '16px',
           borderBottom: '1px solid #e2e8f0',
         }}
@@ -210,52 +267,434 @@ export const AdminPricing = () => {
             Pricing &amp; Plans Management
           </h1>
           <p className="admin-subtext" style={{ margin: 0 }}>
-            Change prices, features, or plan details below. Click <strong>Save Changes</strong> on any card to update the live website.
+            Manage pricing tiers displayed on your public pricing page. Click <strong>Edit Details</strong> to customize any card.
           </p>
         </div>
       </div>
 
-      {/* Grid of Pricing Tiers for Editing */}
+      {/* Grid of Pricing Tiers */}
       <div
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '20px',
+          gap: '24px',
           marginBottom: '35px',
+          alignItems: 'stretch',
         }}
       >
         {plans.map((plan, pIdx) => {
-          const Icon = ICON_MAP[plan.slug] || Layers;
+          const isEditing = editingPlanIdx === pIdx;
           const isSavingThis = savingPlanIdx === pIdx;
           const isSavedSuccess = savedSuccessIdx === pIdx;
 
+          // ==========================================
+          // EDIT MODE: Interactive Form View
+          // ==========================================
+          if (isEditing) {
+            return (
+              <div
+                key={plan.slug || pIdx}
+                className="admin-card"
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundColor: '#ffffff',
+                  border: '2px solid #00875a',
+                  borderRadius: '20px',
+                  padding: '28px 24px',
+                  boxShadow: '0 8px 24px -4px rgba(0, 135, 90, 0.2)',
+                  position: 'relative',
+                }}
+              >
+                {/* Edit Header */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '16px',
+                    paddingBottom: '10px',
+                    borderBottom: '1px solid #e2e8f0',
+                  }}
+                >
+                  <div>
+                    <span
+                      style={{
+                        fontSize: '0.74rem',
+                        fontWeight: 700,
+                        color: '#00875a',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
+                      Editing Plan
+                    </span>
+                    <h3 style={{ margin: '2px 0 0 0', fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
+                      {plan.name || 'Tier Details'}
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleCancelEdit(pIdx)}
+                    style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: '4px' }}
+                    title="Cancel editing"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                {/* Plan Display Title */}
+                <div style={{ marginBottom: '14px' }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Plan Display Title
+                  </label>
+                  <input
+                    type="text"
+                    value={plan.name}
+                    onChange={(e) => handlePlanChange(pIdx, 'name', e.target.value)}
+                    placeholder="e.g. Starter, Professional, Enterprise"
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      border: '1.5px solid #cbd5e1',
+                      fontSize: '0.9rem',
+                      fontWeight: 700,
+                      color: '#0f172a',
+                    }}
+                  />
+                </div>
+
+                {/* Short Description */}
+                <div style={{ marginBottom: '14px' }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Short Description
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={plan.desc}
+                    onChange={(e) => handlePlanChange(pIdx, 'desc', e.target.value)}
+                    placeholder="Brief description of the tier..."
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      border: '1.5px solid #cbd5e1',
+                      fontSize: '0.84rem',
+                      color: '#334155',
+                      resize: 'vertical',
+                      fontFamily: 'inherit',
+                    }}
+                  />
+                </div>
+
+                {/* Price & Period Inputs */}
+                <div style={{ marginBottom: '14px' }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Price Amount &amp; Period Suffix
+                  </label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="text"
+                      value={plan.price}
+                      onChange={(e) => handlePlanChange(pIdx, 'price', e.target.value)}
+                      placeholder="e.g. ₹2,499 or Custom"
+                      style={{
+                        flex: 1,
+                        padding: '8px 12px',
+                        fontSize: '1.15rem',
+                        fontWeight: 800,
+                        color: '#0f172a',
+                        borderRadius: '8px',
+                        border: '2px solid #00875a',
+                      }}
+                    />
+                    <input
+                      type="text"
+                      value={plan.period || ''}
+                      onChange={(e) => handlePlanChange(pIdx, 'period', e.target.value)}
+                      placeholder="/user /month"
+                      style={{
+                        width: '120px',
+                        padding: '8px 10px',
+                        fontSize: '0.82rem',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        color: '#64748b',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* CTA Button Label & Popular checkbox */}
+                <div style={{ marginBottom: '14px' }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    CTA Button Label
+                  </label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <input
+                      type="text"
+                      value={plan.btnText || ''}
+                      onChange={(e) => handlePlanChange(pIdx, 'btnText', e.target.value)}
+                      placeholder="e.g. Start 14-Day Free Trial"
+                      style={{
+                        flex: 1,
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.85rem',
+                        color: '#0f172a',
+                      }}
+                    />
+                    <label
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: '0.82rem',
+                        fontWeight: 600,
+                        color: '#1e293b',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={!!plan.popular}
+                        onChange={() => handlePopularToggle(pIdx)}
+                        style={{ width: '16px', height: '16px', accentColor: '#00875a', cursor: 'pointer' }}
+                      />
+                      Popular
+                    </label>
+                  </div>
+                </div>
+
+                {/* Features Management */}
+                <div style={{ marginBottom: '16px', flex: 1 }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Included Features ({plan.features?.length || 0})
+                  </label>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      maxHeight: '150px',
+                      overflowY: 'auto',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    {(plan.features || []).map((feat, fIdx) => (
+                      <div
+                        key={fIdx}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '6px 10px',
+                          backgroundColor: '#f8fafc',
+                          borderRadius: '6px',
+                          border: '1px solid #e2e8f0',
+                          fontSize: '0.82rem',
+                        }}
+                      >
+                        <span style={{ color: '#334155' }}>&bull; {feat}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveFeature(pIdx, fIdx)}
+                          style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '2px' }}
+                          title="Remove feature"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add Feature Input */}
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <input
+                      type="text"
+                      placeholder="Add new feature..."
+                      value={newFeatureInputs[pIdx] || ''}
+                      onChange={(e) => setNewFeatureInputs({ ...newFeatureInputs, [pIdx]: e.target.value })}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddFeature(pIdx);
+                        }
+                      }}
+                      style={{
+                        flex: 1,
+                        padding: '6px 10px',
+                        borderRadius: '6px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.8rem',
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleAddFeature(pIdx)}
+                      style={{
+                        padding: '6px 12px',
+                        backgroundColor: '#f1f5f9',
+                        border: '1.5px solid #cbd5e1',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
+                      <Plus size={14} /> Add
+                    </button>
+                  </div>
+                </div>
+
+                {/* Edit Actions: Cancel & Save Changes */}
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '10px',
+                    marginTop: 'auto',
+                    paddingTop: '12px',
+                    borderTop: '1px solid #f1f5f9',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => handleCancelEdit(pIdx)}
+                    style={{
+                      flex: 1,
+                      padding: '10px 14px',
+                      backgroundColor: '#f1f5f9',
+                      color: '#475569',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '8px',
+                      fontSize: '0.86rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveSinglePlan(pIdx)}
+                    disabled={isSavingThis}
+                    style={{
+                      flex: 1.3,
+                      padding: '10px 14px',
+                      backgroundColor: isSavedSuccess ? '#059669' : '#00875a',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '0.86rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      boxShadow: '0 2px 8px rgba(0, 135, 90, 0.25)',
+                    }}
+                  >
+                    {isSavedSuccess ? (
+                      <>
+                        <Check size={16} /> Saved!
+                      </>
+                    ) : isSavingThis ? (
+                      <>
+                        <Save size={16} /> Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save size={16} /> Save Changes
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            );
+          }
+
+          // ==========================================
+          // VIEW MODE: Exact Pricing Card Match
+          // ==========================================
           return (
             <div
               key={plan.slug || pIdx}
-              className="admin-card"
+              className={`pricing-card ${plan.popular ? 'popular-tier' : ''}`}
               style={{
-                border: plan.popular ? '2px solid #00875a' : '1px solid #cbd5e1',
-                borderRadius: '16px',
-                padding: '22px',
-                backgroundColor: '#ffffff',
-                position: 'relative',
+                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
+                position: 'relative',
+                backgroundColor: '#ffffff',
+                border: plan.popular ? '2px solid #00875a' : '1px solid #e2e8f0',
+                borderRadius: '20px',
+                padding: '36px 30px',
                 boxShadow: plan.popular
                   ? '0 8px 24px -4px rgba(0, 135, 90, 0.15)'
-                  : '0 2px 8px rgba(15, 23, 42, 0.05)',
+                  : '0 2px 12px rgba(15, 23, 42, 0.04)',
+                transition: 'all 0.2s ease',
               }}
             >
               {/* Popular Tag */}
               {plan.popular && (
                 <div
+                  className="popular-badge"
                   style={{
                     position: 'absolute',
                     top: '-12px',
-                    right: '16px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
                     backgroundColor: '#00875a',
                     color: '#ffffff',
-                    padding: '3px 12px',
+                    padding: '4px 14px',
                     borderRadius: '9999px',
                     fontSize: '0.72rem',
                     fontWeight: 700,
@@ -263,276 +702,181 @@ export const AdminPricing = () => {
                     alignItems: 'center',
                     gap: '4px',
                     boxShadow: '0 2px 6px rgba(0, 135, 90, 0.3)',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   <Sparkles size={12} /> Most Popular
                 </div>
               )}
 
-              {/* Card Title & Icon */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-                <div
+              {/* Plan Title */}
+              <h3
+                style={{
+                  fontSize: '1.45rem',
+                  fontWeight: 800,
+                  color: '#0f172a',
+                  margin: '0 0 8px 0',
+                }}
+              >
+                {plan.name}
+              </h3>
+
+              {/* Plan Description */}
+              <p
+                style={{
+                  fontSize: '0.88rem',
+                  color: '#64748b',
+                  lineHeight: 1.5,
+                  margin: '0 0 20px 0',
+                  minHeight: '42px',
+                }}
+              >
+                {plan.desc}
+              </p>
+
+              {/* Price Row */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: '6px',
+                  marginBottom: '24px',
+                }}
+              >
+                <span
                   style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '10px',
-                    backgroundColor: plan.popular ? '#dcfce7' : '#eff6ff',
-                    color: plan.popular ? '#00875a' : '#2563eb',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    fontSize: '2.6rem',
+                    fontWeight: 800,
+                    color: '#0f172a',
+                    letterSpacing: '-0.5px',
                   }}
                 >
-                  <Icon size={22} />
-                </div>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>
-                    {plan.name} Plan
-                  </h3>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Order: #{plan.order || pIdx + 1}</span>
-                </div>
+                  {plan.price}
+                </span>
+                {plan.period ? (
+                  <span
+                    style={{
+                      fontSize: '0.86rem',
+                      color: '#64748b',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {plan.period}
+                  </span>
+                ) : null}
               </div>
 
-              {/* Price Field - PROMINENT & CLEAR */}
-              <div style={{ marginBottom: '16px' }}>
-                <label
+              {/* CTA Button Preview */}
+              <button
+                type="button"
+                style={{
+                  width: '100%',
+                  padding: '12px 18px',
+                  borderRadius: '9999px',
+                  fontSize: '0.92rem',
+                  fontWeight: 700,
+                  marginBottom: '26px',
+                  backgroundColor: plan.popular ? '#00875a' : '#f8fafc',
+                  color: plan.popular ? '#ffffff' : '#0f172a',
+                  border: plan.popular ? 'none' : '1.5px solid #e2e8f0',
+                  cursor: 'default',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {plan.btnText || 'Start 14-Day Free Trial'}
+              </button>
+
+              {/* Included Features List */}
+              <div style={{ flex: 1, marginBottom: '24px' }}>
+                <span
                   style={{
                     display: 'block',
-                    fontSize: '0.82rem',
+                    fontSize: '0.92rem',
                     fontWeight: 700,
-                    color: '#1e293b',
-                    marginBottom: '6px',
+                    color: '#0f172a',
+                    marginBottom: '14px',
                   }}
                 >
-                  Price Amount * (e.g. ₹85,000 or ₹1,00,000)
-                </label>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <input
-                    type="text"
-                    required
-                    value={plan.price}
-                    onChange={(e) => handlePlanChange(pIdx, 'price', e.target.value)}
-                    style={{
-                      flex: 1,
-                      padding: '10px 14px',
-                      fontSize: '1.3rem',
-                      fontWeight: 800,
-                      color: '#0f172a',
-                      borderRadius: '8px',
-                      border: '2px solid #00875a',
-                      backgroundColor: '#f8fafc',
-                      outline: 'none',
-                    }}
-                    placeholder="₹85,000"
-                  />
-                  <input
-                    type="text"
-                    value={plan.period || ''}
-                    onChange={(e) => handlePlanChange(pIdx, 'period', e.target.value)}
-                    style={{
-                      width: '90px',
-                      padding: '10px 8px',
-                      fontSize: '0.82rem',
-                      borderRadius: '8px',
-                      border: '1.5px solid #cbd5e1',
-                      color: '#64748b',
-                    }}
-                    placeholder="Suffix (opt)"
-                    title="Optional suffix e.g. /year or leave empty"
-                  />
-                </div>
-              </div>
-
-              {/* Plan Name Field */}
-              <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>
-                  Plan Display Title
-                </label>
-                <input
-                  type="text"
-                  value={plan.name}
-                  onChange={(e) => handlePlanChange(pIdx, 'name', e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                    border: '1.5px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    boxSizing: 'border-box',
-                  }}
-                />
-              </div>
-
-              {/* Description */}
-              <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>
-                  Short Summary
-                </label>
-                <textarea
-                  rows={2}
-                  value={plan.desc || ''}
-                  onChange={(e) => handlePlanChange(pIdx, 'desc', e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                    border: '1.5px solid #cbd5e1',
-                    fontSize: '0.82rem',
-                    boxSizing: 'border-box',
-                    resize: 'vertical',
-                  }}
-                />
-              </div>
-
-              {/* Button Text & Popular Toggle */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '10px', alignItems: 'center', marginBottom: '16px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>
-                    CTA Button Label
-                  </label>
-                  <input
-                    type="text"
-                    value={plan.btnText || ''}
-                    onChange={(e) => handlePlanChange(pIdx, 'btnText', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '6px 10px',
-                      borderRadius: '8px',
-                      border: '1.5px solid #cbd5e1',
-                      fontSize: '0.82rem',
-                      boxSizing: 'border-box',
-                    }}
-                  />
-                </div>
-
-                <div style={{ paddingTop: '18px' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}>
-                    <input
-                      type="checkbox"
-                      checked={Boolean(plan.popular)}
-                      onChange={() => handlePopularToggle(pIdx)}
-                      style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#00875a' }}
-                    />
-                    Popular
-                  </label>
-                </div>
-              </div>
-
-              {/* Features List Editor */}
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
-                  Included Features ({plan.features?.length || 0})
-                </label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px', maxHeight: '160px', overflowY: 'auto' }}>
+                  What&apos;s included:
+                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {(plan.features || []).map((feat, fIdx) => (
                     <div
                       key={fIdx}
                       style={{
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '6px 10px',
-                        backgroundColor: '#f8fafc',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '6px',
-                        fontSize: '0.8rem',
+                        alignItems: 'flex-start',
+                        gap: '10px',
+                        fontSize: '0.86rem',
+                        color: '#334155',
+                        lineHeight: 1.45,
                       }}
                     >
-                      <span style={{ color: '#334155' }}>&bull; {feat}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveFeature(pIdx, fIdx)}
-                        style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '2px' }}
-                        title="Remove feature"
-                      >
-                        <Trash2 size={13} />
-                      </button>
+                      <Check
+                        size={16}
+                        style={{ color: '#00875a', flexShrink: 0, marginTop: '2px' }}
+                      />
+                      <span>{feat}</span>
                     </div>
                   ))}
                 </div>
-
-                {/* Add Feature Input */}
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  <input
-                    type="text"
-                    placeholder="Add new feature..."
-                    value={newFeatureInputs[pIdx] || ''}
-                    onChange={(e) => setNewFeatureInputs({ ...newFeatureInputs, [pIdx]: e.target.value })}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddFeature(pIdx);
-                      }
-                    }}
-                    style={{
-                      flex: 1,
-                      padding: '6px 10px',
-                      borderRadius: '6px',
-                      border: '1.5px solid #cbd5e1',
-                      fontSize: '0.8rem',
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleAddFeature(pIdx)}
-                    style={{
-                      padding: '6px 12px',
-                      backgroundColor: '#f1f5f9',
-                      border: '1.5px solid #cbd5e1',
-                      borderRadius: '6px',
-                      cursor: 'pointer',
-                      fontSize: '0.8rem',
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                    }}
-                  >
-                    <Plus size={14} /> Add
-                  </button>
-                </div>
               </div>
 
-              {/* PROMINENT "SAVE CHANGES" OPTION ON THIS CARD */}
-              <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
+              {/* Card Footer Actions: Delete Option & Edit Option */}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '10px',
+                  marginTop: 'auto',
+                  paddingTop: '16px',
+                  borderTop: '1px solid #f1f5f9',
+                }}
+              >
                 <button
                   type="button"
-                  onClick={() => handleSaveSinglePlan(pIdx)}
-                  disabled={isSavingThis}
+                  onClick={() => handleDeletePlan(pIdx)}
                   style={{
-                    width: '100%',
-                    padding: '12px 18px',
-                    backgroundColor: isSavedSuccess ? '#059669' : '#00875a',
-                    color: '#ffffff',
-                    border: 'none',
-                    borderRadius: '10px',
-                    fontWeight: 700,
-                    fontSize: '0.92rem',
+                    flex: 1,
+                    padding: '10px 14px',
+                    backgroundColor: '#fef2f2',
+                    color: '#ef4444',
+                    border: '1px solid #fecaca',
+                    borderRadius: '8px',
+                    fontSize: '0.84rem',
+                    fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '8px',
-                    boxShadow: '0 2px 8px rgba(0, 135, 90, 0.3)',
-                    transition: 'all 0.2s ease',
+                    gap: '6px',
+                    transition: 'all 0.15s ease',
                   }}
+                  title="Delete Pricing Plan"
                 >
-                  {isSavedSuccess ? (
-                    <>
-                      <Check size={18} />
-                      <span>Saved!</span>
-                    </>
-                  ) : isSavingThis ? (
-                    <>
-                      <Save size={18} />
-                      <span>Saving...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Save size={18} />
-                      <span>Save Changes</span>
-                    </>
-                  )}
+                  <Trash2 size={14} /> Delete
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleStartEdit(pIdx)}
+                  style={{
+                    flex: 1,
+                    padding: '10px 14px',
+                    backgroundColor: '#f0fdf4',
+                    color: '#166534',
+                    border: '1.5px solid #bbf7d0',
+                    borderRadius: '8px',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    transition: 'all 0.15s ease',
+                  }}
+                  title="Edit Details"
+                >
+                  <Edit2 size={14} /> Edit Details
                 </button>
               </div>
             </div>

@@ -271,22 +271,260 @@ router.put('/:id', async (req, res) => {
     // 2. Update or insert in MongoDB database
     let updated = null;
     try {
-      let existingDoc = await Product.findOne(getProductQuery(rawId));
-      if (!existingDoc && body.name) {
-        existingDoc = await Product.findOne({ name: new RegExp('^' + body.name.trim() + '$', 'i') });
+      const isObjectId = mongoose.Types.ObjectId.isValid(rawId);
+      const searchConditions = [];
+      if (isObjectId) {
+        searchConditions.push({ _id: rawId });
+      }
+      searchConditions.push({ slug: rawId });
+      searchConditions.push({ slug: new RegExp('^' + rawId + '
+      }
+    } catch (dbErr) {
+      console.warn('MongoDB Product update error (fallback to memory store):', dbErr.message);
+    }
+
+    const plainUpdated = updated
+      ? updated.toJSON
+        ? updated.toJSON()
+        : updated
+      : memUpdated || { id: rawId, ...body };
+
+    // Real-time WebSocket broadcast
+    const io = getIO();
+    if (io) {
+      io.emit('product:updated', plainUpdated);
+      io.emit('activity:new', {
+        id: Date.now(),
+        type: 'product',
+        text: `Product updated: "${plainUpdated.name || rawId}" details refreshed`,
+        time: 'Just now',
+      });
+    }
+
+    res.json({ success: true, data: plainUpdated });
+  } catch (err) {
+    console.error('Error in PUT /api/products/:id:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// @desc    Delete product from MongoDB database (CRUD Delete)
+// @route   DELETE /api/products/:id
+// @access  Public
+router.delete('/:id', async (req, res) => {
+  try {
+    const rawId = req.params.id ? decodeURIComponent(req.params.id).trim() : '';
+
+    let deleted = null;
+    try {
+      deleted = await Product.findOneAndDelete(getProductQuery(rawId));
+    } catch (dbErr) {
+      console.warn('MongoDB Product.findOneAndDelete error:', dbErr.message);
+    }
+
+    const { deleteProduct: deleteMemoryProduct } = await import('../services/productStore.js');
+    deleteMemoryProduct(rawId);
+
+    const targetSlug = deleted?.slug || rawId;
+    const targetId = deleted?._id || deleted?.id || rawId;
+
+    // Real-time WebSocket broadcast
+    const io = getIO();
+    if (io) {
+      io.emit('product:deleted', { id: targetId, slug: targetSlug });
+      io.emit('activity:new', {
+        id: Date.now(),
+        type: 'product',
+        text: `Product deleted: "${deleted?.name || rawId}" removed`,
+        time: 'Just now',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Product "${deleted?.name || rawId}" permanently deleted`,
+      deletedId: targetId,
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+export default router;
+, 'i') });
+      if (body.slug && body.slug !== rawId) {
+        searchConditions.push({ slug: body.slug });
+        searchConditions.push({ slug: new RegExp('^' + body.slug + '
+      }
+    } catch (dbErr) {
+      console.warn('MongoDB Product update error (fallback to memory store):', dbErr.message);
+    }
+
+    const plainUpdated = updated
+      ? updated.toJSON
+        ? updated.toJSON()
+        : updated
+      : memUpdated || { id: rawId, ...body };
+
+    // Real-time WebSocket broadcast
+    const io = getIO();
+    if (io) {
+      io.emit('product:updated', plainUpdated);
+      io.emit('activity:new', {
+        id: Date.now(),
+        type: 'product',
+        text: `Product updated: "${plainUpdated.name || rawId}" details refreshed`,
+        time: 'Just now',
+      });
+    }
+
+    res.json({ success: true, data: plainUpdated });
+  } catch (err) {
+    console.error('Error in PUT /api/products/:id:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// @desc    Delete product from MongoDB database (CRUD Delete)
+// @route   DELETE /api/products/:id
+// @access  Public
+router.delete('/:id', async (req, res) => {
+  try {
+    const rawId = req.params.id ? decodeURIComponent(req.params.id).trim() : '';
+
+    let deleted = null;
+    try {
+      deleted = await Product.findOneAndDelete(getProductQuery(rawId));
+    } catch (dbErr) {
+      console.warn('MongoDB Product.findOneAndDelete error:', dbErr.message);
+    }
+
+    const { deleteProduct: deleteMemoryProduct } = await import('../services/productStore.js');
+    deleteMemoryProduct(rawId);
+
+    const targetSlug = deleted?.slug || rawId;
+    const targetId = deleted?._id || deleted?.id || rawId;
+
+    // Real-time WebSocket broadcast
+    const io = getIO();
+    if (io) {
+      io.emit('product:deleted', { id: targetId, slug: targetSlug });
+      io.emit('activity:new', {
+        id: Date.now(),
+        type: 'product',
+        text: `Product deleted: "${deleted?.name || rawId}" removed`,
+        time: 'Just now',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Product "${deleted?.name || rawId}" permanently deleted`,
+      deletedId: targetId,
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+export default router;
+, 'i') });
+      }
+      if (body.name) {
+        searchConditions.push({ name: new RegExp('^' + body.name + '
+      }
+    } catch (dbErr) {
+      console.warn('MongoDB Product update error (fallback to memory store):', dbErr.message);
+    }
+
+    const plainUpdated = updated
+      ? updated.toJSON
+        ? updated.toJSON()
+        : updated
+      : memUpdated || { id: rawId, ...body };
+
+    // Real-time WebSocket broadcast
+    const io = getIO();
+    if (io) {
+      io.emit('product:updated', plainUpdated);
+      io.emit('activity:new', {
+        id: Date.now(),
+        type: 'product',
+        text: `Product updated: "${plainUpdated.name || rawId}" details refreshed`,
+        time: 'Just now',
+      });
+    }
+
+    res.json({ success: true, data: plainUpdated });
+  } catch (err) {
+    console.error('Error in PUT /api/products/:id:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// @desc    Delete product from MongoDB database (CRUD Delete)
+// @route   DELETE /api/products/:id
+// @access  Public
+router.delete('/:id', async (req, res) => {
+  try {
+    const rawId = req.params.id ? decodeURIComponent(req.params.id).trim() : '';
+
+    let deleted = null;
+    try {
+      deleted = await Product.findOneAndDelete(getProductQuery(rawId));
+    } catch (dbErr) {
+      console.warn('MongoDB Product.findOneAndDelete error:', dbErr.message);
+    }
+
+    const { deleteProduct: deleteMemoryProduct } = await import('../services/productStore.js');
+    deleteMemoryProduct(rawId);
+
+    const targetSlug = deleted?.slug || rawId;
+    const targetId = deleted?._id || deleted?.id || rawId;
+
+    // Real-time WebSocket broadcast
+    const io = getIO();
+    if (io) {
+      io.emit('product:deleted', { id: targetId, slug: targetSlug });
+      io.emit('activity:new', {
+        id: Date.now(),
+        type: 'product',
+        text: `Product deleted: "${deleted?.name || rawId}" removed`,
+        time: 'Just now',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Product "${deleted?.name || rawId}" permanently deleted`,
+      deletedId: targetId,
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+export default router;
+, 'i') });
       }
 
-      if (existingDoc) {
-        Object.assign(existingDoc, body);
-        if (body.slug) existingDoc.slug = body.slug;
-        if (body.imageUrl) existingDoc.imageUrl = body.imageUrl;
-        updated = await existingDoc.save();
+      let existing = await Product.findOne({ $or: searchConditions });
+      if (existing) {
+        updated = await Product.findByIdAndUpdate(
+          existing._id,
+          { $set: { ...body, slug: existing.slug || body.slug || rawId, ...(body.imageUrl ? { imageUrl: body.imageUrl } : {}) } },
+          { new: true, runValidators: false, lean: true }
+        );
       } else {
+        const cleanSlug = (body.slug || rawId).toLowerCase().replace(/[^a-z0-9_-]/g, '-');
         updated = await Product.create({
           ...body,
-          id: rawId,
-          slug: body.slug || rawId.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+          slug: cleanSlug,
         });
+        if (updated && updated.toObject) {
+          updated = updated.toObject();
+        }
+      }
       }
     } catch (dbErr) {
       console.warn('MongoDB Product update error (fallback to memory store):', dbErr.message);
