@@ -11,7 +11,6 @@ import {
   Lock,
   Eye,
   EyeOff,
-  RotateCcw,
   ShieldCheck,
   Mail,
   Building,
@@ -98,16 +97,6 @@ export const AdminSettings = () => {
     } finally {
       setSaving(false);
     }
-  };
-
-  const handleReset = () => {
-    setName(user?.name || 'Speshway Administrator');
-    setEmail(user?.email || 'admin@gmail.com');
-    setDepartment(user?.department || 'Executive Administration');
-    setNewPassword('');
-    setConfirmPassword('');
-    setErrorMsg('');
-    setSuccessMsg('');
   };
 
   const initials = (() => {
@@ -490,25 +479,6 @@ export const AdminSettings = () => {
               borderTop: '1px solid #f1f5f9',
             }}
           >
-            <button
-              type="button"
-              onClick={handleReset}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '10px 18px',
-                backgroundColor: '#f8fafc',
-                border: '1.5px solid #cbd5e1',
-                borderRadius: '8px',
-                color: '#475569',
-                fontSize: '0.86rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              <RotateCcw size={15} /> Reset
-            </button>
             <button
               type="submit"
               disabled={saving}
