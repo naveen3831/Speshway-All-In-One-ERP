@@ -338,23 +338,7 @@ export const ProductsPage = () => {
                       <Globe size={14} /> View Website
                     </button>
 
-                    <label
-                      onClick={(e) => e.stopPropagation()}
-                      className="catalog-btn-image-action"
-                      title="Click to upload/change image directly from your computer"
-                      style={{ cursor: 'pointer', margin: 0, position: 'relative' }}
-                    >
-                      <ImageIcon size={13} />
-                      <span>{prod.imageUrl ? 'Change Image' : 'Add Image'}</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        onChange={(e) => handleDirectImageUpload(prod, e)}
-                      />
-                    </label>
-
-                                        <button
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         const s = (prod.slug || prod.id || '').toLowerCase();
