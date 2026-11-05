@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import {
   LayoutGrid,
+  Scissors,
+  FileText,
   ShoppingCart,
   Users,
   Package,
@@ -341,14 +342,18 @@ export const AneeraDashboard = () => {
         </div>
 
         {/* Sidebar Footer Logout */}
-        <div className="aneera-sidebar-footer">
-          <button
-            className="aneera-logout-btn"
-            onClick={() => navigate('/product/aneera-silks')}
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        <div className="aneera-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="aneera-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="aneera-user-profile">
+            <div className="aneera-avatar">AS</div>
+            <div className="aneera-user-info">
+              <span className="aneera-user-name">Master Silk Curator</span>
+              <span className="aneera-user-role">Aneera Silks HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -1256,6 +1261,101 @@ export const AneeraDashboard = () => {
                           <td><span className="aneera-operational-pill">{u.role}</span></td>
                           <td>{u.sec}</td>
                           <td><span className="aneera-badge active">{u.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+
+          {/* TAB: MASTER WEAVERS & LOOMS */}
+          {activeTab === 'looms' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className="aneera-section-header">
+                <div className="aneera-section-title-wrap">
+                  <h1>Master Weavers & Handloom Clusters</h1>
+                  <p>Coordinating directly with Kanchipuram, Arani, and Dharmavaram master silk weavers.</p>
+                </div>
+                <button className="aneera-btn-primary"><Plus size={16} /> Register Weaver</button>
+              </div>
+              <div className="aneera-card">
+                <div className="aneera-table-wrapper">
+                  <table className="aneera-table">
+                    <thead>
+                      <tr>
+                        <th>WEAVER NAME</th>
+                        <th>LOOM SOCIETY</th>
+                        <th>ACTIVE LOOMS</th>
+                        <th>HERITAGE WEAVE</th>
+                        <th>MONTHLY CAPACITY</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { name: 'K. R. Ramanathan', soc: 'Kanchipuram Silk Weavers Sector 1', looms: '12 Looms', weave: 'Pure Gold Zari Temple Borders', cap: '24 Sarees/mo', st: 'Active' },
+                        { name: 'Srinivasa Padmashali', soc: 'Dharmavaram Apex Guild', looms: '8 Looms', weave: 'Heavy Tissue Brocade', cap: '18 Sarees/mo', st: 'Active' },
+                        { name: 'Gopalrao Kulkarni', soc: 'Arani Traditional Loom Society', looms: '10 Looms', weave: 'Contrast Korvai Borders', cap: '20 Sarees/mo', st: 'Active' },
+                        { name: 'Devendra Koli', soc: 'Pochampally Double Ikat Guild', looms: '6 Looms', weave: 'Heritage Silk Ikat Weft', cap: '14 Sarees/mo', st: 'Active' },
+                      ].map((w, i) => (
+                        <tr key={i}>
+                          <td className="aneera-customer-name">{w.name}</td>
+                          <td>{w.soc}</td>
+                          <td><span className="aneera-operational-pill">{w.looms}</span></td>
+                          <td>{w.weave}</td>
+                          <td><strong>{w.cap}</strong></td>
+                          <td><span className="aneera-badge active">{w.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: GST TAX INVOICES */}
+          {activeTab === 'invoices' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className="aneera-section-header">
+                <div className="aneera-section-title-wrap">
+                  <h1>GST Tax Invoices & E-Way Bills (HSN 5007)</h1>
+                  <p>Taxation records, 5% silk handloom GST breakdown, and customer dispatch receipts.</p>
+                </div>
+                <button className="aneera-btn-primary"><Plus size={16} /> New Tax Invoice</button>
+              </div>
+              <div className="aneera-card">
+                <div className="aneera-table-wrapper">
+                  <table className="aneera-table">
+                    <thead>
+                      <tr>
+                        <th>INVOICE NO</th>
+                        <th>CLIENT NAME</th>
+                        <th>DATE</th>
+                        <th>TAXABLE VALUE</th>
+                        <th>GST (5%)</th>
+                        <th>TOTAL INVOICE</th>
+                        <th>E-WAY BILL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { inv: 'ANR-2026-901', client: 'Ananya Sharma (Hyderabad)', dt: '04 Nov 2026', tax: '₹1,28,095', gst: '₹6,405', tot: '₹1,34,500', ewb: 'EWB-8819021' },
+                        { inv: 'ANR-2026-900', client: 'Priya Mehra (Bengaluru)', dt: '03 Nov 2026', tax: '₹1,35,238', gst: '₹6,762', tot: '₹1,42,000', ewb: 'EWB-8819020' },
+                        { inv: 'ANR-2026-899', client: 'Deepika Rao (Chennai)', dt: '02 Nov 2026', tax: '₹1,12,857', gst: '₹5,643', tot: '₹1,18,500', ewb: 'EWB-8819019' },
+                        { inv: 'ANR-2026-898', client: 'Kavita Patel (Mumbai)', dt: '01 Nov 2026', tax: '₹1,10,857', gst: '₹5,543', tot: '₹1,16,400', ewb: 'EWB-8819018' },
+                      ].map((inv, i) => (
+                        <tr key={i}>
+                          <td className="aneera-customer-name">{inv.inv}</td>
+                          <td>{inv.client}</td>
+                          <td>{inv.dt}</td>
+                          <td>{inv.tax}</td>
+                          <td>{inv.gst}</td>
+                          <td><strong style={{ color: '#059669' }}>{inv.tot}</strong></td>
+                          <td><span className="aneera-operational-pill">{inv.ewb}</span></td>
                         </tr>
                       ))}
                     </tbody>

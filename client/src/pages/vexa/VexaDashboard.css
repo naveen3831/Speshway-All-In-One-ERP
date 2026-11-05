@@ -920,3 +920,142 @@ body:has(.vexa-erp-root)::-webkit-scrollbar {
   width: 0 !important;
   height: 0 !important;
 }
+
+
+/* ==========================================================================
+   UNIFIED SAVITRI SAREES SIDEBAR STANDARD (.vexa-*)
+   ========================================================================== */
+.vexa-sidebar {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  justify-content: space-between !important;
+}
+
+.vexa-sidebar-top {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.vexa-sidebar-top::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Nav Item Pill Shape (Matching Image 2 Standard) */
+.vexa-nav-btn, .vexa-nav-item {
+  border-radius: 9999px !important;
+}
+
+.vexa-nav-btn.active, .vexa-nav-item.active {
+  background: #10b981 !important;
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+.vexa-nav-btn.active svg, .vexa-nav-item.active svg {
+  color: #ffffff !important;
+}
+
+.vexa-nav-badge, .vexa-badge {
+  background: #047857 !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 12px !important;
+}
+
+.vexa-nav-btn.active .vexa-nav-badge,
+.vexa-nav-item.active .vexa-badge {
+  background: #ffffff !important;
+  color: #047857 !important;
+}
+
+/* Unified Sidebar Bottom Pinned Area (NO WAVE, NO OVERLAP) */
+.vexa-sidebar-bottom {
+  padding: 14px 12px 18px 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #0b1120 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.vexa-btn-portal {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 9px 14px !important;
+  border-radius: 8px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+
+.vexa-btn-portal:hover {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.vexa-user-profile {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 6px 4px !important;
+}
+
+.vexa-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 13px !important;
+  flex-shrink: 0 !important;
+}
+
+.vexa-user-info {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.vexa-user-name {
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.vexa-user-role {
+  font-size: 11px !important;
+  color: #10b981 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}

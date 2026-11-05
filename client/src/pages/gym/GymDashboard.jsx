@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   LayoutGrid,
   Users,
@@ -88,6 +87,8 @@ export const GymDashboard = () => {
     { id: 'attendance', label: 'Attendance', icon: CheckCircle2 },
     { id: 'reports', label: 'Reports & Analytics', icon: TrendingUp },
     { id: 'users', label: 'Users & Roles', icon: ShieldCheck },
+    { id: 'equipment', label: 'Gym Equipment & Service', icon: Activity },
+    { id: 'nutrition', label: 'Diet & Supplements', icon: HeartPulse },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -226,7 +227,8 @@ export const GymDashboard = () => {
     <div className="gym-wrapper">
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
       <aside className="gym-sidebar">
-        {/* Brand Header */}
+        <div className="gym-sidebar-top">
+          {/* Brand Header */}
         <div className="gym-brand">
           <div className="gym-logo-container">
             <GymLogoIcon />
@@ -257,44 +259,21 @@ export const GymDashboard = () => {
             );
           })}
         </nav>
-
-        {/* Emerald Green Silk Wave at Bottom Left */}
-        <div className="gym-sidebar-green-wave">
-          <svg viewBox="0 0 250 90" fill="none" xmlns="http://www.w3.org/2000/svg" className="gym-wave-svg">
-            <path
-              d="M0 60 C50 40, 110 90, 160 50 C210 10, 240 70, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradGym1)"
-            />
-            <path
-              d="M0 72 C70 52, 130 95, 180 65 C220 35, 245 78, 250 90 L250 90 L0 90 Z"
-              fill="url(#greenSilkGradGym2)"
-              opacity="0.85"
-            />
-            <defs>
-              <linearGradient id="greenSilkGradGym1" x1="0" y1="20" x2="250" y2="70" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#10b981" />
-                <stop offset="0.6" stopColor="#059669" />
-                <stop offset="1" stopColor="#047857" stopOpacity="0.95" />
-              </linearGradient>
-              <linearGradient id="greenSilkGradGym2" x1="0" y1="40" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#059669" />
-                <stop offset="0.7" stopColor="#047857" />
-                <stop offset="1" stopColor="#022C22" />
-              </linearGradient>
-            </defs>
-          </svg>
         </div>
 
-        {/* Sidebar Footer Logout */}
-        <div className="gym-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/american-fitness-gym')}
-            className="gym-logout-btn"
-            title="Exit Gym Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        {/* Sidebar Pinned Bottom */}
+        <div className="gym-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="gym-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="gym-user-profile">
+            <div className="gym-avatar">AF</div>
+            <div className="gym-user-info">
+              <span className="gym-user-name">Head Fitness Coach</span>
+              <span className="gym-user-role">American Fitness Gym HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -1132,6 +1111,109 @@ export const GymDashboard = () => {
             </div>
           )}
         </div>
+
+          {/* TAB: GYM EQUIPMENT & SERVICE */}
+          {activeTab === 'equipment' && (
+            <div className="gym-view">
+              <div className="gym-section-header">
+                <div>
+                  <h2 className="gym-section-title">Fitness Machinery & Preventative Maintenance</h2>
+                  <p className="gym-section-subtitle">Treadmills, cable cross machines, plate-loaded racks, and scheduled technician audits</p>
+                </div>
+                <button className="gym-btn-primary">
+                  <Plus size={16} />
+                  <span>Log Service Ticket</span>
+                </button>
+              </div>
+              <div className="gym-card">
+                <div className="gym-table-responsive">
+                  <table className="gym-table">
+                    <thead>
+                      <tr>
+                        <th>EQUIPMENT ID</th>
+                        <th>MACHINE NAME & BRAND</th>
+                        <th>ZONE / SECTION</th>
+                        <th>LAST SERVICE DATE</th>
+                        <th>NEXT AUDIT DUE</th>
+                        <th>TECHNICIAN</th>
+                        <th>OPERATIONAL STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { id: 'EQP-TR-101', name: 'Life Fitness Elevation Treadmill #1', zone: 'Cardio Deck (Floor 1)', last: '12 Oct 2026', next: '12 Jan 2027', tech: 'FitTech Services Hyderabad', st: 'Optimal' },
+                        { id: 'EQP-TR-102', name: 'Life Fitness Elevation Treadmill #2', zone: 'Cardio Deck (Floor 1)', last: '12 Oct 2026', next: '12 Jan 2027', tech: 'FitTech Services Hyderabad', st: 'Optimal' },
+                        { id: 'EQP-SM-204', name: 'Hammer Strength Dual Adjustable Pulley', zone: 'Functional Strength Zone', last: '24 Sep 2026', next: '24 Dec 2026', tech: 'Apex Fitness Care', st: 'Optimal' },
+                        { id: 'EQP-LR-308', name: 'Rogue Monster Olympic Power Rack', zone: 'Heavy Powerlifting Area', last: '01 Aug 2026', next: '01 Feb 2027', tech: 'Internal Gym Master', st: 'Optimal' },
+                      ].map((e, i) => (
+                        <tr key={i}>
+                          <td><strong>{e.id}</strong></td>
+                          <td><span style={{ fontWeight: 600 }}>{e.name}</span></td>
+                          <td>{e.zone}</td>
+                          <td>{e.last}</td>
+                          <td>{e.next}</td>
+                          <td>{e.tech}</td>
+                          <td><span className="gym-active-badge">{e.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: DIET & NUTRITION */}
+          {activeTab === 'nutrition' && (
+            <div className="gym-view">
+              <div className="gym-section-header">
+                <div>
+                  <h2 className="gym-section-title">Diet Plans & Nutrition Pro Store</h2>
+                  <p className="gym-section-subtitle">Whey isolates, BCAAs, pre-workouts, and certified nutritionist member meal plans</p>
+                </div>
+                <button className="gym-btn-primary">
+                  <Plus size={16} />
+                  <span>Assign Diet Plan</span>
+                </button>
+              </div>
+              <div className="gym-card">
+                <div className="gym-table-responsive">
+                  <table className="gym-table">
+                    <thead>
+                      <tr>
+                        <th>MEMBER NAME</th>
+                        <th>NUTRITIONIST</th>
+                        <th>TARGET GOAL</th>
+                        <th>DAILY CALORIE TARGET</th>
+                        <th>MACRO RATIO (P/C/F)</th>
+                        <th>SUPPLEMENT STACK</th>
+                        <th>PLAN STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { mem: 'Rohit Verma', nut: 'Dr. Shruti Sen (Sports Nutritionist)', goal: 'Lean Muscle Hypertrophy', cal: '2,650 kcal', mac: '40% / 40% / 20%', sup: 'Gold Standard Whey + Creatine Monohydrate', st: 'Active Plan' },
+                        { mem: 'Ananya Sharma', nut: 'Dr. Shruti Sen', goal: 'Athletic Conditioning & Fat Loss', cal: '1,750 kcal', mac: '35% / 45% / 20%', sup: 'Hydrolyzed Whey Isolate + Multivitamin', st: 'Active Plan' },
+                        { mem: 'Vikram Patel', nut: 'Coach Marcus Vance', goal: 'Strength & Powerlifting Prep', cal: '3,200 kcal', mac: '35% / 45% / 20%', sup: 'Whey Protein + BCAA + Electrolytes', st: 'Active Plan' },
+                        { mem: 'Kavita Reddy', nut: 'Dr. Shruti Sen', goal: 'Metabolic Reset & Tone', cal: '1,600 kcal', mac: '30% / 50% / 20%', sup: 'Plant Protein Organic + Omega 3', st: 'Active Plan' },
+                      ].map((n, i) => (
+                        <tr key={i}>
+                          <td><strong>{n.mem}</strong></td>
+                          <td>{n.nut}</td>
+                          <td><span style={{ fontWeight: 600 }}>{n.goal}</span></td>
+                          <td>{n.cal}</td>
+                          <td><span className="gym-operational-pill">{n.mac}</span></td>
+                          <td style={{ fontSize: '13px', color: '#475569' }}>{n.sup}</td>
+                          <td><span className="gym-active-badge">{n.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
       </div>
     </div>
   );

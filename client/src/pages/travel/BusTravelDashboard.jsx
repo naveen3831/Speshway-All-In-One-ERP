@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
+  Layers,
   Bus,
   Users,
   MapPin,
@@ -68,34 +71,68 @@ export const BusTravelDashboard = () => {
     { id: 'fleet', label: 'Bus Fleet', icon: Bus, badge: '24' },
     { id: 'bookings', label: 'Seat Bookings', icon: Calendar, badge: '482' },
     { id: 'routes', label: 'Routes & Trips', icon: MapPin },
-    { id: 'crew', label: 'Drivers & Crew', icon: Users },
     { id: 'boarding', label: 'Boarding Points', icon: Navigation },
-    { id: 'collections', label: 'Daily Collections', icon: DollarSign },
+    { id: 'crew', label: 'Drivers & Crew', icon: Users },
+    { id: 'seat-layouts', label: 'Seat Layouts', icon: Layers },
+    { id: 'passenger-manifest', label: 'Trip Manifest', icon: Users },
+    { id: 'cargo-parcel', label: 'Luggage & Cargo', icon: Sparkles },
+    { id: 'fuel-maintenance', label: 'Diesel & Fitness', icon: Fuel },
+    { id: 'collections', label: 'Collections', icon: DollarSign },
     { id: 'analytics', label: 'Trip Analytics', icon: TrendingUp },
     { id: 'settings', label: 'Fleet Settings', icon: Settings },
   ];
 
   const recentBookings = [
-    { id: '#PNR-8819', passenger: 'Suresh Narayanan', phone: '+91 98490 11982', seat: '12-U (Upper Sleeper)', route: 'Hyderabad → Bengaluru', bus: 'TS09-UB-4421 (Volvo B11R)', fare: '₹1,450', status: 'confirmed' },
-    { id: '#PNR-8818', passenger: 'Harika Varma', phone: '+91 98840 33419', seat: '04-L (Lower Berth)', route: 'Hyderabad → Vijayawada', bus: 'AP16-SC-1002 (Scania AC)', fare: '₹850', status: 'confirmed' },
-    { id: '#PNR-8817', passenger: 'Arjun Nambiar', phone: '+91 94470 55120', seat: '16-A (Window Semi-Sleeper)', route: 'Bengaluru → Chennai', bus: 'KA01-MB-8890 (BharatBenz)', fare: '₹950', status: 'boarded' },
-    { id: '#PNR-8816', passenger: 'Kavita Sengupta', phone: '+91 98300 77218', seat: '08-U (Upper Sleeper)', route: 'Hyderabad → Goa', bus: 'TS07-EX-3312 (Multi-Axle)', fare: '₹2,200', status: 'confirmed' },
-    { id: '#PNR-8815', passenger: 'Ravi Teja', phone: '+91 99880 44102', seat: '02-L (Lower Berth)', route: 'Vijayawada → Visakhapatnam', bus: 'AP31-TV-9901 (Volvo B9R)', fare: '₹920', status: 'boarded' },
+    { id: '#PNR-8819', passenger: 'Suresh Narayanan', phone: '→91 98490 11982', seat: '12-U (Upper Sleeper)', route: 'Hyderabad → Bengaluru', bus: 'TS09-UB-4421 (Volvo B11R)', fare: '₹1,450', status: 'confirmed' },
+    { id: '#PNR-8818', passenger: 'Harika Varma', phone: '→91 98840 33419', seat: '04-L (Lower Berth)', route: 'Hyderabad → Vijayawada', bus: 'AP16-SC-1002 (Scania AC)', fare: '₹850', status: 'confirmed' },
+    { id: '#PNR-8817', passenger: 'Arjun Nambiar', phone: '→91 94470 55120', seat: '16-A (Window Semi-Sleeper)', route: 'Bengaluru → Chennai', bus: 'KA01-MB-8890 (BharatBenz)', fare: '₹950', status: 'boarded' },
+    { id: '#PNR-8816', passenger: 'Kavita Sengupta', phone: '→91 98300 77218', seat: '08-U (Upper Sleeper)', route: 'Hyderabad → Goa', bus: 'TS07-EX-3312 (Multi-Axle)', fare: '₹2,200', status: 'confirmed' },
+    { id: '#PNR-8815', passenger: 'Ravi Teja', phone: '→91 99880 44102', seat: '02-L (Lower Berth)', route: 'Vijayawada → Visakhapatnam', bus: 'AP31-TV-9901 (Volvo B9R)', fare: '₹920', status: 'boarded' },
   ];
 
   const busFleet = [
     { number: 'TS09-UB-4421', model: 'Volvo 9600 Multi-Axle Sleeper', seats: '36 Berths', route: 'Hyderabad ⇌ Bengaluru', driver: 'M. Venkat Rao', gps: 'On Highway (84 km/h)', status: 'On Route' },
     { number: 'AP16-SC-1002', model: 'Scania Metrolink HD AC', seats: '44 Pushback', route: 'Hyderabad ⇌ Vijayawada', driver: 'K. Satyanarayana', gps: 'At Guntur Toll', status: 'On Route' },
     { number: 'KA01-MB-8890', model: 'BharatBenz 1624 AC Sleeper', seats: '32 Berths', route: 'Bengaluru ⇌ Chennai', driver: 'S. Anthony', gps: 'Departed Majestic', status: 'On Route' },
-    { number: 'TS07-EX-3312', model: 'Volvo B11R 2+1 Luxury Sleeper', seats: '30 Berths', route: 'Hyderabad ⇌ Goa Panaji', driver: 'D. Nagesh', gps: 'At Depot (Pre-trip check)', status: 'Boarding 08:30 PM' },
+    { number: 'TS07-EX-3312', model: 'Volvo B11R 2→1 Luxury Sleeper', seats: '30 Berths', route: 'Hyderabad ⇌ Goa Panaji', driver: 'D. Nagesh', gps: 'At Depot (Pre-trip check)', status: 'Boarding 08:30 PM' },
     { number: 'AP31-TV-9901', model: 'Volvo B9R Semi-Sleeper', seats: '40 Pushback', route: 'Vijayawada ⇌ Vizag', driver: 'P. Rambabu', gps: 'Near Rajahmundry', status: 'On Route' },
   ];
 
   const routesSummary = [
     { name: 'Hyderabad ⇌ Bengaluru', trips: '8 Daily Trips', occ: '96%', rev: '₹1,84,000', color: '#059669' },
-    { name: 'Hyderabad ⇌ Vijayawada', trips: '10 Daily Trips', occ: '94%', rev: '₹1,10,000', color: '#10b981' },
+    { name: 'Hyderabad ⇌ Vijayawada', trips: '10 Daily Trips', occ: '94%', rev: '₹1₹0,000', color: '#10b981' },
     { name: 'Bengaluru ⇌ Chennai', trips: '6 Daily Trips', occ: '90%', rev: '₹72,000', color: '#38bdf8' },
     { name: 'Hyderabad ⇌ Goa', trips: '4 Daily Trips', occ: '98%', rev: '₹52,000', color: '#34d399' },
+  ];
+
+
+  const seatLayoutsList = [
+    { id: 'LAY-36S', type: '2+1 Luxury Sleeper (AC)', totalBerths: '36 Berths (12 Lower, 24 Upper)', womenBerths: '8 Berths Reserved', chargingPoints: 'Individual 65W Type-C', busesAssigned: 8, status: 'Active' },
+    { id: 'LAY-44SS', type: '2+2 Executive Semi-Sleeper', totalBerths: '44 Pushback Calf-Rest Seats', womenBerths: '10 Seats Reserved', chargingPoints: 'Under-Seat USB Fast-Charge', busesAssigned: 10, status: 'Active' },
+    { id: 'LAY-30GL', type: '1+2 Ultra-Luxury Glider Sleeper', totalBerths: '30 Premium Capsule Pods', womenBerths: '6 Single Pods', chargingPoints: 'Wireless Qi & AC Socket', busesAssigned: 4, status: 'Active' },
+    { id: 'LAY-53ST', type: '3+2 Standard High-Deck Express', totalBerths: '53 Recliner Air-Suspension Seats', womenBerths: '12 Seats Reserved', chargingPoints: 'Shared USB Ports', busesAssigned: 2, status: 'Active' },
+  ];
+
+  const passengerManifest = [
+    { pnr: 'PNR-8819', name: 'Suresh Narayanan', phone: '+91 98490 11982', seat: '12-U (Upper)', pickup: 'Ameerpet Metro (09:45 PM)', drop: 'Majestic Bengaluru', status: 'Boarded' },
+    { pnr: 'PNR-8818', name: 'Harika Varma', phone: '+91 98840 33419', seat: '04-L (Lower)', pickup: 'LB Nagar Ring Road (10:15 PM)', drop: 'Benz Circle Vijayawada', status: 'Confirmed' },
+    { pnr: 'PNR-8817', name: 'Arjun Nambiar', phone: '+91 94470 55120', seat: '16-A (Window)', pickup: 'Electronic City Toll (11:00 PM)', drop: 'Koyambedu Chennai', status: 'Boarded' },
+    { pnr: 'PNR-8816', name: 'Kavita Sengupta', phone: '+91 98300 77218', seat: '08-U (Upper)', pickup: 'Gachibowli ORR (08:30 PM)', drop: 'Panaji Bus Stand Goa', status: 'Confirmed' },
+    { pnr: 'PNR-8815', name: 'Ravi Teja', phone: '+91 99880 44102', seat: '02-L (Lower)', pickup: 'RTC Complex VJA (07:00 PM)', drop: 'Dwaraka Nagar Vizag', status: 'Boarded' },
+  ];
+
+  const cargoParcelsList = [
+    { waybill: 'CRG-9021', sender: 'Sri Balaji Textiles', receiver: 'Meenakshi Silks Chennai', packages: '4 Bales Handloom Silk', weight: '85 kg', freightCharge: '₹2,450', status: 'In Transit' },
+    { waybill: 'CRG-9020', sender: 'Deccan Pharma Labs', receiver: 'Apollo Pharmacy Hub VJA', packages: '6 Boxes Cold Medicine', weight: '42 kg', freightCharge: '₹1,850', status: 'Loaded in Boot' },
+    { waybill: 'CRG-9019', sender: 'TechnoSpare Parts', receiver: 'Precision Auto Works BLR', packages: '2 Wooden Crates Gears', weight: '110 kg', freightCharge: '₹3,200', status: 'In Transit' },
+    { waybill: 'CRG-9018', sender: 'Organic Mango Farms', receiver: 'Fresh Market Goa', packages: '12 Crates Fresh Alphonso', weight: '180 kg', freightCharge: '₹4,100', status: 'Delivered' },
+  ];
+
+  const fuelMaintenanceList = [
+    { bus: 'TS09-UB-4421', dieselFilled: '240 Litres', cost: '₹21,840', mileageKm: '4.8 km/L', odometer: '2,84,102 km', fcExpiry: '14 May 2027', serviceStatus: 'Next Oil Change in 4,200 km' },
+    { bus: 'AP16-SC-1002', dieselFilled: '180 Litres', cost: '₹16,380', mileageKm: '5.1 km/L', odometer: '1,92,450 km', fcExpiry: '22 Aug 2027', serviceStatus: 'Brake Liners Inspected' },
+    { bus: 'KA01-MB-8890', dieselFilled: '210 Litres', cost: '₹19,110', mileageKm: '4.9 km/L', odometer: '3,10,880 km', fcExpiry: '08 Nov 2026', serviceStatus: 'Retreaded Michelin Tyres' },
+    { bus: 'TS07-EX-3312', dieselFilled: '280 Litres', cost: '₹25,480', mileageKm: '4.6 km/L', odometer: '1,44,200 km', fcExpiry: '19 Jan 2028', serviceStatus: 'AC Compressor Serviced' },
   ];
 
   return (
@@ -181,13 +218,7 @@ export const BusTravelDashboard = () => {
               <span className="bus-bell-dot"></span>
             </button>
 
-            <button
-              onClick={() => window.open('https://bus.speshway.site', '_blank')}
-              className="bus-btn-site"
-            >
-              <span>Passenger Booking Web</span>
-              <ArrowRight size={14} />
-            </button>
+            
           </div>
         </header>
 
@@ -216,7 +247,7 @@ export const BusTravelDashboard = () => {
                   <div className="bus-stat-info">
                     <span className="bus-stat-label">Today's Passengers</span>
                     <span className="bus-stat-val">482</span>
-                    <span className="bus-stat-trend">↑ +18% weekend travel rush</span>
+                    <span className="bus-stat-trend">↑ →18% weekend travel rush</span>
                   </div>
                 </div>
 
@@ -237,8 +268,8 @@ export const BusTravelDashboard = () => {
                   </div>
                   <div className="bus-stat-info">
                     <span className="bus-stat-label">Today's Net Collections</span>
-                    <span className="bus-stat-val">₹4,18,000</span>
-                    <span className="bus-stat-trend">Online + Counter Bookings</span>
+                    <span className="bus-stat-val">₹4₹8,000</span>
+                    <span className="bus-stat-trend">Online → Counter Bookings</span>
                   </div>
                 </div>
               </div>
@@ -506,7 +537,7 @@ export const BusTravelDashboard = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginTop: '16px' }}>
                 <div style={{ border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px' }}>
                   <div style={{ fontSize: '13px', color: '#64748b' }}>Gross Ticket Revenue</div>
-                  <div style={{ fontSize: '26px', fontWeight: 800, color: '#047857' }}>₹4,18,000</div>
+                  <div style={{ fontSize: '26px', fontWeight: 800, color: '#047857' }}>₹4₹8,000</div>
                 </div>
                 <div style={{ border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px' }}>
                   <div style={{ fontSize: '13px', color: '#64748b' }}>Diesel &amp; Toll Expenses</div>
@@ -537,7 +568,200 @@ export const BusTravelDashboard = () => {
             </div>
           )}
 
-          {/* TAB 9: SETTINGS */}
+          
+          {/* TAB: SEAT LAYOUTS */}
+          {activeTab === 'seat-layouts' && (
+            <div className="bus-card">
+              <div className="bus-card-header">
+                <div>
+                  <h3 className="bus-card-title">
+                    <Layers size={18} className="text-emerald-600" />
+                    Bus Seating Configurations & Berth Layouts
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Sleeper pod matrices, women-only quota allocation, and charging socket diagnostics.
+                  </p>
+                </div>
+                <button className="bus-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Add Custom Layout
+                </button>
+              </div>
+              <div className="bus-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="bus-data-table">
+                  <thead>
+                    <tr>
+                      <th>Layout Code</th>
+                      <th>Configuration Architecture</th>
+                      <th>Capacity Specification</th>
+                      <th>Women Quota</th>
+                      <th>Passenger Amenities</th>
+                      <th>Active Fleet Coaches</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {seatLayoutsList.map(s => (
+                      <tr key={s.id}>
+                        <td><strong>{s.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{s.type}</span></td>
+                        <td>{s.totalBerths}</td>
+                        <td><span className="bus-badge-cluster">{s.womenBerths}</span></td>
+                        <td>{s.chargingPoints}</td>
+                        <td><strong>{s.busesAssigned} Coaches</strong></td>
+                        <td><span className="bus-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{s.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: TRIP MANIFEST */}
+          {activeTab === 'passenger-manifest' && (
+            <div className="bus-card">
+              <div className="bus-card-header">
+                <div>
+                  <h3 className="bus-card-title">
+                    <Users size={18} className="text-emerald-600" />
+                    Daily Interstate Route Passenger Manifest
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    RTO compliant passenger registry, emergency contacts, and GPS boarding verification.
+                  </p>
+                </div>
+                <button className="bus-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Export RTO Manifest
+                </button>
+              </div>
+              <div className="bus-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="bus-data-table">
+                  <thead>
+                    <tr>
+                      <th>PNR Reference</th>
+                      <th>Passenger Name</th>
+                      <th>Contact Number</th>
+                      <th>Berth / Seat</th>
+                      <th>Scheduled Boarding Stage</th>
+                      <th>Destination Drop</th>
+                      <th>Boarding Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {passengerManifest.map(p => (
+                      <tr key={p.pnr}>
+                        <td><strong>{p.pnr}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{p.name}</span></td>
+                        <td>{p.phone}</td>
+                        <td><span className="bus-badge-cluster">{p.seat}</span></td>
+                        <td>{p.pickup}</td>
+                        <td>{p.drop}</td>
+                        <td><span className="bus-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{p.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: CARGO & LUGGAGE */}
+          {activeTab === 'cargo-parcel' && (
+            <div className="bus-card">
+              <div className="bus-card-header">
+                <div>
+                  <h3 className="bus-card-title">
+                    <Sparkles size={18} className="text-emerald-600" />
+                    Bus Boot Cargo Consignments & Waybills
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Parcel tracking, commercial cargo manifests, and consignee delivery acknowledgments.
+                  </p>
+                </div>
+                <button className="bus-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Book Cargo Waybill
+                </button>
+              </div>
+              <div className="bus-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="bus-data-table">
+                  <thead>
+                    <tr>
+                      <th>Waybill No</th>
+                      <th>Consignor (Sender)</th>
+                      <th>Consignee (Receiver)</th>
+                      <th>Parcel Contents</th>
+                      <th>Consignment Weight</th>
+                      <th>Freight Tariff</th>
+                      <th>Logistics Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cargoParcelsList.map(c => (
+                      <tr key={c.waybill}>
+                        <td><strong>{c.waybill}</strong></td>
+                        <td>{c.sender}</td>
+                        <td><span style={{ fontWeight: 600 }}>{c.receiver}</span></td>
+                        <td>{c.packages}</td>
+                        <td>{c.weight}</td>
+                        <td><strong style={{ color: '#059669' }}>{c.freightCharge}</strong></td>
+                        <td><span className="bus-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{c.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: FUEL & FITNESS */}
+          {activeTab === 'fuel-maintenance' && (
+            <div className="bus-card">
+              <div className="bus-card-header">
+                <div>
+                  <h3 className="bus-card-title">
+                    <Fuel size={18} className="text-emerald-600" />
+                    Diesel Consumption Logs & Fitness Certificate Audits
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Mileage km/litre tracking, Bharat Petroleum fuel pump logs, and RTO FC renewals.
+                  </p>
+                </div>
+                <button className="bus-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Log Diesel Slip
+                </button>
+              </div>
+              <div className="bus-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="bus-data-table">
+                  <thead>
+                    <tr>
+                      <th>Coach Registration</th>
+                      <th>Diesel Quantity</th>
+                      <th>Fuel Expense</th>
+                      <th>Fuel Mileage</th>
+                      <th>Odometer Reading</th>
+                      <th>RTO FC Validity</th>
+                      <th>Preventive Service</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fuelMaintenanceList.map(f => (
+                      <tr key={f.bus}>
+                        <td><strong>{f.bus}</strong></td>
+                        <td>{f.dieselFilled}</td>
+                        <td><strong style={{ color: '#059669' }}>{f.cost}</strong></td>
+                        <td><span className="bus-badge-cluster">{f.mileageKm}</span></td>
+                        <td>{f.odometer}</td>
+                        <td>{f.fcExpiry}</td>
+                        <td style={{ fontSize: '12.5px', color: '#475569' }}>{f.serviceStatus}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SETTINGS */}
           {activeTab === 'settings' && (
             <div className="bus-card" style={{ maxWidth: '640px' }}>
               <div className="bus-card-header">
