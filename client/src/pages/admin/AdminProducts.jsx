@@ -26,7 +26,6 @@ import {
   LayoutGrid,
   List,
   Eye,
-  Cpu,
   X,
   Building2,
   Plane,
@@ -280,38 +279,6 @@ export const AdminProducts = () => {
                     {pName}
                   </h3>
                   <p className="admin-prod-card-desc">{pDesc}</p>
-                </div>
-
-                {techList.length > 0 && (
-                  <div className="card-tech-chips-row">
-                    <span className="card-tech-label"><Cpu size={11} /> Tech:</span>
-                    {techList.slice(0, 3).map((t, idx) => (
-                      <span key={idx} className="card-tech-chip">{String(t)}</span>
-                    ))}
-                    {techList.length > 3 && (
-                      <span className="card-tech-more">+{techList.length - 3}</span>
-                    )}
-                  </div>
-                )}
-
-                <div className="admin-prod-urls-box">
-                  <div className="card-url-item">
-                    <div className="url-item-label">
-                      <Globe size={13} className="text-icon-green" />
-                      <span>Website URL</span>
-                    </div>
-                    <a
-                      href={pUrl || '#'}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="url-item-link"
-                      title={pUrl}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span>{pUrl || 'Not configured'}</span>
-                      <ExternalLink size={11} />
-                    </a>
-                  </div>
                 </div>
 
                 <div className="admin-prod-card-footer">
