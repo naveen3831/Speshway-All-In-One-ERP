@@ -44,10 +44,10 @@ import './FleetDashboard.css';
 const FleetLogoIcon = () => (
   <svg width="46" height="46" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="fleetGold" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FDE68A" />
-        <stop offset="0.5" stopColor="#F59E0B" />
-        <stop offset="1" stopColor="#B45309" />
+      <linearGradient id="fleetEmerald" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#34D399" />
+        <stop offset="0.5" stopColor="#10B981" />
+        <stop offset="1" stopColor="#059669" />
       </linearGradient>
       <linearGradient id="fleetShieldBg" x1="50" y1="10" x2="50" y2="90" gradientUnits="userSpaceOnUse">
         <stop stopColor="#1E293B" />
@@ -58,7 +58,7 @@ const FleetLogoIcon = () => (
     <path
       d="M50 8L84 22V50C84 72 50 90 50 90C50 90 16 72 16 50V22L50 8Z"
       fill="url(#fleetShieldBg)"
-      stroke="url(#fleetGold)"
+      stroke="url(#fleetEmerald)"
       strokeWidth="3.5"
       strokeLinejoin="round"
     />
@@ -74,12 +74,12 @@ const FleetLogoIcon = () => (
     <circle cx="40" cy="64" r="4.5" fill="#10B981" stroke="#F8FAFC" strokeWidth="1.5" />
     <circle cx="66" cy="64" r="4.5" fill="#10B981" stroke="#F8FAFC" strokeWidth="1.5" />
     {/* Golden Banner with FLEET */}
-    <rect x="22" y="50" width="56" height="13" rx="3" fill="url(#fleetGold)" />
+    <rect x="22" y="50" width="56" height="13" rx="3" fill="url(#fleetEmerald)" />
     <text x="50" y="60" textAnchor="middle" fill="#0B1120" fontSize="9" fontWeight="900" fontFamily="sans-serif" letterSpacing="1">FLEET</text>
     {/* 3 Gold Stars below */}
-    <path d="M42 69L43 71L45 71L43.5 72.5L44 74.5L42 73L40 74.5L40.5 72.5L39 71L41 71Z" fill="url(#fleetGold)" />
-    <path d="M50 70L51 72L53 72L51.5 73.5L52 75.5L50 74L48 75.5L48.5 73.5L47 72L49 72Z" fill="url(#fleetGold)" />
-    <path d="M58 69L59 71L61 71L59.5 72.5L60 74.5L58 73L56 74.5L56.5 72.5L55 71L57 71Z" fill="url(#fleetGold)" />
+    <path d="M42 69L43 71L45 71L43.5 72.5L44 74.5L42 73L40 74.5L40.5 72.5L39 71L41 71Z" fill="url(#fleetEmerald)" />
+    <path d="M50 70L51 72L53 72L51.5 73.5L52 75.5L50 74L48 75.5L48.5 73.5L47 72L49 72Z" fill="url(#fleetEmerald)" />
+    <path d="M58 69L59 71L61 71L59.5 72.5L60 74.5L58 73L56 74.5L56.5 72.5L55 71L57 71Z" fill="url(#fleetEmerald)" />
   </svg>
 );
 

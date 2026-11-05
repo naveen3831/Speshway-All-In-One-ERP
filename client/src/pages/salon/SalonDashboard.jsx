@@ -44,10 +44,10 @@ import './SalonDashboard.css';
 const SpySalonLogoIcon = () => (
   <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="spyGoldGrad" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FDE68A" />
-        <stop offset="0.5" stopColor="#D97706" />
-        <stop offset="1" stopColor="#92400E" />
+      <linearGradient id="spyEmeraldGrad" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#34D399" />
+        <stop offset="0.5" stopColor="#10B981" />
+        <stop offset="1" stopColor="#059669" />
       </linearGradient>
       <radialGradient id="spyBgGrad" cx="50" cy="50" r="45" gradientUnits="userSpaceOnUse">
         <stop stopColor="#1E293B" />
@@ -55,12 +55,12 @@ const SpySalonLogoIcon = () => (
       </radialGradient>
     </defs>
     {/* Outer Gold Ring */}
-    <circle cx="50" cy="50" r="46" stroke="url(#spyGoldGrad)" strokeWidth="3" fill="url(#spyBgGrad)" />
-    <circle cx="50" cy="50" r="41" stroke="url(#spyGoldGrad)" strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
+    <circle cx="50" cy="50" r="46" stroke="url(#spyEmeraldGrad)" strokeWidth="3" fill="url(#spyBgGrad)" />
+    <circle cx="50" cy="50" r="41" stroke="url(#spyEmeraldGrad)" strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
     {/* Monogram Silhouette & Shears */}
     <path
       d="M38 32 C38 26, 62 26, 62 32 C62 38, 48 40, 48 48 C48 56, 64 56, 64 64 C64 72, 36 72, 36 64"
-      stroke="url(#spyGoldGrad)"
+      stroke="url(#spyEmeraldGrad)"
       strokeWidth="3.5"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -68,14 +68,14 @@ const SpySalonLogoIcon = () => (
     {/* Scissors Accent */}
     <path
       d="M44 48 L56 60 M56 48 L44 60"
-      stroke="url(#spyGoldGrad)"
+      stroke="url(#spyEmeraldGrad)"
       strokeWidth="2.5"
       strokeLinecap="round"
     />
-    <circle cx="42" cy="62" r="3" stroke="url(#spyGoldGrad)" strokeWidth="1.5" />
-    <circle cx="58" cy="62" r="3" stroke="url(#spyGoldGrad)" strokeWidth="1.5" />
+    <circle cx="42" cy="62" r="3" stroke="url(#spyEmeraldGrad)" strokeWidth="1.5" />
+    <circle cx="58" cy="62" r="3" stroke="url(#spyEmeraldGrad)" strokeWidth="1.5" />
     {/* Star spark */}
-    <path d="M50 22L51.5 25.5L55 27L51.5 28.5L50 32L48.5 28.5L45 27L48.5 25.5Z" fill="url(#spyGoldGrad)" />
+    <path d="M50 22L51.5 25.5L55 27L51.5 28.5L50 32L48.5 28.5L45 27L48.5 25.5Z" fill="url(#spyEmeraldGrad)" />
   </svg>
 );
 

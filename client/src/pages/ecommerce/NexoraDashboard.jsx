@@ -45,14 +45,14 @@ import {
 } from 'lucide-react';
 import './NexoraDashboard.css';
 
-// Stylized Nexora Logo Icon with Red Cart, speed lines, and 'N' monogram
+// Stylized Nexora Logo Icon with Emerald Green Cart, speed lines, and 'N' monogram
 const NexoraLogoIcon = () => (
   <svg width="44" height="40" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="nexoraRedGrad" x1="10" y1="10" x2="100" y2="90" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FF385C" />
-        <stop offset="0.6" stopColor="#E11D48" />
-        <stop offset="1" stopColor="#BE123C" />
+      <linearGradient id="nexoraEmeraldGrad" x1="10" y1="10" x2="100" y2="90" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#34D399" />
+        <stop offset="0.6" stopColor="#10B981" />
+        <stop offset="1" stopColor="#059669" />
       </linearGradient>
     </defs>
     {/* 3 Speed Lines on left */}
@@ -62,12 +62,12 @@ const NexoraLogoIcon = () => (
     {/* Cart Chassis & Body */}
     <path
       d="M26 22H36L46 68H96L108 28H33"
-      stroke="url(#nexoraRedGrad)"
+      stroke="url(#nexoraEmeraldGrad)"
       strokeWidth="6"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <rect x="42" y="27" width="54" height="36" rx="4" fill="url(#nexoraRedGrad)" />
+    <rect x="42" y="27" width="54" height="36" rx="4" fill="url(#nexoraEmeraldGrad)" />
     {/* Stylized White Letter 'N' inside Cart */}
     <path
       d="M54 55V35L76 55V35"
@@ -77,8 +77,8 @@ const NexoraLogoIcon = () => (
       strokeLinejoin="round"
     />
     {/* Cart Wheels with white rim */}
-    <circle cx="52" cy="78" r="7" fill="#E11D48" stroke="#FFFFFF" strokeWidth="2" />
-    <circle cx="90" cy="78" r="7" fill="#E11D48" stroke="#FFFFFF" strokeWidth="2" />
+    <circle cx="52" cy="78" r="7" fill="#059669" stroke="#FFFFFF" strokeWidth="2" />
+    <circle cx="90" cy="78" r="7" fill="#059669" stroke="#FFFFFF" strokeWidth="2" />
   </svg>
 );
 
