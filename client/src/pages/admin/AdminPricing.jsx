@@ -269,12 +269,13 @@ export const AdminPricing = () => {
         </div>
       </div>
 
-      {/* Grid of Pricing Tiers (Clean Card View) */}
+      {/* Grid of Pricing Tiers (Clean Compact Card View) */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '24px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '18px',
+          maxWidth: '1100px',
           marginBottom: '35px',
           alignItems: 'stretch',
         }}
@@ -291,11 +292,11 @@ export const AdminPricing = () => {
               position: 'relative',
               backgroundColor: '#ffffff',
               border: plan.popular ? '2px solid #00875a' : '1px solid #e2e8f0',
-              borderRadius: '20px',
-              padding: '36px 30px',
+              borderRadius: '16px',
+              padding: '22px 20px',
               boxShadow: plan.popular
-                ? '0 8px 24px -4px rgba(0, 135, 90, 0.15)'
-                : '0 2px 12px rgba(15, 23, 42, 0.04)',
+                ? '0 6px 18px -3px rgba(0, 135, 90, 0.15)'
+                : '0 2px 8px rgba(15, 23, 42, 0.04)',
               cursor: 'pointer',
               transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
             }}
@@ -307,33 +308,33 @@ export const AdminPricing = () => {
                 className="popular-badge"
                 style={{
                   position: 'absolute',
-                  top: '-12px',
+                  top: '-10px',
                   left: '50%',
                   transform: 'translateX(-50%)',
                   backgroundColor: '#00875a',
                   color: '#ffffff',
-                  padding: '4px 14px',
+                  padding: '3px 10px',
                   borderRadius: '9999px',
-                  fontSize: '0.72rem',
+                  fontSize: '0.68rem',
                   fontWeight: 700,
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
-                  boxShadow: '0 2px 6px rgba(0, 135, 90, 0.3)',
+                  boxShadow: '0 2px 5px rgba(0, 135, 90, 0.3)',
                   whiteSpace: 'nowrap',
                 }}
               >
-                <Sparkles size={12} /> Most Popular
+                <Sparkles size={11} /> Most Popular
               </div>
             )}
 
             {/* Plan Title */}
             <h3
               style={{
-                fontSize: '1.45rem',
+                fontSize: '1.2rem',
                 fontWeight: 800,
                 color: '#0f172a',
-                margin: '0 0 8px 0',
+                margin: '0 0 6px 0',
               }}
             >
               {plan.name}
@@ -342,11 +343,11 @@ export const AdminPricing = () => {
             {/* Plan Description */}
             <p
               style={{
-                fontSize: '0.88rem',
+                fontSize: '0.8rem',
                 color: '#64748b',
-                lineHeight: 1.5,
-                margin: '0 0 20px 0',
-                minHeight: '42px',
+                lineHeight: 1.45,
+                margin: '0 0 14px 0',
+                minHeight: '36px',
               }}
             >
               {plan.desc}
@@ -357,13 +358,13 @@ export const AdminPricing = () => {
               style={{
                 display: 'flex',
                 alignItems: 'baseline',
-                gap: '6px',
-                marginBottom: '24px',
+                gap: '5px',
+                marginBottom: '16px',
               }}
             >
               <span
                 style={{
-                  fontSize: '2.6rem',
+                  fontSize: '1.9rem',
                   fontWeight: 800,
                   color: '#0f172a',
                   letterSpacing: '-0.5px',
@@ -374,7 +375,7 @@ export const AdminPricing = () => {
               {plan.period ? (
                 <span
                   style={{
-                    fontSize: '0.86rem',
+                    fontSize: '0.78rem',
                     color: '#64748b',
                     fontWeight: 500,
                   }}
@@ -389,11 +390,11 @@ export const AdminPricing = () => {
               type="button"
               style={{
                 width: '100%',
-                padding: '12px 18px',
+                padding: '9px 14px',
                 borderRadius: '9999px',
-                fontSize: '0.92rem',
+                fontSize: '0.82rem',
                 fontWeight: 700,
-                marginBottom: '26px',
+                marginBottom: '18px',
                 backgroundColor: plan.popular ? '#00875a' : '#f8fafc',
                 color: plan.popular ? '#ffffff' : '#0f172a',
                 border: plan.popular ? 'none' : '1.5px solid #e2e8f0',
@@ -408,29 +409,29 @@ export const AdminPricing = () => {
               <span
                 style={{
                   display: 'block',
-                  fontSize: '0.92rem',
+                  fontSize: '0.82rem',
                   fontWeight: 700,
                   color: '#0f172a',
-                  marginBottom: '14px',
+                  marginBottom: '10px',
                 }}
               >
                 What&apos;s included:
               </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
                 {(plan.features || []).map((feat, fIdx) => (
                   <div
                     key={fIdx}
                     style={{
                       display: 'flex',
                       alignItems: 'flex-start',
-                      gap: '10px',
-                      fontSize: '0.86rem',
+                      gap: '8px',
+                      fontSize: '0.8rem',
                       color: '#334155',
-                      lineHeight: 1.45,
+                      lineHeight: 1.4,
                     }}
                   >
                     <Check
-                      size={16}
+                      size={14}
                       style={{ color: '#00875a', flexShrink: 0, marginTop: '2px' }}
                     />
                     <span>{feat}</span>
