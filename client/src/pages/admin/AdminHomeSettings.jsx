@@ -312,51 +312,6 @@ export const AdminHomeSettings = () => {
                   {form.hero.subtitle || 'A collection of industry-ready ERP solutions to manage your business, operations, and customers — all in one place.'}
                 </p>
               </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                  gap: '16px',
-                  paddingTop: '12px',
-                  borderTop: '1px solid #e2e8f0',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b' }}>Primary Button:</span>
-                  <span
-                    style={{
-                      backgroundColor: '#00875a',
-                      color: '#ffffff',
-                      padding: '6px 14px',
-                      borderRadius: '6px',
-                      fontSize: '0.82rem',
-                      fontWeight: 700,
-                      boxShadow: '0 1px 3px rgba(0, 135, 90, 0.2)',
-                    }}
-                  >
-                    {form.hero.primaryBtnText || 'View All ERPs'}
-                  </span>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b' }}>Secondary Button:</span>
-                  <span
-                    style={{
-                      backgroundColor: '#ffffff',
-                      color: '#0f172a',
-                      border: '1.5px solid #cbd5e1',
-                      padding: '5px 14px',
-                      borderRadius: '6px',
-                      fontSize: '0.82rem',
-                      fontWeight: 700,
-                    }}
-                  >
-                    {form.hero.secondaryBtnText || 'Request a Demo'}
-                  </span>
-                </div>
-              </div>
             </div>
           ) : (
             /* EDIT MODE: Inputs & Save Changes Option */
