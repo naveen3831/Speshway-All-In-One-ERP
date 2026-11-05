@@ -368,7 +368,7 @@ export const ProductsPage = () => {
                       className="catalog-btn-link admin-color"
                       title="View ERP"
                     >
-                      <Shield size={14} /> View Admin Dashboard
+                      <Shield size={14} /> View ERP
                     </button>
                   </div>
                 </div>
