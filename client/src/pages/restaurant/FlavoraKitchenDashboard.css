@@ -1,33 +1,289 @@
+/* ==========================================================================
+   FLAVORA KITCHEN RESTAURANT ADMIN DASHBOARD STYLES
+   Scoped exclusively under .flavora- to prevent style leaks or conflicts.
+   ========================================================================== */
 
-
-/* Sidebar Footer */
-.flavora-sidebar-footer {
-  padding: 14px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  position: relative;
-  z-index: 2;
-  background-color: var(--flavora-navy);
+:root {
+  --flavora-navy: #0b1120;
+  --flavora-navy-light: #151d32;
+  --flavora-navy-hover: #1e293b;
+  --flavora-green: #10b981;
+  --flavora-green-hover: #059669;
+  --flavora-green-light: #ecfdf5;
+  --flavora-green-border: #a7f3d0;
+  --flavora-orange: #f97316;
+  --flavora-orange-light: #ffedd5;
+  --flavora-amber-light: #fef3c7;
+  --flavora-amber-text: #d97706;
+  --flavora-bg: #f8fafc;
+  --flavora-card-bg: #ffffff;
+  --flavora-text-dark: #0f172a;
+  --flavora-text-muted: #64748b;
+  --flavora-border: #e2e8f0;
+  --flavora-radius: 14px;
 }
 
-.flavora-logout-btn {
+/* Base Wrapper */
+.flavora-wrapper {
+  display: flex;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  background-color: var(--flavora-bg);
+  color: var(--flavora-text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.flavora-wrapper * {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave)
+   ========================================================================== */
+.flavora-sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  max-height: 100vh;
+  flex-shrink: 0;
+  background-color: var(--flavora-navy);
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  overflow-y: hidden;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.flavora-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.flavora-sidebar-top {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.flavora-sidebar-top::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* Brand Header */
+.flavora-brand {
+  padding: 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.flavora-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.flavora-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.flavora-brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  line-height: 1.15;
+}
+
+.flavora-brand-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+  margin-top: 3px;
+}
+
+/* Navigation Menu */
+.flavora-nav {
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  z-index: 2;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.flavora-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.flavora-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.90rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.flavora-nav-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.flavora-nav-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.flavora-nav-btn:hover {
+  background-color: var(--flavora-navy-light);
+  color: #ffffff;
+}
+
+.flavora-nav-btn:hover .flavora-nav-icon {
+  color: #ffffff;
+}
+
+.flavora-nav-btn.active {
+  background-color: var(--flavora-green);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.flavora-nav-btn.active .flavora-nav-icon {
+  color: #ffffff;
+}
+
+.flavora-nav-badge {
+  background-color: var(--flavora-green);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.flavora-nav-btn.active .flavora-nav-badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Sidebar Bottom User & Exit - Matching Savitri Sarees Standard */
+.flavora-sidebar-bottom {
+  padding: 14px 12px 18px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--flavora-navy);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: auto;
+  position: relative;
+  z-index: 10;
+}
+
+.flavora-btn-portal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.flavora-btn-portal:hover {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.flavora-user-profile {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 100%;
-  padding: 9px 14px;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  color: #f87171;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 6px 4px;
 }
 
-.flavora-logout-btn:hover {
-  background-color: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
+.flavora-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.flavora-user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.flavora-user-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flavora-user-role {
+  font-size: 11px;
+  color: #10b981;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ==========================================================================
@@ -690,146 +946,8 @@
     height: auto;
     padding: 16px;
     flex-direction: column;
+  justify-content: space-between;
     gap: 12px;
   }
 }
 
-
-
-/* ==========================================================================
-   UNIFIED SAVITRI SAREES SIDEBAR STANDARD (.flavora-*)
-   ========================================================================== */
-.flavora-sidebar {
-  overflow-y: hidden !important;
-  overflow-x: hidden !important;
-  justify-content: space-between !important;
-}
-
-.flavora-sidebar-top {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-
-.flavora-sidebar-top::-webkit-scrollbar {
-  display: none !important;
-}
-
-/* Nav Item Pill Shape (Matching Image 2 Standard) */
-.flavora-nav-btn, .flavora-nav-item {
-  border-radius: 9999px !important;
-}
-
-.flavora-nav-btn.active, .flavora-nav-item.active {
-  background: #10b981 !important;
-  background-color: #10b981 !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
-}
-
-.flavora-nav-btn.active svg, .flavora-nav-item.active svg {
-  color: #ffffff !important;
-}
-
-.flavora-nav-badge, .flavora-badge {
-  background: #047857 !important;
-  color: #ffffff !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  padding: 2px 8px !important;
-  border-radius: 12px !important;
-}
-
-.flavora-nav-btn.active .flavora-nav-badge,
-.flavora-nav-item.active .flavora-badge {
-  background: #ffffff !important;
-  color: #047857 !important;
-}
-
-/* Unified Sidebar Bottom Pinned Area (NO WAVE, NO OVERLAP) */
-.flavora-sidebar-bottom {
-  padding: 14px 12px 18px 12px !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  background-color: #0b1120 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  flex-shrink: 0 !important;
-  margin-top: auto !important;
-  position: relative !important;
-  z-index: 10 !important;
-}
-
-.flavora-btn-portal {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  padding: 9px 14px !important;
-  border-radius: 8px !important;
-  background: rgba(16, 185, 129, 0.12) !important;
-  color: #34d399 !important;
-  border: 1px solid rgba(16, 185, 129, 0.25) !important;
-  font-size: 12.5px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.15s ease !important;
-  box-sizing: border-box !important;
-}
-
-.flavora-btn-portal:hover {
-  background: rgba(16, 185, 129, 0.22) !important;
-  color: #ffffff !important;
-  border-color: #10b981 !important;
-}
-
-.flavora-user-profile {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 6px 4px !important;
-}
-
-.flavora-avatar {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 8px !important;
-  background: linear-gradient(135deg, #059669, #10b981) !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 13px !important;
-  flex-shrink: 0 !important;
-}
-
-.flavora-user-info {
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-}
-
-.flavora-user-name {
-  font-size: 12.5px !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-.flavora-user-role {
-  font-size: 11px !important;
-  color: #10b981 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
