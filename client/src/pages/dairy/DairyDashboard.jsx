@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import {
   LayoutGrid,
   ShoppingCart,
@@ -408,14 +407,18 @@ export const DairyDashboard = () => {
         </div>
 
         {/* Sidebar Footer Logout */}
-        <div className="dairy-sidebar-footer">
-          <button
-            className="dairy-logout-btn"
-            onClick={() => navigate('/product/natural-milk-dairy')}
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        <div className="dairy-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="dairy-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="dairy-user-profile">
+            <div className="dairy-avatar">NM</div>
+            <div className="dairy-user-info">
+              <span className="dairy-user-name">Dairy Plant Manager</span>
+              <span className="dairy-user-role">Natural Milk Dairy HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

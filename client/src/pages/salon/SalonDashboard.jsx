@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import {
   LayoutGrid,
   Calendar,
@@ -273,78 +272,56 @@ export const SalonDashboard = () => {
     <div className="salon-wrapper">
       {/* 1. LEFT SIDEBAR */}
       <aside className="salon-sidebar">
-        {/* Brand Header */}
-        <div className="salon-brand">
-          <div className="salon-logo-container">
-            <SpySalonLogoIcon />
+        <div className="salon-sidebar-top">
+          {/* Brand Header */}
+          <div className="salon-brand">
+            <div className="salon-logo-container">
+              <SpySalonLogoIcon />
+            </div>
+            <div className="salon-brand-text">
+              <div className="salon-brand-title">SPY SALON</div>
+              <div className="salon-brand-subtitle">JUBILEE HILLS STUDIO</div>
+              <div className="salon-brand-tag">ADMIN PANEL</div>
+            </div>
           </div>
-          <div className="salon-brand-text">
-            <div className="salon-brand-title">SPY SALON</div>
-            <div className="salon-brand-subtitle">JUBILEE HILLS STUDIO</div>
-            <div className="salon-brand-tag">ADMIN PANEL</div>
-          </div>
+
+          {/* Sidebar Menu Options */}
+          <nav className="salon-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`salon-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="salon-nav-btn-left">
+                    <Icon size={19} className="salon-nav-icon" />
+                    <span className="salon-nav-label">{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="salon-nav-badge">{item.badge}</span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
-        {/* Sidebar Menu Options */}
-        <nav className="salon-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`salon-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="salon-nav-btn-left">
-                  <Icon size={19} className="salon-nav-icon" />
-                  <span className="salon-nav-label">{item.label}</span>
-                </div>
-                {item.badge && (
-                  <span className="salon-nav-badge">{item.badge}</span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Decorative Gold Silk Wave at Sidebar Bottom */}
-        <div className="salon-sidebar-gold-wave">
-          <svg viewBox="0 0 250 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="salon-wave-svg">
-            <path
-              d="M0 50 Q70 10, 140 45 T250 30 L250 80 L0 80 Z"
-              fill="url(#goldSilkGrad1)"
-              opacity="0.8"
-            />
-            <path
-              d="M0 65 Q80 30, 160 60 T250 45 L250 80 L0 80 Z"
-              fill="url(#goldSilkGrad2)"
-            />
-            <defs>
-              <linearGradient id="goldSilkGrad1" x1="0" y1="20" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#FDE68A" stopOpacity="0.4" />
-                <stop offset="0.5" stopColor="#D97706" stopOpacity="0.6" />
-                <stop offset="1" stopColor="#78350F" stopOpacity="0.9" />
-              </linearGradient>
-              <linearGradient id="goldSilkGrad2" x1="0" y1="40" x2="250" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#D97706" />
-                <stop offset="0.7" stopColor="#B45309" />
-                <stop offset="1" stopColor="#451A03" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-
-        {/* Sidebar Footer Logout */}
-        <div className="salon-sidebar-footer">
-          <button
-            onClick={() => navigate('/product/saloon')}
-            className="salon-logout-btn"
-            title="Exit Admin Panel"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
+        {/* Sidebar Pinned Bottom */}
+        <div className="salon-sidebar-bottom">
+          <button onClick={() => navigate('/products')} className="salon-btn-portal">
+            <ArrowLeft size={16} />
+            <span>Speshway Catalog</span>
           </button>
+          <div className="salon-user-profile">
+            <div className="salon-avatar">SS</div>
+            <div className="salon-user-info">
+              <span className="salon-user-name">Creative Salon Director</span>
+              <span className="salon-user-role">SPY Salon Studio HQ</span>
+            </div>
+          </div>
         </div>
       </aside>
 

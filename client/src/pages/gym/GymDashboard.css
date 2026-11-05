@@ -1,208 +1,4 @@
-/* ==========================================================================
-   AMERICAN FITNESS GYM ADMIN DASHBOARD STYLES
-   Scoped exclusively under .gym- to prevent style leaks or conflicts.
-   ========================================================================== */
 
-:root {
-  --gym-navy: #0b1120;
-  --gym-navy-light: #151d32;
-  --gym-navy-hover: #1e293b;
-  --gym-green: #10b981;
-  --gym-green-hover: #059669;
-  --gym-green-light: #ecfdf5;
-  --gym-green-border: #a7f3d0;
-  --gym-blue: #0284c7;
-  --gym-blue-light: #e0f2fe;
-  --gym-amber-light: #fef3c7;
-  --gym-amber-text: #d97706;
-  --gym-bg: #f8fafc;
-  --gym-card-bg: #ffffff;
-  --gym-text-dark: #0f172a;
-  --gym-text-muted: #64748b;
-  --gym-border: #e2e8f0;
-  --gym-radius: 14px;
-}
-
-/* Base Wrapper */
-.gym-wrapper {
-  display: flex;
-  height: 100vh;
-  max-height: 100vh;
-  width: 100%;
-  background-color: var(--gym-bg);
-  color: var(--gym-text-dark);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-}
-
-.gym-wrapper * {
-  box-sizing: border-box;
-}
-
-/* ==========================================================================
-   1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave)
-   ========================================================================== */
-.gym-sidebar {
-  width: 260px;
-  min-width: 260px;
-  height: 100vh;
-  max-height: 100vh;
-  flex-shrink: 0;
-  background-color: var(--gym-navy);
-  color: #f1f5f9;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.gym-sidebar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Brand Header */
-.gym-brand {
-  padding: 22px 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.gym-logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.gym-brand-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.gym-brand-title {
-  font-size: 1.08rem;
-  font-weight: 800;
-  letter-spacing: 0.3px;
-  color: #ffffff;
-  line-height: 1.15;
-}
-
-.gym-brand-subtitle {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--gym-green);
-  margin-top: 3px;
-}
-
-/* Navigation Menu */
-.gym-nav {
-  padding: 16px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  flex: 1;
-  overflow-y: auto;
-  position: relative;
-  z-index: 2;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.gym-nav::-webkit-scrollbar {
-  display: none;
-}
-
-.gym-nav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: none;
-  background: transparent;
-  color: #94a3b8;
-  font-size: 0.92rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-}
-
-.gym-nav-btn-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.gym-nav-icon {
-  flex-shrink: 0;
-  color: #94a3b8;
-  transition: color 0.2s ease;
-}
-
-.gym-nav-btn:hover {
-  background-color: var(--gym-navy-light);
-  color: #ffffff;
-}
-
-.gym-nav-btn:hover .gym-nav-icon {
-  color: #ffffff;
-}
-
-.gym-nav-btn.active {
-  background-color: var(--gym-green);
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-}
-
-.gym-nav-btn.active .gym-nav-icon {
-  color: #ffffff;
-}
-
-.gym-nav-badge {
-  background-color: var(--gym-green);
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
-
-.gym-nav-btn.active .gym-nav-badge {
-  background-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-}
-
-/* Decorative Emerald Green Wave at bottom of sidebar */
-.gym-sidebar-green-wave {
-  position: absolute;
-  bottom: 48px;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.95;
-}
-
-.gym-wave-svg {
-  width: 100%;
-  height: 65px;
-  display: block;
-}
 
 /* Sidebar Footer */
 .gym-sidebar-footer {
@@ -953,3 +749,142 @@
   }
 }
 
+
+
+/* ==========================================================================
+   UNIFIED SAVITRI SAREES SIDEBAR STANDARD (.gym-*)
+   ========================================================================== */
+.gym-sidebar {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  justify-content: space-between !important;
+}
+
+.gym-sidebar-top {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.gym-sidebar-top::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Nav Item Pill Shape (Matching Image 2 Standard) */
+.gym-nav-btn, .gym-nav-item {
+  border-radius: 9999px !important;
+}
+
+.gym-nav-btn.active, .gym-nav-item.active {
+  background: #10b981 !important;
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+.gym-nav-btn.active svg, .gym-nav-item.active svg {
+  color: #ffffff !important;
+}
+
+.gym-nav-badge, .gym-badge {
+  background: #047857 !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 12px !important;
+}
+
+.gym-nav-btn.active .gym-nav-badge,
+.gym-nav-item.active .gym-badge {
+  background: #ffffff !important;
+  color: #047857 !important;
+}
+
+/* Unified Sidebar Bottom Pinned Area (NO WAVE, NO OVERLAP) */
+.gym-sidebar-bottom {
+  padding: 14px 12px 18px 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #0b1120 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.gym-btn-portal {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 9px 14px !important;
+  border-radius: 8px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+
+.gym-btn-portal:hover {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.gym-user-profile {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 6px 4px !important;
+}
+
+.gym-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 13px !important;
+  flex-shrink: 0 !important;
+}
+
+.gym-user-info {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.gym-user-name {
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.gym-user-role {
+  font-size: 11px !important;
+  color: #10b981 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}

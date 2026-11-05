@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
+  Car,
+  FileText,
   Bed,
   Users,
   Calendar,
@@ -67,8 +71,12 @@ export const SanaStayzDashboard = () => {
     { id: 'rooms', label: 'Room Grid', icon: Bed, badge: '88%' },
     { id: 'checkins', label: 'Check-Ins / Outs', icon: Key, badge: '42' },
     { id: 'reservations', label: 'Reservations', icon: Calendar, badge: '118' },
+    { id: 'guest-profiles', label: 'VIP Guest Directory', icon: Users },
     { id: 'housekeeping', label: 'Housekeeping', icon: Sparkles },
     { id: 'dining', label: 'Dining & POS', icon: Utensils },
+    { id: 'concierge', label: 'Concierge & Cabs', icon: Car },
+    { id: 'amenities', label: 'Spa & Wellness Club', icon: Coffee },
+    { id: 'banquets', label: 'Banquets & Lawns', icon: Building2 },
     { id: 'folio', label: 'Folio Invoices', icon: Receipt },
     { id: 'analytics', label: 'Hotel Analytics', icon: TrendingUp },
     { id: 'settings', label: 'Property Settings', icon: Settings },
@@ -104,6 +112,34 @@ export const SanaStayzDashboard = () => {
     { type: 'Executive King', occ: '92%', count: '22/24 Rooms', rev: '₹1,32,000', color: '#10b981' },
     { type: 'Ocean Deluxe', occ: '85%', count: '34/40 Rooms', rev: '₹78,000', color: '#34d399' },
     { type: 'Standard Queen', occ: '75%', count: '15/20 Rooms', rev: '₹30,000', color: '#6ee7b7' },
+  ];
+
+
+  const vipGuestsList = [
+    { id: 'GST-901', name: 'Dr. Vikram Malhotra', phone: '+91 98401 22890', tier: 'Diamond Member', totalStays: '18 Visits', preference: 'High Floor, Ocean View, Decaf Coffee', folioBal: '₹0 (Settled)' },
+    { id: 'GST-902', name: 'Sarah Jenkins', phone: '+44 7911 123456', tier: 'Gold Elite', totalStays: '4 Visits', preference: 'Feather Pillow, Late Checkout 2 PM', folioBal: '₹18,500' },
+    { id: 'GST-903', name: 'Kenji Takahashi', phone: '+81 90 1234 5678', tier: 'Platinum VIP', totalStays: '9 Visits', preference: 'Green Tea, Quiet Suite, Airport Transfer', folioBal: '₹95,000' },
+    { id: 'GST-904', name: 'Rajesh & Pooja Kulkarni', phone: '+91 98200 44102', tier: 'Silver Club', totalStays: '6 Visits', preference: 'Adjoining Suite, Pool Access', folioBal: '₹32,000' },
+  ];
+
+  const conciergeBookings = [
+    { id: 'TRF-101', guest: 'Dr. Vikram Malhotra', service: 'Mercedes S-Class Airport Drop', time: 'Tomorrow 09:30 AM', flight: 'AI-542 to DEL', chauffeur: 'Naveen Kumar', status: 'Scheduled' },
+    { id: 'TRF-102', guest: 'Sarah Jenkins', service: 'Heritage Fort & City Sightseeing Tour', time: 'Today 02:00 PM', flight: '-', chauffeur: 'Gopal Reddy', status: 'In Transit' },
+    { id: 'TRF-103', guest: 'Kenji Takahashi', service: 'Luxury Van Airport Pickup', time: 'Today 05:45 PM', flight: 'JL-753 from HND', chauffeur: 'Syed Arshad', status: 'Confirmed' },
+    { id: 'TRF-104', guest: 'Pooja Kulkarni', service: 'Private Yacht Sunset Cruise', time: 'Today 05:00 PM', flight: '-', chauffeur: 'Captain D’Souza', status: 'Confirmed' },
+  ];
+
+  const spaBookings = [
+    { id: 'SPA-301', guest: 'Kenji Takahashi', treatment: 'Royal Ayurvedic Abhyanga Massage (90m)', therapist: 'Dr. Archana Pillai', time: 'Today 04:00 PM', room: 'Lotus Treatment Suite 2', fee: '₹6,500', status: 'Booked' },
+    { id: 'SPA-302', guest: 'Sarah Jenkins', treatment: 'Aromatherapy & Himalayan Salt Scrub (60m)', therapist: 'Maria Fernandes', time: 'Today 06:00 PM', room: 'Orchid Wellness Room', fee: '₹4,800', status: 'Confirmed' },
+    { id: 'SPA-303', guest: 'Rajesh Kulkarni', treatment: 'Deep Tissue Sports Therapy (60m)', therapist: 'Sukhvinder Singh', time: 'Tomorrow 10:00 AM', room: 'Zen Pavilion', fee: '₹5,200', status: 'Confirmed' },
+    { id: 'SPA-304', guest: 'Meenakshi Sundaram', treatment: 'Signature Sana Glow Facial (45m)', therapist: 'Maria Fernandes', time: 'Tomorrow 11:30 AM', room: 'Lotus Suite 1', fee: '₹3,900', status: 'Confirmed' },
+  ];
+
+  const banquetEvents = [
+    { id: 'BNQ-801', hall: 'Grand Sapphire Ballroom', eventName: 'Agarwal - Singhania Sangeet & Reception', guests: '450 Guests', date: '08 Nov 2026', package: 'Platinum Royal Buffet & Mocktails', billing: '₹14,50,000', status: 'Advance Paid' },
+    { id: 'BNQ-802', hall: 'Palm Lawn & Pool Deck', eventName: 'TechVision Global Annual Leadership Gala', guests: '220 Guests', date: '12 Nov 2026', package: 'Live Counters, Barbecue & DJ Stage', billing: '₹8,80,000', status: 'Confirmed' },
+    { id: 'BNQ-803', hall: 'Executive Boardroom A', eventName: 'FinCorp India Board of Directors Meeting', guests: '35 Delegates', date: '06 Nov 2026', package: 'Executive High-Tea & Working Lunch', billing: '₹1,95,000', status: 'Confirmed' },
   ];
 
   return (
@@ -189,13 +225,7 @@ export const SanaStayzDashboard = () => {
               <span className="sana-bell-dot"></span>
             </button>
 
-            <button
-              onClick={() => window.open('https://hotel.speshway.site', '_blank')}
-              className="sana-btn-site"
-            >
-              <span>Booking Portal</span>
-              <ArrowRight size={14} />
-            </button>
+            
           </div>
         </header>
 
@@ -610,7 +640,202 @@ export const SanaStayzDashboard = () => {
             </div>
           )}
 
-          {/* TAB 9: SETTINGS */}
+          
+          {/* TAB: VIP GUESTS */}
+          {activeTab === 'guest-profiles' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Users size={18} className="text-emerald-600" />
+                    VIP Guest Directory & Stay History
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Centralized guest profiles with loyalty tiers, stay frequencies, and tailored preferences.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Add Guest Profile
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Guest ID</th>
+                      <th>Full Name</th>
+                      <th>Contact Phone</th>
+                      <th>Loyalty Tier</th>
+                      <th>Stay History</th>
+                      <th>Room & Amenity Preferences</th>
+                      <th>Folio Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {vipGuestsList.map(g => (
+                      <tr key={g.id}>
+                        <td><strong>{g.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{g.name}</span></td>
+                        <td>{g.phone}</td>
+                        <td><span className="sana-badge-cluster">{g.tier}</span></td>
+                        <td>{g.totalStays}</td>
+                        <td style={{ fontSize: '12.5px', color: '#475569' }}>{g.preference}</td>
+                        <td><strong style={{ color: g.folioBal.includes('Settled') ? '#059669' : '#0f172a' }}>{g.folioBal}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: CONCIERGE */}
+          {activeTab === 'concierge' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Car size={18} className="text-emerald-600" />
+                    Concierge Transfers & Sightseeing Itineraries
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Chauffeur services, premium luxury car dispatches, and customized resort tours.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Schedule Transfer
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Booking Ref</th>
+                      <th>Guest Name</th>
+                      <th>Transfer / Tour Detail</th>
+                      <th>Scheduled Time</th>
+                      <th>Flight / Destination</th>
+                      <th>Assigned Chauffeur</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {conciergeBookings.map(c => (
+                      <tr key={c.id}>
+                        <td><strong>{c.id}</strong></td>
+                        <td>{c.guest}</td>
+                        <td><span style={{ fontWeight: 600 }}>{c.service}</span></td>
+                        <td>{c.time}</td>
+                        <td>{c.flight}</td>
+                        <td>{c.chauffeur}</td>
+                        <td><span className="sana-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{c.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SPA & AMENITIES */}
+          {activeTab === 'amenities' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Coffee size={18} className="text-emerald-600" />
+                    Ayurvedic Spa & Wellness Club Bookings
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Holistic therapy appointments, personal massage schedules, and infinity pool reservations.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Book Spa Session
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Appointment</th>
+                      <th>Guest Name</th>
+                      <th>Holistic Treatment</th>
+                      <th>Therapist / Doctor</th>
+                      <th>Session Slot</th>
+                      <th>Treatment Suite</th>
+                      <th>Charges</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {spaBookings.map(s => (
+                      <tr key={s.id}>
+                        <td><strong>{s.id}</strong></td>
+                        <td>{s.guest}</td>
+                        <td><span style={{ fontWeight: 600 }}>{s.treatment}</span></td>
+                        <td>{s.therapist}</td>
+                        <td>{s.time}</td>
+                        <td>{s.room}</td>
+                        <td><strong style={{ color: '#059669' }}>{s.fee}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: BANQUETS */}
+          {activeTab === 'banquets' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Building2 size={18} className="text-emerald-600" />
+                    Banquet Halls & Conference Lawns Management
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Corporate conferences, destination wedding banquets, and customized catering packages.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Reserve Hall
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Event ID</th>
+                      <th>Venue / Hall</th>
+                      <th>Function & Organizers</th>
+                      <th>Capacity</th>
+                      <th>Reserved Date</th>
+                      <th>Catering Tier</th>
+                      <th>Total Billing</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {banquetEvents.map(b => (
+                      <tr key={b.id}>
+                        <td><strong>{b.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{b.hall}</span></td>
+                        <td>{b.eventName}</td>
+                        <td><span className="sana-badge-cluster">{b.guests}</span></td>
+                        <td>{b.date}</td>
+                        <td>{b.package}</td>
+                        <td><strong style={{ color: '#059669' }}>{b.billing}</strong></td>
+                        <td><span className="sana-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{b.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SETTINGS */}
           {activeTab === 'settings' && (
             <div className="sana-card" style={{ maxWidth: '640px' }}>
               <div className="sana-card-header">
