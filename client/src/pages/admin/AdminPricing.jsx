@@ -72,11 +72,14 @@ export const AdminPricing = () => {
   const { socket } = useSocket();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editingPlanIdx, setEditingPlanIdx] = useState(null);
-  const [originalPlanBackup, setOriginalPlanBackup] = useState(null);
-  const [savingPlanIdx, setSavingPlanIdx] = useState(null);
-  const [savedSuccessIdx, setSavedSuccessIdx] = useState(null);
-  const [newFeatureInputs, setNewFeatureInputs] = useState({});
+
+  // Modal State
+  const [selectedPlanIdx, setSelectedPlanIdx] = useState(null);
+  const [isEditingInModal, setIsEditingInModal] = useState(false);
+  const [modalDraft, setModalDraft] = useState(null);
+  const [newModalFeatureInput, setNewModalFeatureInput] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Fetch pricing plans from backend
   const fetchPricing = async () => {
@@ -84,13 +87,11 @@ export const AdminPricing = () => {
       setLoading(true);
       const res = await api.get('/pricing');
       if (res.data && res.data.data && res.data.data.length > 0) {
-        // If data still contains obsolete website/mobile-app slugs, replace with SaaS plans
         const hasOld = res.data.data.some(
           (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
         );
         if (hasOld) {
           setPlans(DEFAULT_SAAS_PLANS);
-          // Sync backend to SaaS plans
           api.put('/pricing', { plans: DEFAULT_SAAS_PLANS }).catch(() => {});
         } else {
           setPlans(res.data.data);
@@ -129,100 +130,96 @@ export const AdminPricing = () => {
     };
   }, [socket]);
 
-  const handleStartEdit = (index) => {
-    setOriginalPlanBackup(JSON.parse(JSON.stringify(plans[index])));
-    setEditingPlanIdx(index);
+  // Open Details Modal
+  const handleOpenDetails = (index) => {
+    setSelectedPlanIdx(index);
+    setIsEditingInModal(false);
+    setModalDraft(JSON.parse(JSON.stringify(plans[index])));
+    setNewModalFeatureInput('');
+    setSaveSuccess(false);
   };
 
-  const handleCancelEdit = (index) => {
-    if (originalPlanBackup) {
+  // Close Modal
+  const handleCloseModal = () => {
+    setSelectedPlanIdx(null);
+    setIsEditingInModal(false);
+    setModalDraft(null);
+    setSaveSuccess(false);
+  };
+
+  // Edit in modal
+  const handleDraftChange = (field, value) => {
+    setModalDraft((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleDraftPopularToggle = () => {
+    setModalDraft((prev) => ({
+      ...prev,
+      popular: !prev.popular,
+    }));
+  };
+
+  const handleAddDraftFeature = () => {
+    const text = (newModalFeatureInput || '').trim();
+    if (!text) return;
+    setModalDraft((prev) => ({
+      ...prev,
+      features: [...(prev.features || []), text],
+    }));
+    setNewModalFeatureInput('');
+  };
+
+  const handleRemoveDraftFeature = (featureIdx) => {
+    setModalDraft((prev) => ({
+      ...prev,
+      features: (prev.features || []).filter((_, i) => i !== featureIdx),
+    }));
+  };
+
+  // Save changes from Modal
+  const handleSaveModalDraft = async () => {
+    if (!modalDraft || selectedPlanIdx === null) return;
+    setIsSaving(true);
+    try {
+      const res = await api.put(`/pricing/${modalDraft.slug}`, modalDraft);
+      const updatedPlan = res.data?.data || modalDraft;
+
       setPlans((prev) => {
         const next = [...prev];
-        next[index] = originalPlanBackup;
+        next[selectedPlanIdx] = updatedPlan;
         return next;
       });
-    }
-    setEditingPlanIdx(null);
-    setOriginalPlanBackup(null);
-  };
 
-  const handlePlanChange = (index, field, value) => {
-    setPlans((prev) => {
-      const next = [...prev];
-      next[index] = { ...next[index], [field]: value };
-      return next;
-    });
-  };
-
-  const handlePopularToggle = (index) => {
-    setPlans((prev) => {
-      const next = [...prev];
-      return next.map((p, i) => ({
-        ...p,
-        popular: i === index ? !p.popular : false,
-      }));
-    });
-  };
-
-  const handleAddFeature = (planIndex) => {
-    const text = (newFeatureInputs[planIndex] || '').trim();
-    if (!text) return;
-
-    setPlans((prev) => {
-      const next = [...prev];
-      const target = next[planIndex];
-      next[planIndex] = {
-        ...target,
-        features: [...(target.features || []), text],
-      };
-      return next;
-    });
-
-    setNewFeatureInputs((prev) => ({ ...prev, [planIndex]: '' }));
-  };
-
-  const handleRemoveFeature = (planIndex, featureIndex) => {
-    setPlans((prev) => {
-      const next = [...prev];
-      const target = next[planIndex];
-      next[planIndex] = {
-        ...target,
-        features: target.features.filter((_, i) => i !== featureIndex),
-      };
-      return next;
-    });
-  };
-
-  // Save an individual plan directly from its card
-  const handleSaveSinglePlan = async (planIndex) => {
-    setSavingPlanIdx(planIndex);
-    try {
-      const plan = plans[planIndex];
-      const res = await api.put(`/pricing/${plan.slug}`, plan);
-      if (res.data && res.data.success) {
-        setSavedSuccessIdx(planIndex);
-        setTimeout(() => {
-          setSavedSuccessIdx(null);
-          setEditingPlanIdx(null);
-          setOriginalPlanBackup(null);
-        }, 500);
-      }
-    } catch (err) {
-      console.error(`Failed to save ${plans[planIndex]?.name} plan:`, err);
-      setSavedSuccessIdx(planIndex);
+      setSaveSuccess(true);
       setTimeout(() => {
-        setSavedSuccessIdx(null);
-        setEditingPlanIdx(null);
-        setOriginalPlanBackup(null);
+        setSaveSuccess(false);
+        setIsEditingInModal(false);
+      }, 500);
+    } catch (err) {
+      console.error('Failed to save pricing plan:', err);
+      // Fallback local update
+      setPlans((prev) => {
+        const next = [...prev];
+        next[selectedPlanIdx] = modalDraft;
+        return next;
+      });
+      setSaveSuccess(true);
+      setTimeout(() => {
+        setSaveSuccess(false);
+        setIsEditingInModal(false);
       }, 500);
     } finally {
-      setSavingPlanIdx(null);
+      setIsSaving(false);
     }
   };
 
-  // Delete a plan
-  const handleDeletePlan = async (planIndex) => {
-    const plan = plans[planIndex];
+  // Delete Plan from Modal
+  const handleDeletePlan = async () => {
+    if (selectedPlanIdx === null) return;
+    const plan = plans[selectedPlanIdx];
     if (!plan) return;
 
     if (window.confirm(`Are you sure you want to delete the "${plan.name}" pricing plan?`)) {
@@ -232,10 +229,8 @@ export const AdminPricing = () => {
         console.warn('API delete fallback, updating local state:', err.message);
       }
 
-      setPlans((prev) => prev.filter((_, i) => i !== planIndex));
-      if (editingPlanIdx === planIndex) {
-        setEditingPlanIdx(null);
-      }
+      setPlans((prev) => prev.filter((_, i) => i !== selectedPlanIdx));
+      handleCloseModal();
     }
   };
 
@@ -246,6 +241,8 @@ export const AdminPricing = () => {
       </div>
     );
   }
+
+  const selectedPlan = selectedPlanIdx !== null ? plans[selectedPlanIdx] : null;
 
   return (
     <div className="admin-page-view">
@@ -267,83 +264,283 @@ export const AdminPricing = () => {
             Pricing &amp; Plans Management
           </h1>
           <p className="admin-subtext" style={{ margin: 0 }}>
-            Manage pricing tiers displayed on your public pricing page. Click <strong>Edit Details</strong> to customize any card.
+            Click on any card to view its full details, edit pricing and features, or delete the plan.
           </p>
         </div>
       </div>
 
-      {/* Grid of Pricing Tiers */}
+      {/* Grid of Pricing Tiers (Clean Compact Card View) */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '24px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '18px',
+          maxWidth: '1100px',
           marginBottom: '35px',
           alignItems: 'stretch',
         }}
       >
-        {plans.map((plan, pIdx) => {
-          const isEditing = editingPlanIdx === pIdx;
-          const isSavingThis = savingPlanIdx === pIdx;
-          const isSavedSuccess = savedSuccessIdx === pIdx;
-
-          // ==========================================
-          // EDIT MODE: Interactive Form View
-          // ==========================================
-          if (isEditing) {
-            return (
+        {plans.map((plan, pIdx) => (
+          <div
+            key={plan.slug || pIdx}
+            onClick={() => handleOpenDetails(pIdx)}
+            className={`pricing-card ${plan.popular ? 'popular-tier' : ''}`}
+            style={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              backgroundColor: '#ffffff',
+              border: plan.popular ? '2px solid #00875a' : '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '22px 20px',
+              boxShadow: plan.popular
+                ? '0 6px 18px -3px rgba(0, 135, 90, 0.15)'
+                : '0 2px 8px rgba(15, 23, 42, 0.04)',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+            }}
+            title="Click to view details, edit or delete"
+          >
+            {/* Popular Tag */}
+            {plan.popular && (
               <div
-                key={plan.slug || pIdx}
-                className="admin-card"
+                className="popular-badge"
                 style={{
-                  height: '100%',
+                  position: 'absolute',
+                  top: '-10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  backgroundColor: '#00875a',
+                  color: '#ffffff',
+                  padding: '3px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '0.68rem',
+                  fontWeight: 700,
                   display: 'flex',
-                  flexDirection: 'column',
-                  backgroundColor: '#ffffff',
-                  border: '2px solid #00875a',
-                  borderRadius: '20px',
-                  padding: '28px 24px',
-                  boxShadow: '0 8px 24px -4px rgba(0, 135, 90, 0.2)',
-                  position: 'relative',
+                  alignItems: 'center',
+                  gap: '4px',
+                  boxShadow: '0 2px 5px rgba(0, 135, 90, 0.3)',
+                  whiteSpace: 'nowrap',
                 }}
               >
-                {/* Edit Header */}
-                <div
+                <Sparkles size={11} /> Most Popular
+              </div>
+            )}
+
+            {/* Plan Title */}
+            <h3
+              style={{
+                fontSize: '1.2rem',
+                fontWeight: 800,
+                color: '#0f172a',
+                margin: '0 0 6px 0',
+              }}
+            >
+              {plan.name}
+            </h3>
+
+            {/* Plan Description */}
+            <p
+              style={{
+                fontSize: '0.8rem',
+                color: '#64748b',
+                lineHeight: 1.45,
+                margin: '0 0 14px 0',
+                minHeight: '36px',
+              }}
+            >
+              {plan.desc}
+            </p>
+
+            {/* Price Row */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: '5px',
+                marginBottom: '16px',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '1.9rem',
+                  fontWeight: 800,
+                  color: '#0f172a',
+                  letterSpacing: '-0.5px',
+                }}
+              >
+                {plan.price}
+              </span>
+              {plan.period ? (
+                <span
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginBottom: '16px',
-                    paddingBottom: '10px',
-                    borderBottom: '1px solid #e2e8f0',
+                    fontSize: '0.78rem',
+                    color: '#64748b',
+                    fontWeight: 500,
                   }}
                 >
-                  <div>
+                  {plan.period}
+                </span>
+              ) : null}
+            </div>
+
+            {/* CTA Button Preview */}
+            <button
+              type="button"
+              style={{
+                width: '100%',
+                padding: '9px 14px',
+                borderRadius: '9999px',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                marginBottom: '18px',
+                backgroundColor: plan.popular ? '#00875a' : '#f8fafc',
+                color: plan.popular ? '#ffffff' : '#0f172a',
+                border: plan.popular ? 'none' : '1.5px solid #e2e8f0',
+                pointerEvents: 'none',
+              }}
+            >
+              {plan.btnText || 'Start 14-Day Free Trial'}
+            </button>
+
+            {/* Included Features List */}
+            <div style={{ flex: 1 }}>
+              <span
+                style={{
+                  display: 'block',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  color: '#0f172a',
+                  marginBottom: '10px',
+                }}
+              >
+                What&apos;s included:
+              </span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+                {(plan.features || []).map((feat, fIdx) => (
+                  <div
+                    key={fIdx}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '8px',
+                      fontSize: '0.8rem',
+                      color: '#334155',
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    <Check
+                      size={14}
+                      style={{ color: '#00875a', flexShrink: 0, marginTop: '2px' }}
+                    />
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Details & Edit Modal Dialog */}
+      {selectedPlan && (
+        <div
+          onClick={handleCloseModal}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              maxWidth: '560px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              padding: '30px',
+              boxShadow: '0 20px 45px rgba(0, 0, 0, 0.25)',
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingBottom: '16px',
+                marginBottom: '20px',
+                borderBottom: '1px solid #e2e8f0',
+              }}
+            >
+              <div>
+                <span
+                  style={{
+                    fontSize: '0.74rem',
+                    fontWeight: 700,
+                    color: '#00875a',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  {isEditingInModal ? 'Editing Plan' : 'Plan Overview'}
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                  <h2 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 800, color: '#0f172a' }}>
+                    {isEditingInModal ? modalDraft?.name : selectedPlan.name} Plan
+                  </h2>
+                  {selectedPlan.popular && !isEditingInModal && (
                     <span
                       style={{
-                        fontSize: '0.74rem',
+                        backgroundColor: '#dcfce7',
+                        color: '#166534',
+                        padding: '2px 8px',
+                        borderRadius: '9999px',
+                        fontSize: '0.72rem',
                         fontWeight: 700,
-                        color: '#00875a',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
                       }}
                     >
-                      Editing Plan
+                      <Sparkles size={11} /> Popular
                     </span>
-                    <h3 style={{ margin: '2px 0 0 0', fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
-                      {plan.name || 'Tier Details'}
-                    </h3>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleCancelEdit(pIdx)}
-                    style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: '4px' }}
-                    title="Cancel editing"
-                  >
-                    <X size={20} />
-                  </button>
+                  )}
                 </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#64748b',
+                  cursor: 'pointer',
+                  padding: '6px',
+                  borderRadius: '6px',
+                }}
+                title="Close modal"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
+            {/* Modal Content: EDIT MODE */}
+            {isEditingInModal && modalDraft ? (
+              <div>
                 {/* Plan Display Title */}
                 <div style={{ marginBottom: '14px' }}>
                   <label
@@ -359,12 +556,12 @@ export const AdminPricing = () => {
                   </label>
                   <input
                     type="text"
-                    value={plan.name}
-                    onChange={(e) => handlePlanChange(pIdx, 'name', e.target.value)}
+                    value={modalDraft.name}
+                    onChange={(e) => handleDraftChange('name', e.target.value)}
                     placeholder="e.g. Starter, Professional, Enterprise"
                     style={{
                       width: '100%',
-                      padding: '8px 12px',
+                      padding: '9px 12px',
                       borderRadius: '8px',
                       border: '1.5px solid #cbd5e1',
                       fontSize: '0.9rem',
@@ -389,8 +586,8 @@ export const AdminPricing = () => {
                   </label>
                   <textarea
                     rows={2}
-                    value={plan.desc}
-                    onChange={(e) => handlePlanChange(pIdx, 'desc', e.target.value)}
+                    value={modalDraft.desc}
+                    onChange={(e) => handleDraftChange('desc', e.target.value)}
                     placeholder="Brief description of the tier..."
                     style={{
                       width: '100%',
@@ -421,12 +618,12 @@ export const AdminPricing = () => {
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <input
                       type="text"
-                      value={plan.price}
-                      onChange={(e) => handlePlanChange(pIdx, 'price', e.target.value)}
+                      value={modalDraft.price}
+                      onChange={(e) => handleDraftChange('price', e.target.value)}
                       placeholder="e.g. ₹2,499 or Custom"
                       style={{
                         flex: 1,
-                        padding: '8px 12px',
+                        padding: '9px 12px',
                         fontSize: '1.15rem',
                         fontWeight: 800,
                         color: '#0f172a',
@@ -436,13 +633,13 @@ export const AdminPricing = () => {
                     />
                     <input
                       type="text"
-                      value={plan.period || ''}
-                      onChange={(e) => handlePlanChange(pIdx, 'period', e.target.value)}
+                      value={modalDraft.period || ''}
+                      onChange={(e) => handleDraftChange('period', e.target.value)}
                       placeholder="/user /month"
                       style={{
-                        width: '120px',
-                        padding: '8px 10px',
-                        fontSize: '0.82rem',
+                        width: '130px',
+                        padding: '9px 10px',
+                        fontSize: '0.84rem',
                         borderRadius: '8px',
                         border: '1.5px solid #cbd5e1',
                         color: '#64748b',
@@ -452,7 +649,7 @@ export const AdminPricing = () => {
                 </div>
 
                 {/* CTA Button Label & Popular checkbox */}
-                <div style={{ marginBottom: '14px' }}>
+                <div style={{ marginBottom: '16px' }}>
                   <label
                     style={{
                       display: 'block',
@@ -467,8 +664,8 @@ export const AdminPricing = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <input
                       type="text"
-                      value={plan.btnText || ''}
-                      onChange={(e) => handlePlanChange(pIdx, 'btnText', e.target.value)}
+                      value={modalDraft.btnText || ''}
+                      onChange={(e) => handleDraftChange('btnText', e.target.value)}
                       placeholder="e.g. Start 14-Day Free Trial"
                       style={{
                         flex: 1,
@@ -484,7 +681,7 @@ export const AdminPricing = () => {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px',
-                        fontSize: '0.82rem',
+                        fontSize: '0.84rem',
                         fontWeight: 600,
                         color: '#1e293b',
                         cursor: 'pointer',
@@ -493,17 +690,17 @@ export const AdminPricing = () => {
                     >
                       <input
                         type="checkbox"
-                        checked={!!plan.popular}
-                        onChange={() => handlePopularToggle(pIdx)}
+                        checked={!!modalDraft.popular}
+                        onChange={handleDraftPopularToggle}
                         style={{ width: '16px', height: '16px', accentColor: '#00875a', cursor: 'pointer' }}
                       />
-                      Popular
+                      Most Popular
                     </label>
                   </div>
                 </div>
 
                 {/* Features Management */}
-                <div style={{ marginBottom: '16px', flex: 1 }}>
+                <div style={{ marginBottom: '20px' }}>
                   <label
                     style={{
                       display: 'block',
@@ -513,36 +710,36 @@ export const AdminPricing = () => {
                       marginBottom: '6px',
                     }}
                   >
-                    Included Features ({plan.features?.length || 0})
+                    Included Features ({modalDraft.features?.length || 0})
                   </label>
                   <div
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '6px',
-                      maxHeight: '150px',
+                      maxHeight: '160px',
                       overflowY: 'auto',
-                      marginBottom: '8px',
+                      marginBottom: '10px',
                     }}
                   >
-                    {(plan.features || []).map((feat, fIdx) => (
+                    {(modalDraft.features || []).map((feat, fIdx) => (
                       <div
                         key={fIdx}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '6px 10px',
+                          padding: '7px 10px',
                           backgroundColor: '#f8fafc',
                           borderRadius: '6px',
                           border: '1px solid #e2e8f0',
-                          fontSize: '0.82rem',
+                          fontSize: '0.84rem',
                         }}
                       >
                         <span style={{ color: '#334155' }}>&bull; {feat}</span>
                         <button
                           type="button"
-                          onClick={() => handleRemoveFeature(pIdx, fIdx)}
+                          onClick={() => handleRemoveDraftFeature(fIdx)}
                           style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '2px' }}
                           title="Remove feature"
                         >
@@ -557,32 +754,32 @@ export const AdminPricing = () => {
                     <input
                       type="text"
                       placeholder="Add new feature..."
-                      value={newFeatureInputs[pIdx] || ''}
-                      onChange={(e) => setNewFeatureInputs({ ...newFeatureInputs, [pIdx]: e.target.value })}
+                      value={newModalFeatureInput}
+                      onChange={(e) => setNewModalFeatureInput(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
-                          handleAddFeature(pIdx);
+                          handleAddDraftFeature();
                         }
                       }}
                       style={{
                         flex: 1,
-                        padding: '6px 10px',
+                        padding: '7px 10px',
                         borderRadius: '6px',
                         border: '1.5px solid #cbd5e1',
-                        fontSize: '0.8rem',
+                        fontSize: '0.82rem',
                       }}
                     />
                     <button
                       type="button"
-                      onClick={() => handleAddFeature(pIdx)}
+                      onClick={handleAddDraftFeature}
                       style={{
-                        padding: '6px 12px',
+                        padding: '7px 14px',
                         backgroundColor: '#f1f5f9',
                         border: '1.5px solid #cbd5e1',
                         borderRadius: '6px',
                         cursor: 'pointer',
-                        fontSize: '0.8rem',
+                        fontSize: '0.82rem',
                         fontWeight: 600,
                         display: 'flex',
                         alignItems: 'center',
@@ -599,22 +796,24 @@ export const AdminPricing = () => {
                   style={{
                     display: 'flex',
                     gap: '10px',
-                    marginTop: 'auto',
-                    paddingTop: '12px',
+                    paddingTop: '16px',
                     borderTop: '1px solid #f1f5f9',
                   }}
                 >
                   <button
                     type="button"
-                    onClick={() => handleCancelEdit(pIdx)}
+                    onClick={() => {
+                      setModalDraft(JSON.parse(JSON.stringify(selectedPlan)));
+                      setIsEditingInModal(false);
+                    }}
                     style={{
                       flex: 1,
-                      padding: '10px 14px',
+                      padding: '11px 16px',
                       backgroundColor: '#f1f5f9',
                       color: '#475569',
                       border: '1px solid #cbd5e1',
                       borderRadius: '8px',
-                      fontSize: '0.86rem',
+                      fontSize: '0.88rem',
                       fontWeight: 600,
                       cursor: 'pointer',
                     }}
@@ -623,16 +822,16 @@ export const AdminPricing = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleSaveSinglePlan(pIdx)}
-                    disabled={isSavingThis}
+                    onClick={handleSaveModalDraft}
+                    disabled={isSaving}
                     style={{
-                      flex: 1.3,
-                      padding: '10px 14px',
-                      backgroundColor: isSavedSuccess ? '#059669' : '#00875a',
+                      flex: 1.4,
+                      padding: '11px 16px',
+                      backgroundColor: saveSuccess ? '#059669' : '#00875a',
                       color: '#ffffff',
                       border: 'none',
                       borderRadius: '8px',
-                      fontSize: '0.86rem',
+                      fontSize: '0.88rem',
                       fontWeight: 700,
                       cursor: 'pointer',
                       display: 'flex',
@@ -642,11 +841,11 @@ export const AdminPricing = () => {
                       boxShadow: '0 2px 8px rgba(0, 135, 90, 0.25)',
                     }}
                   >
-                    {isSavedSuccess ? (
+                    {saveSuccess ? (
                       <>
                         <Check size={16} /> Saved!
                       </>
-                    ) : isSavingThis ? (
+                    ) : isSaving ? (
                       <>
                         <Save size={16} /> Saving...
                       </>
@@ -658,231 +857,195 @@ export const AdminPricing = () => {
                   </button>
                 </div>
               </div>
-            );
-          }
-
-          // ==========================================
-          // VIEW MODE: Exact Pricing Card Match
-          // ==========================================
-          return (
-            <div
-              key={plan.slug || pIdx}
-              className={`pricing-card ${plan.popular ? 'popular-tier' : ''}`}
-              style={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-                backgroundColor: '#ffffff',
-                border: plan.popular ? '2px solid #00875a' : '1px solid #e2e8f0',
-                borderRadius: '20px',
-                padding: '36px 30px',
-                boxShadow: plan.popular
-                  ? '0 8px 24px -4px rgba(0, 135, 90, 0.15)'
-                  : '0 2px 12px rgba(15, 23, 42, 0.04)',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              {/* Popular Tag */}
-              {plan.popular && (
+            ) : (
+              /* Modal Content: DETAILS VIEW */
+              <div>
+                {/* Price Display */}
                 <div
-                  className="popular-badge"
                   style={{
-                    position: 'absolute',
-                    top: '-12px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    backgroundColor: '#00875a',
-                    color: '#ffffff',
-                    padding: '4px 14px',
-                    borderRadius: '9999px',
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    boxShadow: '0 2px 6px rgba(0, 135, 90, 0.3)',
-                    whiteSpace: 'nowrap',
+                    marginBottom: '16px',
+                    padding: '14px 18px',
+                    backgroundColor: '#f8fafc',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
                   }}
                 >
-                  <Sparkles size={12} /> Most Popular
-                </div>
-              )}
-
-              {/* Plan Title */}
-              <h3
-                style={{
-                  fontSize: '1.45rem',
-                  fontWeight: 800,
-                  color: '#0f172a',
-                  margin: '0 0 8px 0',
-                }}
-              >
-                {plan.name}
-              </h3>
-
-              {/* Plan Description */}
-              <p
-                style={{
-                  fontSize: '0.88rem',
-                  color: '#64748b',
-                  lineHeight: 1.5,
-                  margin: '0 0 20px 0',
-                  minHeight: '42px',
-                }}
-              >
-                {plan.desc}
-              </p>
-
-              {/* Price Row */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  gap: '6px',
-                  marginBottom: '24px',
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: '2.6rem',
-                    fontWeight: 800,
-                    color: '#0f172a',
-                    letterSpacing: '-0.5px',
-                  }}
-                >
-                  {plan.price}
-                </span>
-                {plan.period ? (
                   <span
                     style={{
-                      fontSize: '0.86rem',
+                      fontSize: '0.74rem',
+                      fontWeight: 700,
                       color: '#64748b',
-                      fontWeight: 500,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      display: 'block',
+                      marginBottom: '2px',
                     }}
                   >
-                    {plan.period}
+                    Plan Pricing
                   </span>
-                ) : null}
-              </div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                    <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a' }}>
+                      {selectedPlan.price}
+                    </span>
+                    {selectedPlan.period ? (
+                      <span style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: 600 }}>
+                        {selectedPlan.period}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
 
-              {/* CTA Button Preview */}
-              <button
-                type="button"
-                style={{
-                  width: '100%',
-                  padding: '12px 18px',
-                  borderRadius: '9999px',
-                  fontSize: '0.92rem',
-                  fontWeight: 700,
-                  marginBottom: '26px',
-                  backgroundColor: plan.popular ? '#00875a' : '#f8fafc',
-                  color: plan.popular ? '#ffffff' : '#0f172a',
-                  border: plan.popular ? 'none' : '1.5px solid #e2e8f0',
-                  cursor: 'default',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {plan.btnText || 'Start 14-Day Free Trial'}
-              </button>
+                {/* Description */}
+                <div style={{ marginBottom: '18px' }}>
+                  <span
+                    style={{
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      color: '#64748b',
+                      display: 'block',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Description
+                  </span>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: '#334155', lineHeight: 1.5 }}>
+                    {selectedPlan.desc || 'No description provided.'}
+                  </p>
+                </div>
 
-              {/* Included Features List */}
-              <div style={{ flex: 1, marginBottom: '24px' }}>
-                <span
+                {/* CTA Button Label */}
+                <div style={{ marginBottom: '18px' }}>
+                  <span
+                    style={{
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      color: '#64748b',
+                      display: 'block',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Button Label
+                  </span>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      padding: '6px 14px',
+                      backgroundColor: '#f1f5f9',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '9999px',
+                      fontSize: '0.84rem',
+                      fontWeight: 700,
+                      color: '#0f172a',
+                    }}
+                  >
+                    {selectedPlan.btnText || 'Start 14-Day Free Trial'}
+                  </span>
+                </div>
+
+                {/* Features List */}
+                <div style={{ marginBottom: '24px' }}>
+                  <span
+                    style={{
+                      fontSize: '0.84rem',
+                      fontWeight: 700,
+                      color: '#0f172a',
+                      display: 'block',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    What&apos;s included ({selectedPlan.features?.length || 0}):
+                  </span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '8px',
+                      maxHeight: '180px',
+                      overflowY: 'auto',
+                    }}
+                  >
+                    {(selectedPlan.features || []).map((feat, fIdx) => (
+                      <div
+                        key={fIdx}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '10px',
+                          fontSize: '0.86rem',
+                          color: '#334155',
+                        }}
+                      >
+                        <Check size={16} style={{ color: '#00875a', flexShrink: 0, marginTop: '2px' }} />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Modal Footer Actions: Delete Option & Edit Option */}
+                <div
                   style={{
-                    display: 'block',
-                    fontSize: '0.92rem',
-                    fontWeight: 700,
-                    color: '#0f172a',
-                    marginBottom: '14px',
+                    display: 'flex',
+                    gap: '12px',
+                    paddingTop: '16px',
+                    borderTop: '1px solid #f1f5f9',
                   }}
                 >
-                  What&apos;s included:
-                </span>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {(plan.features || []).map((feat, fIdx) => (
-                    <div
-                      key={fIdx}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '10px',
-                        fontSize: '0.86rem',
-                        color: '#334155',
-                        lineHeight: 1.45,
-                      }}
-                    >
-                      <Check
-                        size={16}
-                        style={{ color: '#00875a', flexShrink: 0, marginTop: '2px' }}
-                      />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
+                  <button
+                    type="button"
+                    onClick={handleDeletePlan}
+                    style={{
+                      flex: 1,
+                      padding: '11px 16px',
+                      backgroundColor: '#fef2f2',
+                      color: '#ef4444',
+                      border: '1px solid #fecaca',
+                      borderRadius: '8px',
+                      fontSize: '0.88rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      transition: 'all 0.15s ease',
+                    }}
+                    title="Delete Pricing Plan"
+                  >
+                    <Trash2 size={15} /> Delete
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalDraft(JSON.parse(JSON.stringify(selectedPlan)));
+                      setIsEditingInModal(true);
+                    }}
+                    style={{
+                      flex: 1.3,
+                      padding: '11px 16px',
+                      backgroundColor: '#f0fdf4',
+                      color: '#166534',
+                      border: '1.5px solid #bbf7d0',
+                      borderRadius: '8px',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      transition: 'all 0.15s ease',
+                    }}
+                    title="Edit Details"
+                  >
+                    <Edit2 size={15} /> Edit Details
+                  </button>
                 </div>
               </div>
-
-              {/* Card Footer Actions: Delete Option & Edit Option */}
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '10px',
-                  marginTop: 'auto',
-                  paddingTop: '16px',
-                  borderTop: '1px solid #f1f5f9',
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => handleDeletePlan(pIdx)}
-                  style={{
-                    flex: 1,
-                    padding: '10px 14px',
-                    backgroundColor: '#fef2f2',
-                    color: '#ef4444',
-                    border: '1px solid #fecaca',
-                    borderRadius: '8px',
-                    fontSize: '0.84rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    transition: 'all 0.15s ease',
-                  }}
-                  title="Delete Pricing Plan"
-                >
-                  <Trash2 size={14} /> Delete
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleStartEdit(pIdx)}
-                  style={{
-                    flex: 1,
-                    padding: '10px 14px',
-                    backgroundColor: '#f0fdf4',
-                    color: '#166534',
-                    border: '1.5px solid #bbf7d0',
-                    borderRadius: '8px',
-                    fontSize: '0.84rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    transition: 'all 0.15s ease',
-                  }}
-                  title="Edit Details"
-                >
-                  <Edit2 size={14} /> Edit Details
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
