@@ -232,14 +232,56 @@ export const AdminLayout = () => {
         </nav>
 
         <div className="admin-sidebar-footer">
-          <button onClick={handleLogout} className="admin-btn-logout">
-            <LogOut size={15} /> Sign Out
-          </button>
-
-          <div className="admin-sidebar-profile">
+          <div
+            className="admin-sidebar-profile"
+            style={{
+              borderTop: 'none',
+              paddingTop: 0,
+              marginTop: 0,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
             <div className="admin-avatar">AD</div>
-            <div className="profile-meta">
-              <span className="profile-name">{user?.name || 'Speshway Administrator'}</span>
+            <div className="profile-meta" style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+                <span
+                  className="profile-name"
+                  title={user?.name || 'Speshway Administrator'}
+                  style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                >
+                  {user?.name || 'Speshway Administrator'}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  title="Sign Out"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#f87171',
+                    cursor: 'pointer',
+                    padding: '3px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                    transition: 'color 0.2s, background-color 0.2s',
+                    flexShrink: 0,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#ef4444';
+                    e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = '#f87171';
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
+                >
+                  <LogOut size={15} />
+                </button>
+              </div>
               <span className="profile-email">{user?.email || 'admin@gmail.com'}</span>
             </div>
           </div>
