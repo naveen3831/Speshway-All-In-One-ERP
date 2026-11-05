@@ -1,33 +1,305 @@
+/* ==========================================================================
+   SPESHWAY HRMS ENTERPRISE ADMIN DASHBOARD STYLES
+   Scoped exclusively under .hrms- to prevent any CSS leaks or conflicts.
+   ========================================================================== */
 
-
-/* Sidebar Footer */
-.hrms-sidebar-footer {
-  padding: 14px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  position: relative;
-  z-index: 2;
-  background-color: var(--hrms-navy);
+:root {
+  --hrms-navy: #0b1120;
+  --hrms-navy-light: #151d32;
+  --hrms-navy-hover: #1e293b;
+  --hrms-green: #10b981;
+  --hrms-green-hover: #059669;
+  --hrms-green-light: #ecfdf5;
+  --hrms-green-border: #a7f3d0;
+  --hrms-blue: #3b82f6;
+  --hrms-blue-light: #eff6ff;
+  --hrms-amber-light: #fef3c7;
+  --hrms-amber-text: #d97706;
+  --hrms-purple-light: #f5f3ff;
+  --hrms-purple-text: #7c3aed;
+  --hrms-red: #ef4444;
+  --hrms-bg: #f8fafc;
+  --hrms-card-bg: #ffffff;
+  --hrms-text-dark: #0f172a;
+  --hrms-text-muted: #64748b;
+  --hrms-border: #e2e8f0;
+  --hrms-radius: 14px;
 }
 
-.hrms-logout-btn {
+/* Base Wrapper */
+.hrms-wrapper {
+  display: flex;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  background-color: var(--hrms-bg);
+  color: var(--hrms-text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.hrms-wrapper * {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave)
+   ========================================================================== */
+.hrms-sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  max-height: 100vh;
+  flex-shrink: 0;
+  background-color: var(--hrms-navy);
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  overflow-y: hidden;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hrms-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.hrms-sidebar-top {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hrms-sidebar-top::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* Brand Header */
+.hrms-brand {
+  padding: 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.hrms-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hrms-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.hrms-brand-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.brand-italic {
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+}
+
+.brand-green {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--hrms-green);
+  letter-spacing: 0.5px;
+}
+
+.hrms-brand-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+  margin-top: 3px;
+}
+
+/* Navigation Menu */
+.hrms-nav {
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  z-index: 2;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hrms-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.hrms-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.90rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.hrms-nav-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hrms-nav-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.hrms-nav-btn:hover {
+  background-color: var(--hrms-navy-light);
+  color: #ffffff;
+}
+
+.hrms-nav-btn:hover .hrms-nav-icon {
+  color: #ffffff;
+}
+
+.hrms-nav-btn.active {
+  background-color: var(--hrms-green);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.hrms-nav-btn.active .hrms-nav-icon {
+  color: #ffffff;
+}
+
+.hrms-nav-badge {
+  background-color: var(--hrms-green);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.hrms-nav-btn.active .hrms-nav-badge {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Sidebar Bottom User & Exit - Matching Savitri Sarees Standard */
+.hrms-sidebar-bottom {
+  padding: 14px 12px 18px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--hrms-navy);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: auto;
+  position: relative;
+  z-index: 10;
+}
+
+.hrms-btn-portal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.hrms-btn-portal:hover {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+.hrms-user-profile {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 100%;
-  padding: 9px 14px;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  color: #f87171;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 6px 4px;
 }
 
-.hrms-logout-btn:hover {
-  background-color: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
+.hrms-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.hrms-user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hrms-user-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hrms-user-role {
+  font-size: 11px;
+  color: #10b981;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ==========================================================================
@@ -809,146 +1081,8 @@
     height: auto;
     padding: 16px;
     flex-direction: column;
+  justify-content: space-between;
     gap: 12px;
   }
 }
 
-
-
-/* ==========================================================================
-   UNIFIED SAVITRI SAREES SIDEBAR STANDARD (.hrms-*)
-   ========================================================================== */
-.hrms-sidebar {
-  overflow-y: hidden !important;
-  overflow-x: hidden !important;
-  justify-content: space-between !important;
-}
-
-.hrms-sidebar-top {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-
-.hrms-sidebar-top::-webkit-scrollbar {
-  display: none !important;
-}
-
-/* Nav Item Pill Shape (Matching Image 2 Standard) */
-.hrms-nav-btn, .hrms-nav-item {
-  border-radius: 9999px !important;
-}
-
-.hrms-nav-btn.active, .hrms-nav-item.active {
-  background: #10b981 !important;
-  background-color: #10b981 !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
-}
-
-.hrms-nav-btn.active svg, .hrms-nav-item.active svg {
-  color: #ffffff !important;
-}
-
-.hrms-nav-badge, .hrms-badge {
-  background: #047857 !important;
-  color: #ffffff !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  padding: 2px 8px !important;
-  border-radius: 12px !important;
-}
-
-.hrms-nav-btn.active .hrms-nav-badge,
-.hrms-nav-item.active .hrms-badge {
-  background: #ffffff !important;
-  color: #047857 !important;
-}
-
-/* Unified Sidebar Bottom Pinned Area (NO WAVE, NO OVERLAP) */
-.hrms-sidebar-bottom {
-  padding: 14px 12px 18px 12px !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  background-color: #0b1120 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  flex-shrink: 0 !important;
-  margin-top: auto !important;
-  position: relative !important;
-  z-index: 10 !important;
-}
-
-.hrms-btn-portal {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  padding: 9px 14px !important;
-  border-radius: 8px !important;
-  background: rgba(16, 185, 129, 0.12) !important;
-  color: #34d399 !important;
-  border: 1px solid rgba(16, 185, 129, 0.25) !important;
-  font-size: 12.5px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.15s ease !important;
-  box-sizing: border-box !important;
-}
-
-.hrms-btn-portal:hover {
-  background: rgba(16, 185, 129, 0.22) !important;
-  color: #ffffff !important;
-  border-color: #10b981 !important;
-}
-
-.hrms-user-profile {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 6px 4px !important;
-}
-
-.hrms-avatar {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 8px !important;
-  background: linear-gradient(135deg, #059669, #10b981) !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 13px !important;
-  flex-shrink: 0 !important;
-}
-
-.hrms-user-info {
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-}
-
-.hrms-user-name {
-  font-size: 12.5px !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-.hrms-user-role {
-  font-size: 11px !important;
-  color: #10b981 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
