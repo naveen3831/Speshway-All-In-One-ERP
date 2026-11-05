@@ -32,10 +32,10 @@ import './GymDashboard.css';
 const GymLogoIcon = () => (
   <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="gymBlueGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#38BDF8" />
-        <stop offset="0.5" stopColor="#0284C7" />
-        <stop offset="1" stopColor="#0369A1" />
+      <linearGradient id="gymEmeraldGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#34D399" />
+        <stop offset="0.5" stopColor="#10B981" />
+        <stop offset="1" stopColor="#059669" />
       </linearGradient>
       <linearGradient id="gymPlateGrad" x1="20" y1="20" x2="80" y2="80" gradientUnits="userSpaceOnUse">
         <stop stopColor="#F1F5F9" />
@@ -43,8 +43,8 @@ const GymLogoIcon = () => (
       </linearGradient>
     </defs>
     {/* Left Weight Plates */}
-    <rect x="12" y="30" width="8" height="40" rx="3" fill="url(#gymBlueGrad)" />
-    <rect x="22" y="24" width="7" height="52" rx="3" fill="#0EA5E9" />
+    <rect x="12" y="30" width="8" height="40" rx="3" fill="url(#gymEmeraldGrad)" />
+    <rect x="22" y="24" width="7" height="52" rx="3" fill="#10B981" />
     <rect x="31" y="34" width="5" height="32" rx="2" fill="url(#gymPlateGrad)" />
     
     {/* Main Barbell Rod */}
@@ -52,20 +52,20 @@ const GymLogoIcon = () => (
     
     {/* Right Weight Plates */}
     <rect x="64" y="34" width="5" height="32" rx="2" fill="url(#gymPlateGrad)" />
-    <rect x="71" y="24" width="7" height="52" rx="3" fill="#0EA5E9" />
-    <rect x="80" y="30" width="8" height="40" rx="3" fill="url(#gymBlueGrad)" />
+    <rect x="71" y="24" width="7" height="52" rx="3" fill="#10B981" />
+    <rect x="80" y="30" width="8" height="40" rx="3" fill="url(#gymEmeraldGrad)" />
 
     {/* Center Circular Badge */}
-    <circle cx="50" cy="50" r="16" fill="#0B1120" stroke="#0284C7" strokeWidth="2.5" />
+    <circle cx="50" cy="50" r="16" fill="#0B1120" stroke="#10B981" strokeWidth="2.5" />
     
     {/* Inner Barbell & 3 Stars */}
-    <path d="M45 42L46 43.5L47.5 43.5L46.3 44.5L46.7 46L45 45L43.3 46L43.7 44.5L42.5 43.5L44 43.5Z" fill="#38BDF8" />
-    <path d="M50 40L51 41.5L52.5 41.5L51.3 42.5L51.7 44L50 43L48.3 44L48.7 42.5L47.5 41.5L49 41.5Z" fill="#38BDF8" />
-    <path d="M55 42L56 43.5L57.5 43.5L56.3 44.5L56.7 46L55 45L53.3 46L53.7 44.5L52.5 43.5L54 43.5Z" fill="#38BDF8" />
+    <path d="M45 42L46 43.5L47.5 43.5L46.3 44.5L46.7 46L45 45L43.3 46L43.7 44.5L42.5 43.5L44 43.5Z" fill="#34D399" />
+    <path d="M50 40L51 41.5L52.5 41.5L51.3 42.5L51.7 44L50 43L48.3 44L48.7 42.5L47.5 41.5L49 41.5Z" fill="#34D399" />
+    <path d="M55 42L56 43.5L57.5 43.5L56.3 44.5L56.7 46L55 45L53.3 46L53.7 44.5L52.5 43.5L54 43.5Z" fill="#34D399" />
     
     {/* Mini Dumbbell in Center */}
-    <rect x="42" y="52" width="2.5" height="9" rx="1" fill="#38BDF8" />
-    <rect x="55.5" y="52" width="2.5" height="9" rx="1" fill="#38BDF8" />
+    <rect x="42" y="52" width="2.5" height="9" rx="1" fill="#34D399" />
+    <rect x="55.5" y="52" width="2.5" height="9" rx="1" fill="#34D399" />
     <rect x="43" y="55.5" width="14" height="2" fill="#FFFFFF" />
   </svg>
 );

@@ -279,7 +279,7 @@ Certified by Speshway Hospital Diagnostic Information System
         <div className="hosp-sidebar-brand">
           <div className="hosp-logo-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect width="24" height="24" rx="6" fill="#0284c7" />
+              <rect width="24" height="24" rx="6" fill="#059669" />
               <path d="M12 6v12M6 12h12" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
             </svg>
           </div>
