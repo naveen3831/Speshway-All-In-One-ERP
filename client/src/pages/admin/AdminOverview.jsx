@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   TrendingUp,
   Globe,
-  Plus,
   ArrowRight,
   Shield,
   Clock,
@@ -32,11 +31,6 @@ export const AdminOverview = () => {
           <p className="admin-subtext">
             Monitor real-time system performance, ERP projects catalog, and incoming customer inquiries.
           </p>
-        </div>
-        <div className="admin-header-actions">
-          <Link to="/admin/products/new" className="btn-hero-primary" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
-            <Plus size={16} /> Add Project
-          </Link>
         </div>
       </div>
 

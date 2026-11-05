@@ -29,6 +29,7 @@ export const AdminLayout = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
@@ -232,14 +233,63 @@ export const AdminLayout = () => {
         </nav>
 
         <div className="admin-sidebar-footer">
-          <button onClick={handleLogout} className="admin-btn-logout">
-            <LogOut size={15} /> Sign Out
-          </button>
-
-          <div className="admin-sidebar-profile">
-            <div className="admin-avatar">AD</div>
-            <div className="profile-meta">
-              <span className="profile-name">{user?.name || 'Speshway Administrator'}</span>
+          <div
+            className="admin-sidebar-profile"
+            style={{
+              borderTop: 'none',
+              paddingTop: 0,
+              marginTop: 0,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
+            <div className="admin-avatar">
+              {(() => {
+                if (!user?.name) return 'AD';
+                const parts = user.name.trim().split(/\s+/);
+                if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+                return user.name.substring(0, 2).toUpperCase();
+              })()}
+            </div>
+            <div className="profile-meta" style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+                <span
+                  className="profile-name"
+                  title={user?.name || 'Speshway Administrator'}
+                  style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                >
+                  {user?.name || 'Speshway Administrator'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowLogoutConfirm(true)}
+                  title="Sign Out"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#f87171',
+                    cursor: 'pointer',
+                    padding: '3px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                    transition: 'color 0.2s, background-color 0.2s',
+                    flexShrink: 0,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#ef4444';
+                    e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = '#f87171';
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
+                >
+                  <LogOut size={15} />
+                </button>
+              </div>
               <span className="profile-email">{user?.email || 'admin@gmail.com'}</span>
             </div>
           </div>
@@ -260,6 +310,136 @@ export const AdminLayout = () => {
           </ErrorBoundary>
         </div>
       </div>
+
+      {/* Logout Confirmation Card Modal */}
+      {showLogoutConfirm && (
+        <div
+          onClick={() => setShowLogoutConfirm(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            backgroundColor: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              maxWidth: '420px',
+              width: '100%',
+              padding: '30px 24px',
+              boxShadow: '0 20px 45px rgba(0, 0, 0, 0.25)',
+              position: 'relative',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {/* Warning Icon Badge */}
+            <div
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                backgroundColor: '#fee2e2',
+                color: '#ef4444',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '16px',
+              }}
+            >
+              <LogOut size={26} style={{ marginLeft: '3px' }} />
+            </div>
+
+            {/* Title */}
+            <h3
+              style={{
+                margin: '0 0 8px 0',
+                fontSize: '1.25rem',
+                fontWeight: 800,
+                color: '#0f172a',
+              }}
+            >
+              Sign Out Confirmation
+            </h3>
+
+            {/* Description */}
+            <p
+              style={{
+                margin: '0 0 24px 0',
+                fontSize: '0.88rem',
+                color: '#64748b',
+                lineHeight: 1.5,
+              }}
+            >
+              Are you sure you want to sign out of the Speshway Admin Console? You will need your admin credentials to access the dashboard again.
+            </p>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
+              <button
+                type="button"
+                onClick={() => setShowLogoutConfirm(false)}
+                style={{
+                  flex: 1,
+                  padding: '11px 18px',
+                  backgroundColor: '#f1f5f9',
+                  color: '#475569',
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '10px',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'background-color 0.15s ease',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowLogoutConfirm(false);
+                  handleLogout();
+                }}
+                style={{
+                  flex: 1,
+                  padding: '11px 18px',
+                  backgroundColor: '#ef4444',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
+                  transition: 'background-color 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#dc2626';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#ef4444';
+                }}
+              >
+                <LogOut size={16} /> Yes, Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -213,9 +213,6 @@ export const ProductsPage = () => {
       <main className="page-main-container">
         {/* Header */}
         <section className="page-hero-header">
-          <div className="section-badge">
-            <span>Enterprise Product Catalog</span>
-          </div>
           <h1 className="page-hero-title">Speshway ERP Applications &amp; Products</h1>
           <p className="page-hero-sub">
             Explore our comprehensive suite of modular, interconnected ERP applications. Click on any product to open its dedicated details, tech stack, and live features.
