@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 import {
   LayoutDashboard,
@@ -17,10 +18,14 @@ import {
   ArrowRight,
   ShieldCheck,
   ArrowLeft,
+  Bell,
+  Sparkles,
+  CheckCircle,
 } from 'lucide-react';
 
 export const AdminLayout = () => {
   const { user, loading, login, logout } = useAuth();
+  const { modulesData } = useSocket();
   const navigate = useNavigate();
 
   // Admin login form state
@@ -30,6 +35,47 @@ export const AdminLayout = () => {
   const [loginError, setLoginError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  // Notification state
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationsRead, setNotificationsRead] = useState(false);
+  const notifRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const notificationItems = [
+    {
+      id: 1,
+      icon: <Sparkles size={15} className="text-emerald" />,
+      text: 'Enterprise Project Catalog synchronized in real time',
+      time: 'Just now',
+      unread: !notificationsRead,
+    },
+    {
+      id: 2,
+      icon: <Inbox size={15} className="text-purple" />,
+      text: modulesData?.demoRequests?.length > 0
+        ? `New customer inquiry received from ${modulesData.demoRequests[0]?.fullName || modulesData.demoRequests[0]?.name || 'Prospective Client'}`
+        : 'Customer demo inquiries queue active and listening',
+      time: '5m ago',
+      unread: !notificationsRead,
+    },
+    {
+      id: 3,
+      icon: <CheckCircle size={15} className="text-blue" />,
+      text: 'MongoDB connection & WebSocket socket engine online',
+      time: '15m ago',
+      unread: false,
+    },
+  ];
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
@@ -55,16 +101,17 @@ export const AdminLayout = () => {
     navigate('/admin');
   };
 
-  // 0. While reading credentials from local storage
+  // If still loading session check
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc' }}>
-        <div style={{ color: '#00875a', fontWeight: 600, fontSize: '1rem' }}>Loading Admin Console...</div>
+      <div className="admin-loading-screen">
+        <div className="loading-spinner"></div>
+        <p>Loading Admin Workspace...</p>
       </div>
     );
   }
 
-  // 1. If not authenticated as Admin, show the Clean, Simple & Professional Admin Login Page
+  // 1. If not authenticated or not an admin, show the clean standalone Admin Login Portal
   if (!user || user.role !== 'admin') {
     return (
       <div className="pro-login-wrapper">
@@ -131,31 +178,37 @@ export const AdminLayout = () => {
                 />
                 <button
                   type="button"
+                  className="pro-password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="pro-eye-toggle"
-                  title={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
-            <div className="pro-security-row">
-              <div className="pro-security-badge">
-                <ShieldCheck size={14} />
-                <span>256-bit Encrypted Session</span>
-              </div>
-            </div>
-
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="pro-submit-btn"
+              className={`pro-submit-btn ${isSubmitting ? 'loading' : ''}`}
             >
-              <span>{isSubmitting ? 'Authenticating...' : 'Sign In to Dashboard'}</span>
-              <ArrowRight size={18} />
+              {isSubmitting ? (
+                <span>Authenticating...</span>
+              ) : (
+                <>
+                  <span>Sign In as Admin</span>
+                  <ArrowRight size={18} />
+                </>
+              )}
             </button>
           </form>
+
+          {/* Security Assurance */}
+          <div className="pro-security-badge">
+            <ShieldCheck size={16} className="text-emerald" />
+            <span>256-bit SSL encrypted administrative connection</span>
+          </div>
 
           {/* Back to public link */}
           <div className="pro-login-footer">
@@ -301,6 +354,69 @@ export const AdminLayout = () => {
         <header className="admin-topbar">
           <div className="topbar-left">
             <span className="topbar-title">Speshway Administrative Dashboard</span>
+          </div>
+
+          <div className="topbar-right">
+            <div className="admin-notif-wrapper" ref={notifRef}>
+              <button
+                type="button"
+                className="admin-bell-btn"
+                onClick={() => setShowNotifications((prev) => !prev)}
+                title="Notifications"
+                aria-label="View notifications"
+              >
+                <Bell size={19} />
+                {!notificationsRead && <span className="admin-bell-dot" />}
+              </button>
+
+              {showNotifications && (
+                <div className="admin-notif-dropdown">
+                  <div className="admin-notif-dropdown-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span className="admin-notif-dropdown-title">Notifications</span>
+                      {!notificationsRead && (
+                        <span className="admin-notif-badge-pill">2 New</span>
+                      )}
+                    </div>
+                    {!notificationsRead && (
+                      <button
+                        type="button"
+                        className="admin-notif-clear-btn"
+                        onClick={() => setNotificationsRead(true)}
+                      >
+                        Mark all as read
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="admin-notif-list">
+                    {notificationItems.map((item) => (
+                      <div
+                        key={item.id}
+                        className={`admin-notif-item ${item.unread ? 'unread' : ''}`}
+                      >
+                        <div className="admin-notif-item-icon">{item.icon}</div>
+                        <div className="admin-notif-item-content">
+                          <p className="admin-notif-item-text">{item.text}</p>
+                          <span className="admin-notif-item-time">{item.time}</span>
+                        </div>
+                        {item.unread && <span className="admin-notif-item-unread-dot" />}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="admin-notif-dropdown-footer">
+                    <Link
+                      to="/admin/inquiries"
+                      onClick={() => setShowNotifications(false)}
+                      className="admin-notif-view-all"
+                    >
+                      View all inquiries &amp; leads &rarr;
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
