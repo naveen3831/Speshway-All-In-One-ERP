@@ -238,7 +238,7 @@ export const ProductDetailModal = ({ product, onClose }) => {
               className="btn-product-action btn-view-admin"
             >
               <Shield size={18} />
-              <span>View Admin Dashboard</span>
+              <span>View ERP</span>
               <ArrowRight size={14} className="ml-auto" />
             </button>
           </div>

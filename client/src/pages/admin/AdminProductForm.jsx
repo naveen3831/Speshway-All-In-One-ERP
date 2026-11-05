@@ -504,7 +504,7 @@ export const AdminProductForm = () => {
                   onChange={(e) => setFormData({ ...formData, adminUrl: e.target.value })}
                   className="quick-input full-width"
                 />
-                <span className="input-hint">Admins click "View Admin Dashboard" on the product page to open this URL.</span>
+                <span className="input-hint">Admins click "View ERP" on the product page to open this URL.</span>
               </div>
             </div>
 
