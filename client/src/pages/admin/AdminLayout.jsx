@@ -244,7 +244,14 @@ export const AdminLayout = () => {
               gap: '10px',
             }}
           >
-            <div className="admin-avatar">AD</div>
+            <div className="admin-avatar">
+              {(() => {
+                if (!user?.name) return 'AD';
+                const parts = user.name.trim().split(/\s+/);
+                if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+                return user.name.substring(0, 2).toUpperCase();
+              })()}
+            </div>
             <div className="profile-meta" style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
                 <span
