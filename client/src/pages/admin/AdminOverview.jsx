@@ -3,12 +3,7 @@ import { useSocket } from '../../context/SocketContext';
 import { Link } from 'react-router-dom';
 import {
   Package,
-  Users,
-  CheckCircle2,
-  TrendingUp,
   Globe,
-  ArrowRight,
-  Shield,
   Clock,
   Inbox,
 } from 'lucide-react';
@@ -51,17 +46,6 @@ export const AdminOverview = () => {
             <span className="kpi-trend positive">&uarr; Synced in Realtime</span>
           </div>
         </Link>
-
-        <div className="admin-kpi-card">
-          <div className="kpi-icon-wrap bg-blue-subtle">
-            <Users size={22} className="text-blue" />
-          </div>
-          <div>
-            <span className="kpi-label">Team Members</span>
-            <span className="kpi-value">{stats.activeEmployees || 120}</span>
-            <span className="kpi-trend positive">&uarr; Active Staff</span>
-          </div>
-        </div>
 
         <Link to="/admin/inquiries" className="admin-kpi-card" style={{ textDecoration: 'none' }}>
           <div className="kpi-icon-wrap bg-purple-subtle">
