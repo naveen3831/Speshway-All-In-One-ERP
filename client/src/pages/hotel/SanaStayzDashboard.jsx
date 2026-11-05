@@ -114,6 +114,34 @@ export const SanaStayzDashboard = () => {
     { type: 'Standard Queen', occ: '75%', count: '15/20 Rooms', rev: '₹30,000', color: '#6ee7b7' },
   ];
 
+
+  const vipGuestsList = [
+    { id: 'GST-901', name: 'Dr. Vikram Malhotra', phone: '+91 98401 22890', tier: 'Diamond Member', totalStays: '18 Visits', preference: 'High Floor, Ocean View, Decaf Coffee', folioBal: '₹0 (Settled)' },
+    { id: 'GST-902', name: 'Sarah Jenkins', phone: '+44 7911 123456', tier: 'Gold Elite', totalStays: '4 Visits', preference: 'Feather Pillow, Late Checkout 2 PM', folioBal: '₹18,500' },
+    { id: 'GST-903', name: 'Kenji Takahashi', phone: '+81 90 1234 5678', tier: 'Platinum VIP', totalStays: '9 Visits', preference: 'Green Tea, Quiet Suite, Airport Transfer', folioBal: '₹95,000' },
+    { id: 'GST-904', name: 'Rajesh & Pooja Kulkarni', phone: '+91 98200 44102', tier: 'Silver Club', totalStays: '6 Visits', preference: 'Adjoining Suite, Pool Access', folioBal: '₹32,000' },
+  ];
+
+  const conciergeBookings = [
+    { id: 'TRF-101', guest: 'Dr. Vikram Malhotra', service: 'Mercedes S-Class Airport Drop', time: 'Tomorrow 09:30 AM', flight: 'AI-542 to DEL', chauffeur: 'Naveen Kumar', status: 'Scheduled' },
+    { id: 'TRF-102', guest: 'Sarah Jenkins', service: 'Heritage Fort & City Sightseeing Tour', time: 'Today 02:00 PM', flight: '-', chauffeur: 'Gopal Reddy', status: 'In Transit' },
+    { id: 'TRF-103', guest: 'Kenji Takahashi', service: 'Luxury Van Airport Pickup', time: 'Today 05:45 PM', flight: 'JL-753 from HND', chauffeur: 'Syed Arshad', status: 'Confirmed' },
+    { id: 'TRF-104', guest: 'Pooja Kulkarni', service: 'Private Yacht Sunset Cruise', time: 'Today 05:00 PM', flight: '-', chauffeur: 'Captain D’Souza', status: 'Confirmed' },
+  ];
+
+  const spaBookings = [
+    { id: 'SPA-301', guest: 'Kenji Takahashi', treatment: 'Royal Ayurvedic Abhyanga Massage (90m)', therapist: 'Dr. Archana Pillai', time: 'Today 04:00 PM', room: 'Lotus Treatment Suite 2', fee: '₹6,500', status: 'Booked' },
+    { id: 'SPA-302', guest: 'Sarah Jenkins', treatment: 'Aromatherapy & Himalayan Salt Scrub (60m)', therapist: 'Maria Fernandes', time: 'Today 06:00 PM', room: 'Orchid Wellness Room', fee: '₹4,800', status: 'Confirmed' },
+    { id: 'SPA-303', guest: 'Rajesh Kulkarni', treatment: 'Deep Tissue Sports Therapy (60m)', therapist: 'Sukhvinder Singh', time: 'Tomorrow 10:00 AM', room: 'Zen Pavilion', fee: '₹5,200', status: 'Confirmed' },
+    { id: 'SPA-304', guest: 'Meenakshi Sundaram', treatment: 'Signature Sana Glow Facial (45m)', therapist: 'Maria Fernandes', time: 'Tomorrow 11:30 AM', room: 'Lotus Suite 1', fee: '₹3,900', status: 'Confirmed' },
+  ];
+
+  const banquetEvents = [
+    { id: 'BNQ-801', hall: 'Grand Sapphire Ballroom', eventName: 'Agarwal - Singhania Sangeet & Reception', guests: '450 Guests', date: '08 Nov 2026', package: 'Platinum Royal Buffet & Mocktails', billing: '₹14,50,000', status: 'Advance Paid' },
+    { id: 'BNQ-802', hall: 'Palm Lawn & Pool Deck', eventName: 'TechVision Global Annual Leadership Gala', guests: '220 Guests', date: '12 Nov 2026', package: 'Live Counters, Barbecue & DJ Stage', billing: '₹8,80,000', status: 'Confirmed' },
+    { id: 'BNQ-803', hall: 'Executive Boardroom A', eventName: 'FinCorp India Board of Directors Meeting', guests: '35 Delegates', date: '06 Nov 2026', package: 'Executive High-Tea & Working Lunch', billing: '₹1,95,000', status: 'Confirmed' },
+  ];
+
   return (
     <div className="sana-dashboard-container">
       {/* 1. STICKY SIDEBAR */}

@@ -109,6 +109,36 @@ export const LearnhubDashboard = () => {
     { name: 'Cyber Security', students: '340 students', share: '8%', rev: '₹90,000', color: '#6ee7b7' },
   ];
 
+
+  const assignmentsList = [
+    { id: 'LAB-501', title: 'Full-Stack E-Commerce Microservices Lab', course: 'Full-Stack MERN Architecture', submissions: '240 Submissions', avgScore: '88%', deadline: '08 Nov 2026', status: 'Grading Active' },
+    { id: 'LAB-502', title: 'Fine-Tuning LLaMA 3 on Custom Dataset', course: 'Python AI, LLMs & Deep Learning', submissions: '185 Submissions', avgScore: '92%', deadline: '10 Nov 2026', status: 'Submissions Open' },
+    { id: 'LAB-503', title: 'Multi-Region Kubernetes Ingress Controller', course: 'Cloud DevOps, Docker & Kubernetes', submissions: '142 Submissions', avgScore: '84%', deadline: '06 Nov 2026', status: 'Reviewing' },
+    { id: 'LAB-504', title: 'Design Token System in Figma Pro', course: 'Enterprise UI/UX Design System', submissions: '98 Submissions', avgScore: '95%', deadline: '12 Nov 2026', status: 'Submissions Open' },
+  ];
+
+  const videoLectures = [
+    { id: 'VID-901', title: 'Deep Dive into React 19 Server Actions', course: 'Full-Stack MERN Architecture', duration: '1h 48m', resolution: '4K UltraHD', views: '2,480 Views', instructor: 'Arunav Roy' },
+    { id: 'VID-902', title: 'Transformer Attention Mechanism & Math', course: 'Python AI & Machine Learning', duration: '2h 15m', resolution: '4K UltraHD', views: '3,120 Views', instructor: 'Dr. Neha Kapoor' },
+    { id: 'VID-903', title: 'CI/CD Pipeline with GitHub Actions & EKS', course: 'Cloud DevOps & Kubernetes', duration: '1h 32m', resolution: '1080p 60fps', views: '1,890 Views', instructor: 'Siddharth Nair' },
+    { id: 'VID-904', title: 'Design System Typography & Elevation Matrix', course: 'UI/UX Product Architecture', duration: '1h 10m', resolution: '4K UltraHD', views: '1,450 Views', instructor: 'Simran Chawla' },
+  ];
+
+  const studentAttendance = [
+    { student: 'Rohan Deshmukh', course: 'MERN Stack Batch B', totalSessions: 32, attended: 30, percentage: '93.7%', status: 'Regular' },
+    { student: 'Pooja Iyer', course: 'AI & Deep Learning Morning', totalSessions: 40, attended: 40, percentage: '100%', status: 'Exemplary' },
+    { student: 'Aditya Srivastava', course: 'DevOps & Kubernetes Live', totalSessions: 28, attended: 24, percentage: '85.7%', status: 'Regular' },
+    { student: 'Snehal Patil', course: 'UI/UX Design Studio 1', totalSessions: 24, attended: 23, percentage: '95.8%', status: 'Regular' },
+    { student: 'Karthik Pillai', course: 'Cyber Security Fast Track', totalSessions: 36, attended: 31, percentage: '86.1%', status: 'Regular' },
+  ];
+
+  const forumQueries = [
+    { id: 'Q-104', title: 'How to handle JWT token refresh in HTTP-only cookies with Next.js 15?', student: 'Rohan Deshmukh', replies: '8 Replies', upvotes: 14, answeredBy: 'Arunav Roy (Faculty)', status: 'Resolved' },
+    { id: 'Q-103', title: 'Memory leak during PyTorch model training with DataLoader pin_memory=True', student: 'Pooja Iyer', replies: '5 Replies', upvotes: 19, answeredBy: 'Dr. Neha Kapoor', status: 'Resolved' },
+    { id: 'Q-102', title: 'Helm chart error: Upgrade failed: cannot patch "my-ingress" with kind Ingress', student: 'Aditya Srivastava', replies: '6 Replies', upvotes: 11, answeredBy: 'Siddharth Nair', status: 'Resolved' },
+    { id: 'Q-101', title: 'Best practices for auto-layout wrapping inside dynamic card grids', student: 'Snehal Patil', replies: '4 Replies', upvotes: 9, answeredBy: 'Simran Chawla', status: 'Resolved' },
+  ];
+
   return (
     <div className="learn-dashboard-container">
       {/* 1. STICKY SIDEBAR */}

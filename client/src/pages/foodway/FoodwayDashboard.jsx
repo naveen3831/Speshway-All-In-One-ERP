@@ -108,6 +108,34 @@ export const FoodwayDashboard = () => {
     { name: 'Desserts & Shakes', count: '32 orders', rev: '₹8,400', share: '7%', color: '#a7f3d0' },
   ];
 
+
+  const kitchenStationsList = [
+    { id: 'STN-01', name: 'Dum Biryani & Rice Woks', chef: 'Chef Shabbir Ahmed', activeKOTs: 7, capacity: '40 Handis/hr', temperature: '190°C', status: 'Active' },
+    { id: 'STN-02', name: 'Tandoor & Charcoal Grill', chef: 'Chef Balwant Singh', activeKOTs: 4, capacity: '60 Kebabs/hr', temperature: '280°C Clay Oven', status: 'Active' },
+    { id: 'STN-03', name: 'Stone-Fired Pizza & Pasta Station', chef: 'Chef Mario D’Souza', activeKOTs: 3, capacity: '25 Pizzas/hr', temperature: '310°C Deck', status: 'Active' },
+    { id: 'STN-04', name: 'Burger & Loaded Fries Station', chef: 'Chef Rohan Varma', activeKOTs: 5, capacity: '50 Patties/hr', temperature: '175°C Fryer', status: 'Active' },
+  ];
+
+  const rawMaterialsInventory = [
+    { item: 'Malai Paneer (Fresh Daily Dairy)', stock: '42.5 kg', reorderLevel: '15 kg', supplier: 'Natural Milk Dairy Co.', shelfLife: '3 Days', unitCost: '₹320/kg', status: 'Optimal' },
+    { item: 'Aged Daawat Basmati Biryani Rice', stock: '280 kg', reorderLevel: '50 kg', supplier: 'Sri Krishna Agro Mills', shelfLife: '12 Months', unitCost: '₹140/kg', status: 'Optimal' },
+    { item: 'Fresh Tender Chicken (Farm Cut)', stock: '65.0 kg', reorderLevel: '20 kg', supplier: 'Sneha Farms Fresh', shelfLife: '2 Days Cold Store', unitCost: '₹210/kg', status: 'Optimal' },
+    { item: 'Pure Cow Ghee & Kacchi Ghani Mustard Oil', stock: '85 Litres', reorderLevel: '25 L', supplier: 'Madhur Dairy & Agro', shelfLife: '6 Months', unitCost: '₹580/L', status: 'Optimal' },
+  ];
+
+  const recipeCostingList = [
+    { dish: 'Hyderabadi Dum Biryani (Chicken)', rawCost: '₹125.00', packagingCost: '₹18.00', platformFee: '₹45.00', salePrice: '₹340.00', netMargin: '44.7%', status: 'High Profit' },
+    { dish: 'Butter Chicken + 2 Garlic Naan', rawCost: '₹135.00', packagingCost: '₹22.00', platformFee: '₹48.00', salePrice: '₹360.00', netMargin: '43.1%', status: 'High Profit' },
+    { dish: '12" Woodfired Peri-Peri Pizza', rawCost: '₹110.00', packagingCost: '₹25.00', platformFee: '₹55.00', salePrice: '₹420.00', netMargin: '54.8%', status: 'High Profit' },
+    { dish: 'Double Cheese Smash Truffle Burger', rawCost: '₹95.00', packagingCost: '₹15.00', platformFee: '₹38.00', salePrice: '₹280.00', netMargin: '47.1%', status: 'High Profit' },
+  ];
+
+  const discountsPromosList = [
+    { code: 'BIRYANI100', discount: '₹100 Flat Off', minOrder: '₹499', validOn: 'All Biryani Platters', totalRedeemed: '412 Orders', revenueLift: '+₹1,84,000', status: 'Active' },
+    { code: 'MIDNIGHTBOGO', discount: 'Buy 1 Get 1 Free', minOrder: '₹399', validOn: 'Burgers & Loaded Fries (11 PM - 3 AM)', totalRedeemed: '289 Orders', revenueLift: '+₹1,12,000', status: 'Active' },
+    { code: 'SPESHWAY50', discount: '50% Off (Up to ₹120)', minOrder: '₹249', validOn: 'New Customers Only', totalRedeemed: '620 Orders', revenueLift: '+₹2,45,000', status: 'Active' },
+  ];
+
   return (
     <div className="foodway-dashboard-container">
       {/* 1. STICKY SIDEBAR */}

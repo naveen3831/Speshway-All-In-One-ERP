@@ -105,6 +105,36 @@ export const BusTravelDashboard = () => {
     { name: 'Hyderabad ⇌ Goa', trips: '4 Daily Trips', occ: '98%', rev: '₹52,000', color: '#34d399' },
   ];
 
+
+  const seatLayoutsList = [
+    { id: 'LAY-36S', type: '2+1 Luxury Sleeper (AC)', totalBerths: '36 Berths (12 Lower, 24 Upper)', womenBerths: '8 Berths Reserved', chargingPoints: 'Individual 65W Type-C', busesAssigned: 8, status: 'Active' },
+    { id: 'LAY-44SS', type: '2+2 Executive Semi-Sleeper', totalBerths: '44 Pushback Calf-Rest Seats', womenBerths: '10 Seats Reserved', chargingPoints: 'Under-Seat USB Fast-Charge', busesAssigned: 10, status: 'Active' },
+    { id: 'LAY-30GL', type: '1+2 Ultra-Luxury Glider Sleeper', totalBerths: '30 Premium Capsule Pods', womenBerths: '6 Single Pods', chargingPoints: 'Wireless Qi & AC Socket', busesAssigned: 4, status: 'Active' },
+    { id: 'LAY-53ST', type: '3+2 Standard High-Deck Express', totalBerths: '53 Recliner Air-Suspension Seats', womenBerths: '12 Seats Reserved', chargingPoints: 'Shared USB Ports', busesAssigned: 2, status: 'Active' },
+  ];
+
+  const passengerManifest = [
+    { pnr: 'PNR-8819', name: 'Suresh Narayanan', phone: '+91 98490 11982', seat: '12-U (Upper)', pickup: 'Ameerpet Metro (09:45 PM)', drop: 'Majestic Bengaluru', status: 'Boarded' },
+    { pnr: 'PNR-8818', name: 'Harika Varma', phone: '+91 98840 33419', seat: '04-L (Lower)', pickup: 'LB Nagar Ring Road (10:15 PM)', drop: 'Benz Circle Vijayawada', status: 'Confirmed' },
+    { pnr: 'PNR-8817', name: 'Arjun Nambiar', phone: '+91 94470 55120', seat: '16-A (Window)', pickup: 'Electronic City Toll (11:00 PM)', drop: 'Koyambedu Chennai', status: 'Boarded' },
+    { pnr: 'PNR-8816', name: 'Kavita Sengupta', phone: '+91 98300 77218', seat: '08-U (Upper)', pickup: 'Gachibowli ORR (08:30 PM)', drop: 'Panaji Bus Stand Goa', status: 'Confirmed' },
+    { pnr: 'PNR-8815', name: 'Ravi Teja', phone: '+91 99880 44102', seat: '02-L (Lower)', pickup: 'RTC Complex VJA (07:00 PM)', drop: 'Dwaraka Nagar Vizag', status: 'Boarded' },
+  ];
+
+  const cargoParcelsList = [
+    { waybill: 'CRG-9021', sender: 'Sri Balaji Textiles', receiver: 'Meenakshi Silks Chennai', packages: '4 Bales Handloom Silk', weight: '85 kg', freightCharge: '₹2,450', status: 'In Transit' },
+    { waybill: 'CRG-9020', sender: 'Deccan Pharma Labs', receiver: 'Apollo Pharmacy Hub VJA', packages: '6 Boxes Cold Medicine', weight: '42 kg', freightCharge: '₹1,850', status: 'Loaded in Boot' },
+    { waybill: 'CRG-9019', sender: 'TechnoSpare Parts', receiver: 'Precision Auto Works BLR', packages: '2 Wooden Crates Gears', weight: '110 kg', freightCharge: '₹3,200', status: 'In Transit' },
+    { waybill: 'CRG-9018', sender: 'Organic Mango Farms', receiver: 'Fresh Market Goa', packages: '12 Crates Fresh Alphonso', weight: '180 kg', freightCharge: '₹4,100', status: 'Delivered' },
+  ];
+
+  const fuelMaintenanceList = [
+    { bus: 'TS09-UB-4421', dieselFilled: '240 Litres', cost: '₹21,840', mileageKm: '4.8 km/L', odometer: '2,84,102 km', fcExpiry: '14 May 2027', serviceStatus: 'Next Oil Change in 4,200 km' },
+    { bus: 'AP16-SC-1002', dieselFilled: '180 Litres', cost: '₹16,380', mileageKm: '5.1 km/L', odometer: '1,92,450 km', fcExpiry: '22 Aug 2027', serviceStatus: 'Brake Liners Inspected' },
+    { bus: 'KA01-MB-8890', dieselFilled: '210 Litres', cost: '₹19,110', mileageKm: '4.9 km/L', odometer: '3,10,880 km', fcExpiry: '08 Nov 2026', serviceStatus: 'Retreaded Michelin Tyres' },
+    { bus: 'TS07-EX-3312', dieselFilled: '280 Litres', cost: '₹25,480', mileageKm: '4.6 km/L', odometer: '1,44,200 km', fcExpiry: '19 Jan 2028', serviceStatus: 'AC Compressor Serviced' },
+  ];
+
   return (
     <div className="bus-dashboard-container">
       {/* 1. STICKY SIDEBAR */}
