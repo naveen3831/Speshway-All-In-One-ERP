@@ -15,6 +15,8 @@ import {
   Sparkles,
   RefreshCw,
   Users,
+  MessageSquare,
+  Radio,
 } from 'lucide-react';
 
 export const AdminInquiries = () => {
@@ -22,13 +24,31 @@ export const AdminInquiries = () => {
   const inquiries = modulesData.demoRequests || [];
 
   const [search, setSearch] = useState('');
-  const [filterType, setFilterType] = useState('all'); // 'all' | 'get-started' | 'demo'
+  const [filterType, setFilterType] = useState('all'); // 'all' | 'get-started' | 'demo' | 'contact'
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // Initial fetch and automatic real-time sync
   useEffect(() => {
     if (refreshInquiries) {
       refreshInquiries();
     }
+
+    // Auto-poll every 3.5s to guarantee multi-tab & multi-browser instant sync
+    const interval = setInterval(() => {
+      if (refreshInquiries) {
+        refreshInquiries();
+      }
+    }, 3500);
+
+    const onFocus = () => {
+      if (refreshInquiries) refreshInquiries();
+    };
+    window.addEventListener('focus', onFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', onFocus);
+    };
   }, []);
 
   const handleRefresh = async () => {
@@ -59,36 +79,86 @@ export const AdminInquiries = () => {
     }
   };
 
+  // Helper to categorize inquiry by source or module
+  const getInquiryType = (inq) => {
+    if (
+      inq.source === 'contact' ||
+      (inq.module && inq.module.toLowerCase().includes('contact'))
+    ) {
+      return 'contact';
+    }
+    if (
+      inq.source === 'demo' ||
+      (inq.module && inq.module.toLowerCase().includes('demo'))
+    ) {
+      return 'demo';
+    }
+    return 'get-started';
+  };
+
   const filteredInquiries = inquiries.filter((inq) => {
     const term = search.toLowerCase();
     const matchesSearch =
       (inq.name && inq.name.toLowerCase().includes(term)) ||
       (inq.email && inq.email.toLowerCase().includes(term)) ||
       (inq.company && inq.company.toLowerCase().includes(term)) ||
-      (inq.module && inq.module.toLowerCase().includes(term));
+      (inq.module && inq.module.toLowerCase().includes(term)) ||
+      (inq.message && inq.message.toLowerCase().includes(term));
 
     if (!matchesSearch) return false;
 
+    const type = getInquiryType(inq);
     if (filterType === 'get-started') {
-      return inq.source === 'get-started';
+      return type === 'get-started';
     }
     if (filterType === 'demo') {
-      return inq.source !== 'get-started';
+      return type === 'demo';
+    }
+    if (filterType === 'contact') {
+      return type === 'contact';
     }
     return true;
   });
 
-  const getStartedCount = inquiries.filter((i) => i.source === 'get-started').length;
-  const demoCount = inquiries.filter((i) => i.source !== 'get-started').length;
+  const getStartedCount = inquiries.filter((i) => getInquiryType(i) === 'get-started').length;
+  const demoCount = inquiries.filter((i) => getInquiryType(i) === 'demo').length;
+  const contactCount = inquiries.filter((i) => getInquiryType(i) === 'contact').length;
 
   return (
     <div className="admin-page-view">
       {/* Top Header */}
       <div className="admin-page-header">
         <div>
-          <h1 className="admin-heading">Customer Inquiries &amp; Free Trial Leads</h1>
-          <p className="admin-subtext">
-            Live inbound customer registrations from the Get Started full-screen page and website demos.
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+            <h1 className="admin-heading" style={{ margin: 0 }}>Customer Inquiries &amp; Leads</h1>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                color: '#059669',
+                backgroundColor: '#ecfdf5',
+                border: '1px solid #a7f3d0',
+                padding: '2px 8px',
+                borderRadius: '12px',
+              }}
+            >
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: '#10b981',
+                  display: 'inline-block',
+                }}
+              />
+              Live Synced
+            </span>
+          </div>
+          <p className="admin-subtext" style={{ margin: 0 }}>
+            Real-time inbound customer submissions from Demo Bookings, Contact Messages, and Get Started Free Trials.
           </p>
         </div>
         <div className="admin-header-actions">
@@ -103,9 +173,24 @@ export const AdminInquiries = () => {
         </div>
       </div>
 
-      {/* Metric Cards */}
-      <div className="admin-kpi-grid" style={{ marginBottom: '20px' }}>
-        <div className="admin-kpi-card" onClick={() => setFilterType('all')} style={{ cursor: 'pointer' }}>
+      {/* Metric Cards (4 cards covering All, Free Trials, Demos, Contact) */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+          gap: '16px',
+          marginBottom: '20px',
+        }}
+      >
+        <div
+          className="admin-kpi-card"
+          onClick={() => setFilterType('all')}
+          style={{
+            cursor: 'pointer',
+            border: filterType === 'all' ? '2px solid #10b981' : '1px solid #cbd5e1',
+            boxShadow: filterType === 'all' ? '0 0 0 1px #10b981' : undefined,
+          }}
+        >
           <div className="kpi-icon-wrap bg-green-subtle">
             <Inbox size={22} className="text-green" />
           </div>
@@ -116,25 +201,63 @@ export const AdminInquiries = () => {
           </div>
         </div>
 
-        <div className="admin-kpi-card" onClick={() => setFilterType('get-started')} style={{ cursor: 'pointer' }}>
+        <div
+          className="admin-kpi-card"
+          onClick={() => setFilterType('get-started')}
+          style={{
+            cursor: 'pointer',
+            border: filterType === 'get-started' ? '2px solid #2563eb' : '1px solid #cbd5e1',
+            boxShadow: filterType === 'get-started' ? '0 0 0 1px #2563eb' : undefined,
+          }}
+        >
           <div className="kpi-icon-wrap bg-blue-subtle">
             <Sparkles size={22} className="text-blue" />
           </div>
           <div>
             <span className="kpi-label">Free Trial Leads</span>
             <span className="kpi-value">{getStartedCount}</span>
-            <span className="kpi-trend positive">From Full Screen Form</span>
+            <span className="kpi-trend positive">Get Started Form</span>
           </div>
         </div>
 
-        <div className="admin-kpi-card" onClick={() => setFilterType('demo')} style={{ cursor: 'pointer' }}>
+        <div
+          className="admin-kpi-card"
+          onClick={() => setFilterType('demo')}
+          style={{
+            cursor: 'pointer',
+            border: filterType === 'demo' ? '2px solid #7c3aed' : '1px solid #cbd5e1',
+            boxShadow: filterType === 'demo' ? '0 0 0 1px #7c3aed' : undefined,
+          }}
+        >
           <div className="kpi-icon-wrap bg-purple-subtle">
             <Users size={22} className="text-purple" />
           </div>
           <div>
-            <span className="kpi-label">Demo Inquiries</span>
+            <span className="kpi-label">Demo Bookings</span>
             <span className="kpi-value">{demoCount}</span>
-            <span className="kpi-trend positive">Direct Requests</span>
+            <span className="kpi-trend positive">Live Demo Requests</span>
+          </div>
+        </div>
+
+        <div
+          className="admin-kpi-card"
+          onClick={() => setFilterType('contact')}
+          style={{
+            cursor: 'pointer',
+            border: filterType === 'contact' ? '2px solid #0284c7' : '1px solid #cbd5e1',
+            boxShadow: filterType === 'contact' ? '0 0 0 1px #0284c7' : undefined,
+          }}
+        >
+          <div
+            className="kpi-icon-wrap"
+            style={{ backgroundColor: '#e0f2fe', color: '#0284c7' }}
+          >
+            <Mail size={22} />
+          </div>
+          <div>
+            <span className="kpi-label">Contact Inquiries</span>
+            <span className="kpi-value">{contactCount}</span>
+            <span className="kpi-trend positive">Direct Contact Us</span>
           </div>
         </div>
       </div>
@@ -157,7 +280,7 @@ export const AdminInquiries = () => {
           />
           <input
             type="text"
-            placeholder="Search leads by name, email, company, or module..."
+            placeholder="Search leads by name, email, company, module, or note..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="quick-input"
@@ -165,10 +288,9 @@ export const AdminInquiries = () => {
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <button
             onClick={() => setFilterType('all')}
-            className={`btn-admin-portal ${filterType === 'all' ? 'active' : ''}`}
             style={{
               backgroundColor: filterType === 'all' ? '#10b981' : '#f1f5f9',
               color: filterType === 'all' ? '#fff' : '#475569',
@@ -178,6 +300,7 @@ export const AdminInquiries = () => {
               fontWeight: 600,
               fontSize: '0.82rem',
               cursor: 'pointer',
+              transition: 'all 0.2s ease',
             }}
           >
             All ({inquiries.length})
@@ -185,7 +308,7 @@ export const AdminInquiries = () => {
           <button
             onClick={() => setFilterType('get-started')}
             style={{
-              backgroundColor: filterType === 'get-started' ? '#10b981' : '#f1f5f9',
+              backgroundColor: filterType === 'get-started' ? '#2563eb' : '#f1f5f9',
               color: filterType === 'get-started' ? '#fff' : '#475569',
               border: 'none',
               padding: '8px 14px',
@@ -193,6 +316,7 @@ export const AdminInquiries = () => {
               fontWeight: 600,
               fontSize: '0.82rem',
               cursor: 'pointer',
+              transition: 'all 0.2s ease',
             }}
           >
             Free Trials ({getStartedCount})
@@ -200,7 +324,7 @@ export const AdminInquiries = () => {
           <button
             onClick={() => setFilterType('demo')}
             style={{
-              backgroundColor: filterType === 'demo' ? '#10b981' : '#f1f5f9',
+              backgroundColor: filterType === 'demo' ? '#7c3aed' : '#f1f5f9',
               color: filterType === 'demo' ? '#fff' : '#475569',
               border: 'none',
               padding: '8px 14px',
@@ -208,9 +332,26 @@ export const AdminInquiries = () => {
               fontWeight: 600,
               fontSize: '0.82rem',
               cursor: 'pointer',
+              transition: 'all 0.2s ease',
             }}
           >
             Live Demos ({demoCount})
+          </button>
+          <button
+            onClick={() => setFilterType('contact')}
+            style={{
+              backgroundColor: filterType === 'contact' ? '#0284c7' : '#f1f5f9',
+              color: filterType === 'contact' ? '#fff' : '#475569',
+              border: 'none',
+              padding: '8px 14px',
+              borderRadius: '8px',
+              fontWeight: 600,
+              fontSize: '0.82rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            Contact Messages ({contactCount})
           </button>
         </div>
       </div>
@@ -224,7 +365,9 @@ export const AdminInquiries = () => {
               No Inquiries Found
             </h3>
             <p style={{ fontSize: '0.88rem' }}>
-              {search ? 'Try adjusting your search terms.' : 'Submissions from the Get Started page will appear here instantly in real-time.'}
+              {search
+                ? 'Try adjusting your search terms.'
+                : 'Customer demo bookings, contact notes, and free trial signups will appear here instantly in real-time.'}
             </p>
           </div>
         ) : (
@@ -235,7 +378,7 @@ export const AdminInquiries = () => {
                   <th>Lead / Type</th>
                   <th>Contact Info</th>
                   <th>Organization &amp; Team</th>
-                  <th>Module Focus</th>
+                  <th>Module Focus &amp; Message</th>
                   <th>Status</th>
                   <th>Received</th>
                   <th style={{ textAlign: 'right' }}>Actions</th>
@@ -244,7 +387,10 @@ export const AdminInquiries = () => {
               <tbody>
                 {filteredInquiries.map((inq) => {
                   const inquiryId = inq._id || inq.id;
-                  const isFreeTrial = inq.source === 'get-started';
+                  const type = getInquiryType(inq);
+                  const isFreeTrial = type === 'get-started';
+                  const isDemo = type === 'demo';
+                  const isContact = type === 'contact';
                   const dateStr = inq.createdAt || inq.date;
 
                   return (
@@ -262,12 +408,30 @@ export const AdminInquiries = () => {
                               fontWeight: 700,
                               padding: '2px 8px',
                               borderRadius: '12px',
-                              backgroundColor: isFreeTrial ? '#ecfdf5' : '#f5f3ff',
-                              color: isFreeTrial ? '#059669' : '#7c3aed',
-                              border: `1px solid ${isFreeTrial ? '#a7f3d0' : '#ddd6fe'}`,
+                              backgroundColor: isFreeTrial
+                                ? '#ecfdf5'
+                                : isDemo
+                                ? '#f5f3ff'
+                                : '#f0f9ff',
+                              color: isFreeTrial
+                                ? '#059669'
+                                : isDemo
+                                ? '#7c3aed'
+                                : '#0284c7',
+                              border: `1px solid ${
+                                isFreeTrial
+                                  ? '#a7f3d0'
+                                  : isDemo
+                                  ? '#ddd6fe'
+                                  : '#bae6fd'
+                              }`,
                             }}
                           >
-                            {isFreeTrial ? '★ Free Trial' : '● Demo Request'}
+                            {isFreeTrial
+                              ? '★ Free Trial'
+                              : isDemo
+                              ? '● Demo Booking'
+                              : '✉ Contact Msg'}
                           </span>
                         </div>
                       </td>
@@ -310,18 +474,38 @@ export const AdminInquiries = () => {
                       </td>
 
                       <td>
-                        <span
-                          className="badge-active"
-                          style={{
-                            backgroundColor: '#f0fdf4',
-                            color: '#15803d',
-                            borderColor: '#bbf7d0',
-                            fontWeight: 600,
-                            fontSize: '0.8rem',
-                          }}
-                        >
-                          {inq.module || 'All-In-One Complete Suite'}
-                        </span>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <span
+                            className="badge-active"
+                            style={{
+                              backgroundColor: '#f0fdf4',
+                              color: '#15803d',
+                              borderColor: '#bbf7d0',
+                              fontWeight: 600,
+                              fontSize: '0.8rem',
+                              width: 'fit-content',
+                            }}
+                          >
+                            {inq.module || 'All-In-One Complete Suite'}
+                          </span>
+                          {inq.message && (
+                            <div
+                              style={{
+                                fontSize: '0.76rem',
+                                color: '#475569',
+                                backgroundColor: '#f8fafc',
+                                padding: '4px 8px',
+                                borderRadius: '6px',
+                                border: '1px solid #e2e8f0',
+                                maxWidth: '300px',
+                                wordBreak: 'break-word',
+                              }}
+                              title={inq.message}
+                            >
+                              "{inq.message.length > 75 ? `${inq.message.slice(0, 75)}...` : inq.message}"
+                            </div>
+                          )}
+                        </div>
                       </td>
 
                       <td>

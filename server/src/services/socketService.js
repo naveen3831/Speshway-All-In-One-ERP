@@ -180,12 +180,13 @@ export const initSocket = (httpServer) => {
       const activity = {
         id: Date.now(),
         type: 'demo',
-        text: `New business inquiry from ${request.company || request.name}`,
+        text: `New ${request.source === 'contact' ? 'contact message' : request.source === 'demo' ? 'demo request' : 'free trial request'} from ${request.company || request.name}`,
         time: 'Just now',
       };
       liveState.recentActivity.unshift(activity);
 
       io.emit('demo:new', { request, stats: liveState.stats });
+      io.emit('inquiry:new', { request, stats: liveState.stats });
       io.emit('activity:new', activity);
     });
   });
