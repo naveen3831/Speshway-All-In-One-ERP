@@ -216,6 +216,36 @@ export const AdminPricing = () => {
     }
   };
 
+  // Direct card action: Delete Plan
+  const handleDeleteCardPlan = async (index, e) => {
+    if (e) e.stopPropagation();
+    const plan = plans[index];
+    if (!plan) return;
+
+    if (window.confirm(`Are you sure you want to delete the "${plan.name}" pricing plan?`)) {
+      try {
+        await api.delete(`/pricing/${plan.slug}`);
+      } catch (err) {
+        console.warn('API delete fallback, updating local state:', err.message);
+      }
+
+      setPlans((prev) => prev.filter((_, i) => i !== index));
+      if (selectedPlanIdx === index) {
+        handleCloseModal();
+      }
+    }
+  };
+
+  // Direct card action: Edit Details
+  const handleOpenEdit = (index, e) => {
+    if (e) e.stopPropagation();
+    setSelectedPlanIdx(index);
+    setIsEditingInModal(true);
+    setModalDraft(JSON.parse(JSON.stringify(plans[index])));
+    setNewModalFeatureInput('');
+    setSaveSuccess(false);
+  };
+
   // Delete Plan from Modal
   const handleDeletePlan = async () => {
     if (selectedPlanIdx === null) return;
@@ -438,6 +468,77 @@ export const AdminPricing = () => {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Card Actions: Delete Option & Edit Details Option */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '8px',
+                marginTop: 'auto',
+                paddingTop: '16px',
+                borderTop: '1px solid #f1f5f9',
+                width: '100%',
+              }}
+            >
+              <button
+                type="button"
+                onClick={(e) => handleDeleteCardPlan(pIdx, e)}
+                style={{
+                  flex: 1,
+                  padding: '9px 12px',
+                  backgroundColor: '#fef2f2',
+                  color: '#ef4444',
+                  border: '1px solid #fecaca',
+                  borderRadius: '8px',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '5px',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#fee2e2';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#fef2f2';
+                }}
+                title={`Delete ${plan.name} Plan`}
+              >
+                <Trash2 size={14} /> Delete
+              </button>
+              <button
+                type="button"
+                onClick={(e) => handleOpenEdit(pIdx, e)}
+                style={{
+                  flex: 1.3,
+                  padding: '9px 12px',
+                  backgroundColor: '#f0fdf4',
+                  color: '#166534',
+                  border: '1.5px solid #bbf7d0',
+                  borderRadius: '8px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '5px',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#dcfce7';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f0fdf4';
+                }}
+                title={`Edit ${plan.name} Details`}
+              >
+                <Edit2 size={14} /> Edit Details
+              </button>
             </div>
           </div>
         ))}
