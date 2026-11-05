@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
+  Car,
+  FileText,
   Bed,
   Users,
   Calendar,
@@ -67,8 +71,12 @@ export const SanaStayzDashboard = () => {
     { id: 'rooms', label: 'Room Grid', icon: Bed, badge: '88%' },
     { id: 'checkins', label: 'Check-Ins / Outs', icon: Key, badge: '42' },
     { id: 'reservations', label: 'Reservations', icon: Calendar, badge: '118' },
+    { id: 'guest-profiles', label: 'VIP Guest Directory', icon: Users },
     { id: 'housekeeping', label: 'Housekeeping', icon: Sparkles },
     { id: 'dining', label: 'Dining & POS', icon: Utensils },
+    { id: 'concierge', label: 'Concierge & Cabs', icon: Car },
+    { id: 'amenities', label: 'Spa & Wellness Club', icon: Coffee },
+    { id: 'banquets', label: 'Banquets & Lawns', icon: Building2 },
     { id: 'folio', label: 'Folio Invoices', icon: Receipt },
     { id: 'analytics', label: 'Hotel Analytics', icon: TrendingUp },
     { id: 'settings', label: 'Property Settings', icon: Settings },
@@ -189,13 +197,7 @@ export const SanaStayzDashboard = () => {
               <span className="sana-bell-dot"></span>
             </button>
 
-            <button
-              onClick={() => window.open('https://hotel.speshway.site', '_blank')}
-              className="sana-btn-site"
-            >
-              <span>Booking Portal</span>
-              <ArrowRight size={14} />
-            </button>
+            
           </div>
         </header>
 
@@ -610,7 +612,202 @@ export const SanaStayzDashboard = () => {
             </div>
           )}
 
-          {/* TAB 9: SETTINGS */}
+          
+          {/* TAB: VIP GUESTS */}
+          {activeTab === 'guest-profiles' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Users size={18} className="text-emerald-600" />
+                    VIP Guest Directory & Stay History
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Centralized guest profiles with loyalty tiers, stay frequencies, and tailored preferences.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Add Guest Profile
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Guest ID</th>
+                      <th>Full Name</th>
+                      <th>Contact Phone</th>
+                      <th>Loyalty Tier</th>
+                      <th>Stay History</th>
+                      <th>Room & Amenity Preferences</th>
+                      <th>Folio Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {vipGuestsList.map(g => (
+                      <tr key={g.id}>
+                        <td><strong>{g.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{g.name}</span></td>
+                        <td>{g.phone}</td>
+                        <td><span className="sana-badge-cluster">{g.tier}</span></td>
+                        <td>{g.totalStays}</td>
+                        <td style={{ fontSize: '12.5px', color: '#475569' }}>{g.preference}</td>
+                        <td><strong style={{ color: g.folioBal.includes('Settled') ? '#059669' : '#0f172a' }}>{g.folioBal}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: CONCIERGE */}
+          {activeTab === 'concierge' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Car size={18} className="text-emerald-600" />
+                    Concierge Transfers & Sightseeing Itineraries
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Chauffeur services, premium luxury car dispatches, and customized resort tours.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Schedule Transfer
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Booking Ref</th>
+                      <th>Guest Name</th>
+                      <th>Transfer / Tour Detail</th>
+                      <th>Scheduled Time</th>
+                      <th>Flight / Destination</th>
+                      <th>Assigned Chauffeur</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {conciergeBookings.map(c => (
+                      <tr key={c.id}>
+                        <td><strong>{c.id}</strong></td>
+                        <td>{c.guest}</td>
+                        <td><span style={{ fontWeight: 600 }}>{c.service}</span></td>
+                        <td>{c.time}</td>
+                        <td>{c.flight}</td>
+                        <td>{c.chauffeur}</td>
+                        <td><span className="sana-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{c.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SPA & AMENITIES */}
+          {activeTab === 'amenities' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Coffee size={18} className="text-emerald-600" />
+                    Ayurvedic Spa & Wellness Club Bookings
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Holistic therapy appointments, personal massage schedules, and infinity pool reservations.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Book Spa Session
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Appointment</th>
+                      <th>Guest Name</th>
+                      <th>Holistic Treatment</th>
+                      <th>Therapist / Doctor</th>
+                      <th>Session Slot</th>
+                      <th>Treatment Suite</th>
+                      <th>Charges</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {spaBookings.map(s => (
+                      <tr key={s.id}>
+                        <td><strong>{s.id}</strong></td>
+                        <td>{s.guest}</td>
+                        <td><span style={{ fontWeight: 600 }}>{s.treatment}</span></td>
+                        <td>{s.therapist}</td>
+                        <td>{s.time}</td>
+                        <td>{s.room}</td>
+                        <td><strong style={{ color: '#059669' }}>{s.fee}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: BANQUETS */}
+          {activeTab === 'banquets' && (
+            <div className="sana-card">
+              <div className="sana-card-header">
+                <div>
+                  <h3 className="sana-card-title">
+                    <Building2 size={18} className="text-emerald-600" />
+                    Banquet Halls & Conference Lawns Management
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Corporate conferences, destination wedding banquets, and customized catering packages.
+                  </p>
+                </div>
+                <button className="sana-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Reserve Hall
+                </button>
+              </div>
+              <div className="sana-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="sana-data-table">
+                  <thead>
+                    <tr>
+                      <th>Event ID</th>
+                      <th>Venue / Hall</th>
+                      <th>Function & Organizers</th>
+                      <th>Capacity</th>
+                      <th>Reserved Date</th>
+                      <th>Catering Tier</th>
+                      <th>Total Billing</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {banquetEvents.map(b => (
+                      <tr key={b.id}>
+                        <td><strong>{b.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{b.hall}</span></td>
+                        <td>{b.eventName}</td>
+                        <td><span className="sana-badge-cluster">{b.guests}</span></td>
+                        <td>{b.date}</td>
+                        <td>{b.package}</td>
+                        <td><strong style={{ color: '#059669' }}>{b.billing}</strong></td>
+                        <td><span className="sana-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{b.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SETTINGS */}
           {activeTab === 'settings' && (
             <div className="sana-card" style={{ maxWidth: '640px' }}>
               <div className="sana-card-header">

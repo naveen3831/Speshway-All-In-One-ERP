@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
   BookOpen,
@@ -66,8 +68,12 @@ export const LearnhubDashboard = () => {
     { id: 'students', label: 'Student Directory', icon: Users, badge: '4.3k' },
     { id: 'instructors', label: 'Instructors', icon: GraduationCap },
     { id: 'live-classes', label: 'Live Batches', icon: Video, badge: 'Live' },
+    { id: 'assignments', label: 'Coding Labs & Tasks', icon: Layers },
     { id: 'exams', label: 'Exams & Quizzes', icon: FileCheck },
+    { id: 'video-library', label: 'Recorded Lecture Vault', icon: PlayCircle },
     { id: 'certificates', label: 'Certifications', icon: Award },
+    { id: 'attendance', label: 'Student Attendance', icon: CheckCircle },
+    { id: 'discussion-forum', label: 'Q&A Doubts Forum', icon: Sparkles },
     { id: 'revenue', label: 'Course Sales', icon: TrendingUp },
     { id: 'settings', label: 'LMS Settings', icon: Settings },
   ];
@@ -82,7 +88,7 @@ export const LearnhubDashboard = () => {
 
   const coursesList = [
     { id: 'CRS-101', title: 'Full-Stack MERN Architecture', instructor: 'Arunav Roy (Ex-Amazon)', modules: '24 Modules &bull; 6 Projects', students: '1,420 Students', rating: '4.9 ★', fee: '₹14,999', status: 'Published' },
-    { id: 'CRS-102', title: 'Python AI, LLMs & Deep Learning', instructor: 'Dr. Neha Kapoor', modules: '32 Modules &bull; 8 Labs', students: '1,180 Students', rating: '5.0 ★', fee: '₹18,500', status: 'Published' },
+    { id: 'CRS-102', title: 'Python AI, LLMs & Deep Learning', instructor: 'Dr. Neha Kapoor', modules: '32 Modules &bull; 8 Labs', students: '1₹80 Students', rating: '5.0 ★', fee: '₹18,500', status: 'Published' },
     { id: 'CRS-103', title: 'Cloud DevOps, Docker & Kubernetes', instructor: 'Siddharth Nair', modules: '20 Modules &bull; AWS Infra', students: '860 Students', rating: '4.8 ★', fee: '₹16,000', status: 'Published' },
     { id: 'CRS-104', title: 'Enterprise UI/UX Design System', instructor: 'Simran Chawla', modules: '18 Modules &bull; Figma Pro', students: '520 Students', rating: '4.9 ★', fee: '₹12,499', status: 'Published' },
     { id: 'CRS-105', title: 'Cyber Security & Penetration Testing', instructor: 'Vikramaditya Rao', modules: '28 Modules &bull; CTF Challenges', students: '340 Students', rating: '4.8 ★', fee: '₹17,000', status: 'Published' },
@@ -90,15 +96,15 @@ export const LearnhubDashboard = () => {
 
   const instructorsList = [
     { name: 'Arunav Roy', role: 'Staff Software Architect', domain: 'Full-Stack MERN', students: '2,800+', rating: '4.9 ★', payout: '₹1,90,000/mo' },
-    { name: 'Dr. Neha Kapoor', role: 'Lead AI Scientist', domain: 'Python AI & ML', students: '1,950+', rating: '5.0 ★', payout: '₹2,10,000/mo' },
+    { name: 'Dr. Neha Kapoor', role: 'Lead AI Scientist', domain: 'Python AI & ML', students: '1,950+', rating: '5.0 ★', payout: '₹2₹0,000/mo' },
     { name: 'Siddharth Nair', role: 'DevOps Architect', domain: 'Cloud & Kubernetes', students: '1,420+', rating: '4.8 ★', payout: '₹1,60,000/mo' },
-    { name: 'Simran Chawla', role: 'Principal Designer', domain: 'UI/UX Design', students: '1,100+', rating: '4.9 ★', payout: '₹1,30,000/mo' },
+    { name: 'Simran Chawla', role: 'Principal Designer', domain: 'UI/UX Design', students: '1₹00+', rating: '4.9 ★', payout: '₹1,30,000/mo' },
   ];
 
   const popularTracks = [
     { name: 'Full-Stack Web Dev', students: '1,420 students', share: '33%', rev: '₹4,90,000', color: '#059669' },
-    { name: 'Python AI & ML', students: '1,180 students', share: '27%', rev: '₹4,20,000', color: '#10b981' },
-    { name: 'Cloud & DevOps', students: '860 students', share: '20%', rev: '₹3,10,000', color: '#38bdf8' },
+    { name: 'Python AI & ML', students: '1₹80 students', share: '27%', rev: '₹4,20,000', color: '#10b981' },
+    { name: 'Cloud & DevOps', students: '860 students', share: '20%', rev: '₹3₹0,000', color: '#38bdf8' },
     { name: 'UI/UX & Design', students: '520 students', share: '12%', rev: '₹1,50,000', color: '#34d399' },
     { name: 'Cyber Security', students: '340 students', share: '8%', rev: '₹90,000', color: '#6ee7b7' },
   ];
@@ -186,13 +192,7 @@ export const LearnhubDashboard = () => {
               <span className="learn-bell-dot"></span>
             </button>
 
-            <button
-              onClick={() => window.open('https://lms.speshway.site', '_blank')}
-              className="learn-btn-site"
-            >
-              <span>Student Portal</span>
-              <ArrowRight size={14} />
-            </button>
+            
           </div>
         </header>
 
@@ -360,9 +360,7 @@ export const LearnhubDashboard = () => {
                     Hands-on project tracks, digital syllabus, and instructor assignments.
                   </p>
                 </div>
-                <button className="learn-btn-site" style={{ padding: '8px 16px' }}>
-                  <Plus size={15} /> Create New Course
-                </button>
+                <button className="learn-btn-site" style={{ padding: '8px 16px' }}><Plus size={15} /> Add New Course</button>
               </div>
 
               <div className="learn-table-wrap" style={{ marginTop: '16px' }}>
@@ -549,7 +547,7 @@ export const LearnhubDashboard = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginTop: '16px' }}>
                 <div style={{ padding: '16px', borderRadius: '10px', background: '#ecfdf5', border: '1px solid #a7f3d0' }}>
                   <ShieldCheck size={24} style={{ color: '#065f46', marginBottom: '8px' }} />
-                  <h4 style={{ margin: '0 0 4px 0', color: '#065f46' }}>3,180 Verified Certificates Issued</h4>
+                  <h4 style={{ margin: '0 0 4px 0', color: '#065f46' }}>3₹80 Verified Certificates Issued</h4>
                   <p style={{ margin: 0, fontSize: '12px', color: '#047857' }}>Tamper-proof verifiable cryptographic credential hashes.</p>
                 </div>
               </div>
@@ -582,7 +580,198 @@ export const LearnhubDashboard = () => {
             </div>
           )}
 
-          {/* TAB 9: SETTINGS */}
+          
+          {/* TAB: ASSIGNMENTS & CODING LABS */}
+          {activeTab === 'assignments' && (
+            <div className="learn-card">
+              <div className="learn-card-header">
+                <div>
+                  <h3 className="learn-card-title">
+                    <Layers size={18} className="text-emerald-600" />
+                    Homework Submissions & Interactive Coding Labs
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Automated code execution tests, plagiarism reports, and grading rubrics.
+                  </p>
+                </div>
+                <button className="learn-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Create Lab Task
+                </button>
+              </div>
+              <div className="learn-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="learn-data-table">
+                  <thead>
+                    <tr>
+                      <th>Lab Code</th>
+                      <th>Assignment Title</th>
+                      <th>Linked Course</th>
+                      <th>Submissions</th>
+                      <th>Average Score</th>
+                      <th>Submission Deadline</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {assignmentsList.map(a => (
+                      <tr key={a.id}>
+                        <td><strong>{a.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{a.title}</span></td>
+                        <td>{a.course}</td>
+                        <td><span className="learn-badge-cluster">{a.submissions}</span></td>
+                        <td><strong style={{ color: '#059669' }}>{a.avgScore}</strong></td>
+                        <td>{a.deadline}</td>
+                        <td><span className="learn-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{a.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: VIDEO LIBRARY */}
+          {activeTab === 'video-library' && (
+            <div className="learn-card">
+              <div className="learn-card-header">
+                <div>
+                  <h3 className="learn-card-title">
+                    <PlayCircle size={18} className="text-emerald-600" />
+                    Recorded Lecture Vault & 4K Streaming CDN
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Archived high-definition live class recordings with automated transcription.
+                  </p>
+                </div>
+                <button className="learn-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Upload Lecture
+                </button>
+              </div>
+              <div className="learn-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="learn-data-table">
+                  <thead>
+                    <tr>
+                      <th>Video ID</th>
+                      <th>Lecture Topic</th>
+                      <th>Course</th>
+                      <th>Duration</th>
+                      <th>Resolution</th>
+                      <th>Total Stream Views</th>
+                      <th>Faculty</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {videoLectures.map(v => (
+                      <tr key={v.id}>
+                        <td><strong>{v.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{v.title}</span></td>
+                        <td>{v.course}</td>
+                        <td>{v.duration}</td>
+                        <td><span className="learn-badge-cluster">{v.resolution}</span></td>
+                        <td><strong style={{ color: '#059669' }}>{v.views}</strong></td>
+                        <td>{v.instructor}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: STUDENT ATTENDANCE */}
+          {activeTab === 'attendance' && (
+            <div className="learn-card">
+              <div className="learn-card-header">
+                <div>
+                  <h3 className="learn-card-title">
+                    <CheckCircle size={18} className="text-emerald-600" />
+                    Student Attendance & Live Session Minutes Matrix
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Real-time monitoring of live webinar engagement and session presence.
+                  </p>
+                </div>
+                <button className="learn-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Export Attendance
+                </button>
+              </div>
+              <div className="learn-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="learn-data-table">
+                  <thead>
+                    <tr>
+                      <th>Student Name</th>
+                      <th>Batch & Course</th>
+                      <th>Total Sessions</th>
+                      <th>Sessions Attended</th>
+                      <th>Attendance Percentage</th>
+                      <th>Compliance Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {studentAttendance.map(s => (
+                      <tr key={s.student}>
+                        <td><strong>{s.student}</strong></td>
+                        <td>{s.course}</td>
+                        <td>{s.totalSessions}</td>
+                        <td>{s.attended}</td>
+                        <td><strong style={{ color: '#059669' }}>{s.percentage}</strong></td>
+                        <td><span className="learn-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{s.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: FORUM QUERIES */}
+          {activeTab === 'discussion-forum' && (
+            <div className="learn-card">
+              <div className="learn-card-header">
+                <div>
+                  <h3 className="learn-card-title">
+                    <Sparkles size={18} className="text-emerald-600" />
+                    Student Doubts & Technical Q&A Forum
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Direct mentor resolution threads with verified code snippets and answers.
+                  </p>
+                </div>
+                <button className="learn-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Post Announcement
+                </button>
+              </div>
+              <div className="learn-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="learn-data-table">
+                  <thead>
+                    <tr>
+                      <th>Thread ID</th>
+                      <th>Doubt Question</th>
+                      <th>Asked By</th>
+                      <th>Discussion Replies</th>
+                      <th>Community Upvotes</th>
+                      <th>Faculty Resolution</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {forumQueries.map(f => (
+                      <tr key={f.id}>
+                        <td><strong>{f.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{f.title}</span></td>
+                        <td>{f.student}</td>
+                        <td><span className="learn-badge-cluster">{f.replies}</span></td>
+                        <td>👍 {f.upvotes}</td>
+                        <td>{f.answeredBy}</td>
+                        <td><span className="learn-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{f.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SETTINGS */}
           {activeTab === 'settings' && (
             <div className="learn-card" style={{ maxWidth: '640px' }}>
               <div className="learn-card-header">

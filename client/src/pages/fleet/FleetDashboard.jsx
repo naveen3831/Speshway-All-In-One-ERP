@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
+  CreditCard,
+  ShieldCheck,
   Truck,
   Users,
   Navigation,
@@ -31,7 +35,6 @@ import {
   Sparkles,
   Download,
   Eye,
-  ShieldCheck,
   Radio,
   Compass,
   Gauge,
@@ -102,6 +105,9 @@ export const FleetDashboard = () => {
     { id: 'reports', label: 'Reports & Analytics', icon: TrendingUp },
     { id: 'geofencing', label: 'Geofencing', icon: MapPin },
     { id: 'users', label: 'Users & Roles', icon: UserCheck },
+    { id: 'dispatch', label: 'Dispatch Board', icon: Compass },
+    { id: 'inspections', label: 'RTO & Fitness Audit', icon: ShieldCheck },
+    { id: 'toll-expenses', label: 'FASTag & Tolls', icon: CreditCard },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -1093,6 +1099,160 @@ export const FleetDashboard = () => {
             </div>
           )}
         </div>
+
+          {/* TAB: DISPATCH BOARD */}
+          {activeTab === 'dispatch' && (
+            <div className="fleet-view">
+              <div className="fleet-section-header">
+                <div>
+                  <h2 className="fleet-section-title">Freight Dispatch Command Center</h2>
+                  <p className="fleet-section-subtitle">Real-time load allocation, trailer coupling, and consignment assignments</p>
+                </div>
+                <button className="fleet-btn-primary">
+                  <Plus size={16} />
+                  <span>Assign Consignment</span>
+                </button>
+              </div>
+              <div className="fleet-card">
+                <div className="fleet-table-responsive">
+                  <table className="fleet-table">
+                    <thead>
+                      <tr>
+                        <th>LOAD ID</th>
+                        <th>VEHICLE</th>
+                        <th>DRIVER IN CHARGE</th>
+                        <th>ORIGIN & DESTINATION</th>
+                        <th>PAYLOAD WEIGHT</th>
+                        <th>SCHEDULED DEPARTURE</th>
+                        <th>DISPATCH STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { id: 'DISP-8910', veh: 'TS-09-UB-4421 (Tata Prima 5530)', drv: 'Rajesh Kumar', route: 'Hyderabad ICD → Nhava Sheva Mumbai', wt: '28.5 Tonnes', dep: 'Today 08:30 PM', st: 'Dispatched' },
+                        { id: 'DISP-8909', veh: 'MH-12-RN-8842 (BharatBenz 2823)', drv: 'Vikram Singh', route: 'Pune Chakan → Sri City Chennai', wt: '22.0 Tonnes', dep: 'Today 10:00 PM', st: 'Loading at Dock' },
+                        { id: 'DISP-8908', veh: 'KA-01-MJ-9910 (Volvo FM 420)', drv: 'S. Anthony', route: 'Bengaluru Peenya → Hyderabad Shamshabad', wt: '18.4 Tonnes', dep: 'Tomorrow 06:00 AM', st: 'Staged' },
+                        { id: 'DISP-8907', veh: 'TS-07-EX-3312 (Ashok Leyland 4220)', drv: 'M. Venkat Rao', route: 'Secunderabad → Visakhapatnam Port', wt: '24.2 Tonnes', dep: 'Tomorrow 08:00 AM', st: 'Staged' },
+                      ].map((d, i) => (
+                        <tr key={i}>
+                          <td><strong>{d.id}</strong></td>
+                          <td>{d.veh}</td>
+                          <td>{d.drv}</td>
+                          <td><span style={{ fontWeight: 600 }}>{d.route}</span></td>
+                          <td>{d.wt}</td>
+                          <td>{d.dep}</td>
+                          <td><span className="fleet-active-badge">{d.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: RTO INSPECTIONS */}
+          {activeTab === 'inspections' && (
+            <div className="fleet-view">
+              <div className="fleet-section-header">
+                <div>
+                  <h2 className="fleet-section-title">Vehicle Fitness, Insurance & RTO Compliance</h2>
+                  <p className="fleet-section-subtitle">National Permit renewals, Pollution Under Control (PUC), and Road Tax audit</p>
+                </div>
+                <button className="fleet-btn-primary">
+                  <ShieldCheck size={16} />
+                  <span>Log RTO Renewal</span>
+                </button>
+              </div>
+              <div className="fleet-card">
+                <div className="fleet-table-responsive">
+                  <table className="fleet-table">
+                    <thead>
+                      <tr>
+                        <th>REGISTRATION</th>
+                        <th>VEHICLE MODEL</th>
+                        <th>FITNESS CERT (FC)</th>
+                        <th>COMPREHENSIVE INSURANCE</th>
+                        <th>NATIONAL PERMIT</th>
+                        <th>PUC POLLUTION</th>
+                        <th>COMPLIANCE HEALTH</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { reg: 'TS-09-UB-4421', mod: 'Tata Prima 5530.S', fc: 'Valid till 14 May 2027', ins: 'ICICI Lombard (31 Dec 2026)', np: '5-Year All-India Permit', puc: 'Passed (Green Tag)', st: 'Compliant' },
+                        { reg: 'MH-12-RN-8842', mod: 'BharatBenz 2823R', fc: 'Valid till 22 Aug 2027', ins: 'HDFC ERGO (18 Oct 2026)', np: 'All-India National Permit', puc: 'Passed (Green Tag)', st: 'Compliant' },
+                        { reg: 'KA-01-MJ-9910', mod: 'Volvo FM 420 6x4', fc: 'Valid till 08 Nov 2026', ins: 'Bajaj Allianz (12 Nov 2026)', np: 'All-India National Permit', puc: 'Passed (Green Tag)', st: 'Compliant' },
+                        { reg: 'TS-07-EX-3312', mod: 'Ashok Leyland 4220 HG', fc: 'Valid till 19 Jan 2028', ins: 'Tata AIG (24 Feb 2027)', np: 'All-India National Permit', puc: 'Passed (Green Tag)', st: 'Compliant' },
+                      ].map((r, i) => (
+                        <tr key={i}>
+                          <td><strong>{r.reg}</strong></td>
+                          <td>{r.mod}</td>
+                          <td><span className="fleet-active-badge">{r.fc}</span></td>
+                          <td>{r.ins}</td>
+                          <td>{r.np}</td>
+                          <td>{r.puc}</td>
+                          <td><span className="fleet-active-badge">{r.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: FASTAG TOLLS */}
+          {activeTab === 'toll-expenses' && (
+            <div className="fleet-view">
+              <div className="fleet-section-header">
+                <div>
+                  <h2 className="fleet-section-title">National Highway FASTag & Tollway Debits</h2>
+                  <p className="fleet-section-subtitle">Automated deduction telemetry from NHAI toll plazas across transit routes</p>
+                </div>
+                <button className="fleet-btn-primary">
+                  <CreditCard size={16} />
+                  <span>Recharge Fleet FASTag</span>
+                </button>
+              </div>
+              <div className="fleet-card">
+                <div className="fleet-table-responsive">
+                  <table className="fleet-table">
+                    <thead>
+                      <tr>
+                        <th>TXN ID</th>
+                        <th>VEHICLE REG</th>
+                        <th>TOLL PLAZA & HIGHWAY</th>
+                        <th>TIMESTAMP</th>
+                        <th>AXLE CLASS</th>
+                        <th>TOLL DEDUCTION</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { tx: 'FT-908124', reg: 'TS-09-UB-4421', plaza: 'Pantangi Toll (NH-65 Hyderabad-Vijayawada)', dt: 'Today 11:42 AM', cl: 'MAV (3-Axle Commercial)', amt: '₹480.00', st: 'Paid' },
+                        { tx: 'FT-908123', reg: 'MH-12-RN-8842', plaza: 'Khed Shivapur Plaza (NH-48 Pune-Satara)', dt: 'Today 09:15 AM', cl: 'HCV (2-Axle Heavy)', amt: '₹340.00', st: 'Paid' },
+                        { tx: 'FT-908122', reg: 'KA-01-MJ-9910', plaza: 'Attibele Toll Plaza (NH-44 Bengaluru-Hosur)', dt: 'Today 08:30 AM', cl: 'Multi-Axle Truck', amt: '₹510.00', st: 'Paid' },
+                        { tx: 'FT-908121', reg: 'TS-07-EX-3312', plaza: 'Thonakkal Toll Plaza (NH-66)', dt: 'Yesterday 09:20 PM', cl: 'MAV (3-Axle Commercial)', amt: '₹460.00', st: 'Paid' },
+                      ].map((t, i) => (
+                        <tr key={i}>
+                          <td><strong>{t.tx}</strong></td>
+                          <td>{t.reg}</td>
+                          <td><span style={{ fontWeight: 600 }}>{t.plaza}</span></td>
+                          <td>{t.dt}</td>
+                          <td>{t.cl}</td>
+                          <td><strong style={{ color: '#059669' }}>{t.amt}</strong></td>
+                          <td><span className="fleet-active-badge">{t.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
       </div>
     </div>
   );

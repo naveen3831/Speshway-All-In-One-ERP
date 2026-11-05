@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
+  Palette,
+  Building2,
   ShoppingBag,
   Users,
   Sparkles,
@@ -78,19 +82,23 @@ export const SavitriSareesDashboard = () => {
     { id: 'orders', label: 'Orders & Dispatches', icon: Truck, badge: '68' },
     { id: 'weavers', label: 'Loom Weavers', icon: Scissors },
     { id: 'collections', label: 'Collections', icon: Layers },
-    { id: 'silk-mark', label: 'Silk Mark Audit', icon: Award },
     { id: 'customers', label: 'VIP Clients', icon: Users },
+    { id: 'silk-mark', label: 'Silk Mark Audit', icon: Award },
+    { id: 'zari-procurement', label: 'Zari & Gold Spools', icon: Sparkles },
+    { id: 'dyeing-units', label: 'Dyeing & Shade Labs', icon: Palette },
+    { id: 'handloom-clusters', label: 'Weaver Clusters', icon: Building2 },
+    { id: 'invoices', label: 'GST Tax Invoices', icon: FileText },
     { id: 'analytics', label: 'Revenue & Reports', icon: TrendingUp },
     { id: 'settings', label: 'Store Settings', icon: Settings },
   ];
 
   const recentOrders = [
-    { id: '#SS-9821', customer: 'Ananya Sharma', phone: '+91 98490 22341', saree: 'Kanchipuram Pure Zari Silk', city: 'Hyderabad', price: '₹34,500', courier: 'Blue Dart Express', tracking: 'BD-992140', status: 'dispatched' },
-    { id: '#SS-9820', customer: 'Priya Mehra', phone: '+91 98860 11982', saree: 'Banarasi Katan Brocade Bridal', city: 'Bengaluru', price: '₹42,000', courier: 'DTDC Premium', tracking: 'DT-441820', status: 'dispatched' },
-    { id: '#SS-9819', customer: 'Deepika Rao', phone: '+91 94440 88219', saree: 'Chanderi Gold Leaf Handloom', city: 'Chennai', price: '₹18,500', courier: 'Delhivery Air', tracking: 'DL-773199', status: 'verified' },
-    { id: '#SS-9818', customer: 'Sunita Reddy', phone: '+91 98480 33418', saree: 'Gadwal Silk Contrast Border', city: 'Vijayawada', price: '₹22,800', courier: 'In Loom Finishing', tracking: 'Loom-Cluster-4', status: 'in-loom' },
-    { id: '#SS-9817', customer: 'Kavita Patel', phone: '+91 98200 44517', saree: 'Tussar Georgette Handwoven', city: 'Mumbai', price: '₹16,400', courier: 'Blue Dart Express', tracking: 'BD-884102', status: 'dispatched' },
-    { id: '#SS-9816', customer: 'Radhika Nair', phone: '+91 97450 66210', saree: 'Paithani Peacock Motif Silk', city: 'Kochi', price: '₹38,900', courier: 'DTDC Premium', tracking: 'DT-889102', status: 'dispatched' },
+    { id: '#SS-9821', customer: 'Ananya Sharma', phone: '→ 91 98490 22341', saree: 'Kanchipuram Pure Zari Silk', city: 'Hyderabad', price: '₹34,500', courier: 'Blue Dart Express', tracking: 'BD-992140', status: 'dispatched' },
+    { id: '#SS-9820', customer: 'Priya Mehra', phone: '→ 91 98860 11982', saree: 'Banarasi Katan Brocade Bridal', city: 'Bengaluru', price: '₹42,000', courier: 'DTDC Premium', tracking: 'DT-441820', status: 'dispatched' },
+    { id: '#SS-9819', customer: 'Deepika Rao', phone: '→ 91 94440 88219', saree: 'Chanderi Gold Leaf Handloom', city: 'Chennai', price: '₹18,500', courier: 'Delhivery Air', tracking: 'DL-773199', status: 'verified' },
+    { id: '#SS-9818', customer: 'Sunita Reddy', phone: '→ 91 98480 33418', saree: 'Gadwal Silk Contrast Border', city: 'Vijayawada', price: '₹22,800', courier: 'In Loom Finishing', tracking: 'Loom-Cluster-4', status: 'in-loom' },
+    { id: '#SS-9817', customer: 'Kavita Patel', phone: '→ 91 98200 44517', saree: 'Tussar Georgette Handwoven', city: 'Mumbai', price: '₹16,400', courier: 'Blue Dart Express', tracking: 'BD-884102', status: 'dispatched' },
+    { id: '#SS-9816', customer: 'Radhika Nair', phone: '→ 91 97450 66210', saree: 'Paithani Peacock Motif Silk', city: 'Kochi', price: '₹38,900', courier: 'DTDC Premium', tracking: 'DT-889102', status: 'dispatched' },
   ];
 
   const catalogItems = [
@@ -105,16 +113,45 @@ export const SavitriSareesDashboard = () => {
   const weaversList = [
     { id: 'WVR-101', name: 'Ramaswamy Chettiar', cluster: 'Kanchipuram Weavers Sector 2', experience: '32 years', activeLooms: 6, monthlyOutput: '18 Sarees', rating: '5.0 ★', payout: '₹1,44,000/mo' },
     { id: 'WVR-102', name: 'Kishanlal Ansari', cluster: 'Varanasi North Loom Co-op', experience: '28 years', activeLooms: 8, monthlyOutput: '22 Sarees', rating: '4.9 ★', payout: '₹1,76,000/mo' },
-    { id: 'WVR-103', name: 'Gopalrao Kulkarni', cluster: 'Yeola Paithani Heritage Hub', experience: '24 years', activeLooms: 4, monthlyOutput: '10 Sarees', rating: '4.9 ★', payout: '₹1,10,000/mo' },
+    { id: 'WVR-103', name: 'Gopalrao Kulkarni', cluster: 'Yeola Paithani Heritage Hub', experience: '24 years', activeLooms: 4, monthlyOutput: '10 Sarees', rating: '4.9 ★', payout: '₹1₹0,000/mo' },
     { id: 'WVR-104', name: 'Devendra Koli', cluster: 'Chanderi Artisan Guild', experience: '19 years', activeLooms: 5, monthlyOutput: '26 Sarees', rating: '4.8 ★', payout: '₹1,25,000/mo' },
     { id: 'WVR-105', name: 'Srinivasa Padmashali', cluster: 'Gadwal Handloom Cluster', experience: '26 years', activeLooms: 7, monthlyOutput: '20 Sarees', rating: '5.0 ★', payout: '₹1,50,000/mo' },
   ];
 
   const vipClients = [
-    { name: 'Dr. Meenakshi Sundaram', city: 'Chennai', phone: '+91 98401 55210', sarees: '14 Sarees', totalSpent: '₹4,82,000', tier: 'Royal Platinum' },
-    { name: 'Mrs. Shailaja Ramachandran', city: 'Hyderabad', phone: '+91 98490 11428', sarees: '11 Sarees', totalSpent: '₹3,96,000', tier: 'Royal Platinum' },
-    { name: 'Mrs. Geetanjali Birla', city: 'Mumbai', phone: '+91 98200 77319', sarees: '9 Sarees', totalSpent: '₹3,45,000', tier: 'Gold Elite' },
-    { name: 'Mrs. Vandana Agarwal', city: 'Bengaluru', phone: '+91 98860 88214', sarees: '8 Sarees', totalSpent: '₹2,84,000', tier: 'Gold Elite' },
+    { name: 'Dr. Meenakshi Sundaram', city: 'Chennai', phone: '→ 91 98401 55210', sarees: '14 Sarees', totalSpent: '₹4,82,000', tier: 'Royal Platinum' },
+    { name: 'Mrs. Shailaja Ramachandran', city: 'Hyderabad', phone: '→ 91 98490 11428', sarees: '11 Sarees', totalSpent: '₹3,96,000', tier: 'Royal Platinum' },
+    { name: 'Mrs. Geetanjali Birla', city: 'Mumbai', phone: '→ 91 98200 77319', sarees: '9 Sarees', totalSpent: '₹3,45,000', tier: 'Gold Elite' },
+    { name: 'Mrs. Vandana Agarwal', city: 'Bengaluru', phone: '→ 91 98860 88214', sarees: '8 Sarees', totalSpent: '₹2,84,000', tier: 'Gold Elite' },
+  ];
+
+
+  const zariBatches = [
+    { id: 'ZAR-901', supplier: 'Surat Pure Zari Guild', purity: '98.5% Gold/Silver', weightKg: '24.5 kg', grade: 'Grade A1 Electroplated', reels: '120 Reels', status: 'Passed Lab Audit' },
+    { id: 'ZAR-902', supplier: 'Kanchipuram Heritage Threads', purity: '99.0% Real Silver Leaf', weightKg: '18.0 kg', grade: 'Temple Antique Brocade', reels: '85 Reels', status: 'Passed Lab Audit' },
+    { id: 'ZAR-903', supplier: 'Varanasi Master Metallics', purity: '96.8% Metallic Core', weightKg: '32.0 kg', grade: 'Shikargh Jaal Zari', reels: '160 Reels', status: 'Passed Lab Audit' },
+    { id: 'ZAR-904', supplier: 'Dharmavaram Tested Filaments', purity: '98.2% Gold Flashed', weightKg: '15.4 kg', grade: 'Double Weft Warp', reels: '70 Reels', status: 'Quality Testing' },
+  ];
+
+  const dyeingLots = [
+    { id: 'DYE-401', shadeName: 'Kumkum Crimson & Sindhoor Red', dyer: 'Babu Master (Chanderi Unit)', yarnQty: '45 kg Mulberry', vatTemp: '84°C Natural Lac', ecoCert: 'Eco-Friendly Bio-Dye', status: 'Completed' },
+    { id: 'DYE-402', shadeName: 'Mayil-Kazhuthu (Peacock Blue/Green)', dyer: 'Selvam Dyers (Kanchi)', yarnQty: '60 kg Pure Silk', vatTemp: '82°C Indigo & Turmeric', ecoCert: 'GOTS Certified', status: 'In Processing' },
+    { id: 'DYE-403', shadeName: 'Haldi Mustard & Temple Gold', dyer: 'Govindappa (Gadwal Lab)', yarnQty: '38 kg Katan Silk', vatTemp: '80°C Organic Madder', ecoCert: 'Zero Chemical Runoff', status: 'Completed' },
+    { id: 'DYE-404', shadeName: 'Rani Pink & Rama Green', dyer: 'Prakash Rao (Pochampally)', yarnQty: '52 kg Tussar Silk', vatTemp: '85°C Natural Alizarin', ecoCert: 'Eco-Friendly Bio-Dye', status: 'Completed' },
+  ];
+
+  const handloomSocieties = [
+    { name: 'Kanchipuram Silk Weavers Co-operative', state: 'Tamil Nadu', activeLooms: 148, specialty: 'Heavy Zari Temple Borders', president: 'K. R. Ramanathan', phone: '→ 91 94440 21901', monthlyCapacity: '320 Sarees' },
+    { name: 'Dharmavaram Handloom Apex Society', state: 'Andhra Pradesh', activeLooms: 112, specialty: 'Broad Border Brocade', president: 'P. Venkataramulu', phone: '→ 91 98480 33819', monthlyCapacity: '260 Sarees' },
+    { name: 'Gadwal Padmashali Weaving Cluster', state: 'Telangana', activeLooms: 86, specialty: 'Kuttu Border Interlocking', president: 'M. Srinivasulu', phone: '→ 91 98491 55210', monthlyCapacity: '190 Sarees' },
+    { name: 'Pochampally Ikat Handloom Hub', state: 'Telangana', activeLooms: 94, specialty: 'Double Ikat Pure Silk', president: 'V. Narayana Rao', phone: '→ 91 99880 44102', monthlyCapacity: '220 Sarees' },
+  ];
+
+  const taxInvoices = [
+    { invNo: 'INV-2026-081', client: 'Ananya Sharma', hsn: 'HSN 5007', date: '04 Nov 2026', taxable: '₹1,28,095', gst: '₹6,405 (5%)', grandTotal: '₹1,34,500', eway: 'EWB-8891024' },
+    { invNo: 'INV-2026-080', client: 'Priya Mehra', hsn: 'HSN 5007', date: '03 Nov 2026', taxable: '₹1,35,238', gst: '₹6,762 (5%)', grandTotal: '₹1,42,000', eway: 'EWB-8891023' },
+    { invNo: 'INV-2026-079', client: 'Deepika Rao', hsn: 'HSN 5007', date: '02 Nov 2026', taxable: '₹1₹2,857', gst: '₹5,643 (5%)', grandTotal: '₹1₹8,500', eway: 'EWB-8891022' },
+    { invNo: 'INV-2026-078', client: 'Dr. Meenakshi Sundaram', hsn: 'HSN 5007', date: '01 Nov 2026', taxable: '₹2,68,571', gst: '₹13,429 (5%)', grandTotal: '₹2,82,000', eway: 'EWB-8891021' },
   ];
 
   const collections = [
@@ -208,13 +245,7 @@ export const SavitriSareesDashboard = () => {
               <span className="savitri-bell-dot"></span>
             </button>
 
-            <button
-              onClick={() => window.open('https://saree.speshway.site', '_blank')}
-              className="savitri-btn-site"
-            >
-              <span>View Online Store</span>
-              <ArrowRight size={14} />
-            </button>
+            
           </div>
         </header>
 
@@ -232,7 +263,7 @@ export const SavitriSareesDashboard = () => {
                   <div className="savitri-stat-info">
                     <span className="savitri-stat-label">Today's Orders</span>
                     <span className="savitri-stat-val">68</span>
-                    <span className="savitri-stat-trend">↑ +24% vs yesterday</span>
+                    <span className="savitri-stat-trend">↑ → 24% vs yesterday</span>
                   </div>
                 </div>
 
@@ -265,7 +296,7 @@ export const SavitriSareesDashboard = () => {
                   <div className="savitri-stat-info">
                     <span className="savitri-stat-label">Total Revenue</span>
                     <span className="savitri-stat-val">₹24,85,600</span>
-                    <span className="savitri-stat-trend">↑ +22% vs last month</span>
+                    <span className="savitri-stat-trend">↑ → 22% vs last month</span>
                   </div>
                 </div>
               </div>
@@ -349,7 +380,7 @@ export const SavitriSareesDashboard = () => {
                     </div>
                     <div className="savitri-actions-list">
                       <div className="savitri-action-item" onClick={() => setActiveTab('catalog')}>
-                        <span>+ Add New Saree Design</span>
+                        <span>→ Add New Saree Design</span>
                         <ArrowRight size={14} />
                       </div>
                       <div className="savitri-action-item" onClick={() => setActiveTab('weavers')}>
@@ -670,7 +701,7 @@ export const SavitriSareesDashboard = () => {
                 <div style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px' }}>
                   <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#64748b' }}>Average Order Value (AOV)</h4>
                   <div style={{ fontSize: '28px', fontWeight: 800, color: '#047857' }}>₹28,450</div>
-                  <span style={{ fontSize: '12px', color: '#10b981' }}>↑ +14.8% vs last quarter</span>
+                  <span style={{ fontSize: '12px', color: '#10b981' }}>↑ → 14.8% vs last quarter</span>
                 </div>
                 <div style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px' }}>
                   <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#64748b' }}>Dispatch Turnaround Time</h4>
@@ -687,6 +718,201 @@ export const SavitriSareesDashboard = () => {
           )}
 
           {/* TAB 9: SETTINGS */}
+          
+          {/* TAB: ZARI PROCUREMENT */}
+          {activeTab === 'zari-procurement' && (
+            <div className="savitri-card">
+              <div className="savitri-card-header">
+                <div>
+                  <h3 className="savitri-card-title">
+                    <Sparkles size={18} className="text-emerald-600" />
+                    Pure Zari & Tested Gold Spool Inventory
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Tracking tested metallic zari batches with certified silver/gold purity standards.
+                  </p>
+                </div>
+                <button className="savitri-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Log Zari Inward
+                </button>
+              </div>
+              <div className="savitri-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="savitri-data-table">
+                  <thead>
+                    <tr>
+                      <th>Batch Code</th>
+                      <th>Supplier & Guild</th>
+                      <th>Certified Purity</th>
+                      <th>Net Weight</th>
+                      <th>Weaving Grade</th>
+                      <th>Reels Stock</th>
+                      <th>Testing Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {zariBatches.map(z => (
+                      <tr key={z.id}>
+                        <td><strong>{z.id}</strong></td>
+                        <td>{z.supplier}</td>
+                        <td><span className="savitri-badge-verified">{z.purity}</span></td>
+                        <td>{z.weightKg}</td>
+                        <td>{z.grade}</td>
+                        <td>{z.reels}</td>
+                        <td><span className="savitri-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{z.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: DYEING UNITS */}
+          {activeTab === 'dyeing-units' && (
+            <div className="savitri-card">
+              <div className="savitri-card-header">
+                <div>
+                  <h3 className="savitri-card-title">
+                    <Palette size={18} className="text-emerald-600" />
+                    Organic Silk Yarn Dyeing & Shade Laboratories
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Authentic heritage shades using natural herbal extracts and zero-chemical dye vats.
+                  </p>
+                </div>
+                <button className="savitri-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Create Dye Lot
+                </button>
+              </div>
+              <div className="savitri-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="savitri-data-table">
+                  <thead>
+                    <tr>
+                      <th>Lot Number</th>
+                      <th>Color & Shade Name</th>
+                      <th>Master Dyer & Unit</th>
+                      <th>Yarn Volume</th>
+                      <th>Vat Processing</th>
+                      <th>Eco-Certification</th>
+                      <th>Batch Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dyeingLots.map(d => (
+                      <tr key={d.id}>
+                        <td><strong>{d.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{d.shadeName}</span></td>
+                        <td>{d.dyer}</td>
+                        <td>{d.yarnQty}</td>
+                        <td>{d.vatTemp}</td>
+                        <td><span className="savitri-badge-verified">{d.ecoCert}</span></td>
+                        <td><span className="savitri-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{d.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: HANDLOOM CLUSTERS */}
+          {activeTab === 'handloom-clusters' && (
+            <div className="savitri-card">
+              <div className="savitri-card-header">
+                <div>
+                  <h3 className="savitri-card-title">
+                    <Building2 size={18} className="text-emerald-600" />
+                    Regional Handloom Weaver Apex Societies
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Direct liaison with state apex handloom societies and artisan weaver guilds.
+                  </p>
+                </div>
+                <button className="savitri-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Register Cluster
+                </button>
+              </div>
+              <div className="savitri-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="savitri-data-table">
+                  <thead>
+                    <tr>
+                      <th>Society / Cluster</th>
+                      <th>Origin State</th>
+                      <th>Active Looms</th>
+                      <th>Heritage Specialty</th>
+                      <th>President / Lead</th>
+                      <th>Contact Number</th>
+                      <th>Monthly Production</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {handloomSocieties.map(h => (
+                      <tr key={h.name}>
+                        <td><strong>{h.name}</strong></td>
+                        <td>{h.state}</td>
+                        <td><span className="savitri-badge-cluster">{h.activeLooms} Pit Looms</span></td>
+                        <td>{h.specialty}</td>
+                        <td>{h.president}</td>
+                        <td>{h.phone}</td>
+                        <td><strong>{h.monthlyCapacity}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: TAX INVOICES */}
+          {activeTab === 'invoices' && (
+            <div className="savitri-card">
+              <div className="savitri-card-header">
+                <div>
+                  <h3 className="savitri-card-title">
+                    <FileText size={18} className="text-emerald-600" />
+                    GST Tax Invoices & E-Way Bills (HSN 5007)
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Compliant silk handloom GST invoices, tax summaries, and automated transport waybills.
+                  </p>
+                </div>
+                <button className="savitri-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Generate Invoice
+                </button>
+              </div>
+              <div className="savitri-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="savitri-data-table">
+                  <thead>
+                    <tr>
+                      <th>Invoice No</th>
+                      <th>Customer Name</th>
+                      <th>HSN Category</th>
+                      <th>Issue Date</th>
+                      <th>Taxable Amount</th>
+                      <th>GST (5%)</th>
+                      <th>Invoice Total</th>
+                      <th>E-Way Bill Ref</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {taxInvoices.map(inv => (
+                      <tr key={inv.invNo}>
+                        <td><strong>{inv.invNo}</strong></td>
+                        <td>{inv.client}</td>
+                        <td>{inv.hsn}</td>
+                        <td>{inv.date}</td>
+                        <td>{inv.taxable}</td>
+                        <td>{inv.gst}</td>
+                        <td><strong style={{ color: '#059669' }}>{inv.grandTotal}</strong></td>
+                        <td><span className="savitri-badge-verified">{inv.eway}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'settings' && (
             <div className="savitri-card" style={{ maxWidth: '680px' }}>
               <div className="savitri-card-header">

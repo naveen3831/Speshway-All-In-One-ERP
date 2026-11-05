@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
   ShoppingBag,
@@ -66,8 +68,12 @@ export const FoodwayDashboard = () => {
     { id: 'fleet', label: 'Delivery Riders', icon: Bike, badge: '16' },
     { id: 'menu', label: 'Menu Catalog', icon: UtensilsCrossed },
     { id: 'kot', label: 'Thermal KOT', icon: Printer },
-    { id: 'settlements', label: 'Daily Settlements', icon: DollarSign },
-    { id: 'analytics', label: 'Sales Reports', icon: TrendingUp },
+    { id: 'kitchen-stations', label: 'Kitchen Stations', icon: Store },
+    { id: 'raw-materials', label: 'Cold Storage Pantry', icon: Layers },
+    { id: 'recipes-costing', label: 'Recipe Food Cost', icon: DollarSign },
+    { id: 'discounts-promos', label: 'Coupons & Promos', icon: Flame },
+    { id: 'settlements', label: 'Daily Settlements', icon: TrendingUp },
+    { id: 'analytics', label: 'Sales Reports', icon: Clock },
     { id: 'settings', label: 'Kitchen Settings', icon: Settings },
   ];
 
@@ -185,13 +191,7 @@ export const FoodwayDashboard = () => {
               <span className="foodway-bell-dot"></span>
             </button>
 
-            <button
-              onClick={() => window.open('https://foody.speshway.site', '_blank')}
-              className="foodway-btn-site"
-            >
-              <span>Customer Ordering Web</span>
-              <ArrowRight size={14} />
-            </button>
+            
           </div>
         </header>
 
@@ -580,7 +580,200 @@ export const FoodwayDashboard = () => {
             </div>
           )}
 
-          {/* TAB 9: SETTINGS */}
+          
+          {/* TAB: KITCHEN STATIONS */}
+          {activeTab === 'kitchen-stations' && (
+            <div className="foodway-card">
+              <div className="foodway-card-header">
+                <div>
+                  <h3 className="foodway-card-title">
+                    <Store size={18} className="text-emerald-600" />
+                    Multi-Brand Kitchen Stations & Master Chefs
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Real-time temperature telemetry, order load per wok, and chef shift duty.
+                  </p>
+                </div>
+                <button className="foodway-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Add Kitchen Line
+                </button>
+              </div>
+              <div className="foodway-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="foodway-data-table">
+                  <thead>
+                    <tr>
+                      <th>Station ID</th>
+                      <th>Kitchen Line Name</th>
+                      <th>Head Chef in Charge</th>
+                      <th>Active KOT Queue</th>
+                      <th>Output Velocity</th>
+                      <th>Vat / Oven Temp</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {kitchenStationsList.map(k => (
+                      <tr key={k.id}>
+                        <td><strong>{k.id}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{k.name}</span></td>
+                        <td>{k.chef}</td>
+                        <td><span className="foodway-badge-cluster">{k.activeKOTs} Active KOTs</span></td>
+                        <td>{k.capacity}</td>
+                        <td>{k.temperature}</td>
+                        <td><span className="foodway-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{k.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: RAW MATERIALS */}
+          {activeTab === 'raw-materials' && (
+            <div className="foodway-card">
+              <div className="foodway-card-header">
+                <div>
+                  <h3 className="foodway-card-title">
+                    <Layers size={18} className="text-emerald-600" />
+                    Cold Storage Pantry & Raw Material Ingredients
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Ingredient batch tracking, daily fresh supply inward, and spoilage prevention.
+                  </p>
+                </div>
+                <button className="foodway-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Log Inward Stock
+                </button>
+              </div>
+              <div className="foodway-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="foodway-data-table">
+                  <thead>
+                    <tr>
+                      <th>Ingredient Name</th>
+                      <th>Current Physical Stock</th>
+                      <th>Auto-Reorder Level</th>
+                      <th>Approved Supplier</th>
+                      <th>Cold Storage Life</th>
+                      <th>Procurement Price</th>
+                      <th>Stock Health</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rawMaterialsInventory.map(r => (
+                      <tr key={r.item}>
+                        <td><strong>{r.item}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{r.stock}</span></td>
+                        <td>{r.reorderLevel}</td>
+                        <td>{r.supplier}</td>
+                        <td>{r.shelfLife}</td>
+                        <td>{r.unitCost}</td>
+                        <td><span className="foodway-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{r.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: RECIPE COSTING */}
+          {activeTab === 'recipes-costing' && (
+            <div className="foodway-card">
+              <div className="foodway-card-header">
+                <div>
+                  <h3 className="foodway-card-title">
+                    <DollarSign size={18} className="text-emerald-600" />
+                    Recipe Food Costing & Contribution Margins
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Granular breakdown of ingredient grammage, packaging costs, and net margin per dish.
+                  </p>
+                </div>
+                <button className="foodway-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> New Recipe Spec
+                </button>
+              </div>
+              <div className="foodway-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="foodway-data-table">
+                  <thead>
+                    <tr>
+                      <th>Menu Dish</th>
+                      <th>Raw Food Cost</th>
+                      <th>Packaging Cost</th>
+                      <th>Platform Commission</th>
+                      <th>Online Menu Price</th>
+                      <th>Net Profit Margin</th>
+                      <th>Profitability</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recipeCostingList.map(rc => (
+                      <tr key={rc.dish}>
+                        <td><strong>{rc.dish}</strong></td>
+                        <td>{rc.rawCost}</td>
+                        <td>{rc.packagingCost}</td>
+                        <td>{rc.platformFee}</td>
+                        <td><span style={{ fontWeight: 600 }}>{rc.salePrice}</span></td>
+                        <td><strong style={{ color: '#059669' }}>{rc.netMargin}</strong></td>
+                        <td><span className="foodway-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{rc.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: COUPONS & PROMOS */}
+          {activeTab === 'discounts-promos' && (
+            <div className="foodway-card">
+              <div className="foodway-card-header">
+                <div>
+                  <h3 className="foodway-card-title">
+                    <Flame size={18} className="text-emerald-600" />
+                    Active Promo Coupons & Midnight Deals
+                  </h3>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>
+                    Real-time coupon redemptions across Swiggy, Zomato, and Direct Ordering web.
+                  </p>
+                </div>
+                <button className="foodway-btn-site" style={{ padding: '8px 16px' }}>
+                  <Plus size={15} /> Create Coupon
+                </button>
+              </div>
+              <div className="foodway-table-wrap" style={{ marginTop: '16px' }}>
+                <table className="foodway-data-table">
+                  <thead>
+                    <tr>
+                      <th>Coupon Code</th>
+                      <th>Discount Value</th>
+                      <th>Min Cart Value</th>
+                      <th>Eligibility Rules</th>
+                      <th>Total Redemptions</th>
+                      <th>Gross Revenue Lift</th>
+                      <th>Campaign Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {discountsPromosList.map(dp => (
+                      <tr key={dp.code}>
+                        <td><strong>{dp.code}</strong></td>
+                        <td><span style={{ fontWeight: 600, color: '#059669' }}>{dp.discount}</span></td>
+                        <td>{dp.minOrder}</td>
+                        <td>{dp.validOn}</td>
+                        <td><span className="foodway-badge-cluster">{dp.totalRedeemed}</span></td>
+                        <td><strong style={{ color: '#059669' }}>{dp.revenueLift}</strong></td>
+                        <td><span className="foodway-badge-cluster" style={{ background: '#ecfdf5', color: '#059669' }}>{dp.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SETTINGS */}
           {activeTab === 'settings' && (
             <div className="foodway-card" style={{ maxWidth: '640px' }}>
               <div className="foodway-card-header">

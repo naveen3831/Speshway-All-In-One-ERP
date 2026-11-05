@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+  useNavigate,
+  Link } from 'react-router-dom';
 import {
   LayoutGrid,
+  Star,
   ShoppingCart,
   Users,
   Package,
@@ -103,6 +106,9 @@ export const NexoraDashboard = () => {
     { id: 'payments', label: 'Payments', icon: CreditCard },
     { id: 'reports', label: 'Reports & Analytics', icon: TrendingUp },
     { id: 'users', label: 'Users & Roles', icon: UserCheck },
+    { id: 'shipments', label: 'Shipments & Logistics', icon: Truck, badge: 14 },
+    { id: 'reviews', label: 'Customer Reviews', icon: Star },
+    { id: 'settings', label: 'Store Settings', icon: Settings },
   ];
 
   // Static Data: Top Selling Products (matching reference screenshot)
@@ -1322,6 +1328,135 @@ export const NexoraDashboard = () => {
               </div>
             </div>
           )}
+
+          {/* TAB: SHIPMENTS & LOGISTICS */}
+          {activeTab === 'shipments' && (
+            <div className="nexora-orders-view">
+              <div className="nexora-section-header">
+                <div>
+                  <h2 className="nexora-section-title">Courier Shipments & Logistics Telematics</h2>
+                  <p className="nexora-section-subtitle">Real-time airway bill tracking across Delhivery, Blue Dart, and DTDC Express</p>
+                </div>
+                <button className="nexora-btn-primary">
+                  <Plus size={16} />
+                  <span>Create Manifest</span>
+                </button>
+              </div>
+              <div className="nexora-card">
+                <div className="nexora-table-responsive">
+                  <table className="nexora-table">
+                    <thead>
+                      <tr>
+                        <th>AWB TRACKING</th>
+                        <th>ORDER REF</th>
+                        <th>RECIPIENT & CITY</th>
+                        <th>COURIER PARTNER</th>
+                        <th>PACKAGE ITEMS</th>
+                        <th>EST. DELIVERY</th>
+                        <th>SHIPMENT STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { awb: 'DLV-8821901', ord: '#ORD-2026-9821', rec: 'Manish Verma (Hyderabad)', cur: 'Delhivery Surface Pro', items: 'Sony WH-1000XM5 Headphones', eta: 'Tomorrow, by 4 PM', st: 'In Transit' },
+                        { awb: 'BDT-4418290', ord: '#ORD-2026-9820', rec: 'Priya Sundaram (Bengaluru)', cur: 'Blue Dart Air Express', items: 'MacBook Air M3 15-inch', eta: 'Today, Out for Delivery', st: 'Out for Delivery' },
+                        { awb: 'DTC-9921044', ord: '#ORD-2026-9819', rec: 'Amitabh Joshi (Mumbai)', cur: 'DTDC Premium Express', items: 'Samsung Galaxy S24 Ultra', eta: 'Delivered Today 11:20 AM', st: 'Delivered' },
+                        { awb: 'XPR-7731029', ord: '#ORD-2026-9818', rec: 'Sneha Kulkarni (Pune)', cur: 'XpressBees Express', items: 'Keychron Q1 Pro Mechanical', eta: '06 Nov 2026', st: 'In Transit' },
+                      ].map((s, i) => (
+                        <tr key={i}>
+                          <td><strong>{s.awb}</strong></td>
+                          <td><span className="nexora-tag">{s.ord}</span></td>
+                          <td>{s.rec}</td>
+                          <td>{s.cur}</td>
+                          <td>{s.items}</td>
+                          <td>{s.eta}</td>
+                          <td><span className="nexora-badge nexora-badge-green">{s.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: CUSTOMER REVIEWS */}
+          {activeTab === 'reviews' && (
+            <div className="nexora-orders-view">
+              <div className="nexora-section-header">
+                <div>
+                  <h2 className="nexora-section-title">Verified Customer Reviews & Ratings</h2>
+                  <p className="nexora-section-subtitle">Real feedback and star ratings from verified purchasers</p>
+                </div>
+                <button className="nexora-btn-primary">
+                  <Star size={16} />
+                  <span>Feature Reviews</span>
+                </button>
+              </div>
+              <div className="nexora-card">
+                <div className="nexora-table-responsive">
+                  <table className="nexora-table">
+                    <thead>
+                      <tr>
+                        <th>PRODUCT</th>
+                        <th>REVIEWER</th>
+                        <th>RATING</th>
+                        <th>FEEDBACK COMMENT</th>
+                        <th>DATE</th>
+                        <th>VERIFICATION</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { prod: 'Sony WH-1000XM5', rev: 'Rohan Sharma (Bengaluru)', rat: '5.0 ★', comm: 'Active noise cancellation is unbeatable for office focus. Super comfy!', dt: '03 Nov 2026', ver: 'Verified Buyer' },
+                        { prod: 'MacBook Air M3', rev: 'Ananya Deshpande (Pune)', rat: '5.0 ★', comm: 'Stellar battery life, lasts 16+ hours without charging. Flawless display.', dt: '02 Nov 2026', ver: 'Verified Buyer' },
+                        { prod: 'Keychron Q1 Pro', rev: 'Vikram Aditya (Hyderabad)', rat: '4.8 ★', comm: 'Gateron Jupiter Red switches sound incredible. Excellent build.', dt: '01 Nov 2026', ver: 'Verified Buyer' },
+                        { prod: 'Samsung S24 Ultra', rev: 'Dr. Suresh Varma (Chennai)', rat: '4.9 ★', comm: 'Camera zoom and AI transcription features are game changers.', dt: '30 Oct 2026', ver: 'Verified Buyer' },
+                      ].map((r, i) => (
+                        <tr key={i}>
+                          <td><strong>{r.prod}</strong></td>
+                          <td>{r.rev}</td>
+                          <td><span style={{ color: '#059669', fontWeight: 700 }}>{r.rat}</span></td>
+                          <td style={{ fontSize: '13px', color: '#475569' }}>"{r.comm}"</td>
+                          <td>{r.dt}</td>
+                          <td><span className="nexora-badge nexora-badge-green">{r.ver}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: STORE SETTINGS */}
+          {activeTab === 'settings' && (
+            <div className="nexora-orders-view">
+              <div className="nexora-section-header">
+                <div>
+                  <h2 className="nexora-section-title">Online Store Settings & Configuration</h2>
+                  <p className="nexora-section-subtitle">Manage payment gateways, shipping zones, and brand identity</p>
+                </div>
+              </div>
+              <div className="nexora-card" style={{ maxWidth: '720px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>Store Name & Brand Domain</label>
+                    <input type="text" readOnly value="Nexora Online Store &bull; store.nexora.speshway.com" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#f8fafc' }} />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>Payment Gateways Active</label>
+                    <input type="text" readOnly value="Razorpay Pro &bull; Stripe International &bull; Cash on Delivery (COD)" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#f8fafc' }} />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>Default Currency & GST Regime</label>
+                    <input type="text" readOnly value="₹ INR (Indian Rupee) &bull; GSTIN 36AAACN9921M1ZR" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#f8fafc' }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>

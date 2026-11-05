@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {
+  useNavigate } from 'react-router-dom';
 import {
   LayoutGrid,
   Users,
@@ -70,6 +71,8 @@ export const HrmsDashboard = () => {
     { id: 'documents', label: 'Documents', icon: FileText },
     { id: 'reports', label: 'Reports & Analytics', icon: BarChart3 },
     { id: 'notifications', label: 'Notifications', icon: Bell, badge: '3' },
+    { id: 'departments', label: 'Departments & Org Tree', icon: Building2 },
+    { id: 'holidays', label: 'Holidays & Shifts', icon: Clock },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -1068,6 +1071,107 @@ export const HrmsDashboard = () => {
             </div>
           )}
         </div>
+
+          {/* TAB: DEPARTMENTS & ORG TREE */}
+          {activeTab === 'departments' && (
+            <div className="hrms-view">
+              <div className="hrms-section-header">
+                <div>
+                  <h2 className="hrms-section-title">Corporate Departments & Team Structure</h2>
+                  <p className="hrms-section-subtitle">Departmental headcount, budget allocations, and designated department heads</p>
+                </div>
+                <button className="hrms-btn-primary">
+                  <Plus size={16} />
+                  <span>Add Department</span>
+                </button>
+              </div>
+              <div className="hrms-card">
+                <div className="hrms-table-responsive">
+                  <table className="hrms-table">
+                    <thead>
+                      <tr>
+                        <th>DEPT CODE</th>
+                        <th>DEPARTMENT NAME</th>
+                        <th>HEAD OF DEPARTMENT (HOD)</th>
+                        <th>TOTAL HEADCOUNT</th>
+                        <th>LOCATIONS</th>
+                        <th>ANNUAL BUDGET</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { code: 'ENG-01', name: 'Software Engineering & Platform AI', hod: 'Praveen Chawla (VP Engg)', count: '48 Engineers', loc: 'Hyderabad HQ & Remote', bud: '₹4.80 Cr', st: 'Active' },
+                        { code: 'PRD-02', name: 'Product Management & Design Systems', hod: 'Ananya Deshpande (Head of Product)', count: '16 Leads', loc: 'Hyderabad HQ', bud: '₹1.90 Cr', st: 'Active' },
+                        { code: 'SAL-03', name: 'Enterprise Sales & Business Dev', hod: 'Siddharth Varma (VP Sales)', count: '28 Executives', loc: 'Mumbai, BLR & Delhi', bud: '₹2.40 Cr', st: 'Active' },
+                        { code: 'OPS-04', name: 'Customer Success & Technical Support', hod: 'Meera Krishnan (Support Lead)', count: '22 Analysts', loc: 'Hyderabad Campus', bud: '₹1.10 Cr', st: 'Active' },
+                      ].map((d, i) => (
+                        <tr key={i}>
+                          <td><strong>{d.code}</strong></td>
+                          <td><span style={{ fontWeight: 600 }}>{d.name}</span></td>
+                          <td>{d.hod}</td>
+                          <td><span className="hrms-active-badge">{d.count}</span></td>
+                          <td>{d.loc}</td>
+                          <td><strong style={{ color: '#059669' }}>{d.bud}</strong></td>
+                          <td><span className="hrms-active-badge">{d.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: HOLIDAYS & SHIFTS */}
+          {activeTab === 'holidays' && (
+            <div className="hrms-view">
+              <div className="hrms-section-header">
+                <div>
+                  <h2 className="hrms-section-title">Official Holiday Calendar & Shift Schedules</h2>
+                  <p className="hrms-section-subtitle">Gazetted national holidays, festive optional leaves, and work shifts</p>
+                </div>
+                <button className="hrms-btn-primary">
+                  <Plus size={16} />
+                  <span>Add Company Holiday</span>
+                </button>
+              </div>
+              <div className="hrms-card">
+                <div className="hrms-table-responsive">
+                  <table className="hrms-table">
+                    <thead>
+                      <tr>
+                        <th>HOLIDAY OCCASION</th>
+                        <th>DATE & DAY</th>
+                        <th>HOLIDAY CATEGORY</th>
+                        <th>APPLICABLE BRANCHES</th>
+                        <th>LEAVE DEDUCTION</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { occ: 'Diwali / Deepavali Celebrations', dt: '01 Nov 2026 (Sunday) - 03 Nov (Tue)', cat: 'Mandatory Gazetted Holiday', br: 'All India Offices', ded: 'Paid Company Holiday', st: 'Upcoming' },
+                        { occ: 'Guru Nanak Jayanti', dt: '15 Nov 2026 (Sunday)', cat: 'Restricted / Optional Holiday', br: 'All Offices', ded: 'Optional Leave Credit', st: 'Upcoming' },
+                        { occ: 'Christmas Day', dt: '25 Dec 2026 (Friday)', cat: 'Mandatory Gazetted Holiday', br: 'All India Offices', ded: 'Paid Company Holiday', st: 'Scheduled' },
+                        { occ: 'New Year Day', dt: '01 Jan 2027 (Friday)', cat: 'Mandatory Gazetted Holiday', br: 'All India Offices', ded: 'Paid Company Holiday', st: 'Scheduled' },
+                      ].map((h, i) => (
+                        <tr key={i}>
+                          <td><strong>{h.occ}</strong></td>
+                          <td>{h.dt}</td>
+                          <td><span className="hrms-badge-amber">{h.cat}</span></td>
+                          <td>{h.br}</td>
+                          <td>{h.ded}</td>
+                          <td><span className="hrms-active-badge">{h.st}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
       </div>
     </div>
   );
