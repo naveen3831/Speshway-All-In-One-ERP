@@ -22,6 +22,7 @@ import {
   Terminal,
   Activity,
   ArrowRight,
+  ArrowLeft,
 } from 'lucide-react';
 
 export const ProductDetailPage = () => {
@@ -263,6 +264,48 @@ export const ProductDetailPage = () => {
         <section className="product-detail-hero-section">
           <div className="detail-hero-container">
             <div className="detail-hero-left">
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.history.length > 1) {
+                    navigate(-1);
+                  } else {
+                    navigate('/products');
+                  }
+                }}
+                className="btn-back-link"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  marginBottom: '18px',
+                  padding: '7px 14px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '8px',
+                  color: '#1e293b',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                  width: 'fit-content',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f0fdf4';
+                  e.currentTarget.style.color = '#00875a';
+                  e.currentTarget.style.borderColor = '#00875a';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#ffffff';
+                  e.currentTarget.style.color = '#1e293b';
+                  e.currentTarget.style.borderColor = '#cbd5e1';
+                }}
+              >
+                <ArrowLeft size={16} />
+                <span>Back to Projects</span>
+              </button>
+
               <div className="modal-badge-row">
                 <span className="product-category-tag">{product.category}</span>
                 <span className="badge-active">{product.status || 'Active Product'}</span>
