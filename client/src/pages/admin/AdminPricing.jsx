@@ -9,7 +9,6 @@ import {
   Check,
   Edit2,
   X,
-  RotateCcw,
 } from 'lucide-react';
 
 const DEFAULT_SAAS_PLANS = [
@@ -240,43 +239,6 @@ export const AdminPricing = () => {
     }
   };
 
-  // Add a new plan
-  const handleAddNewPlan = () => {
-    const newIdx = plans.length;
-    const newSlug = `plan-${Date.now()}`;
-    const newPlan = {
-      slug: newSlug,
-      name: 'Custom Plan',
-      price: '₹9,999',
-      period: '/user /month',
-      desc: 'Tailored enterprise ERP module suite with custom integrations and dedicated resources.',
-      features: [
-        'Dedicated Enterprise Modules',
-        'Custom Cloud Instance',
-        '24/7 Dedicated Support',
-      ],
-      popular: false,
-      btnText: 'Get Started',
-      order: newIdx + 1,
-    };
-
-    setPlans((prev) => [...prev, newPlan]);
-    handleStartEdit(newIdx);
-  };
-
-  // Reset to default SaaS tiers
-  const handleResetDefaults = async () => {
-    if (window.confirm('Reset all pricing plans back to the default Starter, Professional, and Enterprise tiers?')) {
-      try {
-        await api.put('/pricing', { plans: DEFAULT_SAAS_PLANS });
-      } catch (err) {
-        console.warn('API reset fallback:', err.message);
-      }
-      setPlans(DEFAULT_SAAS_PLANS);
-      setEditingPlanIdx(null);
-    }
-  };
-
   if (loading) {
     return (
       <div className="admin-page-view" style={{ textAlign: 'center', padding: '60px 20px' }}>
@@ -307,43 +269,6 @@ export const AdminPricing = () => {
           <p className="admin-subtext" style={{ margin: 0 }}>
             Manage pricing tiers displayed on your public pricing page. Click <strong>Edit Details</strong> to customize any card.
           </p>
-        </div>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <button
-            type="button"
-            onClick={handleResetDefaults}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '9px 15px',
-              backgroundColor: '#f8fafc',
-              border: '1.5px solid #cbd5e1',
-              borderRadius: '8px',
-              color: '#475569',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-            title="Reset to default Starter, Professional, Enterprise plans"
-          >
-            <RotateCcw size={15} /> Reset Defaults
-          </button>
-          <button
-            type="button"
-            onClick={handleAddNewPlan}
-            className="btn-hero-primary"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '10px 18px',
-              fontSize: '0.88rem',
-              fontWeight: 700,
-            }}
-          >
-            <Plus size={16} /> Add Pricing Plan
-          </button>
         </div>
       </div>
 
