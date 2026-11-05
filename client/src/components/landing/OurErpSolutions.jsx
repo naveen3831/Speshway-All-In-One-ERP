@@ -8,6 +8,7 @@ import {
   getProjectIcon,
   getProjectColor,
 } from '../../utils/adminProjects';
+import { getProductFallbackImage } from '../../pages/ProductsPage';
 import './OurErpSolutions.css';
 
 export const OurErpSolutions = () => {
@@ -36,6 +37,7 @@ export const OurErpSolutions = () => {
             const Icon = getProjectIcon(prod);
             const route = getDashboardRoute(prod);
             const color = getProjectColor(prod);
+            const imgUrl = prod.imageUrl || getProductFallbackImage(prod.slug || prod.id || prod.name);
 
             return (
               <div
@@ -52,12 +54,19 @@ export const OurErpSolutions = () => {
                 }}
                 title={`Open live in-site ${prod.name} Dashboard`}
               >
-                {prod.imageUrl ? (
+                {imgUrl ? (
                   <div className="our-erp-img-banner">
                     <img
-                      src={prod.imageUrl}
+                      src={imgUrl}
                       alt={prod.name}
                       className="our-erp-banner-img"
+                      loading="lazy"
+                      onError={(e) => {
+                        const fallback = getProductFallbackImage(prod.slug || prod.id || prod.name);
+                        if (fallback && e.target.src !== fallback) {
+                          e.target.src = fallback;
+                        }
+                      }}
                     />
                   </div>
                 ) : (
