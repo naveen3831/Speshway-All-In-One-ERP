@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import { useSocket } from '../context/SocketContext';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
@@ -8,11 +10,52 @@ import { Check, Sparkles } from 'lucide-react';
 
 export const PricingPage = () => {
   const navigate = useNavigate();
+  const { socket } = useSocket();
   const [modalMode, setModalMode] = useState(null);
   const [isAnnual, setIsAnnual] = useState(true);
+  const [livePlans, setLivePlans] = useState(null);
 
-  const tiers = [
+  useEffect(() => {
+    let mounted = true;
+    api.get('/pricing')
+      .then((res) => {
+        if (mounted && res.data && res.data.data && res.data.data.length > 0) {
+          const hasOld = res.data.data.some(
+            (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+          );
+          if (!hasOld) {
+            setLivePlans(res.data.data);
+          }
+        }
+      })
+      .catch((err) => console.warn('Using default pricing plans:', err.message));
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handlePricingUpdated = (updatedPlans) => {
+      if (Array.isArray(updatedPlans) && updatedPlans.length > 0) {
+        const hasOld = updatedPlans.some(
+          (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+        );
+        if (!hasOld) {
+          setLivePlans(updatedPlans);
+        }
+      }
+    };
+    socket.on('pricing:updated', handlePricingUpdated);
+    return () => {
+      socket.off('pricing:updated', handlePricingUpdated);
+    };
+  }, [socket]);
+
+  const defaultTiers = [
     {
+      slug: 'starter',
       name: 'Starter',
       price: isAnnual ? '₹2,499' : '₹3,299',
       period: '/user /month',
@@ -29,6 +72,7 @@ export const PricingPage = () => {
       btnText: 'Start 14-Day Free Trial',
     },
     {
+      slug: 'professional',
       name: 'Professional',
       price: isAnnual ? '₹5,999' : '₹7,999',
       period: '/user /month',
@@ -45,6 +89,7 @@ export const PricingPage = () => {
       btnText: 'Get Started with Pro',
     },
     {
+      slug: 'enterprise',
       name: 'Enterprise',
       price: 'Custom',
       period: 'tailored quote',
@@ -61,6 +106,20 @@ export const PricingPage = () => {
       btnText: 'Contact Enterprise Sales',
     },
   ];
+
+  const tiers = livePlans
+    ? livePlans.map((plan) => {
+        let price = plan.price;
+        if (!isAnnual) {
+          if (plan.slug === 'starter' && plan.price === '₹2,499') price = '₹3,299';
+          if (plan.slug === 'professional' && plan.price === '₹5,999') price = '₹7,999';
+        }
+        return {
+          ...plan,
+          price,
+        };
+      })
+    : defaultTiers;
 
   return (
     <div className="landing-wrapper">

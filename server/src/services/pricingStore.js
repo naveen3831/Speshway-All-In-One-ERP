@@ -2,57 +2,57 @@ import PricingPlan from '../models/PricingPlan.js';
 
 export const DEFAULT_PRICING_PLANS = [
   {
-    slug: 'website',
-    name: 'Website',
-    price: '₹80,000',
-    period: '',
-    desc: 'Complete responsive Web ERP application accessible on any browser, desktop, or tablet.',
+    slug: 'starter',
+    name: 'Starter',
+    price: '₹2,499',
+    period: '/user /month',
+    desc: 'Ideal for small businesses and growing teams needing core HR & Project tools.',
     features: [
-      'Full Web ERP Application',
-      'Role-Based Admin & Staff Access',
-      'Real-Time Cloud Synchronization',
-      'Customer Portal & Lead Inquiries',
-      'Reports, Analytics & Data Export',
-      'Custom Domain & SSL Security',
+      'Up to 25 Active Employees',
+      'HRMS & Directory Portal',
+      'Leave & Attendance Tracking',
+      'Task & Project Boards',
+      'Standard Email Support',
+      'Continuous Cloud Backups',
     ],
     popular: false,
-    btnText: 'Get Started with Website',
+    btnText: 'Start 14-Day Free Trial',
     order: 1,
   },
   {
-    slug: 'mobile-app',
-    name: 'Mobile App',
-    price: '₹1,00,000',
-    period: '',
-    desc: 'Dedicated native Android and iOS mobile applications for your team and customers on the go.',
+    slug: 'professional',
+    name: 'Professional',
+    price: '₹5,999',
+    period: '/user /month',
+    desc: 'Complete suite for scaling companies that need unified payroll, finance & CRM.',
     features: [
-      'Native Android & iOS Applications',
-      'Push Notifications & Instant Alerts',
-      'Offline Synchronization & Caching',
-      'Camera QR & Barcode Scanner',
-      'Biometric & Fingerprint Login',
-      'Google Play & Apple Store Setup',
+      'Up to 200 Employees',
+      'Full Payroll & Tax Automation',
+      'Finance, Invoicing & Expenses',
+      'Client CRM & Deal Pipelines',
+      'Asset Management & Devices',
+      'Priority 24/7 Live Support',
     ],
-    popular: false,
-    btnText: 'Get Started with Mobile App',
+    popular: true,
+    btnText: 'Get Started with Pro',
     order: 2,
   },
   {
-    slug: 'website-mobile-app',
-    name: 'Website + Mobile App',
-    price: '₹1,30,000',
-    period: '',
-    desc: 'Complete unified omnichannel solution with synchronized Web ERP and Native Mobile Apps.',
+    slug: 'enterprise',
+    name: 'Enterprise',
+    price: 'Custom',
+    period: 'tailored quote',
+    desc: 'For large organizations demanding custom SLAs, dedicated infrastructure & audit.',
     features: [
-      'Complete Web ERP + Android & iOS Apps',
-      'Seamless Cross-Platform Real-Time Sync',
-      'Unified Admin Control Center',
-      'Customer Booking & Ordering Suite',
-      'Dedicated Cloud Architecture & API',
-      '24/7 Priority Support & Maintenance',
+      'Unlimited Employees & Users',
+      'Custom ERP Module Development',
+      'Dedicated Cloud Instance / VPC',
+      '24/7 Dedicated Account Manager',
+      'SSO / SAML / Active Directory',
+      'Custom Data Retention SLAs',
     ],
-    popular: true,
-    btnText: 'Get Complete Suite',
+    popular: false,
+    btnText: 'Contact Enterprise Sales',
     order: 3,
   },
 ];
@@ -63,6 +63,13 @@ export const getPricingPlans = async () => {
   try {
     const dbPlans = await PricingPlan.find({}).sort({ order: 1 }).lean();
     if (dbPlans && dbPlans.length > 0) {
+      const hasOldPlans = dbPlans.some(
+        (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+      );
+      if (hasOldPlans) {
+        await seedPricingDatabase();
+        return memoryPricing;
+      }
       memoryPricing = dbPlans;
       return dbPlans;
     }
@@ -137,17 +144,28 @@ export const deletePricingPlan = async (slug) => {
 
 export const seedPricingDatabase = async () => {
   try {
-    const count = await PricingPlan.countDocuments();
-    if (count === 0) {
-      console.log('🌱 Seeding default pricing tiers into MongoDB Atlas...');
-      await PricingPlan.insertMany(DEFAULT_PRICING_PLANS);
-      console.log('✅ Default pricing tiers seeded successfully.');
-    } else {
-      // Sync memory with DB
-      const existing = await PricingPlan.find({}).sort({ order: 1 }).lean();
-      if (existing.length > 0) {
-        memoryPricing = existing;
+    const existing = await PricingPlan.find({}).sort({ order: 1 }).lean();
+    const hasOldPlans = existing.some(
+      (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+    );
+
+    if (existing.length === 0 || hasOldPlans) {
+      console.log('🌱 Seeding/migrating SaaS pricing tiers (Starter, Professional, Enterprise) into MongoDB Atlas...');
+      if (hasOldPlans) {
+        await PricingPlan.deleteMany({ slug: { $in: ['website', 'mobile-app', 'website-mobile-app'] } });
       }
+      for (const plan of DEFAULT_PRICING_PLANS) {
+        await PricingPlan.findOneAndUpdate(
+          { slug: plan.slug },
+          { $set: plan },
+          { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+      }
+      const refreshed = await PricingPlan.find({}).sort({ order: 1 }).lean();
+      memoryPricing = refreshed;
+      console.log('✅ SaaS pricing tiers synchronized in MongoDB Atlas.');
+    } else {
+      memoryPricing = existing;
     }
   } catch (err) {
     console.warn('[PricingStore] Could not seed pricing into MongoDB Atlas:', err.message);
