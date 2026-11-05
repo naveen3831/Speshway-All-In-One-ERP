@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 import {
   LayoutDashboard,
@@ -21,6 +22,10 @@ import {
 
 export const AdminLayout = () => {
   const { user, loading, login, logout } = useAuth();
+  const { branding, homeContent } = useSocket();
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
   const navigate = useNavigate();
 
   // Admin login form state
@@ -72,9 +77,9 @@ export const AdminLayout = () => {
           {/* Logo & Header */}
           <div className="pro-login-header">
             <div className="pro-logo-badge">
-              <img src="/logo.png" alt="Speshway ERP Logo" className="pro-logo-img" />
+              <img src={logoUrl} alt={`${brandTitle} ERP Logo`} className="pro-logo-img" />
             </div>
-            <h1 className="pro-login-title">Admin Console</h1>
+            <h1 className="pro-login-title">{brandTitle} Admin Console</h1>
             <p className="pro-login-subtitle">
               Sign in with your administrator credentials to manage ERP operations
             </p>
@@ -174,9 +179,9 @@ export const AdminLayout = () => {
       {/* Dedicated Admin Sidebar */}
       <aside className="admin-sidebar">
         <div className="admin-sidebar-brand">
-          <img src="/logo.png" alt="Speshway Admin Logo" className="admin-sidebar-logo-img" />
+          <img src={logoUrl} alt={`${brandTitle} Admin Logo`} className="admin-sidebar-logo-img" />
           <div className="brand-text">
-            <span className="brand-title">SPESHWAY</span>
+            <span className="brand-title">{brandTitle}</span>
             <span className="brand-subtitle">ADMIN CONSOLE</span>
           </div>
         </div>
@@ -300,7 +305,7 @@ export const AdminLayout = () => {
       <div className="admin-main-wrap">
         <header className="admin-topbar">
           <div className="topbar-left">
-            <span className="topbar-title">Speshway Administrative Dashboard</span>
+            <span className="topbar-title">{brandTitle} Administrative Dashboard</span>
           </div>
         </header>
 

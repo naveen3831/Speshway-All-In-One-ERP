@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useSocket } from '../../context/SocketContext';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { homeContent } = useSocket();
+  const { homeContent, branding } = useSocket();
+
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
 
   // Determine whether Pricing should be visible in navbar
   const [showPricing, setShowPricing] = useState(() => {
@@ -54,18 +59,18 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   return (
     <header className="navbar-container">
       <div className="navbar-content">
-        {/* Brand Logo with User Uploaded Logo Image */}
-        <Link to="/" className="brand-logo">
+        {/* Brand Logo with User Uploaded Logo Image & Brand Name */}
+        <Link to="/" className="brand-logo" title={`${brandTitle} - Home`}>
           <div className="brand-logo-wrap">
             <img
-              src="/logo.png"
-              alt="Speshway All In One ERP Logo"
+              src={logoUrl}
+              alt={`${brandTitle} Logo`}
               className="brand-logo-img"
             />
           </div>
           <div className="brand-text">
-            <span className="brand-title">SPESHWAY</span>
-            <span className="brand-subtitle">ALL IN ONE ERP</span>
+            <span className="brand-title">{brandTitle}</span>
+            <span className="brand-subtitle">{brandSubtitle}</span>
           </div>
         </Link>
 

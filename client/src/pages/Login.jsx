@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useSocket, DEFAULT_BRANDING } from '../context/SocketContext';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, ArrowLeft } from 'lucide-react';
 
 export const Login = () => {
@@ -10,7 +11,12 @@ export const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const { branding, homeContent } = useSocket();
   const navigate = useNavigate();
+
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'Speshway';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,9 +43,9 @@ export const Login = () => {
         {/* Logo & Header */}
         <div className="pro-login-header">
           <div className="pro-logo-badge">
-            <img src="/logo.png" alt="Speshway ERP Logo" className="pro-logo-img" />
+            <img src={logoUrl} alt={`${brandTitle} ERP Logo`} className="pro-logo-img" />
           </div>
-          <h1 className="pro-login-title">Welcome to Speshway</h1>
+          <h1 className="pro-login-title">Welcome to {brandTitle}</h1>
           <p className="pro-login-subtitle">
             Sign in to your enterprise account to access your workspace
           </p>

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp, ShieldCheck, CheckCircle2, Globe, Heart, MapPin, Phone, Mail } from 'lucide-react';
-import { useSocket } from '../../context/SocketContext';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
-  const { homeContent } = useSocket();
+  const { homeContent, branding } = useSocket();
+
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
 
   // Pricing visibility state
   const [showPricing, setShowPricing] = useState(() => {
@@ -44,17 +49,17 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
         <div className="pro-footer-grid">
           {/* Column 1: Brand & Bio */}
           <div className="pro-footer-brand-col">
-            <Link to="/" className="brand-logo footer-brand-logo">
+            <Link to="/" className="brand-logo footer-brand-logo" title={`${brandTitle} - Home`}>
               <div className="brand-logo-wrap footer-logo-wrap">
                 <img
-                  src="/logo.png"
-                  alt="Speshway All In One ERP Logo"
+                  src={logoUrl}
+                  alt={`${brandTitle} Logo`}
                   className="brand-logo-img"
                 />
               </div>
               <div className="brand-text">
-                <span className="brand-title footer-brand-title">SPESHWAY</span>
-                <span className="brand-subtitle footer-brand-subtitle">ALL IN ONE ERP</span>
+                <span className="brand-title footer-brand-title">{brandTitle}</span>
+                <span className="brand-subtitle footer-brand-subtitle">{brandSubtitle}</span>
               </div>
             </Link>
 
@@ -173,7 +178,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
       <div className="pro-footer-bottom">
         <div className="pro-footer-bottom-inner">
           <div className="footer-copyright">
-            <span>&copy; {new Date().getFullYear()} Speshway All In One ERP. All rights reserved.</span>
+            <span>&copy; {new Date().getFullYear()} {brandTitle} All In One ERP. All rights reserved.</span>
           </div>
 
           <div className="footer-legal-links">

@@ -83,6 +83,20 @@ const homeContentSchema = new mongoose.Schema(
         default: true,
       },
     },
+    branding: {
+      logoUrl: {
+        type: String,
+        default: '/logo.png',
+      },
+      brandTitle: {
+        type: String,
+        default: 'SPESHWAY',
+      },
+      brandSubtitle: {
+        type: String,
+        default: 'ALL IN ONE ERP',
+      },
+    },
   },
   {
     timestamps: true,

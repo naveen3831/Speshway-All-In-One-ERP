@@ -27,6 +27,11 @@ export const DEFAULT_HOME_CONTENT = {
   navbar: {
     showPricing: true,
   },
+  branding: {
+    logoUrl: '/logo.png',
+    brandTitle: 'SPESHWAY',
+    brandSubtitle: 'ALL IN ONE ERP',
+  },
 };
 
 let memoryHomeContent = { ...DEFAULT_HOME_CONTENT };
@@ -42,6 +47,7 @@ export const getHomeContent = async () => {
         stats: { ...DEFAULT_HOME_CONTENT.stats, ...(dbContent.stats || {}) },
         solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(dbContent.solutions || {}) },
         navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(dbContent.navbar || {}) },
+        branding: { ...DEFAULT_HOME_CONTENT.branding, ...(dbContent.branding || {}) },
       };
       return memoryHomeContent;
     }
@@ -67,6 +73,7 @@ export const updateHomeContent = async (newData) => {
     stats: { ...memoryHomeContent.stats, ...(updatePayload.stats || {}) },
     solutions: { ...memoryHomeContent.solutions, ...(updatePayload.solutions || {}) },
     navbar: { ...memoryHomeContent.navbar, ...(updatePayload.navbar || {}) },
+    branding: { ...memoryHomeContent.branding, ...(updatePayload.branding || {}) },
   };
 
   // Persist to MongoDB
@@ -106,6 +113,7 @@ export const seedHomeDatabase = async () => {
           stats: { ...DEFAULT_HOME_CONTENT.stats, ...(existing.stats || {}) },
           solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(existing.solutions || {}) },
           navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(existing.navbar || {}) },
+          branding: { ...DEFAULT_HOME_CONTENT.branding, ...(existing.branding || {}) },
         };
       }
     }
