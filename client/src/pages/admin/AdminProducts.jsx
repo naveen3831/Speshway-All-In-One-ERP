@@ -40,7 +40,6 @@ import {
   Factory,
 } from 'lucide-react';
 import { DEFAULT_ADMIN_PROJECTS } from '../../utils/adminProjects';
-import { getProductFallbackImage } from '../ProductsPage';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 
 const iconMap = {
@@ -89,60 +88,7 @@ const parseTechList = (tech) => {
 };
 
 export const AdminProducts = () => {
-  const { products, triggerDeleteProduct, triggerUpdateProduct, refreshProducts } = useSocket();
-
-  const handleDirectImageUpload = (prod, e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      alert('Image exceeds 10MB limit. Please choose a smaller image.');
-      return;
-    }
-    const targetId = prod.slug || prod.id || prod._id;
-    setStatusMsg(`Uploading photo for ${prod.name} to Cloudinary...`);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const rawData = reader.result;
-      try {
-        const img = new Image();
-        img.onload = async () => {
-          const maxDim = 1200;
-          let width = img.width;
-          let height = img.height;
-          if (width > maxDim || height > maxDim) {
-            if (width > height) {
-              height = Math.round((height * maxDim) / width);
-              width = maxDim;
-            } else {
-              width = Math.round((width * maxDim) / height);
-              height = maxDim;
-            }
-          }
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          const compressed = canvas.toDataURL('image/jpeg', 0.85);
-          if (triggerUpdateProduct) {
-            await triggerUpdateProduct(targetId, { imageUrl: compressed });
-          }
-          setStatusMsg(`✅ Photo for ${prod.name} uploaded to Cloudinary CDN & saved to database!`);
-          setTimeout(() => setStatusMsg(''), 4000);
-        };
-        img.onerror = async () => {
-          if (triggerUpdateProduct) await triggerUpdateProduct(targetId, { imageUrl: rawData });
-          setStatusMsg('');
-        };
-        img.src = rawData;
-      } catch (err) {
-        if (triggerUpdateProduct) triggerUpdateProduct(targetId, { imageUrl: rawData });
-        setStatusMsg('');
-      }
-    };
-    reader.readAsDataURL(file);
-  };
+  const { products, triggerDeleteProduct, refreshProducts } = useSocket();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -308,39 +254,13 @@ export const AdminProducts = () => {
                 className="admin-product-card"
               >
                 <div className="admin-prod-card-top">
-                  <label
-                    onClick={(e) => e.stopPropagation()}
-                    className={`admin-card-icon-box bg-icon-${pColor}`}
-                    title="Click to directly upload or change photo for this project"
-                    style={{ cursor: 'pointer', position: 'relative' }}
-                  >
-                    {(() => {
-                      const adminImg = (prod.imageUrl && typeof prod.imageUrl === 'string' && prod.imageUrl.trim())
-                        ? prod.imageUrl
-                        : getProductFallbackImage(pSlug || pName);
-                      return adminImg ? (
-                        <img
-                          src={adminImg}
-                          alt={pName}
-                          className="admin-card-custom-img"
-                          onError={(e) => {
-                            const fallback = getProductFallbackImage(pSlug || pName);
-                            if (fallback && e.target.src !== fallback) {
-                              e.target.src = fallback;
-                            }
-                          }}
-                        />
-                      ) : (
-                        <Icon className={`text-icon-${pColor}`} size={22} />
-                      );
-                    })()}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      onChange={(e) => handleDirectImageUpload(prod, e)}
-                    />
-                  </label>
+                  <div className={`admin-card-icon-box bg-icon-${pColor}`}>
+                    {prod.imageUrl && typeof prod.imageUrl === 'string' && prod.imageUrl.trim() ? (
+                      <img src={prod.imageUrl} alt={pName} className="admin-card-custom-img" />
+                    ) : (
+                      <Icon className={`text-icon-${pColor}`} size={22} />
+                    )}
+                  </div>
                   <div className="admin-prod-card-badges">
                     <span className="prod-badge-category">{pCategory}</span>
                     <span className={`prod-badge-status ${pStatus}`}>
@@ -370,42 +290,11 @@ export const AdminProducts = () => {
                     <Trash2 size={14} /> Delete Product
                   </button>
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const s = pSlug.toLowerCase();
-                      let url = '/product/' + s + '/dashboard';
-                      if (s.includes('savitri') || s.includes('saree')) url = '/product/savitri-sarees/dashboard';
-                      else if (s.includes('sana') || s.includes('stayz')) url = '/product/sana-stayz/dashboard';
-                      else if (s.includes('learn') || s.includes('lms')) url = '/product/learnhub/dashboard';
-                      else if (s.includes('food')) url = '/product/foodway/dashboard';
-                      else if (s.includes('tour') || s.includes('travel') || s.includes('bus')) url = '/product/tours-and-travels/dashboard';
-                      else if (s.includes('hospital')) url = '/product/speshway-hospitals/dashboard';
-                      else if (s.includes('dairy') || s.includes('milk')) url = '/product/natural-milk-dairy/dashboard';
-                      else if (s.includes('aneera') || s.includes('silk')) url = '/product/aneera-silks/dashboard';
-                      else if (s.includes('e-com') || s.includes('ecommerce') || s.includes('nexora')) url = '/product/e-commerce/dashboard';
-                      else if (s.includes('fleet')) url = '/product/fleet-management/dashboard';
-                      else if (s.includes('fitness') || s.includes('gym')) url = '/product/american-fitness-gym/dashboard';
-                      else if (s.includes('flavora') || s.includes('kitchen')) url = '/product/flavora-kitchen/dashboard';
-                      else if (s.includes('hrms')) url = '/product/speshway-hrms/dashboard';
-                      else if (s.includes('ride') || s.includes('bike') || s.includes('flow')) url = '/product/ride-flow/dashboard';
-                      else if (s.includes('joy') || s.includes('event')) url = '/product/joy-events/dashboard';
-                      else if (s.includes('salon') || s.includes('saloon')) url = '/product/saloon/dashboard';
-                      else if (s.includes('vexa') || s.includes('style-hub')) url = '/product/vexa-style-hub/dashboard';
-                      else if (prod.adminUrl && prod.adminUrl.startsWith('/') && prod.adminUrl !== '/admin/products') url = prod.adminUrl;
-
-                      navigate(url);
-                    }}
-                    className="card-btn-dashboard"
-                    title="Open live Admin Dashboard for this project"
-                  >
-                    <Shield size={14} /> Admin Dashboard
-                  </button>
-                  <button
                     onClick={(e) => handleEditProduct(prod, e)}
                     className="card-btn-edit"
                     title="Edit Project, Tech Stack, & URLs in New Page"
                   >
-                    <Edit2 size={14} /> Edit
+                    <Edit2 size={14} /> Edit Project
                   </button>
                 </div>
               </div>
