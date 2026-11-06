@@ -78,7 +78,6 @@ export const OurErpSolutions = () => {
                   </div>
                 )}
                 <h3 className="our-erp-card-title">{prod.name}</h3>
-                <span className="our-erp-card-sub">{getProjectCategory(prod)}</span>
 
                 <div className="our-erp-card-actions">
                   <button
