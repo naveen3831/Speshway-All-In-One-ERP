@@ -1230,17 +1230,100 @@ button {
   .stats-bar-container.stats-4-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+    padding: 20px 24px;
   }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 680px) {
   .stats-bar-section {
     padding: 0 14px 24px 14px;
   }
+
   .stats-bar-container.stats-4-grid {
-    grid-template-columns: 1fr;
-    padding: 16px 18px;
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 18px 14px !important;
+    padding: 18px 16px !important;
+  }
+
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .stat-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .stat-icon-wrapper svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .stat-info {
+    min-width: 0;
+  }
+
+  .stat-number {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 2px;
+    white-space: nowrap;
+  }
+
+  .stat-label {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.25;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 420px) {
+  .stats-bar-section {
+    padding: 0 10px 18px 10px;
+  }
+
+  .stats-bar-container.stats-4-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px 8px !important;
+    padding: 14px 10px !important;
+    border-radius: 14px;
+  }
+
+  .stat-card {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .stat-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .stat-icon-wrapper svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .stat-number {
+    font-size: 1.18rem;
+    font-weight: 800;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    line-height: 1.2;
+    white-space: normal;
   }
 }
 
@@ -1335,6 +1418,27 @@ button {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .apps-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .apps-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .apps-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }
 
 .app-card {
