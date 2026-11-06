@@ -520,17 +520,27 @@
 /* Tables (Both .learn-table-wrap and .learn-table-wrapper) */
 .learn-table-wrap,
 .learn-table-wrapper {
-  overflow-x: auto;
-  width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  width: 100% !important;
+  max-width: 100% !important;
   border-radius: 8px;
   border: 1px solid #f1f5f9;
+  display: block;
+  box-sizing: border-box;
 }
 
 .learn-data-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
   text-align: left;
   font-size: 13.5px;
+}
+
+.learn-data-table th,
+.learn-data-table td {
+  white-space: nowrap !important;
 }
 
 .learn-data-table th {

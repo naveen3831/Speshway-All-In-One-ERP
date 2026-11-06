@@ -520,17 +520,27 @@
 /* Tables (Both .savitri-table-wrap and .savitri-table-wrapper) */
 .savitri-table-wrap,
 .savitri-table-wrapper {
-  overflow-x: auto;
-  width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  width: 100% !important;
+  max-width: 100% !important;
   border-radius: 8px;
   border: 1px solid #f1f5f9;
+  display: block;
+  box-sizing: border-box;
 }
 
 .savitri-data-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
   text-align: left;
   font-size: 13.5px;
+}
+
+.savitri-data-table th,
+.savitri-data-table td {
+  white-space: nowrap !important;
 }
 
 .savitri-data-table th {

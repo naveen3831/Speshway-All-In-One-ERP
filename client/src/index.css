@@ -6399,3 +6399,105 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
 }
+
+/* ==========================================================================
+   UNIVERSAL MOBILE RESPONSIVE DASHBOARD & TABLE ENGINE
+   Applies to all ERP Dashboards, Catalogs, Tables, and Cards
+   ========================================================================== */
+@media (max-width: 960px) {
+  /* Prevent any dashboard container from horizontal overflow */
+  [class*="-dashboard-container"] {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  [class*="-main"],
+  [class*="-main-content"],
+  [class*="-content-body"],
+  [class*="-content"] {
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Universal Responsive Table Wrappers */
+  [class*="-table-wrap"],
+  [class*="-table-wrapper"],
+  [class*="-table-responsive"],
+  [class*="-responsive-table"],
+  .table-responsive {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    border-radius: 8px;
+  }
+
+  /* Table readability: keep minimum width and prevent awkward syllable breaks */
+  table,
+  [class*="-data-table"],
+  [class*="-table"] {
+    min-width: 680px !important;
+    border-collapse: collapse !important;
+  }
+
+  table th,
+  table td,
+  [class*="-data-table"] th,
+  [class*="-data-table"] td,
+  [class*="-table"] th,
+  [class*="-table"] td {
+    white-space: nowrap !important;
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+
+  /* Universal Card Containment on Mobile */
+  [class*="-card"],
+  [class*="-card-section"] {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden;
+  }
+
+  [class*="-card-header"],
+  [class*="-section-header"] {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  /* Universal Stats Grid: 2x2 on mobile */
+  [class*="-stats-grid"],
+  [class*="-kpi-grid"],
+  [class*="-metric-grid"],
+  [class*="-metrics-grid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Smaller mobile screen adjustments */
+  [class*="-content-body"],
+  [class*="-content"] {
+    padding: 12px 10px 24px 10px !important;
+    gap: 12px !important;
+  }
+
+  [class*="-card"],
+  [class*="-card-section"] {
+    padding: 14px 10px !important;
+    border-radius: 12px !important;
+  }
+
+  [class*="-card-title"] {
+    font-size: 15px !important;
+  }
+
+  [class*="-stats-grid"],
+  [class*="-kpi-grid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+}
