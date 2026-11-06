@@ -34,6 +34,8 @@ import {
   Phone,
   ShieldCheck,
   Package,
+  Menu,
+  X,
 } from 'lucide-react';
 import './SavitriSareesDashboard.css';
 
@@ -75,6 +77,7 @@ export const SavitriSareesDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -164,8 +167,16 @@ export const SavitriSareesDashboard = () => {
 
   return (
     <div className="savitri-dashboard-container">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="savitri-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. STICKY SIDEBAR */}
-      <aside className="savitri-sidebar">
+      <aside className={`savitri-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="savitri-sidebar-top">
           <div className="savitri-brand">
             <div className="savitri-brand-logo-wrap">
@@ -175,6 +186,14 @@ export const SavitriSareesDashboard = () => {
               <div className="savitri-brand-title">Savitri Sarees</div>
               <div className="savitri-brand-sub">LUXURY SILK ERP</div>
             </div>
+            <button
+              type="button"
+              className="savitri-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
 
           <ul className="savitri-nav-list">
@@ -183,7 +202,10 @@ export const SavitriSareesDashboard = () => {
               return (
                 <li key={item.id}>
                   <button
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setSidebarOpen(false);
+                    }}
                     className={`savitri-nav-btn ${activeTab === item.id ? 'active' : ''}`}
                   >
                     <Icon size={18} />
@@ -216,12 +238,24 @@ export const SavitriSareesDashboard = () => {
         {/* Top Header */}
         <header className="savitri-header">
           <div className="savitri-header-left">
-            <h1 className="savitri-page-title">
-              {navItems.find((n) => n.id === activeTab)?.label || 'Dashboard Overview'}
-            </h1>
-            <p className="savitri-page-sub">
-              Savitri Sarees Handloom Enterprise ERP &bull; Pure Silk Mark Authenticated
-            </p>
+            <div className="savitri-header-title-wrap">
+              <button
+                type="button"
+                className="savitri-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="savitri-page-title">
+                  {navItems.find((n) => n.id === activeTab)?.label || 'Dashboard Overview'}
+                </h1>
+                <p className="savitri-page-sub">
+                  Savitri Sarees Handloom Enterprise ERP &bull; Pure Silk Mark Authenticated
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="savitri-header-right">

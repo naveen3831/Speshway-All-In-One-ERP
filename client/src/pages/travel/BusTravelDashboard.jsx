@@ -27,6 +27,8 @@ import {
   Fuel,
   Wrench,
   Navigation,
+  Menu,
+  X,
 } from 'lucide-react';
 import './BusTravelDashboard.css';
 
@@ -65,6 +67,7 @@ export const BusTravelDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -137,8 +140,16 @@ export const BusTravelDashboard = () => {
 
   return (
     <div className="bus-dashboard-container">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="bus-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. STICKY SIDEBAR */}
-      <aside className="bus-sidebar">
+      <aside className={`bus-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="bus-sidebar-top">
           <div className="bus-brand">
             <div className="bus-brand-logo-wrap">
@@ -148,6 +159,14 @@ export const BusTravelDashboard = () => {
               <div className="bus-brand-title">Star Travels</div>
               <div className="bus-brand-sub">BUS FLEET ERP</div>
             </div>
+            <button
+              type="button"
+              className="bus-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
 
           <ul className="bus-nav-list">
@@ -156,7 +175,10 @@ export const BusTravelDashboard = () => {
               return (
                 <li key={item.id}>
                   <button
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setSidebarOpen(false);
+                    }}
                     className={`bus-nav-btn ${activeTab === item.id ? 'active' : ''}`}
                   >
                     <Icon size={18} />
@@ -189,12 +211,24 @@ export const BusTravelDashboard = () => {
         {/* Top Header */}
         <header className="bus-header">
           <div className="bus-header-left">
-            <h1 className="bus-page-title">
-              {navItems.find((n) => n.id === activeTab)?.label || 'Fleet Telematics'}
-            </h1>
-            <p className="bus-page-sub">
-              Star Tours &amp; Travels Inter-City Bus Fleet Operations &bull; AIS-140 GPS Synchronized
-            </p>
+            <div className="bus-header-title-wrap">
+              <button
+                type="button"
+                className="bus-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="bus-page-title">
+                  {navItems.find((n) => n.id === activeTab)?.label || 'Fleet Telematics'}
+                </h1>
+                <p className="bus-page-sub">
+                  Star Tours &amp; Travels Inter-City Bus Fleet Operations &bull; AIS-140 GPS Synchronized
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="bus-header-right">

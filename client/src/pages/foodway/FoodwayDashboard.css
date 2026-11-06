@@ -617,3 +617,200 @@
   color: #b45309;
   border: 1px solid #fde68a;
 }
+
+/* ==========================================================================
+   MOBILE CONTROLS & RESPONSIVE DRAWER
+   ========================================================================== */
+.foodway-menu-toggle {
+  display: none;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.foodway-menu-toggle:hover {
+  background: #e2e8f0;
+  color: #059669;
+}
+
+.foodway-sidebar-close {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.foodway-sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.foodway-sidebar-backdrop {
+  display: none;
+}
+
+.foodway-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 960px) {
+  .foodway-dashboard-container {
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .foodway-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 26, 20, 0.7);
+    backdrop-filter: blur(2px);
+    z-index: 95;
+    animation: fadeInFoodwayBackdrop 0.2s ease-out;
+  }
+
+  @keyframes fadeInFoodwayBackdrop {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .foodway-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 275px;
+    max-width: 82vw;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 6px 0 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .foodway-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .foodway-sidebar-close {
+    display: inline-flex;
+  }
+
+  .foodway-menu-toggle {
+    display: inline-flex;
+  }
+
+  .foodway-main {
+    width: 100%;
+    min-width: 100%;
+    flex: 1;
+  }
+
+  .foodway-header {
+    padding: 12px 16px;
+    min-height: auto;
+    height: auto;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .foodway-header-right {
+    gap: 8px;
+    width: auto;
+  }
+
+  .foodway-badge-cluster {
+    display: none;
+  }
+
+  .foodway-search-box {
+    display: none;
+  }
+
+  .foodway-content-body {
+    padding: 16px 14px 32px 14px;
+    gap: 16px;
+  }
+
+  .foodway-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .foodway-stat-card {
+    padding: 14px 12px !important;
+    gap: 10px !important;
+    border-radius: 12px;
+  }
+
+  .foodway-stat-icon-wrap {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px;
+  }
+
+  .foodway-stat-val {
+    font-size: 1.3rem !important;
+  }
+
+  .foodway-stat-label {
+    font-size: 11.5px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .foodway-header {
+    padding: 10px 12px;
+  }
+
+  .foodway-page-title {
+    font-size: 17px;
+  }
+
+  .foodway-page-sub {
+    font-size: 11px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .foodway-content-body {
+    padding: 12px 10px 24px 10px;
+    gap: 12px;
+  }
+
+  .foodway-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .foodway-stat-card {
+    padding: 12px 10px !important;
+    gap: 8px !important;
+  }
+
+  .foodway-stat-icon-wrap {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .foodway-stat-val {
+    font-size: 1.15rem !important;
+  }
+}

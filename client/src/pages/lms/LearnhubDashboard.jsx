@@ -29,6 +29,8 @@ import {
   ShieldCheck,
   Check,
   ExternalLink,
+  Menu,
+  X,
 } from 'lucide-react';
 import './LearnhubDashboard.css';
 
@@ -61,6 +63,7 @@ export const LearnhubDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -141,8 +144,16 @@ export const LearnhubDashboard = () => {
 
   return (
     <div className="learn-dashboard-container">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="learn-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. STICKY SIDEBAR */}
-      <aside className="learn-sidebar">
+      <aside className={`learn-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="learn-sidebar-top">
           <div className="learn-brand">
             <div className="learn-brand-logo-wrap">
@@ -152,6 +163,14 @@ export const LearnhubDashboard = () => {
               <div className="learn-brand-title">LearnHub</div>
               <div className="learn-brand-sub">ENTERPRISE LMS</div>
             </div>
+            <button
+              type="button"
+              className="learn-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
 
           <ul className="learn-nav-list">
@@ -160,7 +179,10 @@ export const LearnhubDashboard = () => {
               return (
                 <li key={item.id}>
                   <button
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setSidebarOpen(false);
+                    }}
                     className={`learn-nav-btn ${activeTab === item.id ? 'active' : ''}`}
                   >
                     <Icon size={18} />
@@ -193,12 +215,24 @@ export const LearnhubDashboard = () => {
         {/* Top Header */}
         <header className="learn-header">
           <div className="learn-header-left">
-            <h1 className="learn-page-title">
-              {navItems.find((n) => n.id === activeTab)?.label || 'Academy Overview'}
-            </h1>
-            <p className="learn-page-sub">
-              LearnHub Online Academy ERP &bull; Real-Time Live Streaming &amp; Auto-Certifications
-            </p>
+            <div className="learn-header-title-wrap">
+              <button
+                type="button"
+                className="learn-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="learn-page-title">
+                  {navItems.find((n) => n.id === activeTab)?.label || 'Academy Overview'}
+                </h1>
+                <p className="learn-page-sub">
+                  LearnHub Online Academy ERP &bull; Real-Time Live Streaming &amp; Auto-Certifications
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="learn-header-right">

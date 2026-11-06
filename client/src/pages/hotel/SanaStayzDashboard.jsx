@@ -31,6 +31,8 @@ import {
   Coffee,
   Check,
   AlertCircle,
+  Menu,
+  X,
 } from 'lucide-react';
 import './SanaStayzDashboard.css';
 
@@ -65,6 +67,7 @@ export const SanaStayzDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -144,8 +147,16 @@ export const SanaStayzDashboard = () => {
 
   return (
     <div className="sana-dashboard-container">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="sana-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. STICKY SIDEBAR */}
-      <aside className="sana-sidebar">
+      <aside className={`sana-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sana-sidebar-top">
           <div className="sana-brand">
             <div className="sana-brand-logo-wrap">
@@ -155,6 +166,14 @@ export const SanaStayzDashboard = () => {
               <div className="sana-brand-title">Sana Stayz</div>
               <div className="sana-brand-sub">LUXURY RESORT PMS</div>
             </div>
+            <button
+              type="button"
+              className="sana-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
 
           <ul className="sana-nav-list">
@@ -163,7 +182,10 @@ export const SanaStayzDashboard = () => {
               return (
                 <li key={item.id}>
                   <button
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setSidebarOpen(false);
+                    }}
                     className={`sana-nav-btn ${activeTab === item.id ? 'active' : ''}`}
                   >
                     <Icon size={18} />
@@ -196,12 +218,24 @@ export const SanaStayzDashboard = () => {
         {/* Top Header */}
         <header className="sana-header">
           <div className="sana-header-left">
-            <h1 className="sana-page-title">
-              {navItems.find((n) => n.id === activeTab)?.label || 'Hotel Operations'}
-            </h1>
-            <p className="sana-page-sub">
-              Sana Stayz Resort &amp; Accommodation ERP &bull; Real-Time PMS Synchronized
-            </p>
+            <div className="sana-header-title-wrap">
+              <button
+                type="button"
+                className="sana-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="sana-page-title">
+                  {navItems.find((n) => n.id === activeTab)?.label || 'Hotel Operations'}
+                </h1>
+                <p className="sana-page-sub">
+                  Sana Stayz 5-Star PMS &bull; Multi-Property Reservations &amp; Guest Folio Engine
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="sana-header-right">
