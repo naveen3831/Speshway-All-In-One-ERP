@@ -154,10 +154,10 @@
 
 /* Titles - Centered in the middle below the image */
 .our-erp-card-title {
-  font-size: 1.18rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #0f172a;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   line-height: 1.3;
   margin: auto 0;
   padding: 6px 8px;
@@ -173,7 +173,7 @@
 .our-erp-card-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   box-sizing: border-box;
   padding: 0;
@@ -190,10 +190,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  font-size: 0.76rem;
+  gap: 6px;
+  font-size: 0.85rem;
   font-weight: 700;
-  padding: 7px 6px;
+  padding: 8px 6px;
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -281,9 +281,9 @@
   }
 
   .our-erp-card-title {
-    font-size: 1.12rem;
+    font-size: 1.25rem;
     font-weight: 800;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     margin: auto 0;
     padding: 6px 4px;
     line-height: 1.25;
@@ -296,7 +296,7 @@
   .our-erp-card-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: 8px;
     padding: 0;
     width: 100%;
     margin-top: auto;
@@ -307,9 +307,9 @@
   }
 
   .our-erp-btn-action {
-    font-size: 0.74rem;
-    padding: 7px 4px;
-    gap: 4px;
+    font-size: 0.82rem;
+    padding: 8px 4px;
+    gap: 5px;
     border-radius: 9999px;
   }
 }
@@ -319,14 +319,18 @@
     padding: 8px 8px 10px 8px;
   }
 
+  .our-erp-card-title {
+    font-size: 1.15rem;
+  }
+
   .our-erp-card-actions {
-    gap: 4px;
+    gap: 6px;
   }
 
   .our-erp-btn-action {
-    font-size: 0.69rem;
-    padding: 6px 3px;
-    gap: 3px;
+    font-size: 0.76rem;
+    padding: 7px 3px;
+    gap: 4px;
   }
 }
 

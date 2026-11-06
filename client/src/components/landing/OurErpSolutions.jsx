@@ -91,7 +91,7 @@ export const OurErpSolutions = () => {
                       }}
                       title={`Open live ${prod.name} Website`}
                     >
-                      <Globe size={13} />
+                      <Globe size={14} />
                       <span>View Website</span>
                     </button>
 
@@ -104,7 +104,7 @@ export const OurErpSolutions = () => {
                       }}
                       title={`Open live in-site ${prod.name} Dashboard`}
                     >
-                      <Shield size={13} />
+                      <Shield size={14} />
                       <span>View ERP</span>
                     </button>
                   </div>
