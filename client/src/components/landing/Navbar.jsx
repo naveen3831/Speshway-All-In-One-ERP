@@ -173,18 +173,6 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           </NavLink>
 
           <div className="mobile-drawer-cta">
-            {user && (
-              <div className="mobile-drawer-user-info">
-                <div className="mobile-drawer-avatar">
-                  {user.name ? user.name.charAt(0).toUpperCase() : (user.email ? user.email.charAt(0).toUpperCase() : 'U')}
-                </div>
-                <div className="mobile-drawer-user-meta">
-                  <span className="mobile-drawer-user-name">{user.name || 'Speshway User'}</span>
-                  <span className="mobile-drawer-user-email">{user.email || ''}</span>
-                </div>
-              </div>
-            )}
-
             <button
               type="button"
               onClick={() => {
