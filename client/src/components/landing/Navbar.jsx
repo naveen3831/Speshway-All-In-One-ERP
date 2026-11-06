@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Close mobile drawer when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
+
+  const handleLogout = () => {
+    setMobileMenuOpen(false);
+    logout();
+    navigate('/login');
+  };
 
   const handleGetStarted = () => {
     if (onOpenGetStarted) {
@@ -88,6 +96,18 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
 
         {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
         <div className="nav-actions">
+          {user && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="btn-navbar-logout desktop-only"
+              title="Sign Out"
+            >
+              <LogOut size={15} />
+              <span>Log Out</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={handleGetStarted}
@@ -153,6 +173,18 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           </NavLink>
 
           <div className="mobile-drawer-cta">
+            {user && (
+              <div className="mobile-drawer-user-info">
+                <div className="mobile-drawer-avatar">
+                  {user.name ? user.name.charAt(0).toUpperCase() : (user.email ? user.email.charAt(0).toUpperCase() : 'U')}
+                </div>
+                <div className="mobile-drawer-user-meta">
+                  <span className="mobile-drawer-user-name">{user.name || 'Speshway User'}</span>
+                  <span className="mobile-drawer-user-email">{user.email || ''}</span>
+                </div>
+              </div>
+            )}
+
             <button
               type="button"
               onClick={() => {
@@ -162,6 +194,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
               className="btn-get-started mobile-drawer-btn"
             >
               Get Started <ArrowRight size={16} />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="btn-drawer-logout"
+            >
+              <LogOut size={16} /> Log Out
             </button>
           </div>
         </div>
