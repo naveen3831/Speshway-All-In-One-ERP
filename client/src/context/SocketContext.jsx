@@ -402,8 +402,9 @@ export const SocketProvider = ({ children }) => {
       if (updatedStats) setStats(updatedStats);
     });
 
-    // Demo requests real-time
-    newSocket.on('demo:new', ({ request, stats: updatedStats }) => {
+    // Demo & Contact Inquiries real-time
+    const handleNewInquiry = ({ request, stats: updatedStats }) => {
+      if (!request) return;
       setModulesData((prev) => ({
         ...prev,
         demoRequests: [
@@ -414,7 +415,10 @@ export const SocketProvider = ({ children }) => {
         ],
       }));
       if (updatedStats) setStats(updatedStats);
-    });
+    };
+
+    newSocket.on('demo:new', handleNewInquiry);
+    newSocket.on('inquiry:new', handleNewInquiry);
 
     newSocket.on('demo:deleted', ({ id }) => {
       setModulesData((prev) => ({

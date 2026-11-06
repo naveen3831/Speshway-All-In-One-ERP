@@ -166,7 +166,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     id: 'ride-flow',
     slug: 'ride-flow',
     name: 'RIDE FLOW',
-    category: 'Human Resources',
+    category: 'Automotive & Mobility',
     description: 'RideFlow is a modern two-wheeler platform designed to help customers explore bikes, compare models, discover attractive offers, and connect with dealers.',
     longDescription: 'RideFlow Two-Wheeler ERP provides digital bike showroom management, dealership networks, online test ride and bike bookings, customer inquiries, and sales analytics.',
     features: ['Bike Listings', 'Bike Categories', 'Bike Comparison', 'Offers & Deals', 'Dealer Directory', 'Service Support'],
@@ -285,7 +285,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     id: 'fleet-management',
     slug: 'fleet-management',
     name: 'Fleet Management',
-    category: 'Human Resources',
+    category: 'Logistics & Fleet',
     description: 'A smart Fleet Management System designed to simplify vehicle operations, monitor fleet activities, manage drivers and trips, and improve operational efficiency.',
     longDescription: 'Track fleet performance, organize vehicle records, fuel dispensation audits, and manage transportation operations through one centralized platform.',
     features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
@@ -302,7 +302,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     id: 'american-fitness-gym',
     slug: 'american-fitness-gym',
     name: 'AMERICAN FITNESS GYM',
-    category: 'Human Resources',
+    category: 'Fitness & Wellness',
     description: 'American Fitness Gym is a modern fitness platform designed to help fitness enthusiasts achieve their health and fitness goals.',
     longDescription: 'Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
     features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
@@ -319,7 +319,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     id: 'flavora-kitchen',
     slug: 'flavora-kitchen',
     name: 'FLAVORA KITCHEN',
-    category: 'Human Resources',
+    category: 'Restaurant & Kitchen',
     description: 'Flavora Kitchen is an enterprise cloud kitchen and restaurant management system that streamlines live orders, online deliveries, dining table reservations, recipe costings, kitchen display systems (KDS), and inventory through a centralized digital platform.',
     longDescription: 'Full-stack restaurant POS, automated thermal KOT routing, ingredient consumption logs, and multi-aggregator food delivery dispatch.',
     features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
@@ -353,7 +353,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     id: 'joy-events',
     slug: 'joy-events',
     name: "JOY_EVENT'S",
-    category: 'Human Resources',
+    category: 'Event Management',
     description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination.',
     longDescription: 'From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
     features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
@@ -437,6 +437,42 @@ export const getProjectColor = (prod) => {
     return c;
   }
   return 'emerald';
+};
+
+/**
+ * Resolves the clean, accurate industry category for an admin project.
+ * Corrects legacy default labels like generic 'Human Resources' or 'Operations' on non-HR products.
+ */
+export const getProjectCategory = (prod) => {
+  if (!prod) return 'Enterprise ERP';
+  const slug = String(prod.slug || prod.id || '').toLowerCase().trim();
+  const name = String(prod.name || '').toLowerCase().trim();
+  const cat = String(prod.category || '').trim();
+
+  // If category is valid and specific (not mistakenly set to default "Human Resources" or "Operations" for non-HR products)
+  if (cat && !['human resources', 'business operations', 'operations'].includes(cat.toLowerCase())) {
+    return cat;
+  }
+
+  // Exact matching for recognized projects
+  if (slug.includes('saree') || slug.includes('silk') || slug.includes('savitri') || name.includes('saree')) return 'Fashion & Luxury';
+  if (slug.includes('hotel') || slug.includes('stayz') || slug.includes('sana') || name.includes('stayz')) return 'Hospitality & Hotels';
+  if (slug.includes('learn') || slug.includes('lms') || name.includes('learn')) return 'Education & LMS';
+  if (slug.includes('food') || slug.includes('kitchen') || slug.includes('flavora') || name.includes('food')) return 'Food Delivery & Kitchen';
+  if (slug.includes('bus') || slug.includes('tour') || slug.includes('travel')) return 'Bus & Travel Booking';
+  if (slug.includes('bike') || slug.includes('ride') || name.includes('ride')) return 'Automotive & Mobility';
+  if (slug.includes('hospital') || slug.includes('clinic') || name.includes('hospital')) return 'Healthcare & Hospitals';
+  if (slug.includes('dairy') || slug.includes('milk') || name.includes('dairy')) return 'Dairy & Agriculture';
+  if (slug.includes('vexa') || slug.includes('apparel') || name.includes('vexa')) return 'Fashion & Apparel';
+  if (slug.includes('aneera') || name.includes('aneera')) return 'Fashion & Luxury';
+  if (slug.includes('e-com') || slug.includes('nexora') || slug.includes('store')) return 'E-Commerce Retail';
+  if (slug.includes('salon') || slug.includes('saloon') || slug.includes('spy')) return 'Beauty & Wellness';
+  if (slug.includes('fleet') || slug.includes('truck')) return 'Logistics & Fleet';
+  if (slug.includes('gym') || slug.includes('fitness')) return 'Fitness & Wellness';
+  if (slug.includes('event') || slug.includes('joy')) return 'Event Management';
+  if (slug.includes('hrms') || name.includes('hrms')) return 'Human Resources';
+
+  return cat || 'Enterprise ERP';
 };
 
 

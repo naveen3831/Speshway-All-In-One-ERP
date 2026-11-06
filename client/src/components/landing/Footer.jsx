@@ -154,6 +154,11 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             <h4 className="footer-col-title">Portals &amp; Support</h4>
             <ul className="footer-links-list">
               <li>
+                <Link to="/admin" className="footer-link">
+                  Admin Console Portal
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="footer-link">
                   24/7 Enterprise Help Desk
                 </Link>

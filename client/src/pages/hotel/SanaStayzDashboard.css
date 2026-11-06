@@ -496,12 +496,23 @@
 
 .sana-card-title {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 16px;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
+  line-height: 1.35;
+}
+
+.sana-card-title svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.sana-card-header > div > p {
+  padding-left: 28px;
+  line-height: 1.45;
 }
 
 .sana-section-header h3 {
@@ -520,17 +531,27 @@
 /* Tables (Both .sana-table-wrap and .sana-table-wrapper) */
 .sana-table-wrap,
 .sana-table-wrapper {
-  overflow-x: auto;
-  width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  width: 100% !important;
+  max-width: 100% !important;
   border-radius: 8px;
   border: 1px solid #f1f5f9;
+  display: block;
+  box-sizing: border-box;
 }
 
 .sana-data-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
   text-align: left;
   font-size: 13.5px;
+}
+
+.sana-data-table th,
+.sana-data-table td {
+  white-space: nowrap !important;
 }
 
 .sana-data-table th {
@@ -616,4 +637,319 @@
   background: #fffbeb;
   color: #b45309;
   border: 1px solid #fde68a;
+}
+
+/* ==========================================================================
+   MOBILE CONTROLS & RESPONSIVE DRAWER
+   ========================================================================== */
+.sana-menu-toggle {
+  display: none;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.sana-menu-toggle:hover {
+  background: #e2e8f0;
+  color: #059669;
+}
+
+.sana-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.sana-back-btn:hover {
+  background: #f1f5f9;
+  color: #059669;
+  border-color: #cbd5e1;
+}
+
+.sana-sidebar-close {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.sana-sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.sana-sidebar-backdrop {
+  display: none;
+}
+
+.sana-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 960px) {
+  .sana-dashboard-container {
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .sana-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 26, 20, 0.7);
+    backdrop-filter: blur(2px);
+    z-index: 95;
+    animation: fadeInSanaBackdrop 0.2s ease-out;
+  }
+
+  @keyframes fadeInSanaBackdrop {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .sana-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 275px;
+    max-width: 82vw;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 6px 0 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .sana-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sana-sidebar-close {
+    display: inline-flex;
+  }
+
+  .sana-menu-toggle {
+    display: inline-flex;
+  }
+
+  .sana-back-btn {
+    padding: 8px;
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+  }
+
+  .sana-back-btn span {
+    display: none;
+  }
+
+  .sana-main {
+    width: 100%;
+    min-width: 100%;
+    flex: 1;
+  }
+
+  .sana-header {
+    padding: 10px 16px;
+    min-height: 60px;
+    height: 60px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 10px;
+  }
+
+  .sana-header-left {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .sana-header-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sana-header-title-wrap > div {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .sana-page-title {
+    font-size: 16.5px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .sana-page-sub {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #64748b;
+    margin-top: 1px;
+  }
+
+  .sana-header-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  .sana-icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .sana-badge-cluster {
+    display: none;
+  }
+
+  .sana-search-box {
+    display: none;
+  }
+
+  .sana-content-body {
+    padding: 16px 14px 32px 14px;
+    gap: 16px;
+  }
+
+  .sana-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .sana-stat-card {
+    padding: 14px 12px !important;
+    gap: 10px !important;
+    border-radius: 12px;
+  }
+
+  .sana-stat-icon-wrap {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px;
+  }
+
+  .sana-stat-val {
+    font-size: 1.3rem !important;
+  }
+
+  .sana-stat-label {
+    font-size: 11.5px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sana-header {
+    padding: 8px 12px;
+    height: 56px;
+    min-height: 56px;
+  }
+
+  .sana-menu-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+
+  .sana-back-btn {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+
+  .sana-page-title {
+    font-size: 15.5px;
+  }
+
+  .sana-page-sub {
+    display: none;
+  }
+
+  .sana-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sana-content-body {
+    padding: 12px 10px 24px 10px;
+    gap: 12px;
+  }
+
+  .sana-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .sana-stat-card {
+    padding: 12px 10px !important;
+    gap: 8px !important;
+  }
+
+  .sana-stat-icon-wrap {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .sana-card-header,
+  .sana-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .sana-card-header > div:first-child,
+  .sana-section-header > div:first-child {
+    width: 100% !important;
+  }
+
+  .sana-card-header .sana-btn-site {
+    margin-left: 28px !important;
+    align-self: flex-start !important;
+  }
+
+  .sana-stat-val {
+    font-size: 1.15rem !important;
+  }
 }

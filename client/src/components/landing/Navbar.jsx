@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Close mobile drawer when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const handleGetStarted = () => {
     if (onOpenGetStarted) {
@@ -26,7 +32,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     <header className="navbar-container">
       <div className="navbar-content">
         {/* Brand Logo with User Uploaded Logo Image */}
-        <Link to="/" className="brand-logo">
+        <Link
+          to="/"
+          className="brand-logo"
+          onClick={() => {
+            setMobileMenuOpen(false);
+            window.scrollTo(0, 0);
+          }}
+        >
           <div className="brand-logo-wrap">
             <img
               src="/logo.png"
@@ -40,7 +53,7 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           </div>
         </Link>
 
-        {/* Center Navigation Links - HOME, PROJECTS, PRICING, CONTACT US */}
+        {/* Center Navigation Links - Desktop Only */}
         <nav className="nav-links">
           <NavLink
             to="/"
@@ -73,17 +86,88 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           </NavLink>
         </nav>
 
-        {/* Right Side Action: Get Started Button */}
+        {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
         <div className="nav-actions">
           <button
             type="button"
             onClick={handleGetStarted}
-            className="btn-get-started"
+            className="btn-get-started desktop-only"
           >
             Get Started <ArrowRight size={16} />
           </button>
+
+          <button
+            type="button"
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav-drawer">
+          <NavLink
+            to="/"
+            end
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.scrollTo(0, 0);
+            }}
+            className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+          >
+            HOME
+          </NavLink>
+          <NavLink
+            to="/projects"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.scrollTo(0, 0);
+            }}
+            className={({ isActive }) => (isActive || isProjectsActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+          >
+            PROJECTS
+          </NavLink>
+          <NavLink
+            to="/pricing"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.scrollTo(0, 0);
+            }}
+            className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+          >
+            PRICING
+          </NavLink>
+          <NavLink
+            to="/contact"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.scrollTo(0, 0);
+            }}
+            className={({ isActive }) => (isActive || isContactActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+          >
+            CONTACT US
+          </NavLink>
+
+          <div className="mobile-drawer-cta">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                handleGetStarted();
+              }}
+              className="btn-get-started mobile-drawer-btn"
+            >
+              Get Started <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
+
+export default Navbar;

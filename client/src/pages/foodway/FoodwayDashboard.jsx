@@ -28,6 +28,8 @@ import {
   MapPin,
   Phone,
   Store,
+  Menu,
+  X,
 } from 'lucide-react';
 import './FoodwayDashboard.css';
 
@@ -60,6 +62,7 @@ export const FoodwayDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -138,8 +141,16 @@ export const FoodwayDashboard = () => {
 
   return (
     <div className="foodway-dashboard-container">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="foodway-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. STICKY SIDEBAR */}
-      <aside className="foodway-sidebar">
+      <aside className={`foodway-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="foodway-sidebar-top">
           <div className="foodway-brand">
             <div className="foodway-brand-logo-wrap">
@@ -149,6 +160,14 @@ export const FoodwayDashboard = () => {
               <div className="foodway-brand-title">FoodWay</div>
               <div className="foodway-brand-sub">CLOUD KITCHEN ERP</div>
             </div>
+            <button
+              type="button"
+              className="foodway-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
 
           <ul className="foodway-nav-list">
@@ -157,7 +176,10 @@ export const FoodwayDashboard = () => {
               return (
                 <li key={item.id}>
                   <button
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setSidebarOpen(false);
+                    }}
                     className={`foodway-nav-btn ${activeTab === item.id ? 'active' : ''}`}
                   >
                     <Icon size={18} />
@@ -190,12 +212,40 @@ export const FoodwayDashboard = () => {
         {/* Top Header */}
         <header className="foodway-header">
           <div className="foodway-header-left">
-            <h1 className="foodway-page-title">
-              {navItems.find((n) => n.id === activeTab)?.label || 'Kitchen Dispatch Hub'}
-            </h1>
-            <p className="foodway-page-sub">
-              FoodWay Multi-Brand Cloud Kitchen ERP &bull; Real-time KDS, Telematics &amp; Thermal KOT
-            </p>
+            <div className="foodway-header-title-wrap">
+              <button
+                type="button"
+                className="foodway-back-btn"
+                onClick={() => {
+                  if (window.history.length > 1) {
+                    navigate(-1);
+                  } else {
+                    navigate('/products');
+                  }
+                }}
+                title="Back to Catalog"
+                aria-label="Go back"
+              >
+                <ArrowLeft size={18} />
+                <span>Back</span>
+              </button>
+              <button
+                type="button"
+                className="foodway-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="foodway-page-title">
+                  {navItems.find((n) => n.id === activeTab)?.label || 'Kitchen Dispatch Hub'}
+                </h1>
+                <p className="foodway-page-sub">
+                  FoodWay Multi-Brand Cloud Kitchen ERP &bull; Real-time KDS, Telematics &amp; Thermal KOT
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="foodway-header-right">
