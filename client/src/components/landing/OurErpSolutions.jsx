@@ -7,6 +7,8 @@ import {
   getDashboardRoute,
   getProjectIcon,
   getProjectColor,
+  getProjectCategory,
+  getWebsiteUrl,
 } from '../../utils/adminProjects';
 import { getProductFallbackImage } from '../../pages/ProductsPage';
 import './OurErpSolutions.css';
@@ -76,7 +78,7 @@ export const OurErpSolutions = () => {
                   </div>
                 )}
                 <h3 className="our-erp-card-title">{prod.name}</h3>
-                <span className="our-erp-card-sub">{prod.category || 'Enterprise ERP'}</span>
+                <span className="our-erp-card-sub">{getProjectCategory(prod)}</span>
 
                 <div className="our-erp-card-actions">
                   <button
@@ -84,7 +86,7 @@ export const OurErpSolutions = () => {
                     className="our-erp-btn-action our-erp-btn-website"
                     onClick={(e) => {
                       e.stopPropagation();
-                      const url = prod.websiteUrl || `https://${(prod.slug || prod.id || '').replace(/-/g, '')}.speshway.site`;
+                      const url = getWebsiteUrl(prod);
                       window.open(url, '_blank', 'noopener,noreferrer');
                     }}
                     title={`Open live ${prod.name} Website`}

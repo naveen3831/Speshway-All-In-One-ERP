@@ -98,6 +98,8 @@
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   position: relative;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .our-erp-card:hover {
@@ -121,6 +123,7 @@
   justify-content: center;
   padding: 0;
   position: relative;
+  box-sizing: border-box;
 }
 
 .our-erp-banner-img {
@@ -175,6 +178,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .our-erp-card-sub {
@@ -184,33 +189,50 @@
   margin: 0 0 14px 0;
   padding: 0 10px;
   white-space: nowrap;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
 }
 
-/* Card Actions: View Website & View ERP */
+/* Card Actions: View Website & View ERP - Pixel-Perfect 50/50 Grid */
 .our-erp-card-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   width: 100%;
-  padding: 0 12px;
+  box-sizing: border-box;
+  padding: 0 14px;
   margin-top: auto;
 }
 
 .our-erp-btn-action {
-  flex: 1;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 0.76rem;
   font-weight: 700;
-  padding: 7px 10px;
+  padding: 7px 6px;
   border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   text-decoration: none;
+  text-align: center;
+  user-select: none;
+}
+
+.our-erp-btn-action svg {
+  flex-shrink: 0;
+}
+
+.our-erp-btn-action span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* View Website Action Button */
@@ -243,14 +265,72 @@
 }
 
 @media (max-width: 480px) {
-  .our-erp-card-actions {
-    gap: 6px;
+  .our-erp-section {
+    padding: 36px 14px 44px 14px;
+  }
+
+  .our-erp-header-row {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .our-erp-title {
+    font-size: 1.35rem;
+  }
+
+  .our-erp-divider-line {
+    max-width: 36px;
+  }
+
+  .our-erp-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .our-erp-card {
+    padding: 0 0 14px 0;
+    border-radius: 14px;
+  }
+
+  .our-erp-card-title {
+    min-height: auto;
+    font-size: 0.94rem;
+    margin: 0 0 2px 0;
+    padding: 0 10px;
+  }
+
+  .our-erp-card-sub {
+    margin: 0 0 12px 0;
+    font-size: 0.74rem;
     padding: 0 8px;
   }
 
+  .our-erp-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
   .our-erp-btn-action {
-    font-size: 0.72rem;
-    padding: 6px 8px;
+    font-size: 0.74rem;
+    padding: 7px 6px;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 360px) {
+  .our-erp-card-actions {
+    gap: 6px;
+    padding: 0 10px;
+  }
+
+  .our-erp-btn-action {
+    font-size: 0.70rem;
+    padding: 6px 4px;
+    gap: 4px;
   }
 }
 
