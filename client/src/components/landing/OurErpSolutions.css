@@ -193,20 +193,18 @@
   text-align: center;
 }
 
-/* Card Actions: View Website & View ERP - Seamless Connected Dual Pill (0 Gap) */
+/* Card Actions: View Website & View ERP - Two Separate Distinct Pill Buttons */
 .our-erp-card-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  width: calc(100% - 24px);
-  margin: 4px auto 0 auto;
+  gap: 8px;
+  width: 100%;
   box-sizing: border-box;
-  padding: 0;
-  border-radius: 9999px;
-  overflow: hidden;
-  border: 1px solid #cbd5e1;
-  background-color: #ffffff;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  padding: 0 14px;
+  margin: 6px 0 0 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .our-erp-btn-action {
@@ -219,15 +217,15 @@
   gap: 5px;
   font-size: 0.76rem;
   font-weight: 700;
-  padding: 8px 8px;
-  border-radius: 0;
-  border: none;
+  padding: 7px 6px;
+  border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   text-decoration: none;
   text-align: center;
   user-select: none;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
 }
 
 .our-erp-btn-action svg {
@@ -240,27 +238,34 @@
   text-overflow: ellipsis;
 }
 
-/* View Website Action Option */
+/* View Website Action Button (Distinct Pill) */
 .our-erp-btn-website {
   background-color: #ffffff;
   color: #334155;
-  border-right: 1px solid #e2e8f0;
+  border: 1px solid #cbd5e1;
 }
 
 .our-erp-btn-website:hover {
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
+  border-color: #94a3b8;
   color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(15, 23, 42, 0.08);
 }
 
-/* View ERP Action Option */
+/* View ERP Action Button (Distinct Pill) */
 .our-erp-btn-erp {
   background-color: #dcfce7;
   color: #00875a;
+  border: 1px solid #bbf7d0;
 }
 
 .our-erp-btn-erp:hover {
   background-color: #00875a;
   color: #ffffff;
+  border-color: #00875a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 135, 90, 0.25);
 }
 
 @media (max-width: 480px) {
@@ -287,7 +292,7 @@
   }
 
   .our-erp-card {
-    padding: 0 0 12px 0;
+    padding: 0 0 14px 0;
     border-radius: 14px;
   }
 
@@ -307,12 +312,13 @@
   .our-erp-card-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
-    width: calc(100% - 20px);
-    margin: 4px auto 0 auto;
-    border-radius: 9999px;
-    overflow: hidden;
-    border: 1px solid #cbd5e1;
+    gap: 8px;
+    padding: 0 12px;
+    width: 100%;
+    margin: 4px 0 0 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
     box-sizing: border-box;
   }
 
@@ -320,13 +326,14 @@
     font-size: 0.74rem;
     padding: 7px 6px;
     gap: 4px;
-    border-radius: 0;
+    border-radius: 9999px;
   }
 }
 
 @media (max-width: 360px) {
   .our-erp-card-actions {
-    width: calc(100% - 16px);
+    gap: 6px;
+    padding: 0 8px;
   }
 
   .our-erp-btn-action {
