@@ -240,19 +240,106 @@ button {
   border-radius: 1px;
 }
 
+/* Mobile Navigation Button (Hidden on Desktop) */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #1e293b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+  background-color: #f1f5f9;
+  color: #047857;
+}
+
 @media (max-width: 960px) {
-  .navbar-content {
-    flex-direction: column;
-    gap: 14px;
-    align-items: center;
-    justify-content: center;
+  .navbar-container {
+    padding: 10px 16px;
   }
+
+  .navbar-content {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0 !important;
+    min-height: 44px;
+  }
+
   .nav-links {
-    position: static;
-    transform: none;
-    gap: 20px;
+    display: none !important;
+  }
+
+  .btn-get-started.desktop-only {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex !important;
+  }
+
+  .mobile-nav-drawer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-light);
+    padding: 14px 16px 18px 16px;
+    gap: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    animation: slideDownMobileNav 0.22s ease-out;
+  }
+
+  @keyframes slideDownMobileNav {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-nav-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #334155;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    background-color: #ecfdf5;
+    color: #047857 !important;
+    font-weight: 700;
+  }
+
+  .mobile-drawer-cta {
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 4px;
+  }
+
+  .btn-get-started.mobile-drawer-btn {
+    width: 100%;
     justify-content: center;
-    flex-wrap: wrap;
+    padding: 12px;
+    font-size: 0.92rem;
+    border-radius: var(--radius-pill);
   }
 }
 
@@ -959,6 +1046,161 @@ button {
 }
 
 /* ==========================================================================
+   HERO SECTION RESPONSIVE STYLES
+   ========================================================================== */
+@media (max-width: 960px) {
+  .hero-section {
+    padding: 24px 16px 36px 16px;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    text-align: center;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    margin-bottom: 12px;
+  }
+
+  .hero-heading {
+    font-size: 2.35rem;
+    align-items: center;
+    text-align: center;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.94rem;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 22px auto;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    white-space: nowrap !important;
+    padding: 11px 22px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-mockup-wrapper {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  .single-laptop-stage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .laptop-device {
+    width: 100% !important;
+    max-width: 440px !important;
+  }
+
+  .mockup-backdrop-glow {
+    width: 320px;
+    height: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 16px 12px 24px 12px;
+  }
+
+  .hero-heading {
+    font-size: 1.85rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding: 0 4px;
+    margin-bottom: 18px;
+  }
+
+  .hero-cta-group {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    flex: 1 1 0;
+    min-width: 130px;
+    max-width: 165px;
+    padding: 10px 12px;
+    font-size: 0.82rem;
+    white-space: nowrap !important;
+    justify-content: center;
+  }
+
+  .laptop-device {
+    max-width: 330px !important;
+  }
+
+  .screen-inner-display {
+    height: 195px !important;
+  }
+
+  .laptop-erp-grid-canvas {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .laptop-tile-card {
+    padding: 4px 2px !important;
+  }
+
+  .laptop-tile-icon-box {
+    width: 24px !important;
+    height: 24px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .laptop-tile-name {
+    font-size: 0.46rem !important;
+  }
+}
+
+/* ==========================================================================
    STATS BAR (4 UNIFIED CARDS)
    ========================================================================== */
 .stats-bar-section {
@@ -989,8 +1231,13 @@ button {
 }
 
 @media (max-width: 540px) {
+  .stats-bar-section {
+    padding: 0 14px 24px 14px;
+  }
   .stats-bar-container.stats-4-grid {
     grid-template-columns: 1fr;
+    padding: 16px 18px;
+    gap: 16px;
   }
 }
 
@@ -1248,6 +1495,30 @@ button {
   background-color: var(--primary-green-hover);
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(4, 120, 87, 0.3);
+}
+
+@media (max-width: 768px) {
+  .cta-banner-section {
+    padding: 0 14px 40px 14px;
+  }
+  .cta-banner-card.light-mint-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 24px 18px;
+  }
+  .cta-banner-left-wrap {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  .cta-banner-title.dark-text {
+    font-size: 1.35rem;
+  }
+  .btn-cta-green {
+    width: 100%;
+    max-width: 260px;
+  }
 }
 
 /* ==========================================================================
