@@ -655,6 +655,28 @@
   color: #059669;
 }
 
+.bus-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.bus-back-btn:hover {
+  background: #f1f5f9;
+  color: #059669;
+  border-color: #cbd5e1;
+}
+
 .bus-sidebar-close {
   display: none;
   background: transparent;
@@ -728,6 +750,17 @@
 
   .bus-menu-toggle {
     display: inline-flex;
+  }
+
+  .bus-back-btn {
+    padding: 8px;
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+  }
+
+  .bus-back-btn span {
+    display: none;
   }
 
   .bus-main {
@@ -849,6 +882,12 @@
   }
 
   .bus-menu-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+
+  .bus-back-btn {
     width: 36px;
     height: 36px;
     padding: 6px;

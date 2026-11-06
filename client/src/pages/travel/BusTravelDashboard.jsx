@@ -214,6 +214,22 @@ export const BusTravelDashboard = () => {
             <div className="bus-header-title-wrap">
               <button
                 type="button"
+                className="bus-back-btn"
+                onClick={() => {
+                  if (window.history.length > 1) {
+                    navigate(-1);
+                  } else {
+                    navigate('/products');
+                  }
+                }}
+                title="Back to Catalog"
+                aria-label="Go back"
+              >
+                <ArrowLeft size={18} />
+                <span>Back</span>
+              </button>
+              <button
+                type="button"
                 className="bus-menu-toggle"
                 onClick={() => setSidebarOpen(true)}
                 aria-label="Open navigation menu"

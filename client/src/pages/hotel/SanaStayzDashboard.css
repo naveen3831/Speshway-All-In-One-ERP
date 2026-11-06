@@ -661,6 +661,28 @@
   color: #059669;
 }
 
+.sana-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.sana-back-btn:hover {
+  background: #f1f5f9;
+  color: #059669;
+  border-color: #cbd5e1;
+}
+
 .sana-sidebar-close {
   display: none;
   background: transparent;
@@ -734,6 +756,17 @@
 
   .sana-menu-toggle {
     display: inline-flex;
+  }
+
+  .sana-back-btn {
+    padding: 8px;
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+  }
+
+  .sana-back-btn span {
+    display: none;
   }
 
   .sana-main {
@@ -855,6 +888,12 @@
   }
 
   .sana-menu-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+
+  .sana-back-btn {
     width: 36px;
     height: 36px;
     padding: 6px;

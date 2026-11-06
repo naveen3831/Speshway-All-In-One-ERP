@@ -6400,6 +6400,49 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
   box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
 }
 
+/* Universal Header Back Button across ERP Dashboards */
+[class*="-back-btn"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+[class*="-back-btn"]:hover {
+  background: #f8fafc;
+  color: #059669;
+  border-color: #cbd5e1;
+}
+
+@media (max-width: 960px) {
+  [class*="-back-btn"] {
+    width: 38px !important;
+    height: 38px !important;
+    padding: 8px !important;
+  }
+  [class*="-back-btn"] span {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  [class*="-back-btn"] {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 6px !important;
+  }
+}
+
 /* ==========================================================================
    UNIVERSAL MOBILE RESPONSIVE DASHBOARD & TABLE ENGINE
    Applies to all ERP Dashboards, Catalogs, Tables, and Cards
