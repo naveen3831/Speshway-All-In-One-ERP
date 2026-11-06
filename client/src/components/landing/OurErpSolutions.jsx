@@ -77,35 +77,37 @@ export const OurErpSolutions = () => {
                     <Icon size={24} />
                   </div>
                 )}
-                <h3 className="our-erp-card-title">{prod.name}</h3>
+                <div className="our-erp-card-body">
+                  <h3 className="our-erp-card-title">{prod.name}</h3>
 
-                <div className="our-erp-card-actions">
-                  <button
-                    type="button"
-                    className="our-erp-btn-action our-erp-btn-website"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const url = getWebsiteUrl(prod);
-                      window.open(url, '_blank', 'noopener,noreferrer');
-                    }}
-                    title={`Open live ${prod.name} Website`}
-                  >
-                    <Globe size={13} />
-                    <span>View Website</span>
-                  </button>
+                  <div className="our-erp-card-actions">
+                    <button
+                      type="button"
+                      className="our-erp-btn-action our-erp-btn-website"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const url = getWebsiteUrl(prod);
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }}
+                      title={`Open live ${prod.name} Website`}
+                    >
+                      <Globe size={13} />
+                      <span>View Website</span>
+                    </button>
 
-                  <button
-                    type="button"
-                    className="our-erp-btn-action our-erp-btn-erp"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(dashboardRoute);
-                    }}
-                    title={`Open live in-site ${prod.name} Dashboard`}
-                  >
-                    <Shield size={13} />
-                    <span>View ERP</span>
-                  </button>
+                    <button
+                      type="button"
+                      className="our-erp-btn-action our-erp-btn-erp"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(dashboardRoute);
+                      }}
+                      title={`Open live in-site ${prod.name} Dashboard`}
+                    >
+                      <Shield size={13} />
+                      <span>View ERP</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             );
