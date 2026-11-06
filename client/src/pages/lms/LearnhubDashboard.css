@@ -496,12 +496,23 @@
 
 .learn-card-title {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 16px;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
+  line-height: 1.35;
+}
+
+.learn-card-title svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.learn-card-header > div > p {
+  padding-left: 28px;
+  line-height: 1.45;
 }
 
 .learn-section-header h3 {
@@ -868,6 +879,23 @@
   .learn-stat-icon-wrap {
     width: 36px !important;
     height: 36px !important;
+  }
+
+  .learn-card-header,
+  .learn-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .learn-card-header > div:first-child,
+  .learn-section-header > div:first-child {
+    width: 100% !important;
+  }
+
+  .learn-card-header .learn-btn-site {
+    margin-left: 28px !important;
+    align-self: flex-start !important;
   }
 
   .learn-stat-val {

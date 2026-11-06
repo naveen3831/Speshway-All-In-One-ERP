@@ -6463,8 +6463,35 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
 
   [class*="-card-header"],
   [class*="-section-header"] {
+    display: flex !important;
     flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  /* Card title icon alignment: align with first line of title, not floating in middle */
+  [class*="-card-title"],
+  [class*="-section-header"] h3,
+  [class*="-card-header"] h3 {
+    display: flex !important;
+    align-items: flex-start !important;
     gap: 10px !important;
+    line-height: 1.35 !important;
+  }
+
+  [class*="-card-title"] > svg,
+  [class*="-card-title"] svg,
+  [class*="-section-header"] h3 > svg,
+  [class*="-card-header"] h3 > svg {
+    flex-shrink: 0 !important;
+    margin-top: 3px !important;
+  }
+
+  /* Subtitle paragraph alignment under the title text */
+  [class*="-card-header"] > div > p,
+  [class*="-section-header"] > div > p {
+    padding-left: 28px !important;
+    margin-top: 4px !important;
+    line-height: 1.45 !important;
   }
 
   /* Universal Stats Grid: 2x2 on mobile */
@@ -6493,6 +6520,27 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
 
   [class*="-card-title"] {
     font-size: 15px !important;
+  }
+
+  /* Card Header Button alignment on mobile */
+  [class*="-card-header"],
+  [class*="-section-header"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  [class*="-card-header"] > div:first-child,
+  [class*="-section-header"] > div:first-child {
+    width: 100% !important;
+  }
+
+  [class*="-card-header"] > button,
+  [class*="-section-header"] > button,
+  [class*="-card-header"] [class*="-btn-site"],
+  [class*="-section-header"] [class*="-btn-site"] {
+    margin-left: 28px !important;
+    align-self: flex-start !important;
   }
 
   [class*="-stats-grid"],

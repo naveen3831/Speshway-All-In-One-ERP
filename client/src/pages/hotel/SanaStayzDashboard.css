@@ -496,12 +496,23 @@
 
 .sana-card-title {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 16px;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
+  line-height: 1.35;
+}
+
+.sana-card-title svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.sana-card-header > div > p {
+  padding-left: 28px;
+  line-height: 1.45;
 }
 
 .sana-section-header h3 {
@@ -880,6 +891,23 @@
   .sana-stat-icon-wrap {
     width: 36px !important;
     height: 36px !important;
+  }
+
+  .sana-card-header,
+  .sana-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .sana-card-header > div:first-child,
+  .sana-section-header > div:first-child {
+    width: 100% !important;
+  }
+
+  .sana-card-header .sana-btn-site {
+    margin-left: 28px !important;
+    align-self: flex-start !important;
   }
 
   .sana-stat-val {

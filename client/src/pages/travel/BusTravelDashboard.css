@@ -496,12 +496,23 @@
 
 .bus-card-title {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 16px;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
+  line-height: 1.35;
+}
+
+.bus-card-title svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.bus-card-header > div > p {
+  padding-left: 28px;
+  line-height: 1.45;
 }
 
 .bus-section-header h3 {
@@ -874,6 +885,23 @@
   .bus-stat-icon-wrap {
     width: 36px !important;
     height: 36px !important;
+  }
+
+  .bus-card-header,
+  .bus-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .bus-card-header > div:first-child,
+  .bus-section-header > div:first-child {
+    width: 100% !important;
+  }
+
+  .bus-card-header .bus-btn-site {
+    margin-left: 28px !important;
+    align-self: flex-start !important;
   }
 
   .bus-stat-val {
