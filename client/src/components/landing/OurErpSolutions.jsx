@@ -35,24 +35,24 @@ export const OurErpSolutions = () => {
         <div className="our-erp-grid">
           {adminProjects.map((prod) => {
             const Icon = getProjectIcon(prod);
-            const route = getDashboardRoute(prod);
             const color = getProjectColor(prod);
             const imgUrl = prod.imageUrl || getProductFallbackImage(prod.slug || prod.id || prod.name);
+            const detailRoute = `/product/${prod.slug || prod.id}`;
 
             return (
               <div
                 key={prod.id || prod.slug}
                 className="our-erp-card"
-                onClick={() => navigate(route)}
+                onClick={() => navigate(detailRoute)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    navigate(route);
+                    navigate(detailRoute);
                   }
                 }}
-                title={`Open live in-site ${prod.name} Dashboard`}
+                title={`View ${prod.name} Details`}
               >
                 {imgUrl ? (
                   <div className="our-erp-img-banner">
@@ -81,10 +81,10 @@ export const OurErpSolutions = () => {
                   className="btn-view-erp-pill"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(route);
+                    navigate(detailRoute);
                   }}
                 >
-                  View ERP <ExternalLink size={12} />
+                  View Details <ExternalLink size={12} />
                 </button>
               </div>
             );
