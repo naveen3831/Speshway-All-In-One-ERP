@@ -181,116 +181,102 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
           </button>
         </div>
 
-        {/* TAB 1: Direct Channels (2x2 Interactive Grid) */}
+        {/* TAB 1: Direct Channels (Formatted in clean, full-width field rows matching the form) */}
         {activeTab === 'direct' && (
           <div className="contact-modal-body">
-            <div className="contact-channels-grid">
+            <div className="contact-modal-form">
               {/* Channel 1: Phone */}
-              <div className="contact-channel-card">
-                <div className="channel-card-top">
-                  <div className="channel-icon-wrap emerald">
-                    <Phone size={15} />
+              <div className="modal-input-field">
+                <label>
+                  Toll-Free Phone Support (24/7)
+                </label>
+                <div className="modal-input-wrapper">
+                  <Phone size={15} className="modal-input-icon text-emerald" />
+                  <div className="direct-channel-row">
+                    <a href="tel:+18005557737" className="direct-channel-val">
+                      +1 (800) 555-SPESH
+                    </a>
+                    <a
+                      href="tel:+18005557737"
+                      className="direct-action-pill call"
+                      title="Call Toll-Free"
+                    >
+                      <span>Call Now</span>
+                      <ArrowRight size={11} />
+                    </a>
                   </div>
-                  <a
-                    href="tel:+18005557737"
-                    className="channel-action-badge call"
-                    title="Call Toll-Free"
-                  >
-                    <span>Call Now</span>
-                    <ArrowRight size={11} />
-                  </a>
-                </div>
-                <div className="channel-card-content">
-                  <span className="channel-label">TOLL-FREE CALL (24/7)</span>
-                  <a href="tel:+18005557737" className="channel-value-link">
-                    +1 (800) 555-SPESH
-                  </a>
-                  <span className="channel-subtext">Immediate technical &amp; sales desk</span>
                 </div>
               </div>
 
               {/* Channel 2: Email */}
-              <div className="contact-channel-card">
-                <div className="channel-card-top">
-                  <div className="channel-icon-wrap emerald">
-                    <Mail size={15} />
+              <div className="modal-input-field">
+                <label>
+                  Priority Support &amp; Sales Inbox
+                </label>
+                <div className="modal-input-wrapper">
+                  <Mail size={15} className="modal-input-icon text-emerald" />
+                  <div className="direct-channel-row">
+                    <a href="mailto:support@speshway.com" className="direct-channel-val">
+                      support@speshway.com
+                    </a>
+                    <button
+                      type="button"
+                      onClick={handleCopyEmail}
+                      className="direct-action-pill copy"
+                      title="Copy Email Address"
+                    >
+                      {copied ? <Check size={11} /> : <Copy size={11} />}
+                      <span>{copied ? 'Copied' : 'Copy'}</span>
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleCopyEmail}
-                    className="channel-action-badge copy"
-                    title="Copy Email Address"
-                  >
-                    {copied ? <Check size={11} /> : <Copy size={11} />}
-                    <span>{copied ? 'Copied' : 'Copy'}</span>
-                  </button>
-                </div>
-                <div className="channel-card-content">
-                  <span className="channel-label">PRIORITY INBOX</span>
-                  <a href="mailto:support@speshway.com" className="channel-value-link">
-                    support@speshway.com
-                  </a>
-                  <span className="channel-subtext">Average reply under 15 minutes</span>
                 </div>
               </div>
 
-              {/* Channel 3: Headquarters */}
-              <div className="contact-channel-card">
-                <div className="channel-card-top">
-                  <div className="channel-icon-wrap slate">
-                    <MapPin size={15} />
+              {/* Channel 3: Headquarters & Availability */}
+              <div className="modal-input-field">
+                <label>
+                  Global Headquarters &amp; Response SLA
+                </label>
+                <div className="modal-input-wrapper">
+                  <MapPin size={15} className="modal-input-icon text-slate" />
+                  <div className="direct-channel-row">
+                    <span className="direct-channel-val">
+                      Silicon Valley, CA &bull; Worldwide Hubs
+                    </span>
+                    <span className="direct-badge-pill">
+                      24/7 &bull; &lt; 15m SLA
+                    </span>
                   </div>
-                  <span className="channel-tag-pill">HQ &amp; Remote</span>
-                </div>
-                <div className="channel-card-content">
-                  <span className="channel-label">GLOBAL HEADQUARTERS</span>
-                  <span className="channel-value-text">Silicon Valley, CA</span>
-                  <span className="channel-subtext">Serving clients worldwide</span>
                 </div>
               </div>
 
-              {/* Channel 4: Availability */}
-              <div className="contact-channel-card">
-                <div className="channel-card-top">
-                  <div className="channel-icon-wrap slate">
-                    <Clock size={15} />
-                  </div>
-                  <span className="channel-tag-pill active">365 Days</span>
-                </div>
-                <div className="channel-card-content">
-                  <span className="channel-label">ENTERPRISE SLA</span>
-                  <span className="channel-value-text">24 / 7 / 365 Support</span>
-                  <span className="channel-subtext">Dedicated tier-1 engineering response</span>
-                </div>
+              {/* Bottom Action Row matching Send Message row */}
+              <div className="contact-form-actions-row">
+                <button
+                  type="button"
+                  className="contact-submit-btn"
+                  onClick={() => {
+                    onClose();
+                    if (onOpenDemo) onOpenDemo();
+                    else navigate('/get-started');
+                  }}
+                >
+                  <Sparkles size={14} />
+                  <span>Book a Live Demo</span>
+                </button>
+
+                <Link
+                  to="/contact"
+                  className="contact-full-page-link"
+                  onClick={() => {
+                    onClose();
+                    window.scrollTo(0, 0);
+                  }}
+                >
+                  <span>Full Contact &amp; FAQs</span>
+                  <ArrowRight size={13} />
+                </Link>
               </div>
-            </div>
-
-            {/* Footer Actions */}
-            <div className="contact-modal-footer">
-              <button
-                type="button"
-                className="contact-primary-demo-btn"
-                onClick={() => {
-                  onClose();
-                  if (onOpenDemo) onOpenDemo();
-                  else navigate('/get-started');
-                }}
-              >
-                <Sparkles size={14} />
-                <span>Book a Live Demo</span>
-              </button>
-
-              <Link
-                to="/contact"
-                className="contact-full-page-link"
-                onClick={() => {
-                  onClose();
-                  window.scrollTo(0, 0);
-                }}
-              >
-                <span>Full Contact &amp; FAQs</span>
-                <ArrowRight size={13} />
-              </Link>
             </div>
           </div>
         )}

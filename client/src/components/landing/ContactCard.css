@@ -275,6 +275,93 @@
   padding: 16px 22px 18px 22px;
 }
 
+/* Direct Channels Rows matching Form Fields */
+.direct-channel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  min-height: 42px;
+  gap: 8px;
+}
+
+.direct-channel-row:hover {
+  border-color: #047857;
+  box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.08);
+}
+
+.direct-channel-val {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.direct-channel-val:hover {
+  color: #047857;
+}
+
+.direct-action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  border: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.direct-action-pill.call {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.direct-action-pill.call:hover {
+  background: #047857;
+  color: #ffffff;
+}
+
+.direct-action-pill.copy {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.direct-action-pill.copy:hover {
+  background: #047857;
+  color: #ffffff;
+  border-color: #047857;
+}
+
+.direct-badge-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* 2x2 Channels Grid */
 .contact-channels-grid {
   display: grid;
@@ -508,6 +595,19 @@
   left: 11px;
   color: #94a3b8;
   pointer-events: none;
+  z-index: 1;
+}
+
+.modal-input-icon.text-emerald {
+  color: #047857;
+}
+
+.modal-input-icon.text-slate {
+  color: #64748b;
+}
+
+.text-emerald {
+  color: #047857;
 }
 
 .modal-input-wrapper input,
