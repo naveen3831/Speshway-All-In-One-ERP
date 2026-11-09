@@ -1,40 +1,47 @@
-/* ContactCard.css - Speshway Contact Card Popover & Right-side Toggle */
+/* ContactCard.css - Speshway Floating Right-Side Contact Toggle & Card */
 
 /* -------------------------------------------------------------
-   1. RIGHT-SIDE NAVBAR CONTACT TOGGLE BUTTON
+   1. FLOATING CONTACT TOGGLE BUTTON (RIGHT SIDE OF THE WEBSITE)
    ------------------------------------------------------------- */
-.btn-contact-toggle {
+.floating-website-contact-btn {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9998;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  background-color: #f8fafc;
-  border: 1px solid #cbd5e1;
-  color: #1e293b;
-  padding: 8px 16px;
+  gap: 8px;
+  background-color: #ffffff;
+  border: 1.5px solid #10b981;
+  color: #047857;
+  padding: 10px 18px;
   border-radius: var(--radius-pill, 9999px);
-  font-size: 0.86rem;
-  font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 700;
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(4, 120, 87, 0.22), 0 2px 6px rgba(15, 23, 42, 0.08);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
-  position: relative;
 }
 
-.btn-contact-toggle:hover {
+.floating-website-contact-btn:hover {
   background-color: #ecfdf5;
   border-color: #059669;
-  color: #047857;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(5, 150, 105, 0.15);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 8px 24px rgba(4, 120, 87, 0.32);
 }
 
-.btn-contact-toggle.active {
+.floating-website-contact-btn:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.floating-website-contact-btn.active {
   background-color: #047857;
   border-color: #047857;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.28);
+  box-shadow: 0 6px 20px rgba(4, 120, 87, 0.35);
 }
 
 .contact-toggle-dot {
@@ -43,10 +50,11 @@
   background-color: #10b981;
   border-radius: 50%;
   display: inline-block;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+  animation: pulseDot 2s infinite;
 }
 
-.btn-contact-toggle.active .contact-toggle-dot {
+.floating-website-contact-btn.active .contact-toggle-dot {
   background-color: #ffffff;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
 }
@@ -57,10 +65,10 @@
 .contact-card-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.28);
+  background: rgba(15, 23, 42, 0.3);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  z-index: 998;
+  z-index: 9999;
   animation: contactBackdropFade 0.2s ease forwards;
 }
 
@@ -70,37 +78,40 @@
 }
 
 /* -------------------------------------------------------------
-   3. CONTACT CARD POPOVER BOX
+   3. CONTACT CARD POPUP (RIGHT SIDE OF THE WEBSITE)
    ------------------------------------------------------------- */
 .contact-card-box {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 380px;
-  max-width: calc(100vw - 28px);
+  max-width: calc(100vw - 32px);
+  max-height: 88vh;
+  overflow-y: auto;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   box-shadow:
-    0 24px 48px -12px rgba(15, 23, 42, 0.22),
+    0 25px 60px -12px rgba(15, 23, 42, 0.25),
     0 4px 16px -2px rgba(15, 23, 42, 0.08),
     0 0 0 1px rgba(15, 23, 42, 0.04);
-  z-index: 1000;
+  z-index: 10000;
   overflow: hidden;
-  animation: contactCardPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: contactCardSlideInRight 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   display: flex;
   flex-direction: column;
   text-align: left;
 }
 
-@keyframes contactCardPopIn {
+@keyframes contactCardSlideInRight {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.97);
+    transform: translateY(-50%) translateX(24px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(-50%) translateX(0) scale(1);
   }
 }
 
@@ -477,34 +488,6 @@
   line-height: 1.4;
 }
 
-/* -------------------------------------------------------------
-   4. MOBILE RESPONSIVE
-   ------------------------------------------------------------- */
-@media (max-width: 960px) {
-  .btn-contact-toggle {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    gap: 5px;
-  }
-}
-
-@media (max-width: 640px) {
-  .contact-card-box {
-    position: fixed;
-    top: auto;
-    bottom: 16px;
-    left: 12px;
-    right: 12px;
-    width: auto;
-    max-width: none;
-    max-height: 85vh;
-    overflow-y: auto;
-    border-radius: 20px;
-    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.4);
-    animation: contactCardSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-}
-
 .mobile-contact-trigger-btn {
   text-align: left;
   background: transparent;
@@ -512,6 +495,37 @@
   font-family: inherit;
   cursor: pointer;
   width: 100%;
+}
+
+/* -------------------------------------------------------------
+   4. RESPONSIVE
+   ------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .floating-website-contact-btn {
+    top: auto;
+    bottom: 24px;
+    right: 16px;
+    transform: none;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    box-shadow: 0 6px 20px rgba(4, 120, 87, 0.3);
+  }
+
+  .floating-website-contact-btn:hover {
+    transform: scale(1.04);
+  }
+
+  .contact-card-box {
+    top: auto;
+    bottom: 16px;
+    left: 12px;
+    right: 12px;
+    transform: none;
+    width: auto;
+    max-width: none;
+    max-height: 85vh;
+    animation: contactCardSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
 }
 
 @keyframes contactCardSlideUp {

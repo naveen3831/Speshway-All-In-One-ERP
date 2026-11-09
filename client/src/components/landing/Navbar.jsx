@@ -33,158 +33,163 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     location.pathname === '/contact' || location.pathname === '/contact-us';
 
   return (
-    <header className="navbar-container">
-      <div className="navbar-content">
-        {/* Brand Logo with User Uploaded Logo Image */}
-        <Link
-          to="/"
-          className="brand-logo"
-          onClick={() => {
-            setMobileMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}
-        >
-          <div className="brand-logo-wrap">
-            <img
-              src="/logo.png"
-              alt="Speshway All In One ERP Logo"
-              className="brand-logo-img"
-            />
-          </div>
-          <div className="brand-text">
-            <span className="brand-title">SPESHWAY</span>
-            <span className="brand-subtitle">ALL IN ONE ERP</span>
-          </div>
-        </Link>
-
-        {/* Center Navigation Links - Desktop Only */}
-        <nav className="nav-links">
-          <NavLink
+    <>
+      <header className="navbar-container">
+        <div className="navbar-content">
+          {/* Brand Logo with User Uploaded Logo Image */}
+          <Link
             to="/"
-            end
-            onClick={() => window.scrollTo(0, 0)}
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            className="brand-logo"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.scrollTo(0, 0);
+            }}
           >
-            HOME
-          </NavLink>
-          <NavLink
-            to="/projects"
-            onClick={() => window.scrollTo(0, 0)}
-            className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
-          >
-            PROJECTS
-          </NavLink>
-          <NavLink
-            to="/pricing"
-            onClick={() => window.scrollTo(0, 0)}
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-          >
-            PRICING
-          </NavLink>
-        </nav>
+            <div className="brand-logo-wrap">
+              <img
+                src="/logo.png"
+                alt="Speshway All In One ERP Logo"
+                className="brand-logo-img"
+              />
+            </div>
+            <div className="brand-text">
+              <span className="brand-title">SPESHWAY</span>
+              <span className="brand-subtitle">ALL IN ONE ERP</span>
+            </div>
+          </Link>
 
-        {/* Right Side Action: Contact Toggle, Get Started & Mobile Hamburger Button */}
-        <div className="nav-actions">
-          <button
-            type="button"
-            ref={contactToggleRef}
-            onClick={() => setContactCardOpen((prev) => !prev)}
-            className={`btn-contact-toggle ${contactCardOpen ? 'active' : ''}`}
-            aria-label={contactCardOpen ? 'Close contact card' : 'Open contact card'}
-            aria-expanded={contactCardOpen}
-          >
-            <PhoneCall size={15} />
-            <span>Contact</span>
-            <span className="contact-toggle-dot" />
-          </button>
+          {/* Center Navigation Links - Desktop Only */}
+          <nav className="nav-links">
+            <NavLink
+              to="/"
+              end
+              onClick={() => window.scrollTo(0, 0)}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              HOME
+            </NavLink>
+            <NavLink
+              to="/projects"
+              onClick={() => window.scrollTo(0, 0)}
+              className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
+            >
+              PROJECTS
+            </NavLink>
+            <NavLink
+              to="/pricing"
+              onClick={() => window.scrollTo(0, 0)}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              PRICING
+            </NavLink>
+          </nav>
 
-          <button
-            type="button"
-            onClick={handleGetStarted}
-            className="btn-get-started desktop-only"
-          >
-            Get Started <ArrowRight size={16} />
-          </button>
+          {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
+          <div className="nav-actions">
+            <button
+              type="button"
+              onClick={handleGetStarted}
+              className="btn-get-started desktop-only"
+            >
+              Get Started <ArrowRight size={16} />
+            </button>
 
-          <button
-            type="button"
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
-          {/* Contact Card Popover */}
-          <ContactCard
-            isOpen={contactCardOpen}
-            onClose={() => setContactCardOpen(false)}
-            onOpenDemo={onOpenDemo}
-            toggleRef={contactToggleRef}
-          />
+            <button
+              type="button"
+              className="mobile-menu-btn"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Mobile Navigation Drawer */}
-      {mobileMenuOpen && (
-        <div className="mobile-nav-drawer">
-          <NavLink
-            to="/"
-            end
-            onClick={() => {
-              setMobileMenuOpen(false);
-              window.scrollTo(0, 0);
-            }}
-            className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-          >
-            HOME
-          </NavLink>
-          <NavLink
-            to="/projects"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              window.scrollTo(0, 0);
-            }}
-            className={({ isActive }) => (isActive || isProjectsActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-          >
-            PROJECTS
-          </NavLink>
-          <NavLink
-            to="/pricing"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              window.scrollTo(0, 0);
-            }}
-            className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-          >
-            PRICING
-          </NavLink>
-          <button
-            type="button"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              setContactCardOpen(true);
-            }}
-            className={`mobile-nav-link mobile-contact-trigger-btn ${contactCardOpen || isContactActive ? 'active' : ''}`}
-          >
-            CONTACT US
-          </button>
-
-          <div className="mobile-drawer-cta">
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="mobile-nav-drawer">
+            <NavLink
+              to="/"
+              end
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.scrollTo(0, 0);
+              }}
+              className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+            >
+              HOME
+            </NavLink>
+            <NavLink
+              to="/projects"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.scrollTo(0, 0);
+              }}
+              className={({ isActive }) => (isActive || isProjectsActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+            >
+              PROJECTS
+            </NavLink>
+            <NavLink
+              to="/pricing"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.scrollTo(0, 0);
+              }}
+              className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+            >
+              PRICING
+            </NavLink>
             <button
               type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
-                handleGetStarted();
+                setContactCardOpen(true);
               }}
-              className="btn-get-started mobile-drawer-btn"
+              className={`mobile-nav-link mobile-contact-trigger-btn ${contactCardOpen || isContactActive ? 'active' : ''}`}
             >
-              Get Started <ArrowRight size={16} />
+              CONTACT US
             </button>
+
+            <div className="mobile-drawer-cta">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleGetStarted();
+                }}
+                className="btn-get-started mobile-drawer-btn"
+              >
+                Get Started <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </header>
+        )}
+      </header>
+
+      {/* Floating Contact Toggle on the Right Side of the Website */}
+      <button
+        type="button"
+        ref={contactToggleRef}
+        onClick={() => setContactCardOpen((prev) => !prev)}
+        className={`floating-website-contact-btn ${contactCardOpen ? 'active' : ''}`}
+        aria-label={contactCardOpen ? 'Close contact card' : 'Open contact card'}
+        aria-expanded={contactCardOpen}
+        title="Contact Speshway"
+        style={{ display: contactCardOpen ? 'none' : 'inline-flex' }}
+      >
+        <PhoneCall size={16} />
+        <span>Contact</span>
+        <span className="contact-toggle-dot" />
+      </button>
+
+      {/* Contact Card Popover */}
+      <ContactCard
+        isOpen={contactCardOpen}
+        onClose={() => setContactCardOpen(false)}
+        onOpenDemo={onOpenDemo}
+        toggleRef={contactToggleRef}
+      />
+    </>
   );
 };
 
