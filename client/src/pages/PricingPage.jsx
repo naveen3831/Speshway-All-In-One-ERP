@@ -15,30 +15,29 @@ export const PricingPage = () => {
   const [isAnnual, setIsAnnual] = useState(true);
   const [livePlans, setLivePlans] = useState(null);
 
-  // Pricing visibility state
-  const [showPricing, setShowPricing] = useState(() => {
+  // Pricing visibility derived from homeContent as source of truth
+  const getPricingVisible = () => {
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     const stored = localStorage.getItem('speshway_navbar_pricing_visible');
     if (stored !== null) return stored === 'true';
-    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     return true;
-  });
+  };
+
+  const [showPricing, setShowPricing] = useState(getPricingVisible);
 
   useEffect(() => {
-    const syncVisibility = () => {
-      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
-      if (stored !== null) {
-        setShowPricing(stored === 'true');
-      } else if (homeContent?.navbar?.showPricing !== undefined) {
-        setShowPricing(Boolean(homeContent.navbar.showPricing));
-      }
-    };
+    setShowPricing(getPricingVisible());
+  }, [homeContent?.navbar?.showPricing]);
 
-    syncVisibility();
-    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
-    window.addEventListener('storage', syncVisibility);
+  useEffect(() => {
+    const handleSync = () => setShowPricing(getPricingVisible());
+    window.addEventListener('speshway_navbar_pricing_changed', handleSync);
+    window.addEventListener('speshway_navbar_visibility_changed', handleSync);
+    window.addEventListener('storage', handleSync);
     return () => {
-      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
-      window.removeEventListener('storage', syncVisibility);
+      window.removeEventListener('speshway_navbar_pricing_changed', handleSync);
+      window.removeEventListener('speshway_navbar_visibility_changed', handleSync);
+      window.removeEventListener('storage', handleSync);
     };
   }, [homeContent?.navbar?.showPricing]);
 

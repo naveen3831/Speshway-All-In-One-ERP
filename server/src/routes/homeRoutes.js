@@ -35,12 +35,31 @@ router.put('/', async (req, res) => {
       io.emit('activity:new', {
         id: Date.now(),
         type: 'home',
-        text: 'Home page content was updated from the Admin Console',
+        text: 'Home page configuration was updated from the Admin Console',
         time: 'Just now',
       });
     }
 
     res.json({ success: true, message: 'Home content updated successfully', data: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// @desc    Update navbar visibility configuration
+// @route   PUT /api/home/navbar
+// @access  Public (Admin)
+router.put('/navbar', async (req, res) => {
+  try {
+    const navbarData = req.body;
+    const updated = await updateHomeContent({ navbar: navbarData });
+
+    const io = getIO();
+    if (io) {
+      io.emit('home:updated', updated);
+    }
+
+    res.json({ success: true, message: 'Navbar visibility updated', data: updated });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

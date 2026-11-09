@@ -110,30 +110,29 @@ export const getProductFallbackImage = (slugOrIdOrName) => {
 export const ProductsPage = () => {
   const { products, triggerUpdateProduct, homeContent } = useSocket();
 
-  // Determine whether Products/Projects should be visible
-  const [showProducts, setShowProducts] = useState(() => {
+  // Determine whether Products/Projects should be visible with homeContent as source of truth
+  const getProductsVisible = () => {
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     const stored = localStorage.getItem('speshway_navbar_products_visible');
     if (stored !== null) return stored === 'true';
-    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     return true;
-  });
+  };
+
+  const [showProducts, setShowProducts] = useState(getProductsVisible);
 
   useEffect(() => {
-    const syncProductsVisibility = () => {
-      const stored = localStorage.getItem('speshway_navbar_products_visible');
-      if (stored !== null) {
-        setShowProducts(stored === 'true');
-      } else if (homeContent?.navbar?.showProducts !== undefined) {
-        setShowProducts(Boolean(homeContent.navbar.showProducts));
-      }
-    };
+    setShowProducts(getProductsVisible());
+  }, [homeContent?.navbar?.showProducts]);
 
-    syncProductsVisibility();
-    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
-    window.addEventListener('storage', syncProductsVisibility);
+  useEffect(() => {
+    const handleSync = () => setShowProducts(getProductsVisible());
+    window.addEventListener('speshway_navbar_products_changed', handleSync);
+    window.addEventListener('speshway_navbar_visibility_changed', handleSync);
+    window.addEventListener('storage', handleSync);
     return () => {
-      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
-      window.removeEventListener('storage', syncProductsVisibility);
+      window.removeEventListener('speshway_navbar_products_changed', handleSync);
+      window.removeEventListener('speshway_navbar_visibility_changed', handleSync);
+      window.removeEventListener('storage', handleSync);
     };
   }, [homeContent?.navbar?.showProducts]);
 
