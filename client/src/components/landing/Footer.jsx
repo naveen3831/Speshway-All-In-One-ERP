@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUp, ShieldCheck, CheckCircle2, Globe, Heart, MapPin, Phone, Mail } from 'lucide-react';
-import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
+import {
+  ArrowUp,
+  Facebook,
+  Linkedin,
+  Instagram,
+  Youtube,
+} from 'lucide-react';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
   const { homeContent, branding } = useSocket();
@@ -64,19 +69,58 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             </Link>
 
             <p className="footer-tagline">
-              Unified enterprise resource planning suite connecting personnel, payroll, project milestones, and client pipelines in real time.
+              Delivering innovative IT solutions and driving digital transformation for businesses worldwide.
             </p>
 
-            {/* Live System Status Pill */}
-            <div className="footer-status-pill">
-              <span className="status-pulse-dot"></span>
-              <span className="status-text">All Systems Operational &middot; 99.9% SLA</span>
-            </div>
-
-            {/* Security Assurance Tag */}
-            <div className="footer-security-tag">
-              <ShieldCheck size={14} className="text-emerald" />
-              <span>256-Bit Bank-Grade Encryption &middot; SOC-2 Type II</span>
+            {/* Social Media Links */}
+            <div className="footer-social-links">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn"
+                aria-label="Facebook"
+              >
+                <Facebook size={18} />
+              </a>
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn"
+                aria-label="X (formerly Twitter)"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={18} />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn"
+                aria-label="Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-btn"
+                aria-label="YouTube"
+              >
+                <Youtube size={18} />
+              </a>
             </div>
           </div>
 
