@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, X, PhoneCall } from 'lucide-react';
+import { ArrowRight, Menu, X, MessageSquare } from 'lucide-react';
 import { ContactCard } from './ContactCard';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
@@ -180,7 +180,7 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           <X size={22} />
         ) : (
           <>
-            <PhoneCall size={22} />
+            <MessageSquare size={22} strokeWidth={2.2} />
             <span className="contact-toggle-dot" />
           </>
         )}
