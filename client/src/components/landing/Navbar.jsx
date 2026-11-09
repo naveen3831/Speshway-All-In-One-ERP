@@ -116,14 +116,15 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
 
           {/* Center Navigation Links - Desktop Only */}
           <nav className="nav-links">
-            <NavLink
+            <Link
               to="/"
-              end
               onClick={() => window.scrollTo(0, 0)}
-              className={({ isActive }) => (isActive ? 'nav-link nav-brand-link active' : 'nav-link nav-brand-link')}
+              className="nav-center-brand"
+              title={`${brandTitle} - ${brandSubtitle}`}
             >
-              {brandTitle}
-            </NavLink>
+              <span className="nav-center-brand-title">{brandTitle}</span>
+              <span className="nav-center-brand-subtitle">{brandSubtitle}</span>
+            </Link>
             {showProducts && (
               <NavLink
                 to="/projects"
@@ -168,17 +169,18 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="mobile-nav-drawer">
-            <NavLink
+            <Link
               to="/"
-              end
               onClick={() => {
                 setMobileMenuOpen(false);
                 window.scrollTo(0, 0);
               }}
-              className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+              className="mobile-nav-brand-item"
+              title={`${brandTitle} - ${brandSubtitle}`}
             >
-              {brandTitle}
-            </NavLink>
+              <span className="nav-center-brand-title">{brandTitle}</span>
+              <span className="nav-center-brand-subtitle">{brandSubtitle}</span>
+            </Link>
             {showProducts && (
               <NavLink
                 to="/projects"
