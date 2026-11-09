@@ -29,9 +29,6 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     location.pathname === '/products' ||
     location.pathname.startsWith('/product/');
 
-  const isContactActive =
-    location.pathname === '/contact' || location.pathname === '/contact-us';
-
   return (
     <>
       <header className="navbar-container">
@@ -139,16 +136,6 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
             >
               PRICING
             </NavLink>
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setContactCardOpen(true);
-              }}
-              className={`mobile-nav-link mobile-contact-trigger-btn ${contactCardOpen || isContactActive ? 'active' : ''}`}
-            >
-              CONTACT US
-            </button>
 
             <div className="mobile-drawer-cta">
               <button
