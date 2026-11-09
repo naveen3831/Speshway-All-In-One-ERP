@@ -41,9 +41,36 @@ import {
   Home,
   GraduationCap,
   Factory,
+  ChevronDown,
+  ChevronUp,
+  Folder,
 } from 'lucide-react';
 import { DEFAULT_ADMIN_PROJECTS } from '../../utils/adminProjects';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
+
+const CATEGORY_META = {
+  'Fashion & Luxury': { icon: Sparkles, color: 'pink', bgClass: 'bg-icon-pink', textClass: 'text-icon-pink' },
+  'Hospitality & Hotels': { icon: Home, color: 'indigo', bgClass: 'bg-icon-indigo', textClass: 'text-icon-indigo' },
+  'Education & LMS': { icon: GraduationCap, color: 'sky', bgClass: 'bg-icon-sky', textClass: 'text-icon-sky' },
+  'Bus & Travel Booking': { icon: Plane, color: 'amber', bgClass: 'bg-icon-amber', textClass: 'text-icon-amber' },
+  'Food Delivery & Kitchen': { icon: Factory, color: 'orange', bgClass: 'bg-icon-orange', textClass: 'text-icon-orange' },
+  'Automotive & Mobility': { icon: Wrench, color: 'blue', bgClass: 'bg-icon-blue', textClass: 'text-icon-blue' },
+  'Event Management': { icon: CalendarDays, color: 'purple', bgClass: 'bg-icon-purple', textClass: 'text-icon-purple' },
+  'Human Resources': { icon: Users, color: 'emerald', bgClass: 'bg-icon-emerald', textClass: 'text-icon-emerald' },
+  'Restaurant & Dining': { icon: Store, color: 'rose', bgClass: 'bg-icon-rose', textClass: 'text-icon-rose' },
+  'Fitness & Wellness': { icon: Monitor, color: 'cyan', bgClass: 'bg-icon-cyan', textClass: 'text-icon-cyan' },
+  'Logistics & Fleet': { icon: Package, color: 'green', bgClass: 'bg-icon-green', textClass: 'text-icon-green' },
+  'Beauty & Wellness': { icon: Scissors, color: 'pink', bgClass: 'bg-icon-pink', textClass: 'text-icon-pink' },
+  'E-Commerce Retail': { icon: ShoppingCart, color: 'blue', bgClass: 'bg-icon-blue', textClass: 'text-icon-blue' },
+  'Dairy & Agriculture': { icon: Building2, color: 'amber', bgClass: 'bg-icon-amber', textClass: 'text-icon-amber' },
+  'Fashion & Apparel': { icon: Sparkles, color: 'rose', bgClass: 'bg-icon-rose', textClass: 'text-icon-rose' },
+  'Healthcare & Hospitals': { icon: Building2, color: 'emerald', bgClass: 'bg-icon-emerald', textClass: 'text-icon-emerald' },
+};
+
+const getCategoryMetadata = (catName) => {
+  if (catName && CATEGORY_META[catName]) return CATEGORY_META[catName];
+  return { icon: FolderKanban, color: 'emerald', bgClass: 'bg-icon-emerald', textClass: 'text-icon-emerald' };
+};
 
 const iconMap = {
   Users,
@@ -155,7 +182,15 @@ export const AdminProducts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [statusMsg, setStatusMsg] = useState('');
-  const [viewMode, setViewMode] = useState('cards');
+  const [viewMode, setViewMode] = useState('categories');
+  const [expandedCategories, setExpandedCategories] = useState({});
+
+  const toggleCategoryExpand = (catName) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [catName]: !prev[catName],
+    }));
+  };
 
   const displayProducts = useMemo(() => {
     const list = Array.isArray(products) && products.length > 0 ? products : DEFAULT_ADMIN_PROJECTS;
@@ -172,6 +207,62 @@ export const AdminProducts = () => {
     });
     return ['All', ...Array.from(cats)];
   }, [displayProducts]);
+
+  const categoryGroups = useMemo(() => {
+    const groupMap = new Map();
+
+    displayProducts.forEach((prod) => {
+      if (!prod || typeof prod !== 'object') return;
+      const cat = typeof prod.category === 'string' && prod.category.trim() ? prod.category.trim() : 'General ERP';
+      if (!groupMap.has(cat)) {
+        groupMap.set(cat, []);
+      }
+      groupMap.get(cat).push(prod);
+    });
+
+    const groups = [];
+    groupMap.forEach((projs, catName) => {
+      groups.push({
+        name: catName,
+        projects: projs,
+        meta: getCategoryMetadata(catName),
+      });
+    });
+
+    return groups;
+  }, [displayProducts]);
+
+  const filteredCategoryGroups = useMemo(() => {
+    const term = String(searchTerm || '').toLowerCase().trim();
+
+    return categoryGroups
+      .filter((group) => {
+        if (selectedCategory !== 'All' && group.name !== selectedCategory) {
+          return false;
+        }
+        if (!term) return true;
+        const catMatches = group.name.toLowerCase().includes(term);
+        const projMatches = group.projects.some((p) => {
+          const pName = typeof p.name === 'string' ? p.name.toLowerCase() : '';
+          const pUrl = typeof p.websiteUrl === 'string' ? p.websiteUrl.toLowerCase() : '';
+          return pName.includes(term) || pUrl.includes(term);
+        });
+        return catMatches || projMatches;
+      })
+      .map((group) => {
+        if (!term) return group;
+        const catMatches = group.name.toLowerCase().includes(term);
+        if (catMatches) return group;
+        return {
+          ...group,
+          projects: group.projects.filter((p) => {
+            const pName = typeof p.name === 'string' ? p.name.toLowerCase() : '';
+            const pUrl = typeof p.websiteUrl === 'string' ? p.websiteUrl.toLowerCase() : '';
+            return pName.includes(term) || pUrl.includes(term);
+          }),
+        };
+      });
+  }, [categoryGroups, searchTerm, selectedCategory]);
 
   const handleEditProduct = (prod, e) => {
     if (e) e.stopPropagation();
@@ -225,10 +316,10 @@ export const AdminProducts = () => {
       >
         <div style={{ flex: '1 1 300px' }}>
           <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
-            Projects &amp; Module Management (CRUD)
+            Categories &amp; Module Management (CRUD)
           </h1>
           <p className="admin-subtext" style={{ margin: 0 }}>
-            Add new ERP projects in dedicated pages, edit technologies &amp; URLs, and control modules in real-time.
+            Manage ERP categories, drill down into projects, edit technologies &amp; URLs, and control modules in real-time.
           </p>
         </div>
 
@@ -389,9 +480,16 @@ export const AdminProducts = () => {
 
             <div className="view-toggle-wrap">
               <button
+                onClick={() => setViewMode('categories')}
+                className={`view-mode-btn ${viewMode === 'categories' ? 'active' : ''}`}
+                title="Category Cards View"
+              >
+                <Folder size={16} />
+              </button>
+              <button
                 onClick={() => setViewMode('cards')}
                 className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
-                title="Cards View"
+                title="Project Cards View"
               >
                 <LayoutGrid size={16} />
               </button>
@@ -418,6 +516,189 @@ export const AdminProducts = () => {
           ))}
         </div>
       </div>
+
+      {/* CATEGORIES VIEW (DEFAULT) */}
+      {viewMode === 'categories' && (
+        <div className="admin-products-card-grid">
+          {filteredCategoryGroups.map((group) => {
+            const meta = group.meta || getCategoryMetadata(group.name);
+            const CatIcon = meta.icon || FolderKanban;
+            const isExpanded = Boolean(expandedCategories[group.name]);
+
+            return (
+              <div key={group.name} className="admin-category-card">
+                {/* Category Card Header */}
+                <div className="admin-cat-card-header">
+                  <div className="admin-cat-header-left">
+                    <div className={`admin-cat-icon-box ${meta.bgClass}`}>
+                      <CatIcon className={meta.textClass} size={22} />
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <h3 className="admin-cat-title" title={group.name}>
+                        {group.name}
+                      </h3>
+                      <span className="admin-cat-badge-count">
+                        {group.projects.length} {group.projects.length === 1 ? 'ERP System' : 'ERP Systems'}
+                      </span>
+                    </div>
+                  </div>
+                  <span className="admin-cat-status-pill">Active</span>
+                </div>
+
+                {/* Category Card Body with Projects List */}
+                <div className="admin-cat-body">
+                  <div className="admin-cat-section-label">
+                    Configured ERP Systems ({group.projects.length})
+                  </div>
+
+                  <div className="admin-cat-projects-list">
+                    {group.projects.map((prod, pIdx) => {
+                      if (!prod || typeof prod !== 'object') return null;
+                      const pId = String(prod.id || prod.slug || prod._id || `grp-p-${pIdx}`);
+                      const pName = typeof prod.name === 'string' ? prod.name : String(prod.name || 'ERP Project');
+                      const pSlug = String(prod.slug || prod.id || prod._id || pId);
+                      const pUrl = typeof prod.websiteUrl === 'string' ? prod.websiteUrl : '';
+                      const ProjIcon = (prod.iconName && iconMap[prod.iconName]) ? iconMap[prod.iconName] : Layers;
+                      const pColor = typeof prod.color === 'string' ? prod.color : 'green';
+
+                      return (
+                        <div key={pId} className="admin-cat-project-item">
+                          <div className="admin-cat-proj-left">
+                            {prod.imageUrl && typeof prod.imageUrl === 'string' && prod.imageUrl.trim() ? (
+                              <img src={prod.imageUrl} alt={pName} className="admin-cat-proj-thumb" />
+                            ) : (
+                              <div className={`admin-cat-proj-icon-fallback bg-icon-${pColor}`}>
+                                <ProjIcon size={14} className={`text-icon-${pColor}`} />
+                              </div>
+                            )}
+                            <div className="admin-cat-proj-info">
+                              <span
+                                className="admin-cat-proj-name"
+                                onClick={() => navigate(`/product/${pSlug}`)}
+                                title={`View public details for ${pName}`}
+                              >
+                                {pName}
+                              </span>
+                              <span className="admin-cat-proj-meta">
+                                {pUrl ? pUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'Configured in ERP'}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="admin-cat-proj-actions">
+                            <button
+                              type="button"
+                              className="admin-cat-proj-btn"
+                              onClick={() => navigate(`/product/${pSlug}`)}
+                              title="View Project Details"
+                            >
+                              <Eye size={13} />
+                            </button>
+                            {pUrl && (
+                              <a
+                                href={pUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="admin-cat-proj-btn"
+                                title="Open Live Website"
+                              >
+                                <ExternalLink size={12} />
+                              </a>
+                            )}
+                            <button
+                              type="button"
+                              className="admin-cat-proj-btn edit"
+                              onClick={(e) => handleEditProduct(prod, e)}
+                              title="Edit Project"
+                            >
+                              <Edit2 size={13} />
+                            </button>
+                            <button
+                              type="button"
+                              className="admin-cat-proj-btn delete"
+                              onClick={(e) => handleDelete(prod.id || prod.slug || prod._id || pSlug, pName, e)}
+                              title="Delete Project"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Expandable Box with Tech & Descriptions */}
+                  {isExpanded && (
+                    <div className="admin-cat-expanded-box">
+                      {group.projects.map((p, idx) => {
+                        const techList = parseTechList(p.technologies);
+                        return (
+                          <div
+                            key={idx}
+                            style={{
+                              borderBottom: idx < group.projects.length - 1 ? '1px dashed #cbd5e1' : 'none',
+                              paddingBottom: '8px',
+                            }}
+                          >
+                            <div style={{ fontWeight: 700, color: '#1e293b', marginBottom: '2px', fontSize: '0.78rem' }}>
+                              {p.name}
+                            </div>
+                            {p.description && (
+                              <div style={{ color: '#64748b', marginBottom: '6px', fontSize: '0.74rem', lineHeight: 1.35 }}>
+                                {p.description}
+                              </div>
+                            )}
+                            {techList.length > 0 && (
+                              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                {techList.slice(0, 5).map((tech, tIdx) => (
+                                  <span key={tIdx} className="card-tech-chip" style={{ fontSize: '0.68rem', padding: '1px 6px' }}>
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Category Card Footer */}
+                <div className="admin-cat-card-footer">
+                  <button
+                    type="button"
+                    className="admin-cat-add-btn"
+                    onClick={() => navigate(`/admin/products/new?category=${encodeURIComponent(group.name)}`)}
+                    title={`Add new project in ${group.name}`}
+                  >
+                    <Plus size={13} /> Add Project
+                  </button>
+
+                  <button
+                    type="button"
+                    className="admin-cat-expand-btn"
+                    onClick={() => toggleCategoryExpand(group.name)}
+                    title={isExpanded ? 'Collapse details' : 'Expand technologies and details'}
+                  >
+                    {isExpanded ? (
+                      <>
+                        <span>Less info</span>
+                        <ChevronUp size={13} />
+                      </>
+                    ) : (
+                      <>
+                        <span>Tech &amp; Details</span>
+                        <ChevronDown size={13} />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* CARDS VIEW */}
       {viewMode === 'cards' && (
@@ -590,7 +871,8 @@ export const AdminProducts = () => {
       )}
 
       {/* Empty State */}
-      {filtered.length === 0 && (
+      {((viewMode === 'categories' && filteredCategoryGroups.length === 0) ||
+        (viewMode !== 'categories' && filtered.length === 0)) && (
         <div style={{
           padding: '48px 24px',
           textAlign: 'center',
@@ -601,10 +883,10 @@ export const AdminProducts = () => {
         }}>
           <Package size={40} style={{ color: '#94a3b8', margin: '0 auto 12px auto' }} />
           <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
-            No Projects Found
+            No Categories or Projects Found
           </h3>
           <p style={{ fontSize: '0.88rem', color: '#64748b', marginBottom: '16px' }}>
-            No ERP projects match your search criteria. Try a different search term or add a new project.
+            No ERP items match your search criteria. Try a different search term or add a new project.
           </p>
           <button onClick={handleAddNewProduct} className="btn-hero-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px' }}>
             <Plus size={16} /> Add New Project
