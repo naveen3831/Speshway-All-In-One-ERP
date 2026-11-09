@@ -1045,14 +1045,6 @@
 }
 
 @media (max-width: 768px) {
-  .fleet-wrapper {
-    flex-direction: column;
-  }
-  .fleet-sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
   .fleet-stats-grid {
     grid-template-columns: 1fr;
   }
@@ -1199,10 +1191,22 @@
 
   .fleet-topbar-left {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     min-width: 0 !important;
     flex: 1 !important;
     gap: 8px !important;
+  }
+
+  .fleet-btn-back-vehicles {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 10px !important;
+    height: 38px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
   }
 
   .fleet-header-title-wrap {

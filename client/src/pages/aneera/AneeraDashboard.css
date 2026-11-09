@@ -1362,10 +1362,22 @@ body:has(.aneera-dashboard-container)::-webkit-scrollbar {
 
   .aneera-nav-left {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     min-width: 0 !important;
     flex: 1 !important;
     gap: 8px !important;
+  }
+
+  .aneera-back-catalog-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 10px !important;
+    height: 38px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
   }
 
   .aneera-header-title-wrap {

@@ -1353,22 +1353,6 @@
 }
 
 @media (max-width: 768px) {
-  .joy-wrapper {
-    flex-direction: column;
-  }
-  .joy-sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .joy-topbar {
-    padding: 0 16px;
-    height: auto;
-    min-height: 70px;
-    flex-direction: column;
-  justify-content: space-between;
-    gap: 12px;
-  }
   .joy-stats-grid {
     grid-template-columns: 1fr;
   }
@@ -1533,10 +1517,22 @@
 
   .joy-topbar-left {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     min-width: 0 !important;
     flex: 1 !important;
     gap: 8px !important;
+  }
+
+  .joy-back-catalog-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 10px !important;
+    height: 38px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
   }
 
   .joy-header-title-wrap {
