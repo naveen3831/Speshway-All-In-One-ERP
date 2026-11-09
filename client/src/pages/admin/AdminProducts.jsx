@@ -248,9 +248,9 @@ export const AdminProducts = () => {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '14px',
-              padding: '8px 16px',
-              borderRadius: '12px',
+              gap: '12px',
+              padding: '6px 14px',
+              borderRadius: '10px',
               backgroundColor: showProductsOption ? '#ecfdf5' : '#f8fafc',
               border: showProductsOption ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
               cursor: 'pointer',
@@ -267,12 +267,12 @@ export const AdminProducts = () => {
                 : 'Click to turn ON: show Projects option and /projects page'
             }
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div
                 style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '7px',
                   backgroundColor: showProductsOption ? '#d1fae5' : '#e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
@@ -281,40 +281,25 @@ export const AdminProducts = () => {
                   transition: 'all 0.2s ease',
                 }}
               >
-                {showProductsOption ? <Eye size={18} /> : <EyeOff size={18} />}
+                {showProductsOption ? <Eye size={16} /> : <EyeOff size={16} />}
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                <span
-                  style={{
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    color: '#64748b',
-                    lineHeight: 1,
-                  }}
-                >
-                  Projects Option &amp; Public Page
-                </span>
-                <span
-                  style={{
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    color: showProductsOption ? '#065f46' : '#475569',
-                    marginTop: '3px',
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {showProductsOption ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
-                </span>
-              </div>
+              <span
+                style={{
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  color: showProductsOption ? '#065f46' : '#475569',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Projects: {showProductsOption ? 'ON' : 'OFF'}
+              </span>
             </div>
 
             {/* Switch Slider */}
             <div
               style={{
-                width: '46px',
-                height: '24px',
+                width: '38px',
+                height: '20px',
                 borderRadius: '9999px',
                 backgroundColor: showProductsOption ? '#059669' : '#cbd5e1',
                 padding: '2px',
@@ -327,12 +312,12 @@ export const AdminProducts = () => {
             >
               <div
                 style={{
-                  width: '20px',
-                  height: '20px',
+                  width: '16px',
+                  height: '16px',
                   borderRadius: '50%',
                   backgroundColor: '#ffffff',
                   boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  transform: showProductsOption ? 'translateX(22px)' : 'translateX(0px)',
+                  transform: showProductsOption ? 'translateX(18px)' : 'translateX(0px)',
                   transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               />
