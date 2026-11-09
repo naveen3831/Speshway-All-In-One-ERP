@@ -154,11 +154,11 @@
 
 /* Titles - Centered in the middle below the image */
 .our-erp-card-title {
-  font-size: 1.35rem;
-  font-weight: 800;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: #0f172a;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
   margin: auto 0;
   padding: 6px 4px;
   display: flex;
@@ -166,6 +166,7 @@
   justify-content: center;
   text-align: center;
   width: 100%;
+  min-height: 44px;
   box-sizing: border-box;
 }
 
@@ -285,16 +286,17 @@
   }
 
   .our-erp-card-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     margin: auto 0;
     padding: 6px 4px;
-    line-height: 1.25;
+    line-height: 1.3;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    min-height: 40px;
   }
 
   .our-erp-card-actions {
@@ -324,7 +326,9 @@
   }
 
   .our-erp-card-title {
-    font-size: 1.15rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    min-height: 38px;
   }
 
   .our-erp-card-actions {
