@@ -6,7 +6,11 @@ import {
   Linkedin,
   Instagram,
   Youtube,
+  MapPin,
+  Phone,
+  Mail,
 } from 'lucide-react';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
   const { homeContent, branding } = useSocket();
@@ -250,3 +254,5 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
     </footer>
   );
 };
+
+export default Footer;

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { homeContent, branding } = useSocket();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
@@ -154,16 +155,18 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             PROJECTS
           </NavLink>
-          <NavLink
-            to="/pricing"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              window.scrollTo(0, 0);
-            }}
-            className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-          >
-            PRICING
-          </NavLink>
+          {showPricing && (
+            <NavLink
+              to="/pricing"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.scrollTo(0, 0);
+              }}
+              className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+            >
+              PRICING
+            </NavLink>
+          )}
           <NavLink
             to="/contact"
             onClick={() => {
