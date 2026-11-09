@@ -1373,6 +1373,7 @@ body:has(.hosp-erp-root)::-webkit-scrollbar {
   }
 
   .hosp-back-catalog-link {
+    margin-left: 0 !important;
     padding: 6px 10px !important;
     font-size: 0.8rem !important;
     white-space: nowrap !important;

@@ -241,14 +241,6 @@ export const SavitriSareesDashboard = () => {
             <div className="savitri-header-title-wrap">
               <button
                 type="button"
-                className="savitri-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
-              </button>
-              <button
-                type="button"
                 className="savitri-back-btn"
                 onClick={() => {
                   if (window.history.length > 1) {
@@ -262,6 +254,14 @@ export const SavitriSareesDashboard = () => {
               >
                 <ArrowLeft size={18} />
                 <span>Back</span>
+              </button>
+              <button
+                type="button"
+                className="savitri-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
               </button>
               <div>
                 <h1 className="savitri-page-title">

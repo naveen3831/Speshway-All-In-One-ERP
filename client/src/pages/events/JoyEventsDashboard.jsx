@@ -340,6 +340,13 @@ export const JoyEventsDashboard = () => {
         {/* Top Navbar with Height 82px matching request */}
         <header className="joy-topbar">
           <div className="joy-topbar-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link joy-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
             <div className="joy-header-title-wrap">
               <button
                 type="button"
@@ -359,13 +366,6 @@ export const JoyEventsDashboard = () => {
           </div>
 
           <div className="joy-topbar-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link joy-back-catalog-btn"
-              title="Return to Catalog"
-            >
-              <ArrowLeft size={15} /> <span>Back</span>
-            </button>
 
             {/* Global Search Bar */}
             <div className="joy-search-box">

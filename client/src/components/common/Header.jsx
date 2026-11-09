@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Menu } from 'lucide-react';
+import { Menu, ArrowLeft } from 'lucide-react';
 
 export const Header = ({ onToggleSidebar }) => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header
@@ -18,7 +20,22 @@ export const Header = ({ onToggleSidebar }) => {
         padding: '0 24px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <button
+          type="button"
+          className="dashboard-back-btn"
+          onClick={() => {
+            if (window.history.length > 1) {
+              navigate(-1);
+            } else {
+              navigate('/products');
+            }
+          }}
+          title="Back to Catalog"
+          aria-label="Go back"
+        >
+          <ArrowLeft size={16} />
+        </button>
         <button
           type="button"
           className="dashboard-menu-toggle"

@@ -2503,6 +2503,25 @@ button {
   border-bottom: 1px solid #1e293b;
 }
 
+.admin-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.admin-back-btn:hover {
+  background-color: #e2e8f0;
+}
+
 .admin-menu-toggle {
   display: none;
   align-items: center;
@@ -6870,6 +6889,25 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
 /* ==========================================================================
    DEFAULT DASHBOARD LAYOUT MOBILE RESPONSIVE DRAWER
    ========================================================================== */
+.dashboard-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.dashboard-back-btn:hover {
+  background-color: #e2e8f0;
+}
+
 .dashboard-menu-toggle {
   display: none;
   align-items: center;

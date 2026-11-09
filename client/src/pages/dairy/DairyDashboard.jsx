@@ -453,6 +453,13 @@ export const DairyDashboard = () => {
       <div className="dairy-main-wrapper">
         <header className="dairy-top-navbar">
           <div className="dairy-nav-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link dairy-back-catalog-link"
+              title="Return to Natural Milk Dairy product overview"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
             <div className="dairy-header-title-wrap">
               <button
                 type="button"
@@ -475,13 +482,6 @@ export const DairyDashboard = () => {
           </div>
 
           <div className="dairy-nav-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link dairy-back-catalog-link"
-              title="Return to Natural Milk Dairy product overview"
-            >
-              <ArrowLeft size={15} /> <span>Back</span>
-            </button>
 
             <button className="dairy-bell-btn" title="Notifications">
               <Bell size={19} />

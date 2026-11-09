@@ -476,6 +476,16 @@ export const TravelAgencyDashboard = () => {
           <div className="tat-topbar-left">
             <button
               type="button"
+              className="tat-back-btn"
+              onClick={() => navigate('/products')}
+              title="Return to Catalog"
+              aria-label="Go back"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
+            <button
+              type="button"
               className="tat-menu-toggle"
               onClick={() => setSidebarOpen(true)}
               aria-label="Open navigation menu"

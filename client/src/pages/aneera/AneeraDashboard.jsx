@@ -388,6 +388,13 @@ export const AneeraDashboard = () => {
       <div className="aneera-main-wrapper">
         <header className="aneera-top-navbar">
           <div className="aneera-nav-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link aneera-back-catalog-link"
+              title="Return to Aneera Silks product overview"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
             <div className="aneera-header-title-wrap">
               <button
                 type="button"
@@ -410,13 +417,6 @@ export const AneeraDashboard = () => {
           </div>
 
           <div className="aneera-nav-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link aneera-back-catalog-link"
-              title="Return to Aneera Silks product overview"
-            >
-              <ArrowLeft size={15} /> <span>Back</span>
-            </button>
 
             <button className="aneera-bell-btn" title="Notifications">
               <Bell size={19} />

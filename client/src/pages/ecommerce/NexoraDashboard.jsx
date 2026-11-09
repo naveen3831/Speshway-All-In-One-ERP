@@ -479,6 +479,14 @@ export const NexoraDashboard = () => {
         {/* Top Navbar with Height 82px matching the screenshot */}
         <header className="nexora-topbar">
           <div className="nexora-topbar-left">
+            <button
+              onClick={() => navigate('/')}
+              className="dashboard-back-link nexora-back-btn"
+              title="Return to Solutions Catalog"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
             <div className="nexora-header-title-wrap">
               <button
                 type="button"
@@ -501,14 +509,6 @@ export const NexoraDashboard = () => {
           </div>
 
           <div className="nexora-topbar-right">
-            <button
-              onClick={() => navigate('/')}
-              className="dashboard-back-link nexora-back-btn"
-              title="Return to Solutions Catalog"
-            >
-              <ArrowLeft size={16} />
-              <span>Back</span>
-            </button>
 
             <button className="nexora-icon-btn" title="Notifications">
               <Bell size={20} />

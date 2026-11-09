@@ -214,14 +214,6 @@ export const BusTravelDashboard = () => {
             <div className="bus-header-title-wrap">
               <button
                 type="button"
-                className="bus-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
-              </button>
-              <button
-                type="button"
                 className="bus-back-btn"
                 onClick={() => {
                   if (window.history.length > 1) {
@@ -235,6 +227,14 @@ export const BusTravelDashboard = () => {
               >
                 <ArrowLeft size={18} />
                 <span>Back</span>
+              </button>
+              <button
+                type="button"
+                className="bus-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
               </button>
               <div>
                 <h1 className="bus-page-title">

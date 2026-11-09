@@ -489,6 +489,15 @@ export const AdminLayout = () => {
           <div className="topbar-left">
             <button
               type="button"
+              className="admin-back-btn"
+              onClick={() => navigate('/')}
+              title="Return to Home"
+              aria-label="Go to home"
+            >
+              <ArrowLeft size={16} />
+            </button>
+            <button
+              type="button"
               className="admin-menu-toggle"
               onClick={() => setSidebarOpen(true)}
               aria-label="Open navigation menu"

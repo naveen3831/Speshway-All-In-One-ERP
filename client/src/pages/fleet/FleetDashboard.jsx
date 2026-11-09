@@ -330,6 +330,14 @@ export const FleetDashboard = () => {
         {/* Top Navbar with Height 82px matching request */}
         <header className="fleet-topbar">
           <div className="fleet-topbar-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link fleet-btn-back-vehicles"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
             <div className="fleet-header-title-wrap">
               <button
                 type="button"
@@ -352,14 +360,6 @@ export const FleetDashboard = () => {
           </div>
 
           <div className="fleet-topbar-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link fleet-btn-back-vehicles"
-              title="Return to Catalog"
-            >
-              <ArrowLeft size={16} />
-              <span>Back</span>
-            </button>
 
             <button className="fleet-icon-btn" title="Alerts & Telemetry">
               <Bell size={20} />

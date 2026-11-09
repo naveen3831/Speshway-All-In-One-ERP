@@ -356,15 +356,19 @@ Certified by Speshway Hospital Diagnostic Information System
         {/* Top Navbar Header */}
         <header className="hosp-topbar">
           <div className="hosp-topbar-left">
+            <Link to="/products" className="dashboard-back-link hosp-back-catalog-link">
+              <ArrowLeft size={14} />
+              <span>Back</span>
+            </Link>
+            <button
+              type="button"
+              className="hosp-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
             <div className="hosp-header-title-wrap">
-              <button
-                type="button"
-                className="hosp-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
-              </button>
               <div>
                 <h2 className="hosp-system-title">
                   {navMenuItems.find(m => m.id === activeTab)?.label || 'Hospital Management ERP'}
@@ -374,10 +378,6 @@ Certified by Speshway Hospital Diagnostic Information System
                 </span>
               </div>
             </div>
-            <Link to="/products" className="dashboard-back-link hosp-back-catalog-link">
-              <ArrowLeft size={14} />
-              <span>Back</span>
-            </Link>
           </div>
 
           <div className="hosp-topbar-right">

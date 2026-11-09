@@ -319,6 +319,13 @@ export const FlavoraKitchenDashboard = () => {
         {/* Top Navbar Height 82px matching request */}
         <header className="flavora-topbar">
           <div className="flavora-topbar-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link flavora-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
             <div className="flavora-header-title-wrap">
               <button
                 type="button"
@@ -338,14 +345,6 @@ export const FlavoraKitchenDashboard = () => {
           </div>
 
           <div className="flavora-topbar-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link flavora-back-catalog-btn"
-              title="Return to Catalog"
-            >
-              <ArrowLeft size={15} /> <span>Back</span>
-            </button>
-
             {/* Search Input matching screenshot */}
             <div className="flavora-search-box">
               <Search size={16} className="flavora-search-icon" />

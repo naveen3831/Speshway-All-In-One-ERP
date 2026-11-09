@@ -305,6 +305,14 @@ export const GymDashboard = () => {
         {/* Top Navbar with Height 82px matching user request */}
         <header className="gym-topbar">
           <div className="gym-topbar-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link gym-btn-back-website"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
             <div className="gym-header-title-wrap">
               <button
                 type="button"
@@ -327,14 +335,6 @@ export const GymDashboard = () => {
           </div>
 
           <div className="gym-topbar-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link gym-btn-back-website"
-              title="Return to Catalog"
-            >
-              <ArrowLeft size={16} />
-              <span>Back</span>
-            </button>
 
             <button className="gym-icon-btn" title="Gym Notifications">
               <Bell size={20} />

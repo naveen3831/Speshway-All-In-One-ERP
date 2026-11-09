@@ -342,6 +342,13 @@ export const RideFlowDashboard = () => {
         {/* Topbar with exactly 82px height */}
         <header className="rf-topbar">
           <div className="rf-topbar-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link rf-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
             <div className="rf-header-title-wrap">
               <button
                 type="button"
@@ -361,13 +368,6 @@ export const RideFlowDashboard = () => {
           </div>
 
           <div className="rf-topbar-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link rf-back-catalog-btn"
-              title="Return to Catalog"
-            >
-              <ArrowLeft size={15} /> <span>Back</span>
-            </button>
 
             {/* Global Search Bar */}
             <div className="rf-search-box">

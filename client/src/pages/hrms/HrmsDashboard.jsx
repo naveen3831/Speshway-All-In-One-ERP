@@ -252,6 +252,13 @@ export const HrmsDashboard = () => {
         {/* Top Navbar with Height 82px matching request */}
         <header className="hrms-topbar">
           <div className="hrms-topbar-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link hrms-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
             <div className="hrms-header-title-wrap">
               <button
                 type="button"
@@ -271,13 +278,6 @@ export const HrmsDashboard = () => {
           </div>
 
           <div className="hrms-topbar-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link hrms-back-catalog-btn"
-              title="Return to Catalog"
-            >
-              <ArrowLeft size={15} /> <span>Back</span>
-            </button>
 
             {/* Global Search Bar */}
             <div className="hrms-search-box">

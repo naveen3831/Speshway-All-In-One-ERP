@@ -353,6 +353,14 @@ export const SalonDashboard = () => {
         {/* Top Navbar matching 82px height */}
         <header className="salon-topbar">
           <div className="salon-topbar-left">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link salon-btn-back-services"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
             <div className="salon-header-title-wrap">
               <button
                 type="button"
@@ -375,14 +383,6 @@ export const SalonDashboard = () => {
           </div>
 
           <div className="salon-topbar-right">
-            <button
-              onClick={() => navigate('/products')}
-              className="dashboard-back-link salon-btn-back-services"
-              title="Return to Catalog"
-            >
-              <ArrowLeft size={16} />
-              <span>Back</span>
-            </button>
 
             <button className="salon-icon-btn" title="Notifications">
               <Bell size={20} />

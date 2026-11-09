@@ -951,6 +951,27 @@
 }
 
 /* Mobile Off-Canvas Drawer & Responsive Navigation */
+.tat-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.tat-back-btn:hover {
+  background-color: #f1f5f9;
+  color: #06b6d4;
+}
+
 .tat-menu-toggle {
   display: none;
   align-items: center;

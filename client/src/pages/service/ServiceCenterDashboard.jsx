@@ -133,6 +133,9 @@ export const ServiceCenterDashboard = () => {
         {/* Topbar */}
         <header className="ind-topbar">
           <div className="ind-topbar-left">
+            <button onClick={() => navigate('/')} className="ind-back-pill">
+              <ArrowLeft size={14} /> Back to Speshway ERP
+            </button>
             <button
               type="button"
               className="ind-menu-toggle"
@@ -140,9 +143,6 @@ export const ServiceCenterDashboard = () => {
               aria-label="Open navigation menu"
             >
               <Menu size={20} />
-            </button>
-            <button onClick={() => navigate('/')} className="ind-back-pill">
-              <ArrowLeft size={14} /> Back to Speshway ERP
             </button>
             <div className="ind-live-chip">
               <span className="ind-live-dot" /> Live Multi-Brand Appliance Care
