@@ -149,7 +149,7 @@
   justify-content: space-between;
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 14px 14px 14px;
+  padding: 12px 10px 14px 10px;
 }
 
 /* Titles - Centered in the middle below the image */
@@ -160,7 +160,7 @@
   letter-spacing: -0.02em;
   line-height: 1.3;
   margin: auto 0;
-  padding: 6px 8px;
+  padding: 6px 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,11 +169,11 @@
   box-sizing: border-box;
 }
 
-/* Card Actions: View Website & View ERP - Pinned at bottom of body */
+/* Card Actions: Website & View ERP - Pinned at bottom of body */
 .our-erp-card-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
   box-sizing: border-box;
   padding: 0;
@@ -190,10 +190,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  font-size: 0.85rem;
+  gap: 5px;
+  font-size: 0.8rem;
   font-weight: 700;
-  padding: 8px 6px;
+  letter-spacing: -0.01em;
+  padding: 7px 4px;
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -206,15 +207,18 @@
 
 .our-erp-btn-action svg {
   flex-shrink: 0;
+  width: 13px;
+  height: 13px;
 }
 
 .our-erp-btn-action span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1;
 }
 
-/* View Website Action Button (Distinct Pill) */
+/* Website Action Button (Distinct Pill) */
 .our-erp-btn-website {
   background-color: #ffffff;
   color: #334155;
@@ -296,7 +300,7 @@
   .our-erp-card-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 6px;
     padding: 0;
     width: 100%;
     margin-top: auto;
@@ -307,9 +311,9 @@
   }
 
   .our-erp-btn-action {
-    font-size: 0.82rem;
-    padding: 8px 4px;
-    gap: 5px;
+    font-size: 0.78rem;
+    padding: 7px 3px;
+    gap: 4px;
     border-radius: 9999px;
   }
 }

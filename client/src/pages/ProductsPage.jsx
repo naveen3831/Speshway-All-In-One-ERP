@@ -333,9 +333,9 @@ export const ProductsPage = () => {
                         }
                       }}
                       className="catalog-btn-link"
-                      title="View Website"
+                      title="Website"
                     >
-                      <Globe size={14} /> View Website
+                      <Globe size={14} /> Website
                     </button>
 
                     <button
