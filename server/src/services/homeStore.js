@@ -54,7 +54,10 @@ export const getHomeContent = async () => {
         hero: { ...DEFAULT_HOME_CONTENT.hero, ...(dbContent.hero || {}) },
         stats: { ...DEFAULT_HOME_CONTENT.stats, ...(dbContent.stats || {}) },
         solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(dbContent.solutions || {}) },
-        navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(dbContent.navbar || {}) },
+        navbar: {
+          showPricing: dbContent.navbar?.showPricing !== undefined ? Boolean(dbContent.navbar.showPricing) : true,
+          showProducts: dbContent.navbar?.showProducts !== undefined ? Boolean(dbContent.navbar.showProducts) : true,
+        },
         branding: { ...DEFAULT_HOME_CONTENT.branding, ...(dbContent.branding || {}) },
         socialLinks: { ...DEFAULT_HOME_CONTENT.socialLinks, ...(dbContent.socialLinks || {}) },
       };
@@ -74,6 +77,15 @@ export const updateHomeContent = async (newData) => {
   delete updatePayload.updatedAt;
   updatePayload.key = 'main_home';
 
+  const mergedNavbar = {
+    showPricing: updatePayload.navbar?.showPricing !== undefined
+      ? Boolean(updatePayload.navbar.showPricing)
+      : (memoryHomeContent.navbar?.showPricing !== undefined ? Boolean(memoryHomeContent.navbar.showPricing) : true),
+    showProducts: updatePayload.navbar?.showProducts !== undefined
+      ? Boolean(updatePayload.navbar.showProducts)
+      : (memoryHomeContent.navbar?.showProducts !== undefined ? Boolean(memoryHomeContent.navbar.showProducts) : true),
+  };
+
   // Merge with memory
   memoryHomeContent = {
     ...memoryHomeContent,
@@ -81,7 +93,7 @@ export const updateHomeContent = async (newData) => {
     hero: { ...memoryHomeContent.hero, ...(updatePayload.hero || {}) },
     stats: { ...memoryHomeContent.stats, ...(updatePayload.stats || {}) },
     solutions: { ...memoryHomeContent.solutions, ...(updatePayload.solutions || {}) },
-    navbar: { ...memoryHomeContent.navbar, ...(updatePayload.navbar || {}) },
+    navbar: mergedNavbar,
     branding: { ...memoryHomeContent.branding, ...(updatePayload.branding || {}) },
     socialLinks: { ...memoryHomeContent.socialLinks, ...(updatePayload.socialLinks || {}) },
   };

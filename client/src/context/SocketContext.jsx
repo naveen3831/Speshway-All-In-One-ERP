@@ -301,6 +301,47 @@ export const SocketProvider = ({ children }) => {
     }
   }, [homeContent?.socialLinks]);
 
+  const updateNavbarVisibility = async (partialUpdates = {}) => {
+    const currentNavbar = homeContent?.navbar || { showPricing: true, showProducts: true };
+    const nextNavbar = {
+      showPricing: partialUpdates.showPricing !== undefined
+        ? Boolean(partialUpdates.showPricing)
+        : Boolean(currentNavbar.showPricing ?? true),
+      showProducts: partialUpdates.showProducts !== undefined
+        ? Boolean(partialUpdates.showProducts)
+        : Boolean(currentNavbar.showProducts ?? true),
+    };
+
+    const updatedHome = {
+      ...(homeContent || DEFAULT_HOME_CONTENT),
+      navbar: nextNavbar,
+    };
+
+    // 1. Immediately update React state for instant UI response
+    setHomeContent(updatedHome);
+
+    // 2. Persist to localStorage for fallback and offline persistence
+    try {
+      localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+      localStorage.setItem('speshway_navbar_pricing_visible', nextNavbar.showPricing ? 'true' : 'false');
+      localStorage.setItem('speshway_navbar_products_visible', nextNavbar.showProducts ? 'true' : 'false');
+    } catch (e) {}
+
+    // 3. Dispatch events to notify any listeners
+    window.dispatchEvent(new Event('speshway_navbar_pricing_changed'));
+    window.dispatchEvent(new Event('speshway_navbar_products_changed'));
+    window.dispatchEvent(new Event('speshway_navbar_visibility_changed'));
+
+    // 4. Persist to backend and let WebSocket broadcast to other clients
+    try {
+      const res = await api.put('/home', updatedHome);
+      return res.data?.data || updatedHome;
+    } catch (err) {
+      console.warn('Could not persist navbar visibility to API:', err.message);
+      return updatedHome;
+    }
+  };
+
   const refreshHomeContent = async () => {
     try {
       const res = await api.get('/home');
@@ -308,7 +349,18 @@ export const SocketProvider = ({ children }) => {
         setHomeContent(res.data.data);
         try {
           localStorage.setItem('speshway_home_content', JSON.stringify(res.data.data));
+          if (res.data.data.navbar) {
+            if (res.data.data.navbar.showPricing !== undefined) {
+              localStorage.setItem('speshway_navbar_pricing_visible', res.data.data.navbar.showPricing ? 'true' : 'false');
+            }
+            if (res.data.data.navbar.showProducts !== undefined) {
+              localStorage.setItem('speshway_navbar_products_visible', res.data.data.navbar.showProducts ? 'true' : 'false');
+            }
+          }
         } catch (e) {}
+        window.dispatchEvent(new Event('speshway_navbar_pricing_changed'));
+        window.dispatchEvent(new Event('speshway_navbar_products_changed'));
+        window.dispatchEvent(new Event('speshway_navbar_visibility_changed'));
         return res.data.data;
       }
     } catch (err) {
@@ -564,7 +616,18 @@ export const SocketProvider = ({ children }) => {
         setHomeContent(updatedHome);
         try {
           localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+          if (updatedHome.navbar) {
+            if (updatedHome.navbar.showPricing !== undefined) {
+              localStorage.setItem('speshway_navbar_pricing_visible', updatedHome.navbar.showPricing ? 'true' : 'false');
+            }
+            if (updatedHome.navbar.showProducts !== undefined) {
+              localStorage.setItem('speshway_navbar_products_visible', updatedHome.navbar.showProducts ? 'true' : 'false');
+            }
+          }
         } catch (e) {}
+        window.dispatchEvent(new Event('speshway_navbar_pricing_changed'));
+        window.dispatchEvent(new Event('speshway_navbar_products_changed'));
+        window.dispatchEvent(new Event('speshway_navbar_visibility_changed'));
       }
     });
 
@@ -836,6 +899,7 @@ export const SocketProvider = ({ children }) => {
         homeContent,
         refreshHomeContent,
         setHomeContent,
+        updateNavbarVisibility,
         branding,
         setBranding,
         updateBranding,

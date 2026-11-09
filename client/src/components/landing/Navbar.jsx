@@ -23,54 +23,50 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     setContactCardOpen(false);
   }, [location.pathname]);
 
-  // Determine whether Pricing should be visible in navbar
-  const [showPricing, setShowPricing] = useState(() => {
+  // Helper to determine boolean visibility with homeContent as primary source of truth, localStorage as fallback
+  const getPricingVisible = () => {
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     const stored = localStorage.getItem('speshway_navbar_pricing_visible');
     if (stored !== null) return stored === 'true';
-    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     return true;
-  });
+  };
 
-  // Determine whether Products/Projects should be visible in navbar
-  const [showProducts, setShowProducts] = useState(() => {
+  const getProductsVisible = () => {
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     const stored = localStorage.getItem('speshway_navbar_products_visible');
     if (stored !== null) return stored === 'true';
-    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     return true;
-  });
+  };
+
+  const [showPricing, setShowPricing] = useState(getPricingVisible);
+  const [showProducts, setShowProducts] = useState(getProductsVisible);
+
+  // Synchronize on homeContent updates
+  useEffect(() => {
+    setShowPricing(getPricingVisible());
+  }, [homeContent?.navbar?.showPricing]);
 
   useEffect(() => {
-    const syncVisibility = () => {
-      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
-      if (stored !== null) {
-        setShowPricing(stored === 'true');
-      } else if (homeContent?.navbar?.showPricing !== undefined) {
-        setShowPricing(Boolean(homeContent.navbar.showPricing));
-      }
+    setShowProducts(getProductsVisible());
+  }, [homeContent?.navbar?.showProducts]);
+
+  // Synchronize on cross-tab storage and window events
+  useEffect(() => {
+    const handleSync = () => {
+      setShowPricing(getPricingVisible());
+      setShowProducts(getProductsVisible());
     };
 
-    const syncProductsVisibility = () => {
-      const stored = localStorage.getItem('speshway_navbar_products_visible');
-      if (stored !== null) {
-        setShowProducts(stored === 'true');
-      } else if (homeContent?.navbar?.showProducts !== undefined) {
-        setShowProducts(Boolean(homeContent.navbar.showProducts));
-      }
-    };
-
-    syncVisibility();
-    syncProductsVisibility();
-
-    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
-    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
-    window.addEventListener('storage', syncVisibility);
-    window.addEventListener('storage', syncProductsVisibility);
+    window.addEventListener('speshway_navbar_pricing_changed', handleSync);
+    window.addEventListener('speshway_navbar_products_changed', handleSync);
+    window.addEventListener('speshway_navbar_visibility_changed', handleSync);
+    window.addEventListener('storage', handleSync);
 
     return () => {
-      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
-      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
-      window.removeEventListener('storage', syncVisibility);
-      window.removeEventListener('storage', syncProductsVisibility);
+      window.removeEventListener('speshway_navbar_pricing_changed', handleSync);
+      window.removeEventListener('speshway_navbar_products_changed', handleSync);
+      window.removeEventListener('speshway_navbar_visibility_changed', handleSync);
+      window.removeEventListener('storage', handleSync);
     };
   }, [homeContent?.navbar?.showPricing, homeContent?.navbar?.showProducts]);
 
@@ -87,62 +83,71 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     location.pathname === '/products' ||
     location.pathname.startsWith('/product/');
 
+  const hasNavItems = Boolean(showProducts || showPricing);
+
   return (
     <>
       <header className="navbar-container">
-        <div className="navbar-content">
-          {/* Brand Logo with User Uploaded Logo Image & Brand Name */}
+        <div className={`navbar-content ${!hasNavItems ? 'is-brand-centered' : 'is-brand-left'}`}>
+          {/* Unified Brand Unit (Logo + Vertical Divider + Brand Name & Tagline) */}
           <Link
             to="/"
-            className="brand-logo"
-            title={`${brandTitle} - Home`}
+            className={`navbar-brand-unit ${!hasNavItems ? 'is-centered' : 'is-left'}`}
+            title={`${brandTitle} - ${brandSubtitle}`}
             onClick={() => {
               setMobileMenuOpen(false);
               window.scrollTo(0, 0);
             }}
           >
-            <div className="brand-logo-wrap">
+            <div className="navbar-brand-logo-wrap">
               <img
                 src={logoUrl}
                 alt={`${brandTitle} Logo`}
-                className="brand-logo-img"
+                className="navbar-brand-logo-img"
               />
             </div>
-            <div className="brand-text">
-              <span className="brand-title">{brandTitle}</span>
-              <span className="brand-subtitle">{brandSubtitle}</span>
+            <div className="navbar-brand-divider" />
+            <div className="navbar-brand-text">
+              <span className="navbar-brand-title">{brandTitle}</span>
+              <div className="navbar-brand-subtitle-row">
+                <span className="navbar-brand-dash">—</span>
+                <span className="navbar-brand-subtitle">{brandSubtitle}</span>
+                <span className="navbar-brand-dash">—</span>
+              </div>
             </div>
           </Link>
 
-          {/* Center Navigation Links - Desktop Only */}
-          <nav className="nav-links">
-            <NavLink
-              to="/"
-              end
-              onClick={() => window.scrollTo(0, 0)}
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
-              HOME
-            </NavLink>
-            {showProducts && (
+          {/* Center Navigation Links - Desktop Only (Rendered when Projects or Pricing is ON) */}
+          {hasNavItems && (
+            <nav className="nav-links">
               <NavLink
-                to="/projects"
-                onClick={() => window.scrollTo(0, 0)}
-                className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
-              >
-                PROJECTS
-              </NavLink>
-            )}
-            {showPricing && (
-              <NavLink
-                to="/pricing"
+                to="/"
+                end
                 onClick={() => window.scrollTo(0, 0)}
                 className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
               >
-                PRICING
+                HOME
               </NavLink>
-            )}
-          </nav>
+              {showProducts && (
+                <NavLink
+                  to="/projects"
+                  onClick={() => window.scrollTo(0, 0)}
+                  className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
+                >
+                  PROJECTS
+                </NavLink>
+              )}
+              {showPricing && (
+                <NavLink
+                  to="/pricing"
+                  onClick={() => window.scrollTo(0, 0)}
+                  className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+                >
+                  PRICING
+                </NavLink>
+              )}
+            </nav>
+          )}
 
           {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
           <div className="nav-actions">
@@ -168,17 +173,19 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="mobile-nav-drawer">
-            <NavLink
-              to="/"
-              end
-              onClick={() => {
-                setMobileMenuOpen(false);
-                window.scrollTo(0, 0);
-              }}
-              className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-            >
-              HOME
-            </NavLink>
+            {hasNavItems && (
+              <NavLink
+                to="/"
+                end
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
+                className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+              >
+                HOME
+              </NavLink>
+            )}
             {showProducts && (
               <NavLink
                 to="/projects"
