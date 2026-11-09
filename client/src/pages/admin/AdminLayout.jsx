@@ -439,7 +439,7 @@ export const AdminLayout = () => {
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Package size={18} />
-            <span>Projects Management</span>
+            <span>Categories Management</span>
           </NavLink>
 
           <NavLink
