@@ -1,6 +1,35 @@
 import User from '../models/User.js';
 import { generateToken } from '../utils/generateToken.js';
 
+export const SESSION_COOKIE_NAME = 'speshway_session';
+export const DEFAULT_TIMEOUT_MINUTES = 10;
+
+// Helper to configure secure cookie options
+export const getSessionCookieOptions = (timeoutMinutes = DEFAULT_TIMEOUT_MINUTES) => {
+  const isProd = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    maxAge: timeoutMinutes * 60 * 1000, // Sliding window (default 10m)
+    path: '/',
+  };
+};
+
+export const setSessionCookie = (res, token, timeoutMinutes = DEFAULT_TIMEOUT_MINUTES) => {
+  res.cookie(SESSION_COOKIE_NAME, token, getSessionCookieOptions(timeoutMinutes));
+};
+
+export const clearSessionCookie = (res) => {
+  const isProd = process.env.NODE_ENV === 'production';
+  res.clearCookie(SESSION_COOKIE_NAME, {
+    path: '/',
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+  });
+};
+
 // Seed default admin in database if connected
 export const seedAdminUser = async () => {
   try {
@@ -20,12 +49,13 @@ export const seedAdminUser = async () => {
   }
 };
 
-// @desc    Authenticate user & get token
+// @desc    Authenticate user & set session cookie
 // @route   POST /api/auth/login
 // @access  Public
 export const loginUser = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, timeoutMinutes } = req.body;
+    const sessionTimeout = Number(timeoutMinutes) > 0 ? Number(timeoutMinutes) : DEFAULT_TIMEOUT_MINUTES;
 
     if (!email || !password) {
       return res
@@ -38,17 +68,25 @@ export const loginUser = async (req, res, next) => {
 
     // 1. Default Seed Admin Check (Always Guaranteed)
     if (cleanEmail === 'admin@gmail.com' && cleanPassword === 'admin123') {
+      const token = generateToken('admin_master_001');
+      setSessionCookie(res, token, sessionTimeout);
+
       const adminData = {
         _id: 'admin_master_001',
         name: 'Speshway Administrator',
         email: 'admin@gmail.com',
         role: 'admin',
         department: 'Executive Administration',
-        token: generateToken('admin_master_001'),
+        token,
       };
+
       return res.json({
         success: true,
         data: adminData,
+        session: {
+          timeoutMinutes: sessionTimeout,
+          expiresAt: new Date(Date.now() + sessionTimeout * 60 * 1000).toISOString(),
+        },
       });
     }
 
@@ -56,6 +94,9 @@ export const loginUser = async (req, res, next) => {
     try {
       const user = await User.findOne({ email: cleanEmail }).select('+password');
       if (user && (await user.matchPassword(cleanPassword))) {
+        const token = generateToken(user._id);
+        setSessionCookie(res, token, sessionTimeout);
+
         return res.json({
           success: true,
           data: {
@@ -64,7 +105,11 @@ export const loginUser = async (req, res, next) => {
             email: user.email,
             role: user.role,
             department: user.department,
-            token: generateToken(user._id),
+            token,
+          },
+          session: {
+            timeoutMinutes: sessionTimeout,
+            expiresAt: new Date(Date.now() + sessionTimeout * 60 * 1000).toISOString(),
           },
         });
       }
@@ -78,12 +123,13 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-// @desc    Register new user
+// @desc    Register new user & set session cookie
 // @route   POST /api/auth/register
 // @access  Public
 export const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password, role, department } = req.body;
+    const { name, email, password, role, department, timeoutMinutes } = req.body;
+    const sessionTimeout = Number(timeoutMinutes) > 0 ? Number(timeoutMinutes) : DEFAULT_TIMEOUT_MINUTES;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -99,6 +145,9 @@ export const registerUser = async (req, res, next) => {
     });
 
     if (user) {
+      const token = generateToken(user._id);
+      setSessionCookie(res, token, sessionTimeout);
+
       res.status(201).json({
         success: true,
         data: {
@@ -107,7 +156,11 @@ export const registerUser = async (req, res, next) => {
           email: user.email,
           role: user.role,
           department: user.department,
-          token: generateToken(user._id),
+          token,
+        },
+        session: {
+          timeoutMinutes: sessionTimeout,
+          expiresAt: new Date(Date.now() + sessionTimeout * 60 * 1000).toISOString(),
         },
       });
     } else {
@@ -118,11 +171,60 @@ export const registerUser = async (req, res, next) => {
   }
 };
 
-// @desc    Get current user profile
+// @desc    Verify current active session & renew sliding cookie
+// @route   GET /api/auth/verify-session
+// @access  Private (protect middleware)
+export const verifySession = async (req, res, next) => {
+  try {
+    const token =
+      req.cookies?.[SESSION_COOKIE_NAME] ||
+      (req.headers.authorization && req.headers.authorization.startsWith('Bearer')
+        ? req.headers.authorization.split(' ')[1]
+        : null);
+
+    if (token) {
+      setSessionCookie(res, token, DEFAULT_TIMEOUT_MINUTES);
+    }
+
+    return res.json({
+      success: true,
+      data: req.user,
+      session: {
+        timeoutMinutes: DEFAULT_TIMEOUT_MINUTES,
+        expiresAt: new Date(Date.now() + DEFAULT_TIMEOUT_MINUTES * 60 * 1000).toISOString(),
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Log out user & clear session cookie
+// @route   POST /api/auth/logout
+// @access  Public
+export const logoutUser = async (req, res) => {
+  clearSessionCookie(res);
+  return res.json({
+    success: true,
+    message: 'Logged out successfully, session cookie invalidated',
+  });
+};
+
+// @desc    Get current user profile & refresh sliding session
 // @route   GET /api/auth/me
 // @access  Private
 export const getMe = async (req, res, next) => {
   try {
+    const token =
+      req.cookies?.[SESSION_COOKIE_NAME] ||
+      (req.headers.authorization && req.headers.authorization.startsWith('Bearer')
+        ? req.headers.authorization.split(' ')[1]
+        : null);
+
+    if (token) {
+      setSessionCookie(res, token, DEFAULT_TIMEOUT_MINUTES);
+    }
+
     if (req.user && req.user._id === 'admin_master_001') {
       return res.json({
         success: true,

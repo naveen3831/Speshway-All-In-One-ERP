@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSocket, DEFAULT_BRANDING } from '../context/SocketContext';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, ArrowLeft, Clock } from 'lucide-react';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,7 +10,7 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, sessionExpired, sessionExpiredReason, dismissSessionExpired, timeoutMinutes } = useAuth();
   const { branding, homeContent } = useSocket();
   const navigate = useNavigate();
 
@@ -25,6 +25,7 @@ export const Login = () => {
 
     try {
       const res = await login({ email, password });
+      dismissSessionExpired();
       if (res?.data?.role === 'admin') {
         navigate('/admin');
       } else {
@@ -50,6 +51,36 @@ export const Login = () => {
             Sign in to your enterprise account to access your workspace
           </p>
         </div>
+
+        {sessionExpired && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '12px',
+              padding: '14px 16px',
+              borderRadius: '12px',
+              backgroundColor: '#fffbeb',
+              border: '1.5px solid #fde68a',
+              color: '#92400e',
+              marginBottom: '20px',
+              fontSize: '0.88rem',
+              lineHeight: 1.45,
+              boxShadow: '0 2px 8px rgba(245, 158, 11, 0.08)',
+            }}
+          >
+            <Clock size={20} style={{ color: '#d97706', flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ flex: 1 }}>
+              <strong style={{ display: 'block', fontSize: '0.92rem', marginBottom: '2px', color: '#b45309' }}>
+                Session Expired Due to Inactivity
+              </strong>
+              <span>
+                {sessionExpiredReason ||
+                  `You were automatically signed out after ${timeoutMinutes} minutes of inactivity. Please log in again.`}
+              </span>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="pro-login-error">
