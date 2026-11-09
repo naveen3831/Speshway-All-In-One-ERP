@@ -128,8 +128,28 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
         aria-modal="true"
         aria-labelledby="contact-modal-title"
       >
-        {/* Top Actions: Close Button */}
-        <div className="contact-modal-top-actions">
+        {/* Modal Top Header with Balanced Horizontal Flow */}
+        <div className="contact-modal-header">
+          <div className="contact-header-left-col">
+            <div className="contact-modal-badge">
+              <Headphones size={20} />
+            </div>
+            <div className="contact-header-info">
+              <div className="contact-title-row">
+                <h2 id="contact-modal-title" className="contact-modal-title">
+                  Contact Speshway
+                </h2>
+                <div className="contact-live-status-pill">
+                  <span className="contact-status-dot" />
+                  <span>Online &bull; 24/7 Desk</span>
+                </div>
+              </div>
+              <p className="contact-modal-subtitle">
+                Connect directly with our solutions architects or dispatch a quick note.
+              </p>
+            </div>
+          </div>
+
           <button
             type="button"
             className="contact-modal-close-btn"
@@ -137,27 +157,8 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
             aria-label="Close dialog"
             title="Close"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
-        </div>
-
-        {/* Modal Header */}
-        <div className="contact-modal-header">
-          <div className="contact-modal-badge">
-            <Headphones size={24} />
-          </div>
-          <div className="contact-modal-header-text">
-            <div className="contact-live-status-pill">
-              <span className="contact-status-dot" />
-              <span>Support Team Online &bull; 24/7 Desk</span>
-            </div>
-            <h2 id="contact-modal-title" className="contact-modal-title">
-              Contact Speshway
-            </h2>
-            <p className="contact-modal-subtitle">
-              Have questions or looking to scale your operations? Connect directly with our enterprise team.
-            </p>
-          </div>
         </div>
 
         {/* Tab Switcher */}
@@ -167,7 +168,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
             className={`contact-modal-tab ${activeTab === 'direct' ? 'active' : ''}`}
             onClick={() => setActiveTab('direct')}
           >
-            <PhoneCall size={15} />
+            <PhoneCall size={14} />
             <span>Direct Channels</span>
           </button>
           <button
@@ -175,7 +176,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
             className={`contact-modal-tab ${activeTab === 'message' ? 'active' : ''}`}
             onClick={() => setActiveTab('message')}
           >
-            <MessageSquare size={15} />
+            <MessageSquare size={14} />
             <span>Send a Message</span>
           </button>
         </div>
@@ -188,7 +189,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
               <div className="contact-channel-card">
                 <div className="channel-card-top">
                   <div className="channel-icon-wrap emerald">
-                    <Phone size={18} />
+                    <Phone size={15} />
                   </div>
                   <a
                     href="tel:+18005557737"
@@ -196,11 +197,11 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                     title="Call Toll-Free"
                   >
                     <span>Call Now</span>
-                    <ArrowRight size={12} />
+                    <ArrowRight size={11} />
                   </a>
                 </div>
                 <div className="channel-card-content">
-                  <span className="channel-label">TOLL-FREE SUPPORT (24/7)</span>
+                  <span className="channel-label">TOLL-FREE CALL (24/7)</span>
                   <a href="tel:+18005557737" className="channel-value-link">
                     +1 (800) 555-SPESH
                   </a>
@@ -212,7 +213,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
               <div className="contact-channel-card">
                 <div className="channel-card-top">
                   <div className="channel-icon-wrap emerald">
-                    <Mail size={18} />
+                    <Mail size={15} />
                   </div>
                   <button
                     type="button"
@@ -220,7 +221,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                     className="channel-action-badge copy"
                     title="Copy Email Address"
                   >
-                    {copied ? <Check size={12} /> : <Copy size={12} />}
+                    {copied ? <Check size={11} /> : <Copy size={11} />}
                     <span>{copied ? 'Copied' : 'Copy'}</span>
                   </button>
                 </div>
@@ -237,14 +238,14 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
               <div className="contact-channel-card">
                 <div className="channel-card-top">
                   <div className="channel-icon-wrap slate">
-                    <MapPin size={18} />
+                    <MapPin size={15} />
                   </div>
                   <span className="channel-tag-pill">HQ &amp; Remote</span>
                 </div>
                 <div className="channel-card-content">
                   <span className="channel-label">GLOBAL HEADQUARTERS</span>
                   <span className="channel-value-text">Silicon Valley, CA</span>
-                  <span className="channel-subtext">Serving clients in 25+ countries</span>
+                  <span className="channel-subtext">Serving clients worldwide</span>
                 </div>
               </div>
 
@@ -252,7 +253,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
               <div className="contact-channel-card">
                 <div className="channel-card-top">
                   <div className="channel-icon-wrap slate">
-                    <Clock size={18} />
+                    <Clock size={15} />
                   </div>
                   <span className="channel-tag-pill active">365 Days</span>
                 </div>
@@ -275,7 +276,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                   else navigate('/get-started');
                 }}
               >
-                <Sparkles size={16} />
+                <Sparkles size={14} />
                 <span>Book a Live Demo</span>
               </button>
 
@@ -288,7 +289,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                 }}
               >
                 <span>Full Contact &amp; FAQs</span>
-                <ArrowRight size={14} />
+                <ArrowRight size={13} />
               </Link>
             </div>
           </div>
@@ -300,7 +301,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
             {isSuccess ? (
               <div className="contact-success-box">
                 <div className="success-badge-circle">
-                  <CheckCircle2 size={40} className="text-emerald" />
+                  <CheckCircle2 size={36} className="text-emerald" />
                 </div>
                 <h4 className="success-heading">Message Dispatched!</h4>
                 <p className="success-copy">
@@ -310,7 +311,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                   type="button"
                   onClick={onClose}
                   className="contact-primary-demo-btn"
-                  style={{ marginTop: '12px', alignSelf: 'center' }}
+                  style={{ marginTop: '10px', alignSelf: 'center' }}
                 >
                   Done
                 </button>
@@ -324,7 +325,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                     Full Name <span className="req">*</span>
                   </label>
                   <div className="modal-input-wrapper">
-                    <User size={16} className="modal-input-icon" />
+                    <User size={15} className="modal-input-icon" />
                     <input
                       id="card-name"
                       type="text"
@@ -341,7 +342,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                     Work Email <span className="req">*</span>
                   </label>
                   <div className="modal-input-wrapper">
-                    <Mail size={16} className="modal-input-icon" />
+                    <Mail size={15} className="modal-input-icon" />
                     <input
                       id="card-email"
                       type="email"
@@ -360,7 +361,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                   <div className="modal-input-wrapper textarea-wrapper">
                     <textarea
                       id="card-message"
-                      rows={3}
+                      rows={2}
                       placeholder="Tell us about your industry, current workflow, or questions..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
@@ -374,7 +375,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
                     disabled={isSubmitting}
                     className="contact-submit-btn"
                   >
-                    <Send size={15} />
+                    <Send size={14} />
                     <span>{isSubmitting ? 'Sending inquiry...' : 'Send Message'}</span>
                   </button>
 
