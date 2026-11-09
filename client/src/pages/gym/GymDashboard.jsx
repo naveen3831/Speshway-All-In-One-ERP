@@ -25,6 +25,8 @@ import {
   Flame,
   Activity,
   HeartPulse,
+  Menu,
+  X,
 } from 'lucide-react';
 import './GymDashboard.css';
 
@@ -73,6 +75,7 @@ const GymLogoIcon = () => (
 export const GymDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chartMode, setChartMode] = useState('revenue'); // 'revenue' | 'memberships'
   const [dateRange, setDateRange] = useState('Last 7 Days');
 
@@ -226,40 +229,59 @@ export const GymDashboard = () => {
 
   return (
     <div className="gym-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="gym-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
-      <aside className="gym-sidebar">
+      <aside className={`gym-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="gym-sidebar-top">
           {/* Brand Header */}
-        <div className="gym-brand">
-          <div className="gym-logo-container">
-            <GymLogoIcon />
+          <div className="gym-brand">
+            <div className="gym-logo-container">
+              <GymLogoIcon />
+            </div>
+            <div className="gym-brand-text">
+              <span className="gym-brand-title">American Fitness Gym</span>
+              <span className="gym-brand-subtitle">ADMIN PANEL</span>
+            </div>
+            <button
+              type="button"
+              className="gym-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-          <div className="gym-brand-text">
-            <span className="gym-brand-title">American Fitness Gym</span>
-            <span className="gym-brand-subtitle">ADMIN PANEL</span>
-          </div>
-        </div>
 
-        {/* Navigation Items */}
-        <nav className="gym-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`gym-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="gym-nav-btn-left">
-                  <Icon size={18} className="gym-nav-icon" />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && <span className="gym-nav-badge">{item.badge}</span>}
-              </button>
-            );
-          })}
-        </nav>
+          {/* Navigation Items */}
+          <nav className="gym-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`gym-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="gym-nav-btn-left">
+                    <Icon size={18} className="gym-nav-icon" />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && <span className="gym-nav-badge">{item.badge}</span>}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Pinned Bottom */}
@@ -283,29 +305,43 @@ export const GymDashboard = () => {
         {/* Top Navbar with Height 82px matching user request */}
         <header className="gym-topbar">
           <div className="gym-topbar-left">
-            <h1 className="gym-topbar-title">American Fitness Gym</h1>
-            <div className="gym-status-pill">
-              <span className="gym-status-dot"></span>
-              <span className="gym-status-text">Operational</span>
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link gym-btn-back-website"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
+            <div className="gym-header-title-wrap">
+              <button
+                type="button"
+                className="gym-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="gym-topbar-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'American Fitness Gym'}
+                </h1>
+                <div className="gym-status-pill">
+                  <span className="gym-status-dot"></span>
+                  <span className="gym-status-text">Operational</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="gym-topbar-right">
-            <button
-              onClick={() => navigate('/product/american-fitness-gym')}
-              className="gym-btn-back-website"
-              title="Return to Website"
-            >
-              <ArrowLeft size={16} />
-              <span>Back to Website</span>
-            </button>
 
             <button className="gym-icon-btn" title="Gym Notifications">
               <Bell size={20} />
               <span className="gym-unread-dot"></span>
             </button>
 
-            <div className="gym-user-profile">
+            <div className="gym-user-profile-top">
               <span className="gym-user-name">Admin</span>
               <div className="gym-avatar">A</div>
             </div>

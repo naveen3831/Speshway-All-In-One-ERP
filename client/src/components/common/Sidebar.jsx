@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { X } from 'lucide-react';
 
 const navItems = [
   { label: 'Dashboard', path: '/' },
@@ -11,9 +12,10 @@ const navItems = [
   { label: 'Settings', path: '/settings' },
 ];
 
-export const Sidebar = () => {
+export const Sidebar = ({ open, onClose }) => {
   return (
     <aside
+      className={`dashboard-sidebar ${open ? 'open' : ''}`}
       style={{
         width: 'var(--sidebar-width)',
         backgroundColor: '#1e293b',
@@ -33,21 +35,34 @@ export const Sidebar = () => {
       }}
     >
       <div
+        className="dashboard-sidebar-header"
         style={{
           padding: '24px 20px',
           fontSize: '1.25rem',
           fontWeight: 700,
           letterSpacing: '-0.025em',
           borderBottom: '1px solid #334155',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        Speshway ERP
+        <span>Speshway ERP</span>
+        <button
+          type="button"
+          className="dashboard-sidebar-close"
+          onClick={onClose}
+          aria-label="Close navigation menu"
+        >
+          <X size={20} />
+        </button>
       </div>
       <nav style={{ padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
+            onClick={onClose}
             style={({ isActive }) => ({
               display: 'block',
               padding: '10px 16px',

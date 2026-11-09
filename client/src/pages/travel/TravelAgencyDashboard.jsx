@@ -33,12 +33,14 @@ import {
   CreditCard,
   Building,
   X,
+  Menu,
   Sparkles,
 } from 'lucide-react';
 import './TravelAgencyDashboard.css';
 
 export const TravelAgencyDashboard = () => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [activeTimeframe, setActiveTimeframe] = useState('30days');
   const [searchQuery, setSearchQuery] = useState('');
@@ -390,8 +392,17 @@ export const TravelAgencyDashboard = () => {
 
   return (
     <div className="tat-erp-root">
+      {/* Mobile Drawer Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="tat-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close navigation overlay"
+        />
+      )}
+
       {/* 1. SIDEBAR */}
-      <aside className="tat-sidebar">
+      <aside className={`tat-sidebar ${sidebarOpen ? 'open' : ''}`}>
         {/* Brand Logo Header */}
         <div className="tat-sidebar-brand">
           <div className="tat-logo-mark">
@@ -411,6 +422,14 @@ export const TravelAgencyDashboard = () => {
             </span>
             <span className="tat-brand-legal">Pvt. Ltd.</span>
           </div>
+          <button
+            type="button"
+            className="tat-sidebar-close"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Navigation Menu */}
@@ -421,7 +440,10 @@ export const TravelAgencyDashboard = () => {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  setSidebarOpen(false);
+                }}
                 className={`tat-nav-item ${isActive ? 'active' : ''}`}
               >
                 <Icon size={18} className="tat-nav-icon" />
@@ -434,7 +456,10 @@ export const TravelAgencyDashboard = () => {
         {/* Sidebar Footer / Logout */}
         <div className="tat-sidebar-footer">
           <button
-            onClick={() => navigate('/product/tours-and-travels')}
+            onClick={() => {
+              setSidebarOpen(false);
+              navigate('/product/tours-and-travels');
+            }}
             className="tat-nav-item logout"
             title="Return to Speshway Products"
           >
@@ -449,6 +474,24 @@ export const TravelAgencyDashboard = () => {
         {/* Top Navbar */}
         <header className="tat-topbar">
           <div className="tat-topbar-left">
+            <button
+              type="button"
+              className="tat-back-btn"
+              onClick={() => navigate('/products')}
+              title="Return to Catalog"
+              aria-label="Go back"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
+            <button
+              type="button"
+              className="tat-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
             <h2 className="tat-module-title">Travel Agency ERP</h2>
           </div>
 

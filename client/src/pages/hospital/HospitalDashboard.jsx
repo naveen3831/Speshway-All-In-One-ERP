@@ -24,6 +24,7 @@ import {
   Search,
   ChevronDown,
   Printer,
+  Menu,
   X,
   CheckCircle,
   AlertCircle,
@@ -158,6 +159,7 @@ const INITIAL_LAB_REPORTS = [
 export const HospitalDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('lab'); // Default to 'lab' to match user screenshot
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedReport, setSelectedReport] = useState(null);
@@ -273,45 +275,64 @@ Certified by Speshway Hospital Diagnostic Information System
 
   return (
     <div className="hosp-erp-root">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="hosp-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR */}
-      <aside className="hosp-sidebar">
+      <aside className={`hosp-sidebar ${sidebarOpen ? 'open' : ''}`}>
         {/* Brand Header */}
         <div className="hosp-sidebar-top">
           <div className="hosp-sidebar-brand">
-          <div className="hosp-logo-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect width="24" height="24" rx="6" fill="#059669" />
-              <path d="M12 6v12M6 12h12" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-            </svg>
+            <div className="hosp-logo-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect width="24" height="24" rx="6" fill="#059669" />
+                <path d="M12 6v12M6 12h12" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div className="hosp-brand-text">
+              <span className="hosp-brand-title">Speshway</span>
+              <span className="hosp-brand-sub">HOSPITALS</span>
+            </div>
+            <button
+              type="button"
+              className="hosp-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-          <div className="hosp-brand-text">
-            <span className="hosp-brand-title">Speshway</span>
-            <span className="hosp-brand-sub">HOSPITALS</span>
-          </div>
-        </div>
 
-        {/* Navigation Menu List */}
-        <nav className="hosp-nav-list">
-          {navMenuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`hosp-nav-item ${isActive ? 'active' : ''}`}
-              >
-                <Icon size={18} className="hosp-nav-icon" />
-                <span className="hosp-nav-label">{item.label}</span>
-                {item.badge && (
-                  <span className={`hosp-badge ${item.badgeType}`}>
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
+          {/* Navigation Menu List */}
+          <nav className="hosp-nav-list">
+            {navMenuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`hosp-nav-item ${isActive ? 'active' : ''}`}
+                >
+                  <Icon size={18} className="hosp-nav-icon" />
+                  <span className="hosp-nav-label">{item.label}</span>
+                  {item.badge && (
+                    <span className={`hosp-badge ${item.badgeType}`}>
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Footer Logout */}
@@ -335,14 +356,28 @@ Certified by Speshway Hospital Diagnostic Information System
         {/* Top Navbar Header */}
         <header className="hosp-topbar">
           <div className="hosp-topbar-left">
-            <h2 className="hosp-system-title">Hospital Management ERP</h2>
-            <span className="hosp-status-pill">
-              <span className="hosp-status-dot" /> Operational
-            </span>
-            <Link to="/product/speshway-hospitals" className="hosp-back-catalog-link">
-              <ArrowLeft size={13} />
-              <span>Back to Overview</span>
+            <Link to="/products" className="dashboard-back-link hosp-back-catalog-link">
+              <ArrowLeft size={14} />
+              <span>Back</span>
             </Link>
+            <button
+              type="button"
+              className="hosp-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
+            <div className="hosp-header-title-wrap">
+              <div>
+                <h2 className="hosp-system-title">
+                  {navMenuItems.find(m => m.id === activeTab)?.label || 'Hospital Management ERP'}
+                </h2>
+                <span className="hosp-status-pill">
+                  <span className="hosp-status-dot" /> Operational
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="hosp-topbar-right">
@@ -350,7 +385,7 @@ Certified by Speshway Hospital Diagnostic Information System
               <Bell size={18} />
               <span className="hosp-notification-dot" />
             </button>
-            <div className="hosp-user-profile">
+            <div className="hosp-user-profile-top">
               <span className="hosp-role-label">Owner</span>
               <div className="hosp-avatar-circle">O</div>
             </div>

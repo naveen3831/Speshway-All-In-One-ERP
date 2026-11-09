@@ -318,6 +318,27 @@
   border-radius: 20px;
 }
 
+.learn-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.learn-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
 .learn-icon-btn {
   position: relative;
   width: 38px;
@@ -830,11 +851,15 @@
   }
 
   .learn-badge-cluster {
-    display: none;
+    display: none !important;
+  }
+
+  .learn-live-indicator {
+    display: none !important;
   }
 
   .learn-search-box {
-    display: none;
+    display: none !important;
   }
 
   .learn-content-body {

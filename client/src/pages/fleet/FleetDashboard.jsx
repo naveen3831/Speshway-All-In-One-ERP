@@ -38,6 +38,8 @@ import {
   Gauge,
   Activity,
   Car,
+  Menu,
+  X,
 } from 'lucide-react';
 import './FleetDashboard.css';
 
@@ -87,6 +89,7 @@ const FleetLogoIcon = () => (
 export const FleetDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chartMode, setChartMode] = useState('revenue'); // 'revenue' | 'trips'
   const [dateRange, setDateRange] = useState('Last 7 Days');
   const [searchQuery, setSearchQuery] = useState('');
@@ -252,39 +255,58 @@ export const FleetDashboard = () => {
 
   return (
     <div className="fleet-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fleet-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR */}
-      <aside className="fleet-sidebar">
+      <aside className={`fleet-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="fleet-sidebar-top">
           {/* Brand Header */}
-        <div className="fleet-brand">
-          <div className="fleet-logo-container">
-            <FleetLogoIcon />
+          <div className="fleet-brand">
+            <div className="fleet-logo-container">
+              <FleetLogoIcon />
+            </div>
+            <div className="fleet-brand-text">
+              <div className="fleet-brand-title">Fleet Management</div>
+              <div className="fleet-brand-tag">ADMIN PANEL</div>
+            </div>
+            <button
+              type="button"
+              className="fleet-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-          <div className="fleet-brand-text">
-            <div className="fleet-brand-title">Fleet Management</div>
-            <div className="fleet-brand-tag">ADMIN PANEL</div>
-          </div>
-        </div>
 
-        {/* Sidebar Menu Options */}
-        <nav className="fleet-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`fleet-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="fleet-nav-btn-left">
-                  <Icon size={19} className="fleet-nav-icon" />
-                  <span className="fleet-nav-label">{item.label}</span>
-                </div>
-              </button>
-            );
-          })}
-        </nav>
+          {/* Sidebar Menu Options */}
+          <nav className="fleet-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`fleet-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="fleet-nav-btn-left">
+                    <Icon size={19} className="fleet-nav-icon" />
+                    <span className="fleet-nav-label">{item.label}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Pinned Bottom */}
@@ -308,29 +330,43 @@ export const FleetDashboard = () => {
         {/* Top Navbar with Height 82px matching request */}
         <header className="fleet-topbar">
           <div className="fleet-topbar-left">
-            <h1 className="fleet-topbar-title">Fleet Management</h1>
-            <div className="fleet-status-pill">
-              <span className="fleet-status-dot"></span>
-              <span className="fleet-status-text">Operational</span>
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link fleet-btn-back-vehicles"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={16} />
+              <span>Back</span>
+            </button>
+            <div className="fleet-header-title-wrap">
+              <button
+                type="button"
+                className="fleet-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="fleet-topbar-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'Fleet Management'}
+                </h1>
+                <div className="fleet-status-pill">
+                  <span className="fleet-status-dot"></span>
+                  <span className="fleet-status-text">Operational</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="fleet-topbar-right">
-            <button
-              onClick={() => navigate('/product/fleet-management')}
-              className="fleet-btn-back-vehicles"
-              title="Return to Product Details"
-            >
-              <ArrowLeft size={16} />
-              <span>Back to Vehicles</span>
-            </button>
 
             <button className="fleet-icon-btn" title="Alerts & Telemetry">
               <Bell size={20} />
               <span className="fleet-unread-dot"></span>
             </button>
 
-            <div className="fleet-user-profile">
+            <div className="fleet-user-profile-top">
               <span className="fleet-user-name">Admin</span>
               <div className="fleet-avatar">S</div>
             </div>

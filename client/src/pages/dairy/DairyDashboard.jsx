@@ -23,6 +23,8 @@ import {
   Search,
   Filter,
   Plus,
+  Menu,
+  X,
   Check,
   CheckCircle,
   Clock,
@@ -131,6 +133,7 @@ const CheeseWedgeIcon = () => (
 export const DairyDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [salesView, setSalesView] = useState('revenue'); // 'revenue' or 'orders'
   const [dateRange, setDateRange] = useState('Last 7 Days');
   const [showDateDropdown, setShowDateDropdown] = useState(false);
@@ -368,21 +371,39 @@ export const DairyDashboard = () => {
 
   return (
     <div className="dairy-dashboard-container">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="dairy-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* =========================================================
           LEFT SIDEBAR (Dark Navy #0b1120)
       ========================================================= */}
-      <aside className="dairy-sidebar">
+      <aside className={`dairy-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="dairy-sidebar-top">
           {/* Brand Header */}
-          <Link to="/product/natural-milk-dairy" className="dairy-brand">
-            <div className="dairy-brand-logo-box">
-              <CowLogoIcon />
-            </div>
-            <div className="dairy-brand-text">
-              <span className="dairy-brand-title">Madhur Dairy</span>
-              <span className="dairy-brand-sub">ADMIN PANEL</span>
-            </div>
-          </Link>
+          <div className="dairy-brand-wrap">
+            <Link to="/product/natural-milk-dairy" className="dairy-brand">
+              <div className="dairy-brand-logo-box">
+                <CowLogoIcon />
+              </div>
+              <div className="dairy-brand-text">
+                <span className="dairy-brand-title">Madhur Dairy</span>
+                <span className="dairy-brand-sub">ADMIN PANEL</span>
+              </div>
+            </Link>
+            <button
+              type="button"
+              className="dairy-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
+          </div>
 
           {/* Navigation Links */}
           <ul className="dairy-nav-list">
@@ -393,7 +414,10 @@ export const DairyDashboard = () => {
                 <li key={item.id} className="dairy-nav-item">
                   <button
                     className={`dairy-nav-btn ${isActive ? 'active' : ''}`}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setSidebarOpen(false);
+                    }}
                   >
                     <Icon size={18} />
                     <span className="dairy-nav-label">{item.label}</span>
@@ -429,17 +453,35 @@ export const DairyDashboard = () => {
       <div className="dairy-main-wrapper">
         <header className="dairy-top-navbar">
           <div className="dairy-nav-left">
-            <span className="dairy-nav-brand-title">Madhur Dairy Management</span>
-            <span className="dairy-operational-pill">
-              <span className="dairy-op-dot"></span>
-              Operational
-            </span>
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link dairy-back-catalog-link"
+              title="Return to Natural Milk Dairy product overview"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
+            <div className="dairy-header-title-wrap">
+              <button
+                type="button"
+                className="dairy-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <span className="dairy-nav-brand-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'Madhur Dairy Management'}
+                </span>
+                <span className="dairy-operational-pill">
+                  <span className="dairy-op-dot"></span>
+                  Operational
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="dairy-nav-right">
-            <Link to="/product/natural-milk-dairy" className="dairy-back-catalog-link" title="Return to Natural Milk Dairy product overview">
-              <ArrowLeft size={15} /> Back to Catalog
-            </Link>
 
             <button className="dairy-bell-btn" title="Notifications">
               <Bell size={19} />

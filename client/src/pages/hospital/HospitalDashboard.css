@@ -1201,3 +1201,227 @@ body:has(.hosp-erp-root)::-webkit-scrollbar {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
+
+
+/* ==========================================================================
+   MOBILE RESPONSIVE & OFF-CANVAS SIDEBAR DRAWER
+   ========================================================================== */
+.hosp-sidebar-close {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.hosp-sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.hosp-sidebar-backdrop {
+  display: none;
+}
+
+.hosp-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hosp-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  border-radius: 8px;
+  padding: 8px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.hosp-menu-toggle:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.hosp-user-profile-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 960px) {
+  .hosp-erp-root {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+  }
+
+  .hosp-sidebar-backdrop {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(11, 17, 32, 0.7) !important;
+    backdrop-filter: blur(2px) !important;
+    z-index: 999 !important;
+    animation: fadeInHospBackdrop 0.2s ease-out;
+  }
+
+  @keyframes fadeInHospBackdrop {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .hosp-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    width: 275px !important;
+    max-width: 82vw !important;
+    z-index: 1000 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 6px 0 24px rgba(0, 0, 0, 0.35) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .hosp-sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  .hosp-sidebar-close {
+    display: inline-flex !important;
+  }
+
+  .hosp-menu-toggle {
+    display: inline-flex !important;
+  }
+
+  .hosp-main-wrapper {
+    width: 100% !important;
+    min-width: 100% !important;
+    min-height: 100vh !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .hosp-topbar {
+    padding: 10px 14px !important;
+    min-height: 60px !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .hosp-topbar-left {
+    display: flex !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    gap: 8px !important;
+  }
+
+  .hosp-header-title-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+  }
+
+  .hosp-header-title-wrap > div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .hosp-system-title {
+    font-size: 1rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .hosp-status-pill {
+    display: none !important;
+  }
+
+  .hosp-back-catalog-link {
+    margin-left: 0 !important;
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hosp-topbar-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hosp-user-profile-top {
+    display: none !important;
+  }
+
+  .hosp-content-body {
+    padding: 14px 12px !important;
+    overflow-x: hidden !important;
+  }
+
+  .hosp-stats-grid,
+  .hosp-grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .hosp-grid-cols-3,
+  .hosp-grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .table-responsive,
+  .hosp-table-wrap,
+  .hosp-table-container,
+  .lab-table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hosp-stats-grid,
+  .hosp-grid-cols-4 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+}

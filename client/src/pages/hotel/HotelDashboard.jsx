@@ -19,6 +19,8 @@ import {
   CreditCard,
   Coffee,
   Check,
+  Menu,
+  X,
 } from 'lucide-react';
 import '../shared/IndustryDashboard.css';
 
@@ -67,6 +69,7 @@ const FOLIO_BILLING = [
 
 export const HotelDashboard = () => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeNav, setActiveNav] = useState('bookings');
   const [filterStatus, setFilterStatus] = useState('all');
   const [search, setSearch] = useState('');
@@ -81,8 +84,17 @@ export const HotelDashboard = () => {
 
   return (
     <div className="ind-erp-root">
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="ind-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close navigation overlay"
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="ind-sidebar">
+      <aside className={`ind-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="ind-sidebar-brand">
           <div className="ind-brand-icon-box" style={{ backgroundColor: '#f59e0b' }}>
             <Building2 size={20} color="#ffffff" />
@@ -91,31 +103,39 @@ export const HotelDashboard = () => {
             <span className="ind-brand-name">LuxeResort</span>
             <span className="ind-brand-sub" style={{ color: '#fbbf24' }}>Hospitality ERP</span>
           </div>
+          <button
+            type="button"
+            className="ind-sidebar-close"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         <nav className="ind-sidebar-menu">
-          <button onClick={() => setActiveNav('dash')} className={`ind-nav-btn ${activeNav === 'dash' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('dash'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'dash' ? 'active' : ''}`}>
             <LayoutDashboard size={18} /> Front Desk
           </button>
-          <button onClick={() => setActiveNav('bookings')} className={`ind-nav-btn ${activeNav === 'bookings' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('bookings'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'bookings' ? 'active' : ''}`}>
             <CalendarCheck size={18} /> Reservations <span className="ind-nav-badge">6</span>
           </button>
-          <button onClick={() => setActiveNav('rooms')} className={`ind-nav-btn ${activeNav === 'rooms' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('rooms'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'rooms' ? 'active' : ''}`}>
             <Bed size={18} /> Room Inventory <span className="ind-nav-badge">8</span>
           </button>
-          <button onClick={() => setActiveNav('guests')} className={`ind-nav-btn ${activeNav === 'guests' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('guests'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'guests' ? 'active' : ''}`}>
             <Users size={18} /> Guest Registry
           </button>
-          <button onClick={() => setActiveNav('housekeeping')} className={`ind-nav-btn ${activeNav === 'housekeeping' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('housekeeping'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'housekeeping' ? 'active' : ''}`}>
             <Sparkles size={18} /> Housekeeping
           </button>
-          <button onClick={() => setActiveNav('billing')} className={`ind-nav-btn ${activeNav === 'billing' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('billing'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'billing' ? 'active' : ''}`}>
             <DollarSign size={18} /> Folio Billing &amp; POS
           </button>
         </nav>
 
         <div className="ind-sidebar-footer">
-          <button onClick={() => navigate('/')} className="ind-back-home-btn">
+          <button onClick={() => { setSidebarOpen(false); navigate('/'); }} className="ind-back-home-btn">
             <ArrowLeft size={16} /> Back to Speshway
           </button>
         </div>
@@ -128,6 +148,14 @@ export const HotelDashboard = () => {
           <div className="ind-topbar-left">
             <button onClick={() => navigate('/')} className="ind-back-pill">
               <ArrowLeft size={14} /> Back to Speshway ERP
+            </button>
+            <button
+              type="button"
+              className="ind-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
             </button>
             <div className="ind-live-chip">
               <span className="ind-live-dot" /> Live Hotel &amp; Resort ERP

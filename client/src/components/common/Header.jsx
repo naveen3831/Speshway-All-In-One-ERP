@@ -1,11 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { Menu, ArrowLeft } from 'lucide-react';
 
-export const Header = () => {
+export const Header = ({ onToggleSidebar }) => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header
+      className="dashboard-header"
       style={{
         height: 'var(--header-height)',
         backgroundColor: '#ffffff',
@@ -16,8 +20,33 @@ export const Header = () => {
         padding: '0 24px',
       }}
     >
-      <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>
-        Overview
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <button
+          type="button"
+          className="dashboard-back-btn"
+          onClick={() => {
+            if (window.history.length > 1) {
+              navigate(-1);
+            } else {
+              navigate('/products');
+            }
+          }}
+          title="Back to Catalog"
+          aria-label="Go back"
+        >
+          <ArrowLeft size={16} />
+        </button>
+        <button
+          type="button"
+          className="dashboard-menu-toggle"
+          onClick={onToggleSidebar}
+          aria-label="Toggle navigation menu"
+        >
+          <Menu size={20} />
+        </button>
+        <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>
+          Overview
+        </div>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
