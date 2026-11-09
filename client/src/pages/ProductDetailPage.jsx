@@ -6,6 +6,7 @@ import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket, isSameProduct } from '../context/SocketContext';
 import { getProductFallbackImage } from './ProductsPage';
+import { getProjectCategory } from '../utils/adminProjects';
 import {
   Globe,
   Shield,
@@ -359,7 +360,7 @@ export const ProductDetailPage = () => {
               </button>
 
               <div className="modal-badge-row">
-                <span className="product-category-tag">{product.category}</span>
+                <span className="product-category-tag">{getProjectCategory(product)}</span>
                 <span className="badge-active">{product.status || 'Active Product'}</span>
                 <span className="badge-pro-edition">Enterprise Ready</span>
               </div>

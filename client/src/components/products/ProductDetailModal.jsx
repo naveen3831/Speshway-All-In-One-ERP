@@ -15,6 +15,7 @@ import {
   Activity,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getProjectCategory } from '../../utils/adminProjects';
 
 export const ProductDetailModal = ({ product, onClose }) => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ export const ProductDetailModal = ({ product, onClose }) => {
             </div>
             <div>
               <div className="modal-badge-row">
-                <span className="product-category-tag">{product.category || 'ERP Module'}</span>
+                <span className="product-category-tag">{getProjectCategory(product)}</span>
                 <span className="badge-active">{product.status || 'Active'}</span>
                 <span className="badge-pro-edition">Enterprise Suite</span>
               </div>
