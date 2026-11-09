@@ -120,9 +120,9 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
               to="/"
               end
               onClick={() => window.scrollTo(0, 0)}
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              className={({ isActive }) => (isActive ? 'nav-link nav-brand-link active' : 'nav-link nav-brand-link')}
             >
-              HOME
+              {brandTitle}
             </NavLink>
             {showProducts && (
               <NavLink
@@ -177,7 +177,7 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
               }}
               className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
             >
-              HOME
+              {brandTitle}
             </NavLink>
             {showProducts && (
               <NavLink

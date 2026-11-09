@@ -250,6 +250,27 @@ button {
   border-radius: 1px;
 }
 
+.nav-link.nav-brand-link {
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  font-size: 0.92rem;
+  color: #0f172a;
+}
+
+.nav-link.nav-brand-link:hover {
+  color: #00875a;
+}
+
+.nav-link.nav-brand-link.active {
+  color: #00875a !important;
+}
+
+@media (min-width: 961px) {
+  .brand-logo .brand-text {
+    display: none;
+  }
+}
+
 /* Mobile Navigation Button (Hidden on Desktop) */
 .mobile-menu-btn {
   display: none;
