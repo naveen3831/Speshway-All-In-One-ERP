@@ -10,15 +10,16 @@ import {
   Phone,
   Mail,
 } from 'lucide-react';
-import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
+import { useSocket, DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS } from '../../context/SocketContext';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
-  const { homeContent, branding } = useSocket();
+  const { homeContent, branding, socialLinks } = useSocket();
 
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
+  const currentSocial = socialLinks || homeContent?.socialLinks || DEFAULT_SOCIAL_LINKS;
 
   // Pricing visibility state
   const [showPricing, setShowPricing] = useState(() => {
@@ -76,52 +77,57 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
               Delivering innovative IT solutions and driving digital transformation for businesses worldwide.
             </p>
 
-            {/* Social Media Links */}
+            {/* Social Media Links with dynamic URLs and authentic brand hover styles */}
             <div className="footer-social-links">
               <a
-                href="https://facebook.com"
+                href={currentSocial.facebook || 'https://facebook.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-facebook"
                 aria-label="Facebook"
+                title="Follow us on Facebook"
               >
                 <Facebook size={18} />
               </a>
               <a
-                href="https://x.com"
+                href={currentSocial.twitter || 'https://x.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-x"
                 aria-label="X (formerly Twitter)"
+                title="Follow us on X (Twitter)"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
               <a
-                href="https://linkedin.com"
+                href={currentSocial.linkedin || 'https://linkedin.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-linkedin"
                 aria-label="LinkedIn"
+                title="Connect with us on LinkedIn"
               >
                 <Linkedin size={18} />
               </a>
               <a
-                href="https://instagram.com"
+                href={currentSocial.instagram || 'https://instagram.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-instagram"
                 aria-label="Instagram"
+                title="Follow us on Instagram"
               >
                 <Instagram size={18} />
               </a>
               <a
-                href="https://youtube.com"
+                href={currentSocial.youtube || 'https://youtube.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-youtube"
                 aria-label="YouTube"
+                title="Subscribe to our YouTube Channel"
               >
                 <Youtube size={18} />
               </a>

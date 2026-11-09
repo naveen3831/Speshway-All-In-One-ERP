@@ -97,6 +97,28 @@ const homeContentSchema = new mongoose.Schema(
         default: 'ALL IN ONE ERP',
       },
     },
+    socialLinks: {
+      facebook: {
+        type: String,
+        default: 'https://facebook.com/speshway',
+      },
+      twitter: {
+        type: String,
+        default: 'https://x.com/speshway',
+      },
+      linkedin: {
+        type: String,
+        default: 'https://linkedin.com/company/speshway',
+      },
+      instagram: {
+        type: String,
+        default: 'https://instagram.com/speshway',
+      },
+      youtube: {
+        type: String,
+        default: 'https://youtube.com/@speshway',
+      },
+    },
   },
   {
     timestamps: true,
