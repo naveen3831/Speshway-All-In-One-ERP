@@ -3,6 +3,20 @@ import { io } from 'socket.io-client';
 import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
 
+export const DEFAULT_BRANDING = {
+  logoUrl: '/logo.png',
+  brandTitle: 'SPESHWAY',
+  brandSubtitle: 'ALL IN ONE ERP',
+};
+
+export const DEFAULT_SOCIAL_LINKS = {
+  facebook: 'https://facebook.com/speshway',
+  twitter: 'https://x.com/speshway',
+  linkedin: 'https://linkedin.com/company/speshway',
+  instagram: 'https://instagram.com/speshway',
+  youtube: 'https://youtube.com/@speshway',
+};
+
 export const DEFAULT_HOME_CONTENT = {
   hero: {
     badge: '— OUR ERP SOLUTIONS —',
@@ -26,6 +40,12 @@ export const DEFAULT_HOME_CONTENT = {
   solutions: {
     title: 'Our ERP Solutions',
   },
+  navbar: {
+    showPricing: true,
+    showProducts: true,
+  },
+  branding: DEFAULT_BRANDING,
+  socialLinks: DEFAULT_SOCIAL_LINKS,
 };
 
 const SocketContext = createContext(null);
@@ -180,6 +200,102 @@ export const SocketProvider = ({ children }) => {
     } catch (e) {}
     return DEFAULT_HOME_CONTENT;
   });
+
+    const [branding, setBranding] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_branding');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return { ...DEFAULT_BRANDING, ...parsed };
+      }
+    } catch (e) {}
+    return DEFAULT_BRANDING;
+  });
+
+  const [socialLinks, setSocialLinks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_social_links');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return { ...DEFAULT_SOCIAL_LINKS, ...parsed };
+      }
+    } catch (e) {}
+    return DEFAULT_SOCIAL_LINKS;
+  });
+
+  const updateBranding = async (newBranding) => {
+    const merged = { ...DEFAULT_BRANDING, ...(branding || {}), ...(newBranding || {}) };
+    setBranding(merged);
+    try {
+      localStorage.setItem('speshway_branding', JSON.stringify(merged));
+      window.dispatchEvent(new Event('speshway_branding_changed'));
+    } catch (e) {}
+
+    try {
+      const updatedHome = {
+        ...(homeContent || {}),
+        branding: merged,
+      };
+      setHomeContent(updatedHome);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+      } catch (e) {}
+      await api.put('/home', updatedHome);
+    } catch (err) {
+      console.warn('Could not persist branding to API:', err.message);
+    }
+    return merged;
+  };
+
+  const updateSocialLinks = async (newSocialLinks) => {
+    const merged = { ...DEFAULT_SOCIAL_LINKS, ...(socialLinks || {}), ...(newSocialLinks || {}) };
+    setSocialLinks(merged);
+    try {
+      localStorage.setItem('speshway_social_links', JSON.stringify(merged));
+      window.dispatchEvent(new Event('speshway_social_links_changed'));
+    } catch (e) {}
+
+    try {
+      const updatedHome = {
+        ...(homeContent || {}),
+        socialLinks: merged,
+      };
+      setHomeContent(updatedHome);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+      } catch (e) {}
+      await api.put('/home', updatedHome);
+    } catch (err) {
+      console.warn('Could not persist social links to API:', err.message);
+    }
+    return merged;
+  };
+
+  useEffect(() => {
+    if (homeContent?.branding) {
+      setBranding((prev) => {
+        const next = { ...DEFAULT_BRANDING, ...(prev || {}), ...homeContent.branding };
+        try {
+          localStorage.setItem('speshway_branding', JSON.stringify(next));
+          window.dispatchEvent(new Event('speshway_branding_changed'));
+        } catch (e) {}
+        return next;
+      });
+    }
+  }, [homeContent?.branding]);
+
+  useEffect(() => {
+    if (homeContent?.socialLinks) {
+      setSocialLinks((prev) => {
+        const next = { ...DEFAULT_SOCIAL_LINKS, ...(prev || {}), ...homeContent.socialLinks };
+        try {
+          localStorage.setItem('speshway_social_links', JSON.stringify(next));
+          window.dispatchEvent(new Event('speshway_social_links_changed'));
+        } catch (e) {}
+        return next;
+      });
+    }
+  }, [homeContent?.socialLinks]);
 
   const refreshHomeContent = async () => {
     try {
@@ -716,6 +832,12 @@ export const SocketProvider = ({ children }) => {
         homeContent,
         refreshHomeContent,
         setHomeContent,
+        branding,
+        setBranding,
+        updateBranding,
+        socialLinks,
+        setSocialLinks,
+        updateSocialLinks,
         triggerAddProduct,
         triggerUpdateProduct,
         triggerDeleteProduct,

@@ -2,19 +2,77 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Menu, X, MessageSquare } from 'lucide-react';
 import { ContactCard } from './ContactCard';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { homeContent, branding } = useSocket();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactCardOpen, setContactCardOpen] = useState(false);
   const contactToggleRef = useRef(null);
+
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
 
   // Close mobile drawer & contact card when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
     setContactCardOpen(false);
   }, [location.pathname]);
+
+  // Determine whether Pricing should be visible in navbar
+  const [showPricing, setShowPricing] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
+    return true;
+  });
+
+  // Determine whether Products/Projects should be visible in navbar
+  const [showProducts, setShowProducts] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_products_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
+    return true;
+  });
+
+  useEffect(() => {
+    const syncVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+      if (stored !== null) {
+        setShowPricing(stored === 'true');
+      } else if (homeContent?.navbar?.showPricing !== undefined) {
+        setShowPricing(Boolean(homeContent.navbar.showPricing));
+      }
+    };
+
+    const syncProductsVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_products_visible');
+      if (stored !== null) {
+        setShowProducts(stored === 'true');
+      } else if (homeContent?.navbar?.showProducts !== undefined) {
+        setShowProducts(Boolean(homeContent.navbar.showProducts));
+      }
+    };
+
+    syncVisibility();
+    syncProductsVisibility();
+
+    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
+    window.addEventListener('storage', syncVisibility);
+    window.addEventListener('storage', syncProductsVisibility);
+
+    return () => {
+      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
+      window.removeEventListener('storage', syncVisibility);
+      window.removeEventListener('storage', syncProductsVisibility);
+    };
+  }, [homeContent?.navbar?.showPricing, homeContent?.navbar?.showProducts]);
 
   const handleGetStarted = () => {
     if (onOpenGetStarted) {
@@ -33,10 +91,11 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     <>
       <header className="navbar-container">
         <div className="navbar-content">
-          {/* Brand Logo with User Uploaded Logo Image */}
+          {/* Brand Logo with User Uploaded Logo Image & Brand Name */}
           <Link
             to="/"
             className="brand-logo"
+            title={`${brandTitle} - Home`}
             onClick={() => {
               setMobileMenuOpen(false);
               window.scrollTo(0, 0);
@@ -44,14 +103,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             <div className="brand-logo-wrap">
               <img
-                src="/logo.png"
-                alt="Speshway All In One ERP Logo"
+                src={logoUrl}
+                alt={`${brandTitle} Logo`}
                 className="brand-logo-img"
               />
             </div>
             <div className="brand-text">
-              <span className="brand-title">SPESHWAY</span>
-              <span className="brand-subtitle">ALL IN ONE ERP</span>
+              <span className="brand-title">{brandTitle}</span>
+              <span className="brand-subtitle">{brandSubtitle}</span>
             </div>
           </Link>
 
@@ -65,20 +124,24 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
             >
               HOME
             </NavLink>
-            <NavLink
-              to="/projects"
-              onClick={() => window.scrollTo(0, 0)}
-              className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
-            >
-              PROJECTS
-            </NavLink>
-            <NavLink
-              to="/pricing"
-              onClick={() => window.scrollTo(0, 0)}
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
-              PRICING
-            </NavLink>
+            {showProducts && (
+              <NavLink
+                to="/projects"
+                onClick={() => window.scrollTo(0, 0)}
+                className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
+              >
+                PROJECTS
+              </NavLink>
+            )}
+            {showPricing && (
+              <NavLink
+                to="/pricing"
+                onClick={() => window.scrollTo(0, 0)}
+                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              >
+                PRICING
+              </NavLink>
+            )}
           </nav>
 
           {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
@@ -116,26 +179,30 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
             >
               HOME
             </NavLink>
-            <NavLink
-              to="/projects"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                window.scrollTo(0, 0);
-              }}
-              className={({ isActive }) => (isActive || isProjectsActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-            >
-              PROJECTS
-            </NavLink>
-            <NavLink
-              to="/pricing"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                window.scrollTo(0, 0);
-              }}
-              className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-            >
-              PRICING
-            </NavLink>
+            {showProducts && (
+              <NavLink
+                to="/projects"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
+                className={({ isActive }) => (isActive || isProjectsActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+              >
+                PROJECTS
+              </NavLink>
+            )}
+            {showPricing && (
+              <NavLink
+                to="/pricing"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
+                className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+              >
+                PRICING
+              </NavLink>
+            )}
 
             <div className="mobile-drawer-cta">
               <button

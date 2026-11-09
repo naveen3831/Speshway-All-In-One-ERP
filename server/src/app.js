@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,6 +12,9 @@ const __dirname = path.dirname(__filename);
 const clientDistPath = path.resolve(__dirname, '../../client/dist');
 
 const app = express();
+
+// Parse cookies before routes
+app.use(cookieParser());
 
 // Middleware with generous payload limit for product images and uploads
 app.use(express.json({ limit: '50mb' }));

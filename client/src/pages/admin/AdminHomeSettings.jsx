@@ -45,6 +45,14 @@ export const AdminHomeSettings = () => {
     solutions: {
       title: homeContent?.solutions?.title || DEFAULT_HOME_CONTENT.solutions.title,
     },
+    navbar: {
+      showPricing: homeContent?.navbar?.showPricing !== undefined ? homeContent.navbar.showPricing : true,
+    },
+    branding: homeContent?.branding || {
+      logoUrl: '/logo.png',
+      brandTitle: 'SPESHWAY',
+      brandSubtitle: 'ALL IN ONE ERP',
+    },
   }));
 
   // Sync if socket updates
@@ -55,6 +63,8 @@ export const AdminHomeSettings = () => {
         hero: { ...prev.hero, ...(homeContent.hero || {}) },
         stats: { ...prev.stats, ...(homeContent.stats || {}) },
         solutions: { ...prev.solutions, ...(homeContent.solutions || {}) },
+        navbar: { ...prev.navbar, ...(homeContent.navbar || {}) },
+        branding: { ...prev.branding, ...(homeContent.branding || {}) },
       }));
     }
   }, [homeContent]);

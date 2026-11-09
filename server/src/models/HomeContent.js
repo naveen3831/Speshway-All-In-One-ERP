@@ -77,6 +77,52 @@ const homeContentSchema = new mongoose.Schema(
         default: 'Our ERP Solutions',
       },
     },
+    navbar: {
+      showPricing: {
+        type: Boolean,
+        default: true,
+      },
+      showProducts: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    branding: {
+      logoUrl: {
+        type: String,
+        default: '/logo.png',
+      },
+      brandTitle: {
+        type: String,
+        default: 'SPESHWAY',
+      },
+      brandSubtitle: {
+        type: String,
+        default: 'ALL IN ONE ERP',
+      },
+    },
+    socialLinks: {
+      facebook: {
+        type: String,
+        default: 'https://facebook.com/speshway',
+      },
+      twitter: {
+        type: String,
+        default: 'https://x.com/speshway',
+      },
+      linkedin: {
+        type: String,
+        default: 'https://linkedin.com/company/speshway',
+      },
+      instagram: {
+        type: String,
+        default: 'https://instagram.com/speshway',
+      },
+      youtube: {
+        type: String,
+        default: 'https://youtube.com/@speshway',
+      },
+    },
   },
   {
     timestamps: true,
@@ -86,4 +132,3 @@ const homeContentSchema = new mongoose.Schema(
 const HomeContent = mongoose.models.HomeContent || mongoose.model('HomeContent', homeContentSchema);
 
 export default HomeContent;
-

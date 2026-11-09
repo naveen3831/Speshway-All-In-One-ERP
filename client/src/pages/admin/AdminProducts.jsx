@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSocket } from '../../context/SocketContext';
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 import {
   Plus,
   Search,
@@ -26,6 +27,8 @@ import {
   LayoutGrid,
   List,
   Eye,
+  EyeOff,
+  Check,
   X,
   Building2,
   Plane,
@@ -88,8 +91,60 @@ const parseTechList = (tech) => {
 };
 
 export const AdminProducts = () => {
-  const { products, triggerDeleteProduct, refreshProducts } = useSocket();
+  const { products, triggerDeleteProduct, refreshProducts, homeContent, setHomeContent } = useSocket();
   const navigate = useNavigate();
+
+  // Navbar & Page Products Visibility Toggle State
+  const [showProductsOption, setShowProductsOption] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_products_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
+    return true;
+  });
+  const [toggleUpdating, setToggleUpdating] = useState(false);
+  const [toggleNotice, setToggleNotice] = useState('');
+
+  // Sync state if homeContent changes via socket or external updates
+  useEffect(() => {
+    if (homeContent?.navbar?.showProducts !== undefined) {
+      setShowProductsOption(Boolean(homeContent.navbar.showProducts));
+      localStorage.setItem('speshway_navbar_products_visible', homeContent.navbar.showProducts ? 'true' : 'false');
+    }
+  }, [homeContent?.navbar?.showProducts]);
+
+  const handleToggleProductsOption = async () => {
+    const nextVal = !showProductsOption;
+    setShowProductsOption(nextVal);
+    localStorage.setItem('speshway_navbar_products_visible', nextVal ? 'true' : 'false');
+    window.dispatchEvent(new Event('speshway_navbar_products_changed'));
+
+    setToggleNotice(
+      nextVal
+        ? 'Projects option & /projects page are now VISIBLE and ACTIVE'
+        : 'Projects option & /projects page are now completely HIDDEN'
+    );
+    setTimeout(() => setToggleNotice(''), 3500);
+
+    setToggleUpdating(true);
+    try {
+      const updated = {
+        ...(homeContent || {}),
+        navbar: {
+          ...(homeContent?.navbar || {}),
+          showProducts: nextVal,
+        },
+      };
+      if (setHomeContent) setHomeContent(updated);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updated));
+      } catch (e) {}
+      await api.put('/home', updated);
+    } catch (err) {
+      console.warn('API sync warning for products toggle:', err.message);
+    } finally {
+      setToggleUpdating(false);
+    }
+  };
 
   useEffect(() => {
     if (refreshProducts) {
@@ -155,18 +210,133 @@ export const AdminProducts = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Header */}
-      <div className="admin-page-header">
-        <div>
-          <h1 className="admin-heading">Projects &amp; Module Management (CRUD)</h1>
-          <p className="admin-subtext">
+      {/* Header Row - Matching Pricing Page Layout Exactly with Toggle at Top Right Corner */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px',
+          marginBottom: '26px',
+          paddingBottom: '16px',
+          borderBottom: '1px solid #e2e8f0',
+        }}
+      >
+        <div style={{ flex: '1 1 300px' }}>
+          <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
+            Projects &amp; Module Management (CRUD)
+          </h1>
+          <p className="admin-subtext" style={{ margin: 0 }}>
             Add new ERP projects in dedicated pages, edit technologies &amp; URLs, and control modules in real-time.
           </p>
         </div>
-        <div className="admin-header-actions">
-          <button onClick={handleAddNewProduct} className="btn-hero-primary">
-            <Plus size={16} /> Add New Project
-          </button>
+
+        {/* Top Right Corner Toggle Button (Identical to Pricing Page) */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', marginLeft: 'auto' }}>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleToggleProductsOption}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleToggleProductsOption();
+              }
+            }}
+            className={`admin-navbar-toggle-btn ${showProductsOption ? 'is-active' : 'is-inactive'}`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '6px 14px',
+              borderRadius: '10px',
+              backgroundColor: showProductsOption ? '#ecfdf5' : '#f8fafc',
+              border: showProductsOption ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: showProductsOption
+                ? '0 3px 12px rgba(16, 185, 129, 0.15)'
+                : '0 2px 6px rgba(15, 23, 42, 0.05)',
+              userSelect: 'none',
+              outline: 'none',
+            }}
+            title={
+              showProductsOption
+                ? 'Click to turn OFF: hide Projects option and /projects page'
+                : 'Click to turn ON: show Projects option and /projects page'
+            }
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '7px',
+                  backgroundColor: showProductsOption ? '#d1fae5' : '#e2e8f0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: showProductsOption ? '#059669' : '#64748b',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {showProductsOption ? <Eye size={16} /> : <EyeOff size={16} />}
+              </div>
+              <span
+                style={{
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  color: showProductsOption ? '#065f46' : '#475569',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Projects: {showProductsOption ? 'ON' : 'OFF'}
+              </span>
+            </div>
+
+            {/* Switch Slider */}
+            <div
+              style={{
+                width: '38px',
+                height: '20px',
+                borderRadius: '9999px',
+                backgroundColor: showProductsOption ? '#059669' : '#cbd5e1',
+                padding: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                transition: 'background-color 0.2s ease',
+                position: 'relative',
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                  transform: showProductsOption ? 'translateX(18px)' : 'translateX(0px)',
+                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              />
+            </div>
+          </div>
+
+          {toggleNotice && (
+            <span
+              style={{
+                fontSize: '0.78rem',
+                color: showProductsOption ? '#059669' : '#dc2626',
+                fontWeight: 600,
+                marginTop: '1px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              ✓ {toggleNotice}
+            </span>
+          )}
         </div>
       </div>
 
@@ -201,21 +371,38 @@ export const AdminProducts = () => {
             )}
           </div>
 
-          <div className="view-toggle-wrap">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button
-              onClick={() => setViewMode('cards')}
-              className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
-              title="Cards View"
+              onClick={handleAddNewProduct}
+              className="btn-hero-primary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '9px 18px',
+                fontSize: '0.88rem',
+                whiteSpace: 'nowrap',
+              }}
             >
-              <LayoutGrid size={16} />
+              <Plus size={16} /> Add New Project
             </button>
-            <button
-              onClick={() => setViewMode('table')}
-              className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
-              title="Table View"
-            >
-              <List size={16} />
-            </button>
+
+            <div className="view-toggle-wrap">
+              <button
+                onClick={() => setViewMode('cards')}
+                className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
+                title="Cards View"
+              >
+                <LayoutGrid size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode('table')}
+                className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
+                title="Table View"
+              >
+                <List size={16} />
+              </button>
+            </div>
           </div>
         </div>
 
