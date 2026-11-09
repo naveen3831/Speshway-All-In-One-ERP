@@ -15,6 +15,8 @@ import {
   Settings,
   LogOut,
   Bell,
+  Menu,
+  X,
   ChevronDown,
   ArrowLeft,
   ArrowRight,
@@ -82,6 +84,7 @@ const SpySalonLogoIcon = () => (
 export const SalonDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chartMode, setChartMode] = useState('revenue'); // 'revenue' | 'bookings'
   const [dateRange, setDateRange] = useState('Last 7 Days');
   const [searchQuery, setSearchQuery] = useState('');
@@ -271,8 +274,16 @@ export const SalonDashboard = () => {
 
   return (
     <div className="salon-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="salon-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR */}
-      <aside className="salon-sidebar">
+      <aside className={`salon-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="salon-sidebar-top">
           {/* Brand Header */}
           <div className="salon-brand">
@@ -284,6 +295,14 @@ export const SalonDashboard = () => {
               <div className="salon-brand-subtitle">JUBILEE HILLS STUDIO</div>
               <div className="salon-brand-tag">ADMIN PANEL</div>
             </div>
+            <button
+              type="button"
+              className="salon-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
 
           {/* Sidebar Menu Options */}
@@ -294,7 +313,10 @@ export const SalonDashboard = () => {
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
                   className={`salon-nav-btn ${isActive ? 'active' : ''}`}
                 >
                   <div className="salon-nav-btn-left">
@@ -331,21 +353,35 @@ export const SalonDashboard = () => {
         {/* Top Navbar matching 82px height */}
         <header className="salon-topbar">
           <div className="salon-topbar-left">
-            <h1 className="salon-topbar-title">SPY Salon Management</h1>
-            <div className="salon-status-pill">
-              <span className="salon-status-dot"></span>
-              <span className="salon-status-text">Operational</span>
+            <div className="salon-header-title-wrap">
+              <button
+                type="button"
+                className="salon-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="salon-topbar-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'SPY Salon Management'}
+                </h1>
+                <div className="salon-status-pill">
+                  <span className="salon-status-dot"></span>
+                  <span className="salon-status-text">Operational</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="salon-topbar-right">
             <button
-              onClick={() => navigate('/product/saloon')}
-              className="salon-btn-back-services"
-              title="Return to Services Page"
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link salon-btn-back-services"
+              title="Return to Catalog"
             >
               <ArrowLeft size={16} />
-              <span>Back to Services</span>
+              <span>Back</span>
             </button>
 
             <button className="salon-icon-btn" title="Notifications">
@@ -353,7 +389,7 @@ export const SalonDashboard = () => {
               <span className="salon-unread-dot"></span>
             </button>
 
-            <div className="salon-user-profile">
+            <div className="salon-user-profile-top">
               <span className="salon-user-name">Admin</span>
               <div className="salon-avatar">S</div>
             </div>

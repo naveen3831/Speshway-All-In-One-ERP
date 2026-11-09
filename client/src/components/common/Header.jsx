@@ -1,11 +1,13 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { Menu } from 'lucide-react';
 
-export const Header = () => {
+export const Header = ({ onToggleSidebar }) => {
   const { user, logout } = useAuth();
 
   return (
     <header
+      className="dashboard-header"
       style={{
         height: 'var(--header-height)',
         backgroundColor: '#ffffff',
@@ -16,8 +18,18 @@ export const Header = () => {
         padding: '0 24px',
       }}
     >
-      <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>
-        Overview
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <button
+          type="button"
+          className="dashboard-menu-toggle"
+          onClick={onToggleSidebar}
+          aria-label="Toggle navigation menu"
+        >
+          <Menu size={20} />
+        </button>
+        <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>
+          Overview
+        </div>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>

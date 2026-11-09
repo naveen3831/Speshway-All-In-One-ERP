@@ -22,12 +22,15 @@ import {
   Sparkles,
   CheckCircle,
   Clock,
+  Menu,
+  X,
 } from 'lucide-react';
 
 export const AdminLayout = () => {
   const { user, loading, login, logout } = useAuth();
   const { activities, modulesData } = useSocket();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Admin login form state
   const [email, setEmail] = useState('');
@@ -332,20 +335,38 @@ export const AdminLayout = () => {
   // 2. Once authenticated as Admin, show strictly the Admin Dashboard Console
   return (
     <div className="admin-layout-container">
+      {/* Mobile Drawer Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="admin-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close navigation overlay"
+        />
+      )}
+
       {/* Dedicated Admin Sidebar */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="admin-sidebar-brand">
           <img src="/logo.png" alt="Speshway Admin Logo" className="admin-sidebar-logo-img" />
           <div className="brand-text">
             <span className="brand-title">SPESHWAY</span>
             <span className="brand-subtitle">ADMIN CONSOLE</span>
           </div>
+          <button
+            type="button"
+            className="admin-sidebar-close"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         <nav className="admin-sidebar-menu">
           <NavLink
             to="/admin"
             end
+            onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <LayoutDashboard size={18} />
@@ -354,6 +375,7 @@ export const AdminLayout = () => {
 
           <NavLink
             to="/admin/products"
+            onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Package size={18} />
@@ -362,6 +384,7 @@ export const AdminLayout = () => {
 
           <NavLink
             to="/admin/home"
+            onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Globe size={18} />
@@ -370,6 +393,7 @@ export const AdminLayout = () => {
 
           <NavLink
             to="/admin/pricing"
+            onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <CreditCard size={18} />
@@ -378,6 +402,7 @@ export const AdminLayout = () => {
 
           <NavLink
             to="/admin/inquiries"
+            onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Inbox size={18} />
@@ -386,6 +411,7 @@ export const AdminLayout = () => {
 
           <NavLink
             to="/admin/settings"
+            onClick={() => setSidebarOpen(false)}
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Settings size={18} />
@@ -461,6 +487,14 @@ export const AdminLayout = () => {
       <div className="admin-main-wrap">
         <header className="admin-topbar">
           <div className="topbar-left">
+            <button
+              type="button"
+              className="admin-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
             <span className="topbar-title">Speshway Administrative Dashboard</span>
           </div>
 

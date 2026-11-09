@@ -30,6 +30,8 @@ import {
   MapPin,
   Flame,
   Coffee,
+  Menu,
+  X,
 } from 'lucide-react';
 import './FlavoraKitchenDashboard.css';
 
@@ -82,6 +84,7 @@ const FlavoraLogoIcon = () => (
 export const FlavoraKitchenDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chartToggle, setChartToggle] = useState('orders'); // 'orders' | 'revenue'
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState('Nov 03, 2026');
@@ -240,40 +243,59 @@ export const FlavoraKitchenDashboard = () => {
 
   return (
     <div className="flavora-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="flavora-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
-      <aside className="flavora-sidebar">
+      <aside className={`flavora-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="flavora-sidebar-top">
           {/* Brand Header */}
-        <div className="flavora-brand">
-          <div className="flavora-logo-container">
-            <FlavoraLogoIcon />
+          <div className="flavora-brand">
+            <div className="flavora-logo-container">
+              <FlavoraLogoIcon />
+            </div>
+            <div className="flavora-brand-text">
+              <span className="flavora-brand-title">Flavora Kitchen</span>
+              <span className="flavora-brand-subtitle">ADMIN PANEL</span>
+            </div>
+            <button
+              type="button"
+              className="flavora-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-          <div className="flavora-brand-text">
-            <span className="flavora-brand-title">Flavora Kitchen</span>
-            <span className="flavora-brand-subtitle">ADMIN PANEL</span>
-          </div>
-        </div>
 
-        {/* 13 Navigation Menu Items */}
-        <nav className="flavora-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`flavora-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="flavora-nav-btn-left">
-                  <Icon size={18} className="flavora-nav-icon" />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && <span className="flavora-nav-badge">{item.badge}</span>}
-              </button>
-            );
-          })}
-        </nav>
+          {/* 13 Navigation Menu Items */}
+          <nav className="flavora-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`flavora-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="flavora-nav-btn-left">
+                    <Icon size={18} className="flavora-nav-icon" />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && <span className="flavora-nav-badge">{item.badge}</span>}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Pinned Bottom */}
@@ -297,11 +319,33 @@ export const FlavoraKitchenDashboard = () => {
         {/* Top Navbar Height 82px matching request */}
         <header className="flavora-topbar">
           <div className="flavora-topbar-left">
-            <h1 className="flavora-greeting-title">Good Morning, Admin 👋</h1>
-            <p className="flavora-greeting-subtitle">Here&apos;s what&apos;s happening at Flavora Kitchen today.</p>
+            <div className="flavora-header-title-wrap">
+              <button
+                type="button"
+                className="flavora-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="flavora-greeting-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'Flavora Kitchen Management'}
+                </h1>
+                <p className="flavora-greeting-subtitle">Here&apos;s what&apos;s happening at Flavora Kitchen today.</p>
+              </div>
+            </div>
           </div>
 
           <div className="flavora-topbar-right">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link flavora-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
+
             {/* Search Input matching screenshot */}
             <div className="flavora-search-box">
               <Search size={16} className="flavora-search-icon" />
@@ -328,7 +372,7 @@ export const FlavoraKitchenDashboard = () => {
             </button>
 
             {/* User Profile with Green Avatar A */}
-            <div className="flavora-user-profile">
+            <div className="flavora-user-profile-top">
               <span className="flavora-user-name">Admin</span>
               <div className="flavora-avatar">A</div>
             </div>

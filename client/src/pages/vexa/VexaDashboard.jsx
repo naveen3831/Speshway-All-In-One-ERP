@@ -17,6 +17,7 @@ import {
   LogOut,
   Bell,
   Menu,
+  X,
   ChevronDown,
   TrendingUp,
   Search,
@@ -38,6 +39,7 @@ import './VexaDashboard.css';
 export const VexaDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [timeframe, setTimeframe] = useState('30days');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -301,52 +303,68 @@ export const VexaDashboard = () => {
 
   return (
     <div className="vexa-erp-root">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="vexa-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. SIDEBAR MATCHING USER'S SCREENSHOT */}
-      <aside className="vexa-sidebar">
+      <aside className={`vexa-sidebar ${sidebarOpen ? 'open' : ''}`}>
         {/* Brand Header with Hanger Logo */}
         <div className="vexa-sidebar-top">
           <div className="vexa-sidebar-header">
-          <div className="vexa-brand-wrap">
-            <div className="vexa-logo-hanger">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M 16 8 C 14 8, 13 9.5, 13 11 C 13 12.5, 14.5 13.5, 16 14 L 5 21 C 4 21.8, 4 23, 5.2 23 L 26.8 23 C 28 23, 28 21.8, 27 21 L 16 14 Z"
-                  stroke="#10b981"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx="16" cy="7" r="1.5" fill="#10b981" />
-              </svg>
+            <div className="vexa-brand-wrap">
+              <div className="vexa-logo-hanger">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <path
+                    d="M 16 8 C 14 8, 13 9.5, 13 11 C 13 12.5, 14.5 13.5, 16 14 L 5 21 C 4 21.8, 4 23, 5.2 23 L 26.8 23 C 28 23, 28 21.8, 27 21 L 16 14 Z"
+                    stroke="#10b981"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="16" cy="7" r="1.5" fill="#10b981" />
+                </svg>
+              </div>
+              <div className="vexa-brand-text">
+                <span className="vexa-brand-name">VEXA</span>
+                <span className="vexa-brand-subtitle">Style Hub</span>
+              </div>
             </div>
-            <div className="vexa-brand-text">
-              <span className="vexa-brand-name">VEXA</span>
-              <span className="vexa-brand-subtitle">Style Hub</span>
-            </div>
+
+            <button
+              type="button"
+              className="vexa-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
 
-          <button className="vexa-hamburger-btn" title="Toggle Navigation">
-            <Menu size={20} />
-          </button>
-        </div>
-
-        {/* 13 Navigation Items Exactly As Requested */}
-        <nav className="vexa-nav-list">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`vexa-nav-item ${isActive ? 'active' : ''}`}
-              >
-                <Icon size={19} className="vexa-nav-icon" />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
+          {/* 13 Navigation Items Exactly As Requested */}
+          <nav className="vexa-nav-list">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`vexa-nav-item ${isActive ? 'active' : ''}`}
+                >
+                  <Icon size={19} className="vexa-nav-icon" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Footer Logout (Sign Out button matching Image 2) */}
@@ -370,7 +388,23 @@ export const VexaDashboard = () => {
         {/* Topbar with Speshway Administrative Dashboard & Admin profile matching Image 2 */}
         <header className="vexa-topbar">
           <div className="vexa-topbar-left">
-            <span className="vexa-topbar-title">Speshway Administrative Dashboard</span>
+            <div className="vexa-header-title-wrap">
+              <button
+                type="button"
+                className="vexa-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <span className="vexa-topbar-title">
+                {menuItems.find(m => m.id === activeTab)?.label || 'Speshway Administrative Dashboard'}
+              </span>
+            </div>
+            <button onClick={() => navigate('/products')} className="dashboard-back-link vexa-back-btn">
+              <ArrowLeft size={14} />
+              <span>Back</span>
+            </button>
           </div>
 
           <div className="vexa-topbar-right">

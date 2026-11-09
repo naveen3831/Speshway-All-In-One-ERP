@@ -28,6 +28,8 @@ import {
   ShieldCheck,
   Building2,
   Calendar,
+  Menu,
+  X,
 } from 'lucide-react';
 import './HrmsDashboard.css';
 
@@ -55,6 +57,7 @@ const HrmsLogoIcon = () => (
 export const HrmsDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState('Nov 03, 2026');
 
@@ -170,43 +173,62 @@ export const HrmsDashboard = () => {
 
   return (
     <div className="hrms-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="hrms-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
-      <aside className="hrms-sidebar">
+      <aside className={`hrms-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="hrms-sidebar-top">
           {/* Brand Header */}
-        <div className="hrms-brand">
-          <div className="hrms-logo-container">
-            <HrmsLogoIcon />
-          </div>
-          <div className="hrms-brand-text">
-            <div className="hrms-brand-row">
-              <span className="brand-italic">Speshway</span>
-              <span className="brand-green">HRMS</span>
+          <div className="hrms-brand">
+            <div className="hrms-logo-container">
+              <HrmsLogoIcon />
             </div>
-            <span className="hrms-brand-subtitle">ADMIN PANEL</span>
+            <div className="hrms-brand-text">
+              <div className="hrms-brand-row">
+                <span className="brand-italic">Speshway</span>
+                <span className="brand-green">HRMS</span>
+              </div>
+              <span className="hrms-brand-subtitle">ADMIN PANEL</span>
+            </div>
+            <button
+              type="button"
+              className="hrms-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-        </div>
 
-        {/* Navigation Items */}
-        <nav className="hrms-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`hrms-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="hrms-nav-btn-left">
-                  <Icon size={18} className="hrms-nav-icon" />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && <span className="hrms-nav-badge">{item.badge}</span>}
-              </button>
-            );
-          })}
-        </nav>
+          {/* Navigation Items */}
+          <nav className="hrms-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`hrms-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="hrms-nav-btn-left">
+                    <Icon size={18} className="hrms-nav-icon" />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && <span className="hrms-nav-badge">{item.badge}</span>}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Pinned Bottom */}
@@ -230,11 +252,33 @@ export const HrmsDashboard = () => {
         {/* Top Navbar with Height 82px matching request */}
         <header className="hrms-topbar">
           <div className="hrms-topbar-left">
-            <h1 className="hrms-greeting-title">Good Morning, Admin 👋</h1>
-            <p className="hrms-greeting-subtitle">Here&apos;s what&apos;s happening at Speshway HRMS today.</p>
+            <div className="hrms-header-title-wrap">
+              <button
+                type="button"
+                className="hrms-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="hrms-greeting-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'Speshway HRMS Management'}
+                </h1>
+                <p className="hrms-greeting-subtitle">Here&apos;s what&apos;s happening at Speshway HRMS today.</p>
+              </div>
+            </div>
           </div>
 
           <div className="hrms-topbar-right">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link hrms-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
+
             {/* Global Search Bar */}
             <div className="hrms-search-box">
               <Search size={16} className="hrms-search-icon" />
@@ -261,7 +305,7 @@ export const HrmsDashboard = () => {
             </button>
 
             {/* User Profile */}
-            <div className="hrms-user-profile">
+            <div className="hrms-user-profile-top">
               <span className="hrms-user-name">Admin</span>
               <div className="hrms-avatar">A</div>
             </div>

@@ -34,6 +34,7 @@ import {
   Gift,
   CheckCircle2,
   AlertCircle,
+  Menu,
   X,
   ArrowLeft,
 } from 'lucide-react';
@@ -69,6 +70,7 @@ const JoyEventsLogoIcon = () => (
 export const JoyEventsDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chartToggle, setChartToggle] = useState('bookings'); // 'bookings' or 'revenue'
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState('Nov 03, 2026');
@@ -259,43 +261,62 @@ export const JoyEventsDashboard = () => {
 
   return (
     <div className="joy-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="joy-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Green Wave) */}
-      <aside className="joy-sidebar">
+      <aside className={`joy-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="joy-sidebar-top">
           {/* Brand Header */}
-        <div className="joy-brand">
-          <div className="joy-logo-container">
-            <JoyEventsLogoIcon />
-          </div>
-          <div className="joy-brand-text">
-            <div className="joy-brand-row">
-              <span className="brand-white">Joy</span>
-              <span className="brand-emerald">Events</span>
+          <div className="joy-brand">
+            <div className="joy-logo-container">
+              <JoyEventsLogoIcon />
             </div>
-            <span className="joy-brand-subtitle">ADMIN PANEL</span>
+            <div className="joy-brand-text">
+              <div className="joy-brand-row">
+                <span className="brand-white">Joy</span>
+                <span className="brand-emerald">Events</span>
+              </div>
+              <span className="joy-brand-subtitle">ADMIN PANEL</span>
+            </div>
+            <button
+              type="button"
+              className="joy-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-        </div>
 
-        {/* Navigation Items (12 items) */}
-        <nav className="joy-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`joy-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="joy-nav-btn-left">
-                  <Icon size={18} className="joy-nav-icon" />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && <span className="joy-nav-badge">{item.badge}</span>}
-              </button>
-            );
-          })}
-        </nav>
+          {/* Navigation Items (12 items) */}
+          <nav className="joy-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`joy-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="joy-nav-btn-left">
+                    <Icon size={18} className="joy-nav-icon" />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && <span className="joy-nav-badge">{item.badge}</span>}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Pinned Bottom */}
@@ -319,11 +340,33 @@ export const JoyEventsDashboard = () => {
         {/* Top Navbar with Height 82px matching request */}
         <header className="joy-topbar">
           <div className="joy-topbar-left">
-            <h1 className="joy-greeting-title">Good Morning, Admin 👋</h1>
-            <p className="joy-greeting-subtitle">Here&apos;s what&apos;s happening at Joy Events today.</p>
+            <div className="joy-header-title-wrap">
+              <button
+                type="button"
+                className="joy-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="joy-greeting-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'Joy Events Management'}
+                </h1>
+                <p className="joy-greeting-subtitle">Here&apos;s what&apos;s happening at Joy Events today.</p>
+              </div>
+            </div>
           </div>
 
           <div className="joy-topbar-right">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link joy-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
+
             {/* Global Search Bar */}
             <div className="joy-search-box">
               <Search size={16} className="joy-search-icon" />
@@ -354,7 +397,7 @@ export const JoyEventsDashboard = () => {
             </button>
 
             {/* User Profile */}
-            <div className="joy-user-profile">
+            <div className="joy-user-profile-top">
               <span className="joy-user-name">Admin</span>
               <div className="joy-avatar">A</div>
             </div>

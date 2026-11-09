@@ -24,6 +24,8 @@ import {
   Search,
   Filter,
   Plus,
+  Menu,
+  X,
   Check,
   CheckCircle,
   Clock,
@@ -129,6 +131,7 @@ const DesignerSwatch = () => (
 export const AneeraDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [salesView, setSalesView] = useState('revenue');
   const [dateRange, setDateRange] = useState('Last 7 Days');
   const [showDateDropdown, setShowDateDropdown] = useState(false);
@@ -302,22 +305,40 @@ export const AneeraDashboard = () => {
 
   return (
     <div className="aneera-dashboard-container">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="aneera-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* =========================================================
           LEFT SIDEBAR (Dark Navy #0b1120)
       ========================================================= */}
-      <aside className="aneera-sidebar">
+      <aside className={`aneera-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="aneera-sidebar-top">
           {/* Brand Monogram Header */}
-          <Link to="/product/aneera-silks" className="aneera-brand">
-            <div className="aneera-brand-logo-wrap">
-              <AneeraLogoIcon />
-            </div>
-            <div className="aneera-brand-text">
-              <span className="aneera-brand-title">ANEERA</span>
-              <span className="aneera-brand-sub">— SILKS —</span>
-              <span className="aneera-brand-tag">ADMIN PANEL</span>
-            </div>
-          </Link>
+          <div className="aneera-brand-wrap">
+            <Link to="/product/aneera-silks" className="aneera-brand">
+              <div className="aneera-brand-logo-wrap">
+                <AneeraLogoIcon />
+              </div>
+              <div className="aneera-brand-text">
+                <span className="aneera-brand-title">ANEERA</span>
+                <span className="aneera-brand-sub">— SILKS —</span>
+                <span className="aneera-brand-tag">ADMIN PANEL</span>
+              </div>
+            </Link>
+            <button
+              type="button"
+              className="aneera-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
+          </div>
 
           {/* Navigation Links */}
           <ul className="aneera-nav-list">
@@ -328,7 +349,10 @@ export const AneeraDashboard = () => {
                 <li key={item.id} className="aneera-nav-item">
                   <button
                     className={`aneera-nav-btn ${isActive ? 'active' : ''}`}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setSidebarOpen(false);
+                    }}
                   >
                     <Icon size={18} />
                     <span className="aneera-nav-label">{item.label}</span>
@@ -364,17 +388,35 @@ export const AneeraDashboard = () => {
       <div className="aneera-main-wrapper">
         <header className="aneera-top-navbar">
           <div className="aneera-nav-left">
-            <span className="aneera-nav-brand-title">Aneera Silks Management</span>
-            <span className="aneera-operational-pill">
-              <span className="aneera-op-dot"></span>
-              Operational
-            </span>
+            <div className="aneera-header-title-wrap">
+              <button
+                type="button"
+                className="aneera-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <span className="aneera-nav-brand-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'Aneera Silks Management'}
+                </span>
+                <span className="aneera-operational-pill">
+                  <span className="aneera-op-dot"></span>
+                  Operational
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="aneera-nav-right">
-            <Link to="/product/aneera-silks" className="aneera-back-catalog-link" title="Return to Aneera Silks product overview">
-              <ArrowLeft size={15} /> Back to Catalog
-            </Link>
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link aneera-back-catalog-link"
+              title="Return to Aneera Silks product overview"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
 
             <button className="aneera-bell-btn" title="Notifications">
               <Bell size={19} />

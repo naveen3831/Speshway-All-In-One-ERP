@@ -18,6 +18,8 @@ import {
   Phone,
   ShieldCheck,
   Wrench,
+  Menu,
+  X,
 } from 'lucide-react';
 import '../shared/IndustryDashboard.css';
 
@@ -53,6 +55,7 @@ const MAINTENANCE_TICKETS = [
 
 export const RealEstateDashboard = () => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeNav, setActiveNav] = useState('properties');
   const [filterStatus, setFilterStatus] = useState('all');
   const [search, setSearch] = useState('');
@@ -67,8 +70,17 @@ export const RealEstateDashboard = () => {
 
   return (
     <div className="ind-erp-root">
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="ind-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close navigation overlay"
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="ind-sidebar">
+      <aside className={`ind-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="ind-sidebar-brand">
           <div className="ind-brand-icon-box" style={{ backgroundColor: '#10b981' }}>
             <Home size={20} color="#ffffff" />
@@ -77,28 +89,36 @@ export const RealEstateDashboard = () => {
             <span className="ind-brand-name">EstateFlow</span>
             <span className="ind-brand-sub" style={{ color: '#34d399' }}>Real Estate ERP</span>
           </div>
+          <button
+            type="button"
+            className="ind-sidebar-close"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         <nav className="ind-sidebar-menu">
-          <button onClick={() => setActiveNav('dash')} className={`ind-nav-btn ${activeNav === 'dash' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('dash'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'dash' ? 'active' : ''}`}>
             <LayoutDashboard size={18} /> Overview
           </button>
-          <button onClick={() => setActiveNav('properties')} className={`ind-nav-btn ${activeNav === 'properties' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('properties'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'properties' ? 'active' : ''}`}>
             <Building size={18} /> Properties <span className="ind-nav-badge">6</span>
           </button>
-          <button onClick={() => setActiveNav('tenants')} className={`ind-nav-btn ${activeNav === 'tenants' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('tenants'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'tenants' ? 'active' : ''}`}>
             <Users size={18} /> Tenants &amp; Leases <span className="ind-nav-badge">4</span>
           </button>
-          <button onClick={() => setActiveNav('rent')} className={`ind-nav-btn ${activeNav === 'rent' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('rent'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'rent' ? 'active' : ''}`}>
             <DollarSign size={18} /> Rent Collections
           </button>
-          <button onClick={() => setActiveNav('leases')} className={`ind-nav-btn ${activeNav === 'leases' ? 'active' : ''}`}>
+          <button onClick={() => { setActiveNav('leases'); setSidebarOpen(false); }} className={`ind-nav-btn ${activeNav === 'leases' ? 'active' : ''}`}>
             <FileText size={18} /> Maintenance &amp; Repairs
           </button>
         </nav>
 
         <div className="ind-sidebar-footer">
-          <button onClick={() => navigate('/')} className="ind-back-home-btn">
+          <button onClick={() => { setSidebarOpen(false); navigate('/'); }} className="ind-back-home-btn">
             <ArrowLeft size={16} /> Back to Speshway
           </button>
         </div>
@@ -109,6 +129,14 @@ export const RealEstateDashboard = () => {
         {/* Topbar */}
         <header className="ind-topbar">
           <div className="ind-topbar-left">
+            <button
+              type="button"
+              className="ind-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
             <button onClick={() => navigate('/')} className="ind-back-pill">
               <ArrowLeft size={14} /> Back to Speshway ERP
             </button>

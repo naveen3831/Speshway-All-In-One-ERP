@@ -34,6 +34,7 @@ import {
   AlertCircle,
   HelpCircle,
   Zap,
+  Menu,
   ArrowLeft,
 } from 'lucide-react';
 import './RideFlowDashboard.css';
@@ -86,6 +87,7 @@ const RideFlowLogoIcon = () => (
 export const RideFlowDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chartToggle, setChartToggle] = useState('bookings'); // 'bookings' or 'revenue'
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState('Nov 03, 2026');
@@ -262,42 +264,61 @@ export const RideFlowDashboard = () => {
 
   return (
     <div className="rf-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="rf-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR (Dark Navy #0b1120 with Emerald Silk Wave) */}
-      <aside className="rf-sidebar">
+      <aside className={`rf-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="rf-sidebar-top">
           {/* Brand Header */}
-        <div className="rf-brand">
-          <div className="rf-logo-container">
-            <RideFlowLogoIcon />
-          </div>
-          <div className="rf-brand-text">
-            <div className="rf-brand-row">
-              <span className="brand-white">RideFlow</span>
+          <div className="rf-brand">
+            <div className="rf-logo-container">
+              <RideFlowLogoIcon />
             </div>
-            <span className="rf-brand-subtitle">ADMIN PANEL</span>
+            <div className="rf-brand-text">
+              <div className="rf-brand-row">
+                <span className="brand-white">RideFlow</span>
+              </div>
+              <span className="rf-brand-subtitle">ADMIN PANEL</span>
+            </div>
+            <button
+              type="button"
+              className="rf-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-        </div>
 
-        {/* Navigation Items (12 items) */}
-        <nav className="rf-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`rf-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="rf-nav-btn-left">
-                  <Icon size={18} className="rf-nav-icon" />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && <span className="rf-nav-badge">{item.badge}</span>}
-              </button>
-            );
-          })}
-        </nav>
+          {/* Navigation Items (12 items) */}
+          <nav className="rf-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`rf-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="rf-nav-btn-left">
+                    <Icon size={18} className="rf-nav-icon" />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && <span className="rf-nav-badge">{item.badge}</span>}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Pinned Bottom */}
@@ -321,11 +342,33 @@ export const RideFlowDashboard = () => {
         {/* Topbar with exactly 82px height */}
         <header className="rf-topbar">
           <div className="rf-topbar-left">
-            <h1 className="rf-greeting-title">Good Morning, Admin 👋</h1>
-            <p className="rf-greeting-subtitle">Here&apos;s what&apos;s happening at RideFlow today.</p>
+            <div className="rf-header-title-wrap">
+              <button
+                type="button"
+                className="rf-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="rf-greeting-title">
+                  {navItems.find(n => n.id === activeTab)?.label || 'RideFlow Management'}
+                </h1>
+                <p className="rf-greeting-subtitle">Here&apos;s what&apos;s happening at RideFlow today.</p>
+              </div>
+            </div>
           </div>
 
           <div className="rf-topbar-right">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link rf-back-catalog-btn"
+              title="Return to Catalog"
+            >
+              <ArrowLeft size={15} /> <span>Back</span>
+            </button>
+
             {/* Global Search Bar */}
             <div className="rf-search-box">
               <Search size={16} className="rf-search-icon" />
@@ -356,7 +399,7 @@ export const RideFlowDashboard = () => {
             </button>
 
             {/* User Profile */}
-            <div className="rf-user-profile">
+            <div className="rf-user-profile-top">
               <span className="rf-user-name">Admin</span>
               <div className="rf-avatar">A</div>
             </div>
