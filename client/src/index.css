@@ -2556,13 +2556,18 @@ button {
    ========================================================================== */
 .admin-layout-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100%;
   background-color: #f8fafc;
+  overflow: hidden;
+  position: relative;
 }
 
 /* Admin Sidebar */
 .admin-sidebar {
   width: 260px;
+  min-width: 260px;
   background-color: #0f172a;
   color: #f8fafc;
   display: flex;
@@ -2570,8 +2575,11 @@ button {
   position: sticky;
   top: 0;
   height: 100vh;
+  max-height: 100vh;
   border-right: 1px solid #1e293b;
   flex-shrink: 0;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
 }
 
 .admin-sidebar-brand {
@@ -2658,7 +2666,8 @@ button {
   flex-direction: column;
   gap: 2px;
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
 }
 
 .admin-nav-item {
@@ -2772,6 +2781,11 @@ button {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .admin-topbar {
@@ -2781,6 +2795,10 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 30;
 }
 
 .topbar-title {
@@ -3049,7 +3067,7 @@ button {
 .admin-content-inner {
   padding: 28px;
   flex: 1;
-  overflow-y: auto;
+  min-height: 0;
 }
 
 .admin-page-header {
@@ -3706,6 +3724,10 @@ a.admin-kpi-card:hover {
 
   .admin-sidebar.open {
     transform: translateX(0) !important;
+  }
+
+  .admin-sidebar-menu {
+    overflow-y: auto !important;
   }
 
   .admin-topbar {
@@ -6080,6 +6102,8 @@ html:has(.admin-layout-container),
 body:has(.admin-layout-container) {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  overflow: hidden !important;
+  height: 100% !important;
 }
 
 html:has(.salon-wrapper)::-webkit-scrollbar,

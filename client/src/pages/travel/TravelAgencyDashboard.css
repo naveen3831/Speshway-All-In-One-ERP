@@ -5,8 +5,10 @@
 
 .tat-erp-root {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   width: 100%;
+  overflow: hidden;
   background-color: #f8fafc;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: #0f172a;
@@ -26,7 +28,10 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow-y: auto;
+  max-height: 100vh;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  flex-shrink: 0;
 }
 
 .tat-sidebar-brand {
@@ -137,6 +142,10 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .tat-topbar {
