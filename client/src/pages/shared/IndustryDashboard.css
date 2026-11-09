@@ -74,10 +74,10 @@
 
 .ind-sidebar-menu {
   flex: 1;
-  padding: 18px 12px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   overflow-y: auto;
 }
 
@@ -85,7 +85,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 7px 12px;
   border-radius: 8px;
   font-size: 0.86rem;
   font-weight: 600;

@@ -112,10 +112,10 @@
 
 /* Navigation Links */
 .nexora-nav {
-  padding: 16px 12px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   flex: 1;
   overflow-y: auto;
 }
@@ -125,7 +125,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 11px 14px;
+  padding: 7px 12px;
   border-radius: 10px;
   border: none;
   background: transparent;
