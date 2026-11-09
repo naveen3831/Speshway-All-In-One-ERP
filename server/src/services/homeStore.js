@@ -26,11 +26,19 @@ export const DEFAULT_HOME_CONTENT = {
   },
   navbar: {
     showPricing: true,
+    showProducts: true,
   },
   branding: {
     logoUrl: '/logo.png',
     brandTitle: 'SPESHWAY',
     brandSubtitle: 'ALL IN ONE ERP',
+  },
+  socialLinks: {
+    facebook: 'https://facebook.com/speshway',
+    twitter: 'https://x.com/speshway',
+    linkedin: 'https://linkedin.com/company/speshway',
+    instagram: 'https://instagram.com/speshway',
+    youtube: 'https://youtube.com/@speshway',
   },
 };
 
@@ -48,6 +56,7 @@ export const getHomeContent = async () => {
         solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(dbContent.solutions || {}) },
         navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(dbContent.navbar || {}) },
         branding: { ...DEFAULT_HOME_CONTENT.branding, ...(dbContent.branding || {}) },
+        socialLinks: { ...DEFAULT_HOME_CONTENT.socialLinks, ...(dbContent.socialLinks || {}) },
       };
       return memoryHomeContent;
     }
@@ -74,6 +83,7 @@ export const updateHomeContent = async (newData) => {
     solutions: { ...memoryHomeContent.solutions, ...(updatePayload.solutions || {}) },
     navbar: { ...memoryHomeContent.navbar, ...(updatePayload.navbar || {}) },
     branding: { ...memoryHomeContent.branding, ...(updatePayload.branding || {}) },
+    socialLinks: { ...memoryHomeContent.socialLinks, ...(updatePayload.socialLinks || {}) },
   };
 
   // Persist to MongoDB

@@ -9,6 +9,14 @@ export const DEFAULT_BRANDING = {
   brandSubtitle: 'ALL IN ONE ERP',
 };
 
+export const DEFAULT_SOCIAL_LINKS = {
+  facebook: 'https://facebook.com/speshway',
+  twitter: 'https://x.com/speshway',
+  linkedin: 'https://linkedin.com/company/speshway',
+  instagram: 'https://instagram.com/speshway',
+  youtube: 'https://youtube.com/@speshway',
+};
+
 export const DEFAULT_HOME_CONTENT = {
   hero: {
     badge: '— OUR ERP SOLUTIONS —',
@@ -34,8 +42,10 @@ export const DEFAULT_HOME_CONTENT = {
   },
   navbar: {
     showPricing: true,
+    showProducts: true,
   },
   branding: DEFAULT_BRANDING,
+  socialLinks: DEFAULT_SOCIAL_LINKS,
 };
 
 const SocketContext = createContext(null);
@@ -202,6 +212,17 @@ export const SocketProvider = ({ children }) => {
     return DEFAULT_BRANDING;
   });
 
+  const [socialLinks, setSocialLinks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_social_links');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return { ...DEFAULT_SOCIAL_LINKS, ...parsed };
+      }
+    } catch (e) {}
+    return DEFAULT_SOCIAL_LINKS;
+  });
+
   const updateBranding = async (newBranding) => {
     const merged = { ...DEFAULT_BRANDING, ...(branding || {}), ...(newBranding || {}) };
     setBranding(merged);
@@ -226,6 +247,30 @@ export const SocketProvider = ({ children }) => {
     return merged;
   };
 
+  const updateSocialLinks = async (newSocialLinks) => {
+    const merged = { ...DEFAULT_SOCIAL_LINKS, ...(socialLinks || {}), ...(newSocialLinks || {}) };
+    setSocialLinks(merged);
+    try {
+      localStorage.setItem('speshway_social_links', JSON.stringify(merged));
+      window.dispatchEvent(new Event('speshway_social_links_changed'));
+    } catch (e) {}
+
+    try {
+      const updatedHome = {
+        ...(homeContent || {}),
+        socialLinks: merged,
+      };
+      setHomeContent(updatedHome);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+      } catch (e) {}
+      await api.put('/home', updatedHome);
+    } catch (err) {
+      console.warn('Could not persist social links to API:', err.message);
+    }
+    return merged;
+  };
+
   useEffect(() => {
     if (homeContent?.branding) {
       setBranding((prev) => {
@@ -238,6 +283,19 @@ export const SocketProvider = ({ children }) => {
       });
     }
   }, [homeContent?.branding]);
+
+  useEffect(() => {
+    if (homeContent?.socialLinks) {
+      setSocialLinks((prev) => {
+        const next = { ...DEFAULT_SOCIAL_LINKS, ...(prev || {}), ...homeContent.socialLinks };
+        try {
+          localStorage.setItem('speshway_social_links', JSON.stringify(next));
+          window.dispatchEvent(new Event('speshway_social_links_changed'));
+        } catch (e) {}
+        return next;
+      });
+    }
+  }, [homeContent?.socialLinks]);
 
   const refreshHomeContent = async () => {
     try {
@@ -777,6 +835,9 @@ export const SocketProvider = ({ children }) => {
         branding,
         setBranding,
         updateBranding,
+        socialLinks,
+        setSocialLinks,
+        updateSocialLinks,
         triggerAddProduct,
         triggerUpdateProduct,
         triggerDeleteProduct,

@@ -1,9 +1,36 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { Sidebar } from '../common/Sidebar';
 import { Header } from '../common/Header';
+import { useAuth } from '../../context/AuthContext';
 
 export const DashboardLayout = () => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <div
+        className="admin-loading-screen"
+        style={{
+          display: 'flex',
+          height: '100vh',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          gap: '12px',
+        }}
+      >
+        <div className="loading-spinner"></div>
+        <p style={{ color: '#64748b', fontSize: '0.9rem' }}>Loading Workspace...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
   return (
     <div className="dashboard-layout" style={{ display: 'flex', height: '100vh', maxHeight: '100vh', overflow: 'hidden' }}>
       <Sidebar />

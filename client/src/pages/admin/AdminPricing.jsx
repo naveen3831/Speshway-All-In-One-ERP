@@ -370,9 +370,9 @@ export const AdminPricing = () => {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '14px',
-              padding: '8px 16px',
-              borderRadius: '12px',
+              gap: '12px',
+              padding: '6px 14px',
+              borderRadius: '10px',
               backgroundColor: showPricingInNavbar ? '#ecfdf5' : '#f8fafc',
               border: showPricingInNavbar ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
               cursor: 'pointer',
@@ -389,12 +389,12 @@ export const AdminPricing = () => {
                 : 'Click to turn ON: show Pricing option and /pricing page'
             }
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div
                 style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '7px',
                   backgroundColor: showPricingInNavbar ? '#d1fae5' : '#e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
@@ -403,40 +403,25 @@ export const AdminPricing = () => {
                   transition: 'all 0.2s ease',
                 }}
               >
-                {showPricingInNavbar ? <Eye size={18} /> : <EyeOff size={18} />}
+                {showPricingInNavbar ? <Eye size={16} /> : <EyeOff size={16} />}
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                <span
-                  style={{
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    color: '#64748b',
-                    lineHeight: 1,
-                  }}
-                >
-                  Pricing Option & Public Page
-                </span>
-                <span
-                  style={{
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    color: showPricingInNavbar ? '#065f46' : '#475569',
-                    marginTop: '3px',
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {showPricingInNavbar ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
-                </span>
-              </div>
+              <span
+                style={{
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  color: showPricingInNavbar ? '#065f46' : '#475569',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Pricing: {showPricingInNavbar ? 'ON' : 'OFF'}
+              </span>
             </div>
 
             {/* Switch Slider */}
             <div
               style={{
-                width: '46px',
-                height: '24px',
+                width: '38px',
+                height: '20px',
                 borderRadius: '9999px',
                 backgroundColor: showPricingInNavbar ? '#059669' : '#cbd5e1',
                 padding: '2px',
@@ -449,19 +434,19 @@ export const AdminPricing = () => {
             >
               <div
                 style={{
-                  width: '20px',
-                  height: '20px',
+                  width: '16px',
+                  height: '16px',
                   borderRadius: '50%',
                   backgroundColor: '#ffffff',
                   boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  transform: showPricingInNavbar ? 'translateX(22px)' : 'translateX(0px)',
+                  transform: showPricingInNavbar ? 'translateX(18px)' : 'translateX(0px)',
                   transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               />
             </div>
           </div>
 
-          {toggleNotice ? (
+          {toggleNotice && (
             <span
               style={{
                 fontSize: '0.78rem',
@@ -472,16 +457,6 @@ export const AdminPricing = () => {
               }}
             >
               ✓ {toggleNotice}
-            </span>
-          ) : (
-            <span
-              style={{
-                fontSize: '0.72rem',
-                color: '#94a3b8',
-                fontWeight: 500,
-              }}
-            >
-              Click button to toggle Pricing option & page visibility across website
             </span>
           )}
         </div>

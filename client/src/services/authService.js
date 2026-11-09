@@ -4,11 +4,13 @@ export const authService = {
   login: async (credentials) => {
     const cleanEmail = credentials.email?.trim().toLowerCase();
     const cleanPassword = credentials.password?.trim();
+    const timeoutMinutes = credentials.timeoutMinutes || 10;
 
     try {
       const response = await api.post('/auth/login', {
         email: cleanEmail,
         password: cleanPassword,
+        timeoutMinutes,
       });
       if (response.data?.data) {
         localStorage.setItem('user', JSON.stringify(response.data.data));
@@ -41,12 +43,27 @@ export const authService = {
     return response.data;
   },
 
+  verifySession: async () => {
+    try {
+      const response = await api.get('/auth/verify-session');
+      return response.data;
+    } catch (err) {
+      return null;
+    }
+  },
+
   getCurrentUser: async () => {
     const response = await api.get('/auth/me');
     return response.data;
   },
 
-  logout: () => {
-    localStorage.removeItem('user');
+  logout: async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch (err) {
+      // Silent catch on network drop during logout
+    } finally {
+      localStorage.removeItem('user');
+    }
   },
 };

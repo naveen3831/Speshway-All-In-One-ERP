@@ -56,6 +56,7 @@ import { Login } from './pages/Login';
 import { NotFound } from './pages/NotFound';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { SessionTimeoutModal } from './components/common/SessionTimeoutModal';
 
 
 import { useParams } from 'react-router-dom';
@@ -93,6 +94,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
+        <SessionTimeoutModal />
         <SocketProvider>
           <BrowserRouter>
             <ScrollToTop />

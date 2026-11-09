@@ -1885,8 +1885,8 @@ button {
 }
 
 .catalog-product-name {
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 8px;
 }
@@ -5552,20 +5552,63 @@ a.admin-kpi-card:hover {
   height: 44px;
   border-radius: 12px;
   background-color: #141c2e;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #94a3b8;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: all 0.22s ease;
+  transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
 .footer-social-btn:hover {
   background-color: #1e293b;
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.16);
-  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+/* Authentic Social Brand Hover Colors */
+.footer-social-btn.social-btn-facebook:hover {
+  background-color: rgba(24, 119, 242, 0.14);
+  color: #1877f2;
+  border-color: #1877f2;
+  box-shadow: 0 6px 18px rgba(24, 119, 242, 0.42);
+  transform: translateY(-3px);
+}
+
+.footer-social-btn.social-btn-x:hover,
+.footer-social-btn.social-btn-twitter:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.28);
+  transform: translateY(-3px);
+}
+
+.footer-social-btn.social-btn-linkedin:hover {
+  background-color: rgba(10, 102, 194, 0.14);
+  color: #0a66c2;
+  border-color: #0a66c2;
+  box-shadow: 0 6px 18px rgba(10, 102, 194, 0.42);
+  transform: translateY(-3px);
+}
+
+.footer-social-btn.social-btn-instagram:hover {
+  background: radial-gradient(circle at 30% 107%, rgba(253, 244, 151, 0.15) 0%, rgba(253, 89, 73, 0.2) 45%, rgba(214, 36, 159, 0.25) 70%, rgba(40, 90, 235, 0.2) 90%);
+  color: #e1306c;
+  border-color: #e1306c;
+  box-shadow: 0 6px 18px rgba(225, 48, 108, 0.46);
+  transform: translateY(-3px);
+}
+
+.footer-social-btn.social-btn-youtube:hover {
+  background-color: rgba(255, 0, 0, 0.14);
+  color: #ff0000;
+  border-color: #ff0000;
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.48);
+  transform: translateY(-3px);
 }
 
 .footer-status-pill {

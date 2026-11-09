@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useSocket } from '../../context/SocketContext';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 import {
   LayoutDashboard,
@@ -25,8 +25,20 @@ import {
 } from 'lucide-react';
 
 export const AdminLayout = () => {
-  const { user, loading, login, logout } = useAuth();
-  const { activities, modulesData } = useSocket();
+  const {
+    user,
+    loading,
+    login,
+    logout,
+    sessionExpired,
+    sessionExpiredReason,
+    dismissSessionExpired,
+    timeoutMinutes,
+  } = useAuth();
+  const { activities, modulesData, branding, homeContent } = useSocket();
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
   const navigate = useNavigate();
 
   // Admin login form state
@@ -193,6 +205,7 @@ export const AdminLayout = () => {
       const cleanEmail = email.trim().toLowerCase();
       const cleanPassword = password.trim();
       await login({ email: cleanEmail, password: cleanPassword });
+      dismissSessionExpired();
     } catch (err) {
       setLoginError(
         err.response?.data?.message || 'Invalid admin credentials. Please try again.'
@@ -234,6 +247,36 @@ export const AdminLayout = () => {
               Sign in with your administrator credentials to manage ERP operations
             </p>
           </div>
+
+          {sessionExpired && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '12px',
+                padding: '14px 16px',
+                borderRadius: '12px',
+                backgroundColor: '#fffbeb',
+                border: '1.5px solid #fde68a',
+                color: '#92400e',
+                marginBottom: '20px',
+                fontSize: '0.88rem',
+                lineHeight: 1.45,
+                boxShadow: '0 2px 8px rgba(245, 158, 11, 0.08)',
+              }}
+            >
+              <Clock size={20} style={{ color: '#d97706', flexShrink: 0, marginTop: '2px' }} />
+              <div style={{ flex: 1 }}>
+                <strong style={{ display: 'block', fontSize: '0.92rem', marginBottom: '2px', color: '#b45309' }}>
+                  Session Expired Due to Inactivity
+                </strong>
+                <span>
+                  {sessionExpiredReason ||
+                    `You were automatically signed out after ${timeoutMinutes} minutes of inactivity for your security. Please log in again to resume.`}
+                </span>
+              </div>
+            </div>
+          )}
 
           {loginError && (
             <div className="pro-login-error">

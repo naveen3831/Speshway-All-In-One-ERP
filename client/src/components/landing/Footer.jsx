@@ -6,21 +6,34 @@ import {
   Linkedin,
   Instagram,
   Youtube,
+  MapPin,
+  Phone,
+  Mail,
 } from 'lucide-react';
+import { useSocket, DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS } from '../../context/SocketContext';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
-  const { homeContent, branding } = useSocket();
+  const { homeContent, branding, socialLinks } = useSocket();
 
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
+  const currentSocial = socialLinks || homeContent?.socialLinks || DEFAULT_SOCIAL_LINKS;
 
   // Pricing visibility state
   const [showPricing, setShowPricing] = useState(() => {
     const stored = localStorage.getItem('speshway_navbar_pricing_visible');
     if (stored !== null) return stored === 'true';
     if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
+    return true;
+  });
+
+  // Products visibility state
+  const [showProducts, setShowProducts] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_products_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     return true;
   });
 
@@ -34,14 +47,30 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
       }
     };
 
+    const syncProductsVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_products_visible');
+      if (stored !== null) {
+        setShowProducts(stored === 'true');
+      } else if (homeContent?.navbar?.showProducts !== undefined) {
+        setShowProducts(Boolean(homeContent.navbar.showProducts));
+      }
+    };
+
     syncVisibility();
+    syncProductsVisibility();
+
     window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
     window.addEventListener('storage', syncVisibility);
+    window.addEventListener('storage', syncProductsVisibility);
+
     return () => {
       window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
       window.removeEventListener('storage', syncVisibility);
+      window.removeEventListener('storage', syncProductsVisibility);
     };
-  }, [homeContent?.navbar?.showPricing]);
+  }, [homeContent?.navbar?.showPricing, homeContent?.navbar?.showProducts]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -72,52 +101,57 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
               Delivering innovative IT solutions and driving digital transformation for businesses worldwide.
             </p>
 
-            {/* Social Media Links */}
+            {/* Social Media Links with dynamic URLs and authentic brand hover styles */}
             <div className="footer-social-links">
               <a
-                href="https://facebook.com"
+                href={currentSocial.facebook || 'https://facebook.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-facebook"
                 aria-label="Facebook"
+                title="Follow us on Facebook"
               >
                 <Facebook size={18} />
               </a>
               <a
-                href="https://x.com"
+                href={currentSocial.twitter || 'https://x.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-x"
                 aria-label="X (formerly Twitter)"
+                title="Follow us on X (Twitter)"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
               <a
-                href="https://linkedin.com"
+                href={currentSocial.linkedin || 'https://linkedin.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-linkedin"
                 aria-label="LinkedIn"
+                title="Connect with us on LinkedIn"
               >
                 <Linkedin size={18} />
               </a>
               <a
-                href="https://instagram.com"
+                href={currentSocial.instagram || 'https://instagram.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-instagram"
                 aria-label="Instagram"
+                title="Follow us on Instagram"
               >
                 <Instagram size={18} />
               </a>
               <a
-                href="https://youtube.com"
+                href={currentSocial.youtube || 'https://youtube.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-social-btn"
+                className="footer-social-btn social-btn-youtube"
                 aria-label="YouTube"
+                title="Subscribe to our YouTube Channel"
               >
                 <Youtube size={18} />
               </a>
@@ -148,11 +182,13 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                   Aneera Sarees Admin
                 </Link>
               </li>
-              <li>
-                <Link to="/projects" className="footer-link-highlight">
-                  View All 17+ Systems &rarr;
-                </Link>
-              </li>
+              {showProducts && (
+                <li>
+                  <Link to="/projects" className="footer-link-highlight">
+                    View All 17+ Systems &rarr;
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -250,3 +286,5 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
     </footer>
   );
 };
+
+export default Footer;
