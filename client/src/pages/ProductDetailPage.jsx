@@ -331,11 +331,12 @@ export const ProductDetailPage = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  marginBottom: '12px',
-                  padding: '7px 14px',
+                  marginTop: '-6px',
+                  marginBottom: '14px',
+                  padding: '6px 14px',
                   backgroundColor: '#ffffff',
                   border: '1px solid #cbd5e1',
-                  borderRadius: '8px',
+                  borderRadius: '9999px',
                   color: '#1e293b',
                   fontSize: '0.85rem',
                   fontWeight: 600,
@@ -356,7 +357,7 @@ export const ProductDetailPage = () => {
                 }}
               >
                 <ArrowLeft size={16} />
-                <span>Back to Projects</span>
+                <span>Back</span>
               </button>
 
               <div className="modal-badge-row">
