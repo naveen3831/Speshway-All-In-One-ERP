@@ -1,4 +1,4 @@
-/* ContactCard.css - Matching User Reference (Image 1 & Image 2) */
+/* ContactCard.css - Matching User Reference (Image 1 & Image 2) - Emerald Green Theme */
 
 /* -------------------------------------------------------------
    1. FLOATING CONTACT TOGGLE BUTTON (BOTTOM-RIGHT FAB)
@@ -14,20 +14,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #0b1a99; /* Deep royal cobalt blue from screenshot */
+  background-color: #047857; /* Signature Emerald Green */
   border: none;
   color: #ffffff;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 8px 24px rgba(11, 26, 153, 0.35), 0 2px 8px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 8px 24px rgba(4, 120, 87, 0.35), 0 2px 8px rgba(15, 23, 42, 0.12);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 0;
 }
 
 .floating-website-contact-btn:hover {
-  background-color: #07137a;
+  background-color: #065f46;
   transform: translateY(-2px) scale(1.06);
-  box-shadow: 0 12px 28px rgba(11, 26, 153, 0.45);
+  box-shadow: 0 12px 28px rgba(4, 120, 87, 0.45);
 }
 
 .floating-website-contact-btn:active {
@@ -35,21 +35,21 @@
 }
 
 .floating-website-contact-btn.active {
-  background-color: #07137a;
-  box-shadow: 0 6px 22px rgba(11, 26, 153, 0.45);
+  background-color: #065f46;
+  box-shadow: 0 6px 22px rgba(4, 120, 87, 0.45);
 }
 
-/* Green online indicator dot at top-right of FAB */
+/* Bright green online indicator dot at top-right of FAB */
 .contact-toggle-dot {
   position: absolute;
   top: 1px;
   right: 1px;
   width: 14px;
   height: 14px;
-  background-color: #00c853; /* Bright green dot from screenshot */
+  background-color: #10b981; /* Bright mint-emerald dot */
   border: 2.5px solid #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 0 1px rgba(11, 26, 153, 0.2);
+  box-shadow: 0 0 0 1px rgba(4, 120, 87, 0.25);
   animation: pulseContactDot 2s infinite;
 }
 
@@ -60,15 +60,15 @@
 @keyframes pulseContactDot {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.7);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 6px rgba(0, 200, 83, 0);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(0, 200, 83, 0);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
   }
 }
 
@@ -101,7 +101,7 @@
   max-width: calc(100vw - 36px);
   background: #ffffff;
   border-radius: 22px;
-  box-shadow: 0 18px 45px rgba(11, 26, 153, 0.16), 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 45px rgba(4, 120, 87, 0.14), 0 4px 16px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(226, 232, 240, 0.9);
   padding: 24px 22px 22px 22px;
   z-index: 9999;
@@ -136,14 +136,14 @@
 }
 
 .contact-sparkle-icon {
-  color: #0b1a99;
+  color: #047857;
   flex-shrink: 0;
 }
 
 .contact-card-title {
   font-size: 1.18rem;
   font-weight: 800;
-  color: #0b1a99;
+  color: #047857;
   margin: 0;
   letter-spacing: -0.015em;
   font-family: inherit;
@@ -240,8 +240,8 @@
 .contact-field-input:focus,
 .contact-field-textarea:focus {
   background: #ffffff;
-  border-color: #0b1a99;
-  box-shadow: 0 0 0 3px rgba(11, 26, 153, 0.08);
+  border-color: #047857;
+  box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
 }
 
 .contact-field-textarea {
@@ -253,7 +253,7 @@
 /* Submit Button */
 .contact-card-submit-btn {
   width: 100%;
-  background-color: #0b1a99;
+  background-color: #047857;
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -264,13 +264,13 @@
   margin-top: 4px;
   transition: all 0.18s ease;
   font-family: inherit;
-  box-shadow: 0 4px 14px rgba(11, 26, 153, 0.28);
+  box-shadow: 0 4px 14px rgba(4, 120, 87, 0.28);
 }
 
 .contact-card-submit-btn:hover:not(:disabled) {
-  background-color: #07137a;
+  background-color: #065f46;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(11, 26, 153, 0.38);
+  box-shadow: 0 6px 18px rgba(4, 120, 87, 0.38);
 }
 
 .contact-card-submit-btn:active:not(:disabled) {
