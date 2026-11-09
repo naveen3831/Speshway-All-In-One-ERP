@@ -177,14 +177,10 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         title={contactCardOpen ? 'Close contact' : 'Contact Speshway'}
       >
         {contactCardOpen ? (
-          <>
-            <X size={16} />
-            <span>Close</span>
-          </>
+          <X size={22} />
         ) : (
           <>
-            <PhoneCall size={16} />
-            <span>Contact</span>
+            <PhoneCall size={22} />
             <span className="contact-toggle-dot" />
           </>
         )}
