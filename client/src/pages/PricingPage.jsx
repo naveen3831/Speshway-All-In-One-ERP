@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import api from '../services/api';
 import { useSocket } from '../context/SocketContext';
 import { Navbar } from '../components/landing/Navbar';
@@ -10,10 +10,37 @@ import { Check, Sparkles } from 'lucide-react';
 
 export const PricingPage = () => {
   const navigate = useNavigate();
-  const { socket } = useSocket();
+  const { socket, homeContent } = useSocket();
   const [modalMode, setModalMode] = useState(null);
   const [isAnnual, setIsAnnual] = useState(true);
   const [livePlans, setLivePlans] = useState(null);
+
+  // Pricing visibility state
+  const [showPricing, setShowPricing] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
+    return true;
+  });
+
+  useEffect(() => {
+    const syncVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+      if (stored !== null) {
+        setShowPricing(stored === 'true');
+      } else if (homeContent?.navbar?.showPricing !== undefined) {
+        setShowPricing(Boolean(homeContent.navbar.showPricing));
+      }
+    };
+
+    syncVisibility();
+    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('storage', syncVisibility);
+    return () => {
+      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('storage', syncVisibility);
+    };
+  }, [homeContent?.navbar?.showPricing]);
 
   useEffect(() => {
     let mounted = true;
@@ -52,6 +79,11 @@ export const PricingPage = () => {
       socket.off('pricing:updated', handlePricingUpdated);
     };
   }, [socket]);
+
+  // If pricing is turned OFF by admin, hide the page and redirect to Home
+  if (!showPricing) {
+    return <Navigate to="/" replace />;
+  }
 
   const defaultTiers = [
     {

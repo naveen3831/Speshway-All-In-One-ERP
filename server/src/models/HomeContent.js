@@ -77,6 +77,26 @@ const homeContentSchema = new mongoose.Schema(
         default: 'Our ERP Solutions',
       },
     },
+    navbar: {
+      showPricing: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    branding: {
+      logoUrl: {
+        type: String,
+        default: '/logo.png',
+      },
+      brandTitle: {
+        type: String,
+        default: 'SPESHWAY',
+      },
+      brandSubtitle: {
+        type: String,
+        default: 'ALL IN ONE ERP',
+      },
+    },
   },
   {
     timestamps: true,
@@ -86,4 +106,3 @@ const homeContentSchema = new mongoose.Schema(
 const HomeContent = mongoose.models.HomeContent || mongoose.model('HomeContent', homeContentSchema);
 
 export default HomeContent;
-

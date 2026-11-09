@@ -1,16 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { homeContent, branding } = useSocket();
 
-  // Close mobile drawer when route changes
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
+
+  // Determine whether Pricing should be visible in navbar
+  const [showPricing, setShowPricing] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
+    return true;
+  });
+
   useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
+    const syncVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+      if (stored !== null) {
+        setShowPricing(stored === 'true');
+      } else if (homeContent?.navbar?.showPricing !== undefined) {
+        setShowPricing(Boolean(homeContent.navbar.showPricing));
+      }
+    };
+
+    syncVisibility();
+    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('storage', syncVisibility);
+    return () => {
+      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('storage', syncVisibility);
+    };
+  }, [homeContent?.navbar?.showPricing]);
 
   const handleGetStarted = () => {
     if (onOpenGetStarted) {
@@ -31,25 +59,18 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   return (
     <header className="navbar-container">
       <div className="navbar-content">
-        {/* Brand Logo with User Uploaded Logo Image */}
-        <Link
-          to="/"
-          className="brand-logo"
-          onClick={() => {
-            setMobileMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}
-        >
+        {/* Brand Logo with User Uploaded Logo Image & Brand Name */}
+        <Link to="/" className="brand-logo" title={`${brandTitle} - Home`}>
           <div className="brand-logo-wrap">
             <img
-              src="/logo.png"
-              alt="Speshway All In One ERP Logo"
+              src={logoUrl}
+              alt={`${brandTitle} Logo`}
               className="brand-logo-img"
             />
           </div>
           <div className="brand-text">
-            <span className="brand-title">SPESHWAY</span>
-            <span className="brand-subtitle">ALL IN ONE ERP</span>
+            <span className="brand-title">{brandTitle}</span>
+            <span className="brand-subtitle">{brandSubtitle}</span>
           </div>
         </Link>
 
@@ -70,13 +91,15 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             PROJECTS
           </NavLink>
-          <NavLink
-            to="/pricing"
-            onClick={() => window.scrollTo(0, 0)}
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-          >
-            PRICING
-          </NavLink>
+          {showPricing && (
+            <NavLink
+              to="/pricing"
+              onClick={() => window.scrollTo(0, 0)}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              PRICING
+            </NavLink>
+          )}
           <NavLink
             to="/contact"
             onClick={() => window.scrollTo(0, 0)}
