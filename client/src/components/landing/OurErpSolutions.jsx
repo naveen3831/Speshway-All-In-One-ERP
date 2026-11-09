@@ -30,7 +30,7 @@ export const OurErpSolutions = () => {
     const cats = Array.from(
       new Set(
         adminProjects
-          .map((p) => p.category || getProjectCategory(p))
+          .map((p) => getProjectCategory(p))
           .filter(Boolean)
       )
     );
@@ -41,7 +41,7 @@ export const OurErpSolutions = () => {
   const filteredProjects = useMemo(() => {
     return adminProjects.filter((prod) => {
       const term = searchTerm.toLowerCase().trim();
-      const cat = prod.category || getProjectCategory(prod) || '';
+      const cat = getProjectCategory(prod);
       const matchesSearch =
         !term ||
         (prod.name || '').toLowerCase().includes(term) ||
@@ -161,6 +161,7 @@ export const OurErpSolutions = () => {
                     </div>
                   )}
                   <div className="our-erp-card-body">
+                    <span className="our-erp-category-tag">{getProjectCategory(prod)}</span>
                     <h3 className="our-erp-card-title">{prod.name}</h3>
 
                     <div className="our-erp-card-actions">

@@ -369,14 +369,40 @@ export const DEFAULT_ADMIN_PROJECTS = [
 ];
 
 /**
+ * Canonical industry category mapping for each ERP project.
+ * Ensures each project has its distinct, specialized category.
+ */
+export const PROJECT_CATEGORY_MAP = {
+  'savitri-sarees': 'Fashion & Luxury',
+  'sana-stayz': 'Hospitality & Hotels',
+  'hotel-erp': 'Hospitality & Hotels',
+  'learnhub': 'Education & LMS',
+  'school-erp': 'Education & Academics',
+  'foodway': 'Food Delivery & Kitchen',
+  'flavora-kitchen': 'Restaurant & Dining',
+  'tours-and-travels': 'Bus & Travel Booking',
+  'ride-flow': 'Automotive & Mobility',
+  'speshway-hospitals': 'Healthcare & Hospitals',
+  'natural-milk-dairy': 'Dairy & Agriculture',
+  'vexa-style-hub': 'Fashion & Apparel',
+  'aneera-silks': 'Fashion & Luxury',
+  'e-commerce': 'E-Commerce Retail',
+  'saloon': 'Beauty & Wellness',
+  'fleet-management': 'Logistics & Fleet',
+  'american-fitness-gym': 'Fitness & Wellness',
+  'joy-events': 'Event Management',
+  'speshway-hrms': 'Human Resources',
+  'service-center': 'Automotive & Services',
+  'real-estate': 'Real Estate & Housing',
+};
+
+/**
  * Filter projects to strictly include ONLY the projects managed in the Admin Dashboard.
  */
 export const filterAdminProjects = (products) => {
-  if (!Array.isArray(products) || products.length === 0) {
-    return DEFAULT_ADMIN_PROJECTS;
-  }
+  const source = Array.isArray(products) && products.length > 0 ? products : DEFAULT_ADMIN_PROJECTS;
 
-  const valid = products.filter((p) => {
+  const valid = source.filter((p) => {
     if (!p || typeof p !== 'object') return false;
     const slug = String(p.slug || p.id || '').toLowerCase().trim();
     const name = String(p.name || '').toLowerCase().trim();
@@ -386,7 +412,8 @@ export const filterAdminProjects = (products) => {
     return true;
   });
 
-  return valid.length > 0 ? valid : DEFAULT_ADMIN_PROJECTS;
+  const list = valid.length > 0 ? valid : DEFAULT_ADMIN_PROJECTS;
+  return list.map(normalizeProductCategory);
 };
 
 /**
@@ -447,32 +474,54 @@ export const getProjectCategory = (prod) => {
   if (!prod) return 'Enterprise ERP';
   const slug = String(prod.slug || prod.id || '').toLowerCase().trim();
   const name = String(prod.name || '').toLowerCase().trim();
-  const cat = String(prod.category || '').trim();
 
-  // If category is valid and specific (not mistakenly set to default "Human Resources" or "Operations" for non-HR products)
-  if (cat && !['human resources', 'business operations', 'operations'].includes(cat.toLowerCase())) {
+  // 1. Exact match in canonical industry category map
+  if (PROJECT_CATEGORY_MAP[slug]) return PROJECT_CATEGORY_MAP[slug];
+  if (prod.id && PROJECT_CATEGORY_MAP[String(prod.id).toLowerCase()]) {
+    return PROJECT_CATEGORY_MAP[String(prod.id).toLowerCase()];
+  }
+
+  // 2. Exact keyword matching for recognized projects
+  if (slug.includes('saree') || slug.includes('silk') || slug.includes('savitri') || name.includes('saree') || name.includes('silk')) return 'Fashion & Luxury';
+  if (slug.includes('hotel') || slug.includes('stayz') || slug.includes('sana') || name.includes('stayz') || name.includes('hotel')) return 'Hospitality & Hotels';
+  if (slug.includes('learn') || slug.includes('lms') || name.includes('learnhub') || name.includes('lms')) return 'Education & LMS';
+  if (slug.includes('school') || name.includes('school')) return 'Education & Academics';
+  if (slug.includes('flavora') || name.includes('flavora')) return 'Restaurant & Dining';
+  if (slug.includes('kitchen') || slug.includes('food') || name.includes('foodway') || name.includes('kitchen')) return 'Food Delivery & Kitchen';
+  if (slug.includes('bus') || slug.includes('tour') || slug.includes('travel') || name.includes('travel') || name.includes('tour')) return 'Bus & Travel Booking';
+  if (slug.includes('bike') || slug.includes('ride') || name.includes('ride flow') || name.includes('bike')) return 'Automotive & Mobility';
+  if (slug.includes('hospital') || slug.includes('clinic') || name.includes('hospital') || name.includes('clinic')) return 'Healthcare & Hospitals';
+  if (slug.includes('dairy') || slug.includes('milk') || name.includes('dairy') || name.includes('milk')) return 'Dairy & Agriculture';
+  if (slug.includes('vexa') || slug.includes('apparel') || name.includes('vexa')) return 'Fashion & Apparel';
+  if (slug.includes('aneera') || name.includes('aneera')) return 'Fashion & Luxury';
+  if (slug.includes('e-com') || slug.includes('nexora') || slug.includes('store') || name.includes('nexora') || name.includes('commerce')) return 'E-Commerce Retail';
+  if (slug.includes('salon') || slug.includes('saloon') || slug.includes('spy') || name.includes('salon') || name.includes('saloon')) return 'Beauty & Wellness';
+  if (slug.includes('fleet') || slug.includes('truck') || name.includes('fleet')) return 'Logistics & Fleet';
+  if (slug.includes('gym') || slug.includes('fitness') || name.includes('american fitness') || name.includes('gym')) return 'Fitness & Wellness';
+  if (slug.includes('event') || slug.includes('joy') || name.includes('joy event')) return 'Event Management';
+  if (slug.includes('service') || name.includes('service center')) return 'Automotive & Services';
+  if (slug.includes('estate') || slug.includes('real') || name.includes('real estate')) return 'Real Estate & Housing';
+  if (slug.includes('hrms') || name.includes('hrms') || name.includes('human resources')) return 'Human Resources';
+
+  // 3. Fallback to existing product category only if it is NOT a generic placeholder
+  const cat = String(prod.category || '').trim();
+  const genericDefaults = ['human resources', 'business operations', 'operations', 'productivity', 'business intelligence', 'general erp', 'enterprise erp'];
+  if (cat && !genericDefaults.includes(cat.toLowerCase())) {
     return cat;
   }
 
-  // Exact matching for recognized projects
-  if (slug.includes('saree') || slug.includes('silk') || slug.includes('savitri') || name.includes('saree')) return 'Fashion & Luxury';
-  if (slug.includes('hotel') || slug.includes('stayz') || slug.includes('sana') || name.includes('stayz')) return 'Hospitality & Hotels';
-  if (slug.includes('learn') || slug.includes('lms') || name.includes('learn')) return 'Education & LMS';
-  if (slug.includes('food') || slug.includes('kitchen') || slug.includes('flavora') || name.includes('food')) return 'Food Delivery & Kitchen';
-  if (slug.includes('bus') || slug.includes('tour') || slug.includes('travel')) return 'Bus & Travel Booking';
-  if (slug.includes('bike') || slug.includes('ride') || name.includes('ride')) return 'Automotive & Mobility';
-  if (slug.includes('hospital') || slug.includes('clinic') || name.includes('hospital')) return 'Healthcare & Hospitals';
-  if (slug.includes('dairy') || slug.includes('milk') || name.includes('dairy')) return 'Dairy & Agriculture';
-  if (slug.includes('vexa') || slug.includes('apparel') || name.includes('vexa')) return 'Fashion & Apparel';
-  if (slug.includes('aneera') || name.includes('aneera')) return 'Fashion & Luxury';
-  if (slug.includes('e-com') || slug.includes('nexora') || slug.includes('store')) return 'E-Commerce Retail';
-  if (slug.includes('salon') || slug.includes('saloon') || slug.includes('spy')) return 'Beauty & Wellness';
-  if (slug.includes('fleet') || slug.includes('truck')) return 'Logistics & Fleet';
-  if (slug.includes('gym') || slug.includes('fitness')) return 'Fitness & Wellness';
-  if (slug.includes('event') || slug.includes('joy')) return 'Event Management';
-  if (slug.includes('hrms') || name.includes('hrms')) return 'Human Resources';
+  return 'Enterprise ERP';
+};
 
-  return cat || 'Enterprise ERP';
+/**
+ * Ensures an ERP product object carries its verified industry category.
+ */
+export const normalizeProductCategory = (prod) => {
+  if (!prod || typeof prod !== 'object') return prod;
+  return {
+    ...prod,
+    category: getProjectCategory(prod),
+  };
 };
 
 

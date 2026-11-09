@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import { getProductFallbackImage } from '../../pages/ProductsPage';
+import { normalizeProductCategory } from '../../utils/adminProjects';
 import './ProjectsSection.css';
 
 const iconMap = {
@@ -150,7 +151,7 @@ export const ProjectsSection = ({ onSelectProduct }) => {
       const slug = (p.slug || p.id || '').toLowerCase();
       return !EXCLUDED_SLUGS.has(slug);
     });
-    return filtered.length > 0 ? filtered : DEFAULT_PROJECTS;
+    return (filtered.length > 0 ? filtered : DEFAULT_PROJECTS).map(normalizeProductCategory);
   }, [products]);
 
   const categories = React.useMemo(() => {

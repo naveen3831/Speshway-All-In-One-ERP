@@ -282,9 +282,27 @@
   padding: 12px 10px 14px 10px;
 }
 
+/* Category Tag on Card */
+.our-erp-category-tag {
+  display: inline-block;
+  font-size: 0.70rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #00875a;
+  background-color: #dcfce7;
+  padding: 2.5px 9px;
+  border-radius: 9999px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Titles - Centered in the middle below the image */
 .our-erp-card-title {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 700;
   color: #0f172a;
   letter-spacing: -0.015em;
