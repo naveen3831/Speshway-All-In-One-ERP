@@ -24,6 +24,14 @@ export const DEFAULT_HOME_CONTENT = {
   solutions: {
     title: 'Our ERP Solutions',
   },
+  navbar: {
+    showPricing: true,
+  },
+  branding: {
+    logoUrl: '/logo.png',
+    brandTitle: 'SPESHWAY',
+    brandSubtitle: 'ALL IN ONE ERP',
+  },
 };
 
 let memoryHomeContent = { ...DEFAULT_HOME_CONTENT };
@@ -38,6 +46,8 @@ export const getHomeContent = async () => {
         hero: { ...DEFAULT_HOME_CONTENT.hero, ...(dbContent.hero || {}) },
         stats: { ...DEFAULT_HOME_CONTENT.stats, ...(dbContent.stats || {}) },
         solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(dbContent.solutions || {}) },
+        navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(dbContent.navbar || {}) },
+        branding: { ...DEFAULT_HOME_CONTENT.branding, ...(dbContent.branding || {}) },
       };
       return memoryHomeContent;
     }
@@ -62,6 +72,8 @@ export const updateHomeContent = async (newData) => {
     hero: { ...memoryHomeContent.hero, ...(updatePayload.hero || {}) },
     stats: { ...memoryHomeContent.stats, ...(updatePayload.stats || {}) },
     solutions: { ...memoryHomeContent.solutions, ...(updatePayload.solutions || {}) },
+    navbar: { ...memoryHomeContent.navbar, ...(updatePayload.navbar || {}) },
+    branding: { ...memoryHomeContent.branding, ...(updatePayload.branding || {}) },
   };
 
   // Persist to MongoDB
@@ -100,6 +112,8 @@ export const seedHomeDatabase = async () => {
           hero: { ...DEFAULT_HOME_CONTENT.hero, ...(existing.hero || {}) },
           stats: { ...DEFAULT_HOME_CONTENT.stats, ...(existing.stats || {}) },
           solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(existing.solutions || {}) },
+          navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(existing.navbar || {}) },
+          branding: { ...DEFAULT_HOME_CONTENT.branding, ...(existing.branding || {}) },
         };
       }
     }
@@ -114,4 +128,3 @@ export default {
   updateHomeContent,
   seedHomeDatabase,
 };
-

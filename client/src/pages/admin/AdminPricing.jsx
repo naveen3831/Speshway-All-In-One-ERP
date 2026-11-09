@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { useSocket } from '../../context/SocketContext';
+import {
+  useSocket } from '../../context/SocketContext';
 import {
   Save,
   Plus,
@@ -9,6 +10,8 @@ import {
   Check,
   Edit2,
   X,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 
 const DEFAULT_SAAS_PLANS = [
@@ -69,7 +72,59 @@ const DEFAULT_SAAS_PLANS = [
 ];
 
 export const AdminPricing = () => {
-  const { socket } = useSocket();
+  const { socket, homeContent, setHomeContent } = useSocket();
+
+  // Navbar Pricing Visibility Toggle State
+  const [showPricingInNavbar, setShowPricingInNavbar] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_pricing_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
+    return true;
+  });
+  const [toggleUpdating, setToggleUpdating] = useState(false);
+  const [toggleNotice, setToggleNotice] = useState('');
+
+  // Sync state if homeContent changes via socket or external updates
+  useEffect(() => {
+    if (homeContent?.navbar?.showPricing !== undefined) {
+      setShowPricingInNavbar(Boolean(homeContent.navbar.showPricing));
+      localStorage.setItem('speshway_navbar_pricing_visible', homeContent.navbar.showPricing ? 'true' : 'false');
+    }
+  }, [homeContent?.navbar?.showPricing]);
+
+  const handleToggleNavbarPricing = async () => {
+    const nextVal = !showPricingInNavbar;
+    setShowPricingInNavbar(nextVal);
+    localStorage.setItem('speshway_navbar_pricing_visible', nextVal ? 'true' : 'false');
+    window.dispatchEvent(new Event('speshway_navbar_pricing_changed'));
+
+    setToggleNotice(
+      nextVal
+        ? 'Pricing option & /pricing page are now VISIBLE and ACTIVE'
+        : 'Pricing option & /pricing page are now completely HIDDEN'
+    );
+    setTimeout(() => setToggleNotice(''), 3500);
+
+    setToggleUpdating(true);
+    try {
+      const updated = {
+        ...(homeContent || {}),
+        navbar: {
+          ...(homeContent?.navbar || {}),
+          showPricing: nextVal,
+        },
+      };
+      if (setHomeContent) setHomeContent(updated);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updated));
+      } catch (e) {}
+      await api.put('/home', updated);
+    } catch (err) {
+      console.warn('API sync warning for navbar pricing toggle:', err.message);
+    } finally {
+      setToggleUpdating(false);
+    }
+  };
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -266,6 +321,138 @@ export const AdminPricing = () => {
           <p className="admin-subtext" style={{ margin: 0 }}>
             Click on any card to view its full details, edit pricing and features, or delete the plan.
           </p>
+        </div>
+
+        {/* Top Right Corner Toggle Button for Home Navbar Pricing Link */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleToggleNavbarPricing}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleToggleNavbarPricing();
+              }
+            }}
+            className={`admin-navbar-toggle-btn ${showPricingInNavbar ? 'is-active' : 'is-inactive'}`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '14px',
+              padding: '8px 16px',
+              borderRadius: '12px',
+              backgroundColor: showPricingInNavbar ? '#ecfdf5' : '#f8fafc',
+              border: showPricingInNavbar ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: showPricingInNavbar
+                ? '0 3px 12px rgba(16, 185, 129, 0.15)'
+                : '0 2px 6px rgba(15, 23, 42, 0.05)',
+              userSelect: 'none',
+              outline: 'none',
+            }}
+            title={
+              showPricingInNavbar
+                ? 'Click to turn OFF: hide Pricing option and /pricing page'
+                : 'Click to turn ON: show Pricing option and /pricing page'
+            }
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: showPricingInNavbar ? '#d1fae5' : '#e2e8f0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: showPricingInNavbar ? '#059669' : '#64748b',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {showPricingInNavbar ? <Eye size={18} /> : <EyeOff size={18} />}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: '#64748b',
+                    lineHeight: 1,
+                  }}
+                >
+                  Pricing Option & Public Page
+                </span>
+                <span
+                  style={{
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    color: showPricingInNavbar ? '#065f46' : '#475569',
+                    marginTop: '3px',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {showPricingInNavbar ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
+                </span>
+              </div>
+            </div>
+
+            {/* Switch Slider */}
+            <div
+              style={{
+                width: '46px',
+                height: '24px',
+                borderRadius: '9999px',
+                backgroundColor: showPricingInNavbar ? '#059669' : '#cbd5e1',
+                padding: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                transition: 'background-color 0.2s ease',
+                position: 'relative',
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                  transform: showPricingInNavbar ? 'translateX(22px)' : 'translateX(0px)',
+                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              />
+            </div>
+          </div>
+
+          {toggleNotice ? (
+            <span
+              style={{
+                fontSize: '0.78rem',
+                color: showPricingInNavbar ? '#059669' : '#dc2626',
+                fontWeight: 600,
+                marginTop: '1px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              ✓ {toggleNotice}
+            </span>
+          ) : (
+            <span
+              style={{
+                fontSize: '0.72rem',
+                color: '#94a3b8',
+                fontWeight: 500,
+              }}
+            >
+              Click button to toggle Pricing option & page visibility across website
+            </span>
+          )}
         </div>
       </div>
 

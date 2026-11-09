@@ -5087,7 +5087,7 @@ a.admin-kpi-card:hover {
 
 .pro-footer-grid {
   display: grid;
-  grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
   gap: 48px;
 }
 
@@ -5999,4 +5999,46 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
   color: #ffffff;
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
+}
+
+/* Footer Contact Details matching Image 2 */
+.footer-contact-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #94a3b8;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.footer-contact-link {
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.footer-contact-link:hover {
+  color: #34d399;
+  transform: translateX(2px);
+}
+
+.footer-contact-icon {
+  color: #818cf8;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.footer-contact-text {
+  word-break: normal;
 }

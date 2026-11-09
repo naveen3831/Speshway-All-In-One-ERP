@@ -119,9 +119,9 @@ export const AdminLayout = () => {
           {/* Logo & Header */}
           <div className="pro-login-header">
             <div className="pro-logo-badge">
-              <img src="/logo.png" alt="Speshway ERP Logo" className="pro-logo-img" />
+              <img src={logoUrl} alt={`${brandTitle} ERP Logo`} className="pro-logo-img" />
             </div>
-            <h1 className="pro-login-title">Admin Console</h1>
+            <h1 className="pro-login-title">{brandTitle} Admin Console</h1>
             <p className="pro-login-subtitle">
               Sign in with your administrator credentials to manage ERP operations
             </p>
@@ -227,9 +227,9 @@ export const AdminLayout = () => {
       {/* Dedicated Admin Sidebar */}
       <aside className="admin-sidebar">
         <div className="admin-sidebar-brand">
-          <img src="/logo.png" alt="Speshway Admin Logo" className="admin-sidebar-logo-img" />
+          <img src={logoUrl} alt={`${brandTitle} Admin Logo`} className="admin-sidebar-logo-img" />
           <div className="brand-text">
-            <span className="brand-title">SPESHWAY</span>
+            <span className="brand-title">{brandTitle}</span>
             <span className="brand-subtitle">ADMIN CONSOLE</span>
           </div>
         </div>
@@ -353,7 +353,7 @@ export const AdminLayout = () => {
       <div className="admin-main-wrap">
         <header className="admin-topbar">
           <div className="topbar-left">
-            <span className="topbar-title">Speshway Administrative Dashboard</span>
+            <span className="topbar-title">{brandTitle} Administrative Dashboard</span>
           </div>
 
           <div className="topbar-right">

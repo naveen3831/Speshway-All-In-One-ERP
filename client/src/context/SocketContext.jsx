@@ -3,6 +3,12 @@ import { io } from 'socket.io-client';
 import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
 
+export const DEFAULT_BRANDING = {
+  logoUrl: '/logo.png',
+  brandTitle: 'SPESHWAY',
+  brandSubtitle: 'ALL IN ONE ERP',
+};
+
 export const DEFAULT_HOME_CONTENT = {
   hero: {
     badge: '— OUR ERP SOLUTIONS —',
@@ -26,6 +32,10 @@ export const DEFAULT_HOME_CONTENT = {
   solutions: {
     title: 'Our ERP Solutions',
   },
+  navbar: {
+    showPricing: true,
+  },
+  branding: DEFAULT_BRANDING,
 };
 
 const SocketContext = createContext(null);
@@ -180,6 +190,54 @@ export const SocketProvider = ({ children }) => {
     } catch (e) {}
     return DEFAULT_HOME_CONTENT;
   });
+
+    const [branding, setBranding] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_branding');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return { ...DEFAULT_BRANDING, ...parsed };
+      }
+    } catch (e) {}
+    return DEFAULT_BRANDING;
+  });
+
+  const updateBranding = async (newBranding) => {
+    const merged = { ...DEFAULT_BRANDING, ...(branding || {}), ...(newBranding || {}) };
+    setBranding(merged);
+    try {
+      localStorage.setItem('speshway_branding', JSON.stringify(merged));
+      window.dispatchEvent(new Event('speshway_branding_changed'));
+    } catch (e) {}
+
+    try {
+      const updatedHome = {
+        ...(homeContent || {}),
+        branding: merged,
+      };
+      setHomeContent(updatedHome);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+      } catch (e) {}
+      await api.put('/home', updatedHome);
+    } catch (err) {
+      console.warn('Could not persist branding to API:', err.message);
+    }
+    return merged;
+  };
+
+  useEffect(() => {
+    if (homeContent?.branding) {
+      setBranding((prev) => {
+        const next = { ...DEFAULT_BRANDING, ...(prev || {}), ...homeContent.branding };
+        try {
+          localStorage.setItem('speshway_branding', JSON.stringify(next));
+          window.dispatchEvent(new Event('speshway_branding_changed'));
+        } catch (e) {}
+        return next;
+      });
+    }
+  }, [homeContent?.branding]);
 
   const refreshHomeContent = async () => {
     try {
@@ -712,6 +770,9 @@ export const SocketProvider = ({ children }) => {
         homeContent,
         refreshHomeContent,
         setHomeContent,
+        branding,
+        setBranding,
+        updateBranding,
         triggerAddProduct,
         triggerUpdateProduct,
         triggerDeleteProduct,
