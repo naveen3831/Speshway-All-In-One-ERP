@@ -5694,42 +5694,42 @@ a.admin-kpi-card:hover {
 .pro-footer-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 56px 24px 44px 24px;
+  padding: 30px 24px 20px 24px;
 }
 
 .pro-footer-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
-  gap: 48px;
+  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+  gap: 32px;
 }
 
 .pro-footer-brand-col {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .footer-brand-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
 }
 
 .footer-logo-wrap {
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
   overflow: hidden;
   background: #ffffff;
-  padding: 4px;
+  padding: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .footer-brand-title {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: 0.05em;
@@ -5738,7 +5738,7 @@ a.admin-kpi-card:hover {
 }
 
 .footer-brand-subtitle {
-  font-size: 0.65rem;
+  font-size: 0.60rem;
   font-weight: 700;
   color: #10b981;
   letter-spacing: 0.12em;
@@ -5747,23 +5747,23 @@ a.admin-kpi-card:hover {
 
 .footer-tagline {
   color: #94a3b8;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  margin-top: 2px;
-  max-width: 330px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-top: 0;
+  max-width: 320px;
 }
 
 .footer-social-links {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .footer-social-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
   background-color: #141c2e;
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: #94a3b8;
@@ -5885,12 +5885,12 @@ a.admin-kpi-card:hover {
 }
 
 .footer-col-title {
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #f8fafc;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .footer-links-list {
@@ -5899,12 +5899,12 @@ a.admin-kpi-card:hover {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 7px;
 }
 
 .footer-link {
   color: #94a3b8;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   text-decoration: none;
   transition: all 0.15s ease;
   display: inline-block;
@@ -5917,6 +5917,7 @@ a.admin-kpi-card:hover {
 
 .footer-link-highlight {
   color: #34d399;
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
@@ -5928,7 +5929,7 @@ a.admin-kpi-card:hover {
   background: none;
   border: none;
   color: #94a3b8;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   text-align: left;
   cursor: pointer;
   padding: 0;
@@ -5948,34 +5949,45 @@ a.admin-kpi-card:hover {
 .pro-footer-bottom {
   background-color: #060911;
   border-top: 1px solid #1e293b;
-  padding: 18px 24px;
+  padding: 10px 24px;
 }
 
-.pro-footer-bottom-container {
+.pro-footer-bottom-container,
+.pro-footer-bottom-inner {
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
 }
 
 .footer-copyright {
   color: #64748b;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 
 .footer-legal-links {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
+}
+
+.footer-meta-tag {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+.footer-divider {
+  color: #334155;
+  font-size: 0.7rem;
 }
 
 .legal-link {
   color: #64748b;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -5986,19 +5998,19 @@ a.admin-kpi-card:hover {
 
 .legal-sep {
   color: #334155;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
 }
 
 .footer-back-to-top {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: #1e293b;
   color: #94a3b8;
   border: 1px solid #334155;
-  padding: 6px 14px;
+  padding: 4px 10px;
   border-radius: 6px;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -6671,16 +6683,16 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
 .footer-contact-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
 }
 
 .footer-contact-item {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
   color: #94a3b8;
-  font-size: 0.88rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.4;
   text-decoration: none;
 }
 
@@ -6697,7 +6709,7 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
 .footer-contact-icon {
   color: #818cf8;
   flex-shrink: 0;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .footer-contact-text {
