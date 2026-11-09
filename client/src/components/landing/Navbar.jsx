@@ -174,12 +174,20 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         className={`floating-website-contact-btn ${contactCardOpen ? 'active' : ''}`}
         aria-label={contactCardOpen ? 'Close contact card' : 'Open contact card'}
         aria-expanded={contactCardOpen}
-        title="Contact Speshway"
-        style={{ display: contactCardOpen ? 'none' : 'inline-flex' }}
+        title={contactCardOpen ? 'Close contact' : 'Contact Speshway'}
       >
-        <PhoneCall size={16} />
-        <span>Contact</span>
-        <span className="contact-toggle-dot" />
+        {contactCardOpen ? (
+          <>
+            <X size={16} />
+            <span>Close</span>
+          </>
+        ) : (
+          <>
+            <PhoneCall size={16} />
+            <span>Contact</span>
+            <span className="contact-toggle-dot" />
+          </>
+        )}
       </button>
 
       {/* Contact Card Popover */}
