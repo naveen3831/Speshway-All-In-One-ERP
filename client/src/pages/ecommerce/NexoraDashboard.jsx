@@ -43,6 +43,8 @@ import {
   Truck,
   RotateCcw,
   Zap,
+  Menu,
+  X,
 } from 'lucide-react';
 import './NexoraDashboard.css';
 
@@ -86,6 +88,7 @@ const NexoraLogoIcon = () => (
 export const NexoraDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chartMode, setChartMode] = useState('revenue'); // 'revenue' | 'orders'
   const [dateRange, setDateRange] = useState('Last 7 Days');
   const [searchQuery, setSearchQuery] = useState('');
@@ -395,45 +398,64 @@ export const NexoraDashboard = () => {
 
   return (
     <div className="nexora-wrapper">
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="nexora-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. LEFT SIDEBAR */}
-      <aside className="nexora-sidebar">
+      <aside className={`nexora-sidebar ${sidebarOpen ? 'open' : ''}`}>
         {/* Brand Header with Red Logo and white bold text */}
         <div className="nexora-sidebar-top">
           <div className="nexora-brand">
-          <div className="nexora-logo-container">
-            <NexoraLogoIcon />
-          </div>
-          <div className="nexora-brand-text">
-            <div className="nexora-brand-title">
-              NEXORA<span className="nexora-dot">.</span>
+            <div className="nexora-logo-container">
+              <NexoraLogoIcon />
             </div>
-            <div className="nexora-brand-subtitle">ONLINE STORE</div>
-            <div className="nexora-brand-tag">ADMIN PANEL</div>
+            <div className="nexora-brand-text">
+              <div className="nexora-brand-title">
+                NEXORA<span className="nexora-dot">.</span>
+              </div>
+              <div className="nexora-brand-subtitle">ONLINE STORE</div>
+              <div className="nexora-brand-tag">ADMIN PANEL</div>
+            </div>
+            <button
+              type="button"
+              className="nexora-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <X size={20} />
+            </button>
           </div>
-        </div>
 
-        {/* Sidebar Menu Items */}
-        <nav className="nexora-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`nexora-nav-btn ${isActive ? 'active' : ''}`}
-              >
-                <div className="nexora-nav-btn-left">
-                  <Icon size={19} className="nexora-nav-icon" />
-                  <span className="nexora-nav-label">{item.label}</span>
-                </div>
-                {item.badge && (
-                  <span className="nexora-nav-badge">{item.badge}</span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
+          {/* Sidebar Menu Items */}
+          <nav className="nexora-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`nexora-nav-btn ${isActive ? 'active' : ''}`}
+                >
+                  <div className="nexora-nav-btn-left">
+                    <Icon size={19} className="nexora-nav-icon" />
+                    <span className="nexora-nav-label">{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="nexora-nav-badge">{item.badge}</span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* Sidebar Footer Logout */}
@@ -457,21 +479,35 @@ export const NexoraDashboard = () => {
         {/* Top Navbar with Height 82px matching the screenshot */}
         <header className="nexora-topbar">
           <div className="nexora-topbar-left">
-            <h1 className="nexora-topbar-title">Nexora Online Store Management</h1>
-            <div className="nexora-status-pill">
-              <span className="nexora-status-dot"></span>
-              <span className="nexora-status-text">Operational</span>
+            <div className="nexora-header-title-wrap">
+              <button
+                type="button"
+                className="nexora-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <div>
+                <h1 className="nexora-topbar-title">
+                  {navItems.find((n) => n.id === activeTab)?.label || 'Nexora Online Store Management'}
+                </h1>
+                <div className="nexora-status-pill">
+                  <span className="nexora-status-dot"></span>
+                  <span className="nexora-status-text">Operational</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="nexora-topbar-right">
             <button
-              onClick={() => navigate('/product/e-commerce')}
-              className="nexora-btn-back-catalog"
-              title="Return to Product Detail"
+              onClick={() => navigate('/')}
+              className="dashboard-back-link nexora-back-btn"
+              title="Return to Solutions Catalog"
             >
               <ArrowLeft size={16} />
-              <span>Back to Catalog</span>
+              <span>Back</span>
             </button>
 
             <button className="nexora-icon-btn" title="Notifications">
@@ -479,7 +515,7 @@ export const NexoraDashboard = () => {
               <span className="nexora-unread-dot"></span>
             </button>
 
-            <div className="nexora-user-profile">
+            <div className="nexora-user-profile-top">
               <span className="nexora-user-name">Admin</span>
               <div className="nexora-avatar">N</div>
             </div>

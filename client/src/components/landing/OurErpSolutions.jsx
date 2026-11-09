@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ExternalLink } from 'lucide-react';
+import { Globe, Shield, ExternalLink } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import {
   filterAdminProjects,
   getDashboardRoute,
   getProjectIcon,
   getProjectColor,
+  getProjectCategory,
+  getWebsiteUrl,
 } from '../../utils/adminProjects';
 import { getProductFallbackImage } from '../../pages/ProductsPage';
 import './OurErpSolutions.css';
@@ -35,24 +37,25 @@ export const OurErpSolutions = () => {
         <div className="our-erp-grid">
           {adminProjects.map((prod) => {
             const Icon = getProjectIcon(prod);
-            const route = getDashboardRoute(prod);
             const color = getProjectColor(prod);
             const imgUrl = prod.imageUrl || getProductFallbackImage(prod.slug || prod.id || prod.name);
+            const detailRoute = `/product/${prod.slug || prod.id}`;
+            const dashboardRoute = getDashboardRoute(prod);
 
             return (
               <div
                 key={prod.id || prod.slug}
                 className="our-erp-card"
-                onClick={() => navigate(route)}
+                onClick={() => navigate(detailRoute)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    navigate(route);
+                    navigate(detailRoute);
                   }
                 }}
-                title={`Open live in-site ${prod.name} Dashboard`}
+                title={`View ${prod.name} Details`}
               >
                 {imgUrl ? (
                   <div className="our-erp-img-banner">
@@ -74,18 +77,38 @@ export const OurErpSolutions = () => {
                     <Icon size={24} />
                   </div>
                 )}
-                <h3 className="our-erp-card-title">{prod.name}</h3>
-                <span className="our-erp-card-sub">{prod.category || 'Enterprise ERP'}</span>
-                <button
-                  type="button"
-                  className="btn-view-erp-pill"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(route);
-                  }}
-                >
-                  View ERP <ExternalLink size={12} />
-                </button>
+                <div className="our-erp-card-body">
+                  <h3 className="our-erp-card-title">{prod.name}</h3>
+
+                  <div className="our-erp-card-actions">
+                    <button
+                      type="button"
+                      className="our-erp-btn-action our-erp-btn-website"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const url = getWebsiteUrl(prod);
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }}
+                      title={`Open live ${prod.name} Website`}
+                    >
+                      <Globe size={14} />
+                      <span>View Website</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="our-erp-btn-action our-erp-btn-erp"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(dashboardRoute);
+                      }}
+                      title={`Open live in-site ${prod.name} Dashboard`}
+                    >
+                      <Shield size={14} />
+                      <span>View ERP</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             );
           })}

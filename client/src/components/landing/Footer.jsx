@@ -183,6 +183,11 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 )}
               </li>
               <li>
+                <Link to="/admin" className="footer-link">
+                  Admin Console Portal
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="footer-link">
                   24/7 Enterprise Help Desk
                 </Link>

@@ -20,17 +20,18 @@ export const ContactPage = () => {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
 
-    triggerRequestDemo({
+    await triggerRequestDemo({
       name: formData.name,
       email: formData.email,
-      company: formData.company || 'Inquiry Contact',
+      company: formData.company || 'Direct Contact',
       module: 'Contact Page Inquiry',
-      phone: formData.phone,
-      message: formData.message,
+      phone: formData.phone || '',
+      message: formData.message || '',
+      source: 'contact',
     });
 
     setSubmitted(true);

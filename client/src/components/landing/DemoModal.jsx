@@ -48,7 +48,7 @@ export const DemoModal = ({ mode = 'get-started', onClose }) => {
         phone: phone || '',
         teamSize,
         module: moduleInterest,
-        source: mode === 'demo' ? 'demo' : 'get-started-modal',
+        source: mode === 'demo' ? 'demo' : 'get-started',
       });
 
       setIsSubmitting(false);

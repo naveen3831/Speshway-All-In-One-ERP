@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Speshway All-In-One ERP System built with MERN stack",
   "scripts": {
+    "start": "node server/src/server.js",
+    "build": "npm --prefix client run build",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "server:dev": "npm --prefix server run dev",
     "client:dev": "npm --prefix client run dev",

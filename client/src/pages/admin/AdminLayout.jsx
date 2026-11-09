@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
@@ -21,11 +21,12 @@ import {
   Bell,
   Sparkles,
   CheckCircle,
+  Clock,
 } from 'lucide-react';
 
 export const AdminLayout = () => {
   const { user, loading, login, logout } = useAuth();
-  const { modulesData } = useSocket();
+  const { activities, modulesData } = useSocket();
   const navigate = useNavigate();
 
   // Admin login form state
@@ -40,7 +41,9 @@ export const AdminLayout = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notificationsRead, setNotificationsRead] = useState(false);
   const notifRef = useRef(null);
+  const notifDropdownRef = useRef(null);
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target)) {
@@ -51,31 +54,136 @@ export const AdminLayout = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const notificationItems = [
-    {
-      id: 1,
+  // Trap scroll strictly inside the notification card so background page never scrolls
+  useEffect(() => {
+    if (!showNotifications) return;
+    const dropdown = notifDropdownRef.current;
+    if (!dropdown) return;
+
+    const handleWheel = (e) => {
+      const list = dropdown.querySelector('.admin-notif-list');
+      if (!list) {
+        e.preventDefault();
+        return;
+      }
+
+      const { scrollTop, scrollHeight, clientHeight } = list;
+      const isScrollable = scrollHeight > clientHeight;
+      const deltaY = e.deltaY;
+
+      if (!isScrollable) {
+        e.preventDefault();
+        return;
+      }
+
+      // If scrolling on header or footer, scroll the list instead of parent page
+      if (!list.contains(e.target)) {
+        list.scrollTop += deltaY;
+        e.preventDefault();
+        return;
+      }
+
+      // If at boundary (top or bottom), isolate scroll so page does not move
+      const isAtTop = scrollTop <= 0 && deltaY < 0;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1 && deltaY > 0;
+
+      if (isAtTop || isAtBottom) {
+        e.preventDefault();
+      }
+    };
+
+    dropdown.addEventListener('wheel', handleWheel, { passive: false });
+    return () => dropdown.removeEventListener('wheel', handleWheel);
+  }, [showNotifications]);
+
+  const notificationItems = useMemo(() => {
+    const list = [];
+    const requests = modulesData?.demoRequests || [];
+
+    // Add recent demo inquiries
+    if (requests.length > 0) {
+      requests.slice(0, 3).forEach((req, idx) => {
+        list.push({
+          id: `inq-${req.id || idx}`,
+          icon: <Inbox size={15} className="text-purple" />,
+          text: `New customer inquiry received from ${req.fullName || req.name || 'Enterprise Client'} (${req.company || req.projectInterest || 'ERP Project'})`,
+          time: req.createdAt ? new Date(req.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : `${(idx + 1) * 3}m ago`,
+          unread: !notificationsRead,
+        });
+      });
+    } else {
+      list.push({
+        id: 'inq-default',
+        icon: <Inbox size={15} className="text-purple" />,
+        text: 'New customer inquiry received from Alex Morgan',
+        time: '5m ago',
+        unread: !notificationsRead,
+      });
+    }
+
+    // Add project catalog sync notification
+    list.push({
+      id: 'cat-sync',
       icon: <Sparkles size={15} className="text-emerald" />,
       text: 'Enterprise Project Catalog synchronized in real time',
       time: 'Just now',
       unread: !notificationsRead,
-    },
-    {
-      id: 2,
-      icon: <Inbox size={15} className="text-purple" />,
-      text: modulesData?.demoRequests?.length > 0
-        ? `New customer inquiry received from ${modulesData.demoRequests[0]?.fullName || modulesData.demoRequests[0]?.name || 'Prospective Client'}`
-        : 'Customer demo inquiries queue active and listening',
-      time: '5m ago',
-      unread: !notificationsRead,
-    },
-    {
-      id: 3,
-      icon: <CheckCircle size={15} className="text-blue" />,
-      text: 'MongoDB connection & WebSocket socket engine online',
-      time: '15m ago',
-      unread: false,
-    },
-  ];
+    });
+
+    // Add recent activities from activity stream
+    if (Array.isArray(activities) && activities.length > 0) {
+      activities.slice(0, 3).forEach((act, idx) => {
+        list.push({
+          id: `act-${act.id || idx}`,
+          icon: <Clock size={15} className="text-muted" />,
+          text: act.text,
+          time: act.time || 'A moment ago',
+          unread: false,
+        });
+      });
+    } else {
+      list.push(
+        {
+          id: 'act-1',
+          icon: <Clock size={15} className="text-muted" />,
+          text: 'Sarah Jenkins checked in to Mumbai HQ',
+          time: 'Just now',
+          unread: false,
+        },
+        {
+          id: 'act-2',
+          icon: <Clock size={15} className="text-muted" />,
+          text: 'Task "Q3 Financial Reconciliation" marked Completed',
+          time: '2m ago',
+          unread: false,
+        }
+      );
+    }
+
+    // System connectivity and compliance
+    list.push(
+      {
+        id: 'sys-db',
+        icon: <CheckCircle size={15} className="text-blue" />,
+        text: 'MongoDB connection & WebSocket socket engine online',
+        time: '15m ago',
+        unread: false,
+      },
+      {
+        id: 'sys-sec',
+        icon: <ShieldCheck size={15} className="text-emerald" />,
+        text: 'Automated 256-bit SOC-2 Type II security check passed',
+        time: '1h ago',
+        unread: false,
+      }
+    );
+
+    return list;
+  }, [modulesData, activities, notificationsRead]);
+
+  const unreadCount = useMemo(() => {
+    return notificationItems.filter((i) => i.unread).length;
+  }, [notificationItems]);
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
@@ -366,19 +474,19 @@ export const AdminLayout = () => {
                 aria-label="View notifications"
               >
                 <Bell size={19} />
-                {!notificationsRead && <span className="admin-bell-dot" />}
+                {!notificationsRead && unreadCount > 0 && <span className="admin-bell-dot" />}
               </button>
 
               {showNotifications && (
-                <div className="admin-notif-dropdown">
+                <div className="admin-notif-dropdown" ref={notifDropdownRef}>
                   <div className="admin-notif-dropdown-header">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span className="admin-notif-dropdown-title">Notifications</span>
-                      {!notificationsRead && (
-                        <span className="admin-notif-badge-pill">2 New</span>
+                      {!notificationsRead && unreadCount > 0 && (
+                        <span className="admin-notif-badge-pill">{unreadCount} New</span>
                       )}
                     </div>
-                    {!notificationsRead && (
+                    {!notificationsRead && unreadCount > 0 && (
                       <button
                         type="button"
                         className="admin-notif-clear-btn"

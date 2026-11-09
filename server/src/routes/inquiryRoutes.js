@@ -121,7 +121,7 @@ router.post('/', async (req, res) => {
     const activity = {
       id: Date.now(),
       type: 'demo',
-      text: `New ${memoryItem.source === 'get-started' ? 'free trial request' : 'inquiry'} from ${memoryItem.company || memoryItem.name}`,
+      text: `New ${memoryItem.source === 'contact' ? 'contact message' : memoryItem.source === 'demo' ? 'demo request' : 'free trial request'} from ${memoryItem.company || memoryItem.name}`,
       time: 'Just now',
     };
     liveState.recentActivity.unshift(activity);
@@ -130,6 +130,7 @@ router.post('/', async (req, res) => {
     const io = getIO();
     if (io) {
       io.emit('demo:new', { request: memoryItem, stats: liveState.stats });
+      io.emit('inquiry:new', { request: memoryItem, stats: liveState.stats });
       io.emit('activity:new', activity);
     }
 
