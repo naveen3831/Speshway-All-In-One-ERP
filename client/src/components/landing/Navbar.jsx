@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, PhoneCall } from 'lucide-react';
+import { ContactCard } from './ContactCard';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactCardOpen, setContactCardOpen] = useState(false);
+  const contactToggleRef = useRef(null);
 
-  // Close mobile drawer when route changes
+  // Close mobile drawer & contact card when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
+    setContactCardOpen(false);
   }, [location.pathname]);
 
   const handleGetStarted = () => {
@@ -77,17 +81,23 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             PRICING
           </NavLink>
-          <NavLink
-            to="/contact"
-            onClick={() => window.scrollTo(0, 0)}
-            className={({ isActive }) => (isActive || isContactActive ? 'nav-link active' : 'nav-link')}
-          >
-            CONTACT US
-          </NavLink>
         </nav>
 
-        {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
+        {/* Right Side Action: Contact Toggle, Get Started & Mobile Hamburger Button */}
         <div className="nav-actions">
+          <button
+            type="button"
+            ref={contactToggleRef}
+            onClick={() => setContactCardOpen((prev) => !prev)}
+            className={`btn-contact-toggle ${contactCardOpen ? 'active' : ''}`}
+            aria-label={contactCardOpen ? 'Close contact card' : 'Open contact card'}
+            aria-expanded={contactCardOpen}
+          >
+            <PhoneCall size={15} />
+            <span>Contact</span>
+            <span className="contact-toggle-dot" />
+          </button>
+
           <button
             type="button"
             onClick={handleGetStarted}
@@ -104,6 +114,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
+
+          {/* Contact Card Popover */}
+          <ContactCard
+            isOpen={contactCardOpen}
+            onClose={() => setContactCardOpen(false)}
+            onOpenDemo={onOpenDemo}
+            toggleRef={contactToggleRef}
+          />
         </div>
       </div>
 
@@ -141,16 +159,16 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             PRICING
           </NavLink>
-          <NavLink
-            to="/contact"
+          <button
+            type="button"
             onClick={() => {
               setMobileMenuOpen(false);
-              window.scrollTo(0, 0);
+              setContactCardOpen(true);
             }}
-            className={({ isActive }) => (isActive || isContactActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+            className={`mobile-nav-link mobile-contact-trigger-btn ${contactCardOpen || isContactActive ? 'active' : ''}`}
           >
             CONTACT US
-          </NavLink>
+          </button>
 
           <div className="mobile-drawer-cta">
             <button
