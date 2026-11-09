@@ -219,138 +219,133 @@ export const AdminProducts = () => {
           </p>
         </div>
         <div className="admin-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
-          {/* Top Right Toggle Button for Products/Projects Page & Navbar Option */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={handleToggleProductsOption}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleToggleProductsOption();
-              }
-            }}
-            className={`admin-navbar-toggle-btn ${showProductsOption ? 'is-active' : 'is-inactive'}`}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '14px',
-              padding: '8px 16px',
-              borderRadius: '12px',
-              backgroundColor: showProductsOption ? '#ecfdf5' : '#f8fafc',
-              border: showProductsOption ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: showProductsOption
-                ? '0 3px 12px rgba(16, 185, 129, 0.15)'
-                : '0 2px 6px rgba(15, 23, 42, 0.05)',
-              userSelect: 'none',
-              outline: 'none',
-            }}
-            title={
-              showProductsOption
-                ? 'Click to turn OFF: hide Projects option and /projects page'
-                : 'Click to turn ON: show Projects option and /projects page'
-            }
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
-                  backgroundColor: showProductsOption ? '#d1fae5' : '#e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: showProductsOption ? '#059669' : '#64748b',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {showProductsOption ? <Eye size={18} /> : <EyeOff size={18} />}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                <span
-                  style={{
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    color: '#64748b',
-                    lineHeight: 1,
-                  }}
-                >
-                  Projects Option &amp; Public Page
-                </span>
-                <span
-                  style={{
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    color: showProductsOption ? '#065f46' : '#475569',
-                    marginTop: '3px',
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {showProductsOption ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
-                </span>
-              </div>
-            </div>
-
-            {/* Switch Slider */}
-            <div
-              style={{
-                width: '46px',
-                height: '24px',
-                borderRadius: '9999px',
-                backgroundColor: showProductsOption ? '#059669' : '#cbd5e1',
-                padding: '2px',
-                display: 'flex',
-                alignItems: 'center',
-                transition: 'background-color 0.2s ease',
-                position: 'relative',
-                flexShrink: 0,
-              }}
-            >
-              <div
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  transform: showProductsOption ? 'translateX(22px)' : 'translateX(0px)',
-                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-              />
-            </div>
-          </div>
-
           <button onClick={handleAddNewProduct} className="btn-hero-primary">
             <Plus size={16} /> Add New Project
           </button>
+
+          {/* Top Right Corner Toggle Button for Projects/Products Page & Navbar Option (Far Right Side) */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={handleToggleProductsOption}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleToggleProductsOption();
+                }
+              }}
+              className={`admin-navbar-toggle-btn ${showProductsOption ? 'is-active' : 'is-inactive'}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '14px',
+                padding: '8px 16px',
+                borderRadius: '12px',
+                backgroundColor: showProductsOption ? '#ecfdf5' : '#f8fafc',
+                border: showProductsOption ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: showProductsOption
+                  ? '0 3px 12px rgba(16, 185, 129, 0.15)'
+                  : '0 2px 6px rgba(15, 23, 42, 0.05)',
+                userSelect: 'none',
+                outline: 'none',
+              }}
+              title={
+                showProductsOption
+                  ? 'Click to turn OFF: hide Projects option and /projects page'
+                  : 'Click to turn ON: show Projects option and /projects page'
+              }
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    backgroundColor: showProductsOption ? '#d1fae5' : '#e2e8f0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: showProductsOption ? '#059669' : '#64748b',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {showProductsOption ? <Eye size={18} /> : <EyeOff size={18} />}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                  <span
+                    style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      color: '#64748b',
+                      lineHeight: 1,
+                    }}
+                  >
+                    Projects Option &amp; Public Page
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.9rem',
+                      fontWeight: 700,
+                      color: showProductsOption ? '#065f46' : '#475569',
+                      marginTop: '3px',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {showProductsOption ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Switch Slider */}
+              <div
+                style={{
+                  width: '46px',
+                  height: '24px',
+                  borderRadius: '9999px',
+                  backgroundColor: showProductsOption ? '#059669' : '#cbd5e1',
+                  padding: '2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  transition: 'background-color 0.2s ease',
+                  position: 'relative',
+                  flexShrink: 0,
+                }}
+              >
+                <div
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                    transform: showProductsOption ? 'translateX(22px)' : 'translateX(0px)',
+                    transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+              </div>
+            </div>
+
+            {toggleNotice && (
+              <span
+                style={{
+                  fontSize: '0.78rem',
+                  color: showProductsOption ? '#059669' : '#dc2626',
+                  fontWeight: 600,
+                  marginTop: '1px',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                ✓ {toggleNotice}
+              </span>
+            )}
+          </div>
         </div>
       </div>
-
-      {toggleNotice && (
-        <div
-          style={{
-            padding: '8px 14px',
-            borderRadius: '8px',
-            backgroundColor: showProductsOption ? '#d1fae5' : '#fee2e2',
-            border: showProductsOption ? '1px solid #86efac' : '1px solid #fca5a5',
-            color: showProductsOption ? '#065f46' : '#991b1b',
-            fontSize: '0.82rem',
-            fontWeight: 700,
-            marginBottom: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}
-        >
-          {showProductsOption ? <Check size={16} /> : <EyeOff size={16} />}
-          <span>{toggleNotice}</span>
-        </div>
-      )}
 
       {statusMsg && (
         <div className="modal-alert-success">
