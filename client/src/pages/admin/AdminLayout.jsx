@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useSocket } from '../../context/SocketContext';
+import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 import {
   LayoutDashboard,
@@ -26,7 +26,10 @@ import {
 
 export const AdminLayout = () => {
   const { user, loading, login, logout } = useAuth();
-  const { activities, modulesData } = useSocket();
+  const { activities, modulesData, branding, homeContent } = useSocket();
+  const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
+  const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const logoUrl = currentBranding.logoUrl || '/logo.png';
   const navigate = useNavigate();
 
   // Admin login form state
