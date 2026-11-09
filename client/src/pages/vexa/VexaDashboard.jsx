@@ -389,6 +389,15 @@ export const VexaDashboard = () => {
         <header className="vexa-topbar">
           <div className="vexa-topbar-left">
             <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link vexa-back-btn"
+              title="Return to Catalog"
+              aria-label="Return to catalog"
+            >
+              <ArrowLeft size={14} />
+              <span>Back</span>
+            </button>
+            <button
               type="button"
               className="vexa-menu-toggle"
               onClick={() => setSidebarOpen(true)}

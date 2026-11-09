@@ -685,6 +685,17 @@
     overflow: hidden !important;
   }
 
+  .ind-back-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 10px !important;
+    height: 38px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
   .ind-live-chip {
     display: none !important;
   }

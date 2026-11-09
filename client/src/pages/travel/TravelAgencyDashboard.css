@@ -1072,6 +1072,17 @@
     overflow: hidden !important;
   }
 
+  .tat-back-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 10px !important;
+    height: 38px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
   .tat-module-title {
     font-size: 0.92rem !important;
     white-space: nowrap !important;
