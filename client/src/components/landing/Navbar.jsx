@@ -120,6 +120,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           {/* Center Navigation Links - Desktop Only (Rendered when Projects or Pricing is ON) */}
           {hasNavItems && (
             <nav className="nav-links">
+              <NavLink
+                to="/"
+                end
+                onClick={() => window.scrollTo(0, 0)}
+                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              >
+                HOME
+              </NavLink>
               {showProducts && (
                 <NavLink
                   to="/projects"
@@ -165,6 +173,19 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="mobile-nav-drawer">
+            {hasNavItems && (
+              <NavLink
+                to="/"
+                end
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
+                className={({ isActive }) => (isActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+              >
+                HOME
+              </NavLink>
+            )}
             {showProducts && (
               <NavLink
                 to="/projects"
