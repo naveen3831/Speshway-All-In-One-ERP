@@ -27,8 +27,8 @@
   flex-direction: column;
   flex-shrink: 0;
   border-right: 1px solid #1e293b;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
   scrollbar-width: none;
   z-index: 50;
 }
@@ -78,7 +78,8 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  overflow-y: auto;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
 }
 
 .ind-nav-btn {
@@ -666,6 +667,10 @@
 
   .ind-sidebar.open {
     transform: translateX(0) !important;
+  }
+
+  .ind-sidebar-menu {
+    overflow-y: auto !important;
   }
 
   .ind-main-area {
