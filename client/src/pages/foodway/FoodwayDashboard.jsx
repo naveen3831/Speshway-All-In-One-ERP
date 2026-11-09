@@ -215,6 +215,14 @@ export const FoodwayDashboard = () => {
             <div className="foodway-header-title-wrap">
               <button
                 type="button"
+                className="foodway-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <button
+                type="button"
                 className="foodway-back-btn"
                 onClick={() => {
                   if (window.history.length > 1) {
@@ -228,14 +236,6 @@ export const FoodwayDashboard = () => {
               >
                 <ArrowLeft size={18} />
                 <span>Back</span>
-              </button>
-              <button
-                type="button"
-                className="foodway-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
               </button>
               <div>
                 <h1 className="foodway-page-title">

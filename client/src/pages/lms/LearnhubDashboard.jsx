@@ -218,6 +218,14 @@ export const LearnhubDashboard = () => {
             <div className="learn-header-title-wrap">
               <button
                 type="button"
+                className="learn-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <Menu size={20} />
+              </button>
+              <button
+                type="button"
                 className="learn-back-btn"
                 onClick={() => {
                   if (window.history.length > 1) {
@@ -231,14 +239,6 @@ export const LearnhubDashboard = () => {
               >
                 <ArrowLeft size={18} />
                 <span>Back</span>
-              </button>
-              <button
-                type="button"
-                className="learn-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
               </button>
               <div>
                 <h1 className="learn-page-title">
