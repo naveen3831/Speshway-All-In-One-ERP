@@ -111,6 +111,23 @@ export const AdminLayout = () => {
     return () => dropdown.removeEventListener('wheel', handleWheel);
   }, [showNotifications]);
 
+  // Lock sidebar from scrolling and forward mouse wheel scrolling to main content
+  const mainWrapRef = useRef(null);
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    const sidebarEl = sidebarRef.current;
+    const mainWrapEl = mainWrapRef.current;
+    if (!sidebarEl || !mainWrapEl) return;
+
+    const handleSidebarWheel = (e) => {
+      mainWrapEl.scrollTop += e.deltaY;
+    };
+
+    sidebarEl.addEventListener('wheel', handleSidebarWheel, { passive: true });
+    return () => sidebarEl.removeEventListener('wheel', handleSidebarWheel);
+  }, [user]);
+
   const notificationItems = useMemo(() => {
     const list = [];
     const requests = modulesData?.demoRequests || [];
@@ -388,7 +405,7 @@ export const AdminLayout = () => {
       )}
 
       {/* Dedicated Admin Sidebar */}
-      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`} ref={sidebarRef}>
         <div className="admin-sidebar-brand">
           <img src={logoUrl} alt={`${brandTitle} Admin Logo`} className="admin-sidebar-logo-img" />
           <div className="brand-text">
@@ -527,7 +544,7 @@ export const AdminLayout = () => {
       </aside>
 
       {/* Main Admin Content Screen */}
-      <div className="admin-main-wrap">
+      <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
           <div className="topbar-left">
             <button

@@ -111,7 +111,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 aria-label="Facebook"
                 title="Follow us on Facebook"
               >
-                <Facebook size={18} />
+                <Facebook size={15} />
               </a>
               <a
                 href={currentSocial.twitter || 'https://x.com'}
@@ -121,7 +121,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 aria-label="X (formerly Twitter)"
                 title="Follow us on X (Twitter)"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
@@ -133,7 +133,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 aria-label="LinkedIn"
                 title="Connect with us on LinkedIn"
               >
-                <Linkedin size={18} />
+                <Linkedin size={15} />
               </a>
               <a
                 href={currentSocial.instagram || 'https://instagram.com'}
@@ -143,7 +143,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 aria-label="Instagram"
                 title="Follow us on Instagram"
               >
-                <Instagram size={18} />
+                <Instagram size={15} />
               </a>
               <a
                 href={currentSocial.youtube || 'https://youtube.com'}
@@ -153,7 +153,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 aria-label="YouTube"
                 title="Subscribe to our YouTube Channel"
               >
-                <Youtube size={18} />
+                <Youtube size={15} />
               </a>
             </div>
           </div>
@@ -241,17 +241,17 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             <h4 className="footer-col-title">Contact</h4>
             <div className="footer-contact-list">
               <div className="footer-contact-item">
-                <MapPin size={18} className="footer-contact-icon" />
+                <MapPin size={15} className="footer-contact-icon" />
                 <span className="footer-contact-text">
                   T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032
                 </span>
               </div>
               <a href="tel:+919100006020" className="footer-contact-item footer-contact-link">
-                <Phone size={18} className="footer-contact-icon" />
+                <Phone size={15} className="footer-contact-icon" />
                 <span className="footer-contact-text">+91 9100006020</span>
               </a>
               <a href="mailto:info@speshway.com" className="footer-contact-item footer-contact-link">
-                <Mail size={18} className="footer-contact-icon" />
+                <Mail size={15} className="footer-contact-icon" />
                 <span className="footer-contact-text">info@speshway.com</span>
               </a>
             </div>
@@ -261,7 +261,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
 
       {/* Bottom Legal & Copyright Bar */}
       <div className="pro-footer-bottom">
-        <div className="pro-footer-bottom-inner">
+        <div className="pro-footer-bottom-container">
           <div className="footer-copyright">
             <span>&copy; {new Date().getFullYear()} {brandTitle} All In One ERP. All rights reserved.</span>
           </div>
@@ -279,7 +279,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             title="Scroll back to top"
           >
             <span>Back to top</span>
-            <ArrowUp size={14} />
+            <ArrowUp size={13} />
           </button>
         </div>
       </div>
