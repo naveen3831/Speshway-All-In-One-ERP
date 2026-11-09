@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useSocket, isSameProduct } from '../../context/SocketContext';
 import api from '../../services/api';
 import {
@@ -48,9 +48,13 @@ export const AdminProductForm = () => {
 
   const activeProduct = existingProduct || directFetchedProduct;
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const paramCategory = searchParams.get('category');
+
   const [formData, setFormData] = useState({
     name: '',
-    category: 'Human Resources',
+    category: paramCategory || 'Human Resources',
     description: '',
     longDescription: '',
     features: 'Automated Workflows, Role-Based Access, Real-Time Sync, PDF Export',
@@ -522,13 +526,31 @@ export const AdminProductForm = () => {
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   className="quick-select full-width"
                 >
+                  <option value="Fashion & Luxury">Fashion &amp; Luxury</option>
+                  <option value="Hospitality & Hotels">Hospitality &amp; Hotels</option>
+                  <option value="Education & LMS">Education &amp; LMS</option>
+                  <option value="Bus & Travel Booking">Bus &amp; Travel Booking</option>
+                  <option value="Food Delivery & Kitchen">Food Delivery &amp; Kitchen</option>
+                  <option value="Automotive & Mobility">Automotive &amp; Mobility</option>
+                  <option value="Event Management">Event Management</option>
                   <option value="Human Resources">Human Resources</option>
-                  <option value="Finance & HR">Finance &amp; HR</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Productivity">Productivity</option>
-                  <option value="Sales & CRM">Sales &amp; CRM</option>
-                  <option value="Operations">Operations</option>
-                  <option value="Business Intelligence">Business Intelligence</option>
+                  <option value="Restaurant & Dining">Restaurant &amp; Dining</option>
+                  <option value="Fitness & Wellness">Fitness &amp; Wellness</option>
+                  <option value="Logistics & Fleet">Logistics &amp; Fleet</option>
+                  <option value="Beauty & Wellness">Beauty &amp; Wellness</option>
+                  <option value="E-Commerce Retail">E-Commerce Retail</option>
+                  <option value="Dairy & Agriculture">Dairy &amp; Agriculture</option>
+                  <option value="Fashion & Apparel">Fashion &amp; Apparel</option>
+                  <option value="Healthcare & Hospitals">Healthcare &amp; Hospitals</option>
+                  {/* Keep compatibility with legacy categories if set */}
+                  {formData.category && ![
+                    'Fashion & Luxury', 'Hospitality & Hotels', 'Education & LMS', 'Bus & Travel Booking',
+                    'Food Delivery & Kitchen', 'Automotive & Mobility', 'Event Management', 'Human Resources',
+                    'Restaurant & Dining', 'Fitness & Wellness', 'Logistics & Fleet', 'Beauty & Wellness',
+                    'E-Commerce Retail', 'Dairy & Agriculture', 'Fashion & Apparel', 'Healthcare & Hospitals'
+                  ].includes(formData.category) && (
+                    <option value={formData.category}>{formData.category}</option>
+                  )}
                 </select>
               </div>
 
