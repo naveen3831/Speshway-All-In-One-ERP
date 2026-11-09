@@ -331,7 +331,7 @@ export const ProductDetailPage = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  marginBottom: '18px',
+                  marginBottom: '12px',
                   padding: '7px 14px',
                   backgroundColor: '#ffffff',
                   border: '1px solid #cbd5e1',

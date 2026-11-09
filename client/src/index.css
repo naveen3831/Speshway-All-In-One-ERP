@@ -2037,7 +2037,13 @@ button {
   width: 100%;
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 50%, #e6f7ef 100%);
   border-bottom: 1px solid #e2e8f0;
-  padding: 56px 0 68px 0;
+  padding: 24px 0 52px 0;
+}
+
+@media (max-width: 768px) {
+  .product-detail-hero-section {
+    padding: 16px 0 32px 0;
+  }
 }
 
 .detail-hero-container {
