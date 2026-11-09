@@ -2,8 +2,13 @@
    OUR ERP SOLUTIONS SECTION - EXACT MATCH TO DESIGN
    ========================================================================== */
 .our-erp-section {
+  scroll-margin-top: 84px;
   padding: 56px 24px 60px 24px;
   background-color: var(--bg-page);
+}
+
+.our-erp-grid {
+  scroll-margin-top: 90px;
 }
 
 .our-erp-container {

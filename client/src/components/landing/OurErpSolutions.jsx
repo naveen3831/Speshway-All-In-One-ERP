@@ -117,7 +117,7 @@ export const OurErpSolutions = () => {
             </button>
           </div>
         ) : (
-          <div className="our-erp-grid">
+          <div id="erp-cards" className="our-erp-grid">
             {filteredProjects.map((prod) => {
               const Icon = getProjectIcon(prod);
               const color = getProjectColor(prod);

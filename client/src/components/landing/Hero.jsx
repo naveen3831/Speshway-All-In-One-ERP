@@ -38,6 +38,28 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
     }
   };
 
+  const handleScrollToSolutions = (e) => {
+    if (e) e.preventDefault();
+    const target =
+      document.getElementById('solutions') ||
+      document.querySelector('.our-erp-section') ||
+      document.getElementById('erp-cards');
+
+    if (target) {
+      const navbar = document.querySelector('.navbar-container');
+      const navbarHeight = navbar ? navbar.offsetHeight : 80;
+      const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - navbarHeight;
+
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth',
+      });
+    } else {
+      navigate('/projects');
+    }
+  };
+
   return (
     <section id="home" className="hero-section">
       <div className="hero-container">
@@ -59,10 +81,19 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
           </p>
 
           <div className="hero-cta-group">
-            <button onClick={() => navigate(heroData.primaryBtnLink || '/projects')} className="btn-hero-primary">
+            <button
+              type="button"
+              onClick={handleScrollToSolutions}
+              className="btn-hero-primary"
+              aria-label="View All ERP Solutions"
+            >
               {primaryBtnText} <ArrowRight size={16} />
             </button>
-            <button onClick={onOpenDemo} className="btn-hero-secondary">
+            <button
+              type="button"
+              onClick={onOpenDemo}
+              className="btn-hero-secondary"
+            >
               {secondaryBtnText}
             </button>
           </div>
