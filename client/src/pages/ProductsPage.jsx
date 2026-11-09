@@ -4,7 +4,11 @@ import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket } from '../context/SocketContext';
-import { normalizeProductCategory } from '../utils/adminProjects';
+import {
+  normalizeProductCategory,
+  PRIMARY_ERP_CATEGORIES,
+  getPrimaryCategory,
+} from '../utils/adminProjects';
 import {
   Search,
   Globe,
@@ -219,16 +223,16 @@ export const ProductsPage = () => {
     })
     .map(normalizeProductCategory);
 
-  const categories = [
-    'All',
-    ...Array.from(new Set(availableProducts.map((p) => p.category).filter(Boolean))),
-  ];
+  const categories = PRIMARY_ERP_CATEGORIES;
 
   const filteredProducts = availableProducts.filter((p) => {
+    const primaryCat = getPrimaryCategory(p);
     const matchesSearch =
       (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (p.description || '').toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCat = activeCategory === 'All' || p.category === activeCategory;
+      (p.description || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.category || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      primaryCat.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCat = activeCategory === 'All' || primaryCat === activeCategory;
     return matchesSearch && matchesCat;
   });
 

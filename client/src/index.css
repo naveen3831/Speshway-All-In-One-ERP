@@ -2077,10 +2077,19 @@ button {
 
 .category-filter-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   margin-top: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 12px;
+}
+
+.category-filter-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .category-tab-btn {

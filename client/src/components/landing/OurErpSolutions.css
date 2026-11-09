@@ -110,11 +110,20 @@
 
 .our-erp-category-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   margin: 0 auto;
-  max-width: 960px;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 12px;
+}
+
+.our-erp-category-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .our-erp-category-tabs .category-tab-btn {
