@@ -26,6 +26,7 @@ export const DEFAULT_HOME_CONTENT = {
   },
   navbar: {
     showPricing: true,
+    showProducts: true,
   },
   branding: {
     logoUrl: '/logo.png',

@@ -31,7 +31,7 @@ import {
   Loader2,
   CheckCircle,
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const iconMap = {
   Users,
@@ -107,7 +107,39 @@ export const getProductFallbackImage = (slugOrIdOrName) => {
 };
 
 export const ProductsPage = () => {
-  const { products, triggerUpdateProduct } = useSocket();
+  const { products, triggerUpdateProduct, homeContent } = useSocket();
+
+  // Determine whether Products/Projects should be visible
+  const [showProducts, setShowProducts] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_products_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
+    return true;
+  });
+
+  useEffect(() => {
+    const syncProductsVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_products_visible');
+      if (stored !== null) {
+        setShowProducts(stored === 'true');
+      } else if (homeContent?.navbar?.showProducts !== undefined) {
+        setShowProducts(Boolean(homeContent.navbar.showProducts));
+      }
+    };
+
+    syncProductsVisibility();
+    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
+    window.addEventListener('storage', syncProductsVisibility);
+    return () => {
+      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
+      window.removeEventListener('storage', syncProductsVisibility);
+    };
+  }, [homeContent?.navbar?.showProducts]);
+
+  // If products page is turned OFF by admin, hide the page and redirect to Home
+  if (!showProducts) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleDirectImageUpload = (prod, e) => {
     const file = e.target.files?.[0];

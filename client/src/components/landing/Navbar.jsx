@@ -22,6 +22,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     return true;
   });
 
+  // Determine whether Products/Projects should be visible in navbar
+  const [showProducts, setShowProducts] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_products_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
+    return true;
+  });
+
   useEffect(() => {
     const syncVisibility = () => {
       const stored = localStorage.getItem('speshway_navbar_pricing_visible');
@@ -32,14 +40,30 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
       }
     };
 
+    const syncProductsVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_products_visible');
+      if (stored !== null) {
+        setShowProducts(stored === 'true');
+      } else if (homeContent?.navbar?.showProducts !== undefined) {
+        setShowProducts(Boolean(homeContent.navbar.showProducts));
+      }
+    };
+
     syncVisibility();
+    syncProductsVisibility();
+
     window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
     window.addEventListener('storage', syncVisibility);
+    window.addEventListener('storage', syncProductsVisibility);
+
     return () => {
       window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
       window.removeEventListener('storage', syncVisibility);
+      window.removeEventListener('storage', syncProductsVisibility);
     };
-  }, [homeContent?.navbar?.showPricing]);
+  }, [homeContent?.navbar?.showPricing, homeContent?.navbar?.showProducts]);
 
   const handleGetStarted = () => {
     if (onOpenGetStarted) {
@@ -85,13 +109,15 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             HOME
           </NavLink>
-          <NavLink
-            to="/projects"
-            onClick={() => window.scrollTo(0, 0)}
-            className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
-          >
-            PROJECTS
-          </NavLink>
+          {showProducts && (
+            <NavLink
+              to="/projects"
+              onClick={() => window.scrollTo(0, 0)}
+              className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
+            >
+              PROJECTS
+            </NavLink>
+          )}
           {showPricing && (
             <NavLink
               to="/pricing"
@@ -145,16 +171,18 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
           >
             HOME
           </NavLink>
-          <NavLink
-            to="/projects"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              window.scrollTo(0, 0);
-            }}
-            className={({ isActive }) => (isActive || isProjectsActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
-          >
-            PROJECTS
-          </NavLink>
+          {showProducts && (
+            <NavLink
+              to="/projects"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.scrollTo(0, 0);
+              }}
+              className={({ isActive }) => (isActive || isProjectsActive ? 'mobile-nav-link active' : 'mobile-nav-link')}
+            >
+              PROJECTS
+            </NavLink>
+          )}
           {showPricing && (
             <NavLink
               to="/pricing"

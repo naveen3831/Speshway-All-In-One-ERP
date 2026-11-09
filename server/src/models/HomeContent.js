@@ -82,6 +82,10 @@ const homeContentSchema = new mongoose.Schema(
         type: Boolean,
         default: true,
       },
+      showProducts: {
+        type: Boolean,
+        default: true,
+      },
     },
     branding: {
       logoUrl: {

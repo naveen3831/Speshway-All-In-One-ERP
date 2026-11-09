@@ -29,6 +29,14 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
     return true;
   });
 
+  // Products visibility state
+  const [showProducts, setShowProducts] = useState(() => {
+    const stored = localStorage.getItem('speshway_navbar_products_visible');
+    if (stored !== null) return stored === 'true';
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
+    return true;
+  });
+
   useEffect(() => {
     const syncVisibility = () => {
       const stored = localStorage.getItem('speshway_navbar_pricing_visible');
@@ -39,14 +47,30 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
       }
     };
 
+    const syncProductsVisibility = () => {
+      const stored = localStorage.getItem('speshway_navbar_products_visible');
+      if (stored !== null) {
+        setShowProducts(stored === 'true');
+      } else if (homeContent?.navbar?.showProducts !== undefined) {
+        setShowProducts(Boolean(homeContent.navbar.showProducts));
+      }
+    };
+
     syncVisibility();
+    syncProductsVisibility();
+
     window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
+    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
     window.addEventListener('storage', syncVisibility);
+    window.addEventListener('storage', syncProductsVisibility);
+
     return () => {
       window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
+      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
       window.removeEventListener('storage', syncVisibility);
+      window.removeEventListener('storage', syncProductsVisibility);
     };
-  }, [homeContent?.navbar?.showPricing]);
+  }, [homeContent?.navbar?.showPricing, homeContent?.navbar?.showProducts]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -158,11 +182,13 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                   Aneera Sarees Admin
                 </Link>
               </li>
-              <li>
-                <Link to="/projects" className="footer-link-highlight">
-                  View All 17+ Systems &rarr;
-                </Link>
-              </li>
+              {showProducts && (
+                <li>
+                  <Link to="/projects" className="footer-link-highlight">
+                    View All 17+ Systems &rarr;
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 

@@ -42,6 +42,7 @@ export const DEFAULT_HOME_CONTENT = {
   },
   navbar: {
     showPricing: true,
+    showProducts: true,
   },
   branding: DEFAULT_BRANDING,
   socialLinks: DEFAULT_SOCIAL_LINKS,
