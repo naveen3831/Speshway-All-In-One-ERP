@@ -361,8 +361,6 @@ export const ProductDetailPage = () => {
 
               <div className="modal-badge-row">
                 <span className="product-category-tag">{getProjectCategory(product)}</span>
-                <span className="badge-active">{product.status || 'Active Product'}</span>
-                <span className="badge-pro-edition">Enterprise Ready</span>
               </div>
               <h1 className="product-detail-h1">{product.name}</h1>
               <p className="product-detail-sub">{product.description}</p>
