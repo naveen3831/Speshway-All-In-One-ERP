@@ -210,140 +210,148 @@ export const AdminProducts = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Header */}
-      <div className="admin-page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h1 className="admin-heading">Projects &amp; Module Management (CRUD)</h1>
-          <p className="admin-subtext">
+      {/* Header Row - Matching Pricing Page Layout Exactly with Toggle at Top Right Corner */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px',
+          marginBottom: '26px',
+          paddingBottom: '16px',
+          borderBottom: '1px solid #e2e8f0',
+        }}
+      >
+        <div style={{ flex: '1 1 300px' }}>
+          <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
+            Projects &amp; Module Management (CRUD)
+          </h1>
+          <p className="admin-subtext" style={{ margin: 0 }}>
             Add new ERP projects in dedicated pages, edit technologies &amp; URLs, and control modules in real-time.
           </p>
         </div>
-        <div className="admin-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
-          <button onClick={handleAddNewProduct} className="btn-hero-primary">
-            <Plus size={16} /> Add New Project
-          </button>
 
-          {/* Top Right Corner Toggle Button for Projects/Products Page & Navbar Option (Far Right Side) */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={handleToggleProductsOption}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleToggleProductsOption();
-                }
-              }}
-              className={`admin-navbar-toggle-btn ${showProductsOption ? 'is-active' : 'is-inactive'}`}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '14px',
-                padding: '8px 16px',
-                borderRadius: '12px',
-                backgroundColor: showProductsOption ? '#ecfdf5' : '#f8fafc',
-                border: showProductsOption ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: showProductsOption
-                  ? '0 3px 12px rgba(16, 185, 129, 0.15)'
-                  : '0 2px 6px rgba(15, 23, 42, 0.05)',
-                userSelect: 'none',
-                outline: 'none',
-              }}
-              title={
-                showProductsOption
-                  ? 'Click to turn OFF: hide Projects option and /projects page'
-                  : 'Click to turn ON: show Projects option and /projects page'
+        {/* Top Right Corner Toggle Button (Identical to Pricing Page) */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', marginLeft: 'auto' }}>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleToggleProductsOption}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleToggleProductsOption();
               }
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    backgroundColor: showProductsOption ? '#d1fae5' : '#e2e8f0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: showProductsOption ? '#059669' : '#64748b',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  {showProductsOption ? <Eye size={18} /> : <EyeOff size={18} />}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                  <span
-                    style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      color: '#64748b',
-                      lineHeight: 1,
-                    }}
-                  >
-                    Projects Option &amp; Public Page
-                  </span>
-                  <span
-                    style={{
-                      fontSize: '0.9rem',
-                      fontWeight: 700,
-                      color: showProductsOption ? '#065f46' : '#475569',
-                      marginTop: '3px',
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {showProductsOption ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Switch Slider */}
+            }}
+            className={`admin-navbar-toggle-btn ${showProductsOption ? 'is-active' : 'is-inactive'}`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '14px',
+              padding: '8px 16px',
+              borderRadius: '12px',
+              backgroundColor: showProductsOption ? '#ecfdf5' : '#f8fafc',
+              border: showProductsOption ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: showProductsOption
+                ? '0 3px 12px rgba(16, 185, 129, 0.15)'
+                : '0 2px 6px rgba(15, 23, 42, 0.05)',
+              userSelect: 'none',
+              outline: 'none',
+            }}
+            title={
+              showProductsOption
+                ? 'Click to turn OFF: hide Projects option and /projects page'
+                : 'Click to turn ON: show Projects option and /projects page'
+            }
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div
                 style={{
-                  width: '46px',
-                  height: '24px',
-                  borderRadius: '9999px',
-                  backgroundColor: showProductsOption ? '#059669' : '#cbd5e1',
-                  padding: '2px',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: showProductsOption ? '#d1fae5' : '#e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
-                  transition: 'background-color 0.2s ease',
-                  position: 'relative',
-                  flexShrink: 0,
-                }}
-              >
-                <div
-                  style={{
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                    transform: showProductsOption ? 'translateX(22px)' : 'translateX(0px)',
-                    transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                  }}
-                />
-              </div>
-            </div>
-
-            {toggleNotice && (
-              <span
-                style={{
-                  fontSize: '0.78rem',
-                  color: showProductsOption ? '#059669' : '#dc2626',
-                  fontWeight: 600,
-                  marginTop: '1px',
+                  justifyContent: 'center',
+                  color: showProductsOption ? '#059669' : '#64748b',
                   transition: 'all 0.2s ease',
                 }}
               >
-                ✓ {toggleNotice}
-              </span>
-            )}
+                {showProductsOption ? <Eye size={18} /> : <EyeOff size={18} />}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: '#64748b',
+                    lineHeight: 1,
+                  }}
+                >
+                  Projects Option &amp; Public Page
+                </span>
+                <span
+                  style={{
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    color: showProductsOption ? '#065f46' : '#475569',
+                    marginTop: '3px',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {showProductsOption ? 'Page & Option: ACTIVE (ON)' : 'Page & Option: HIDDEN (OFF)'}
+                </span>
+              </div>
+            </div>
+
+            {/* Switch Slider */}
+            <div
+              style={{
+                width: '46px',
+                height: '24px',
+                borderRadius: '9999px',
+                backgroundColor: showProductsOption ? '#059669' : '#cbd5e1',
+                padding: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                transition: 'background-color 0.2s ease',
+                position: 'relative',
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                  transform: showProductsOption ? 'translateX(22px)' : 'translateX(0px)',
+                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              />
+            </div>
           </div>
+
+          {toggleNotice && (
+            <span
+              style={{
+                fontSize: '0.78rem',
+                color: showProductsOption ? '#059669' : '#dc2626',
+                fontWeight: 600,
+                marginTop: '1px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              ✓ {toggleNotice}
+            </span>
+          )}
         </div>
       </div>
 
@@ -378,21 +386,38 @@ export const AdminProducts = () => {
             )}
           </div>
 
-          <div className="view-toggle-wrap">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button
-              onClick={() => setViewMode('cards')}
-              className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
-              title="Cards View"
+              onClick={handleAddNewProduct}
+              className="btn-hero-primary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '9px 18px',
+                fontSize: '0.88rem',
+                whiteSpace: 'nowrap',
+              }}
             >
-              <LayoutGrid size={16} />
+              <Plus size={16} /> Add New Project
             </button>
-            <button
-              onClick={() => setViewMode('table')}
-              className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
-              title="Table View"
-            >
-              <List size={16} />
-            </button>
+
+            <div className="view-toggle-wrap">
+              <button
+                onClick={() => setViewMode('cards')}
+                className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
+                title="Cards View"
+              >
+                <LayoutGrid size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode('table')}
+                className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
+                title="Table View"
+              >
+                <List size={16} />
+              </button>
+            </div>
           </div>
         </div>
 
