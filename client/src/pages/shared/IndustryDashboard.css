@@ -74,10 +74,10 @@
 
 .ind-sidebar-menu {
   flex: 1;
-  padding: 18px 12px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   overflow-y: auto;
 }
 
@@ -85,7 +85,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 7px 12px;
   border-radius: 8px;
   font-size: 0.86rem;
   font-weight: 600;
@@ -683,6 +683,17 @@
     gap: 8px !important;
     min-width: 0 !important;
     overflow: hidden !important;
+  }
+
+  .ind-back-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 10px !important;
+    height: 38px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
   }
 
   .ind-live-chip {

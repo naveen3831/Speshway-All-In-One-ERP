@@ -256,24 +256,23 @@ export const HrmsDashboard = () => {
               onClick={() => navigate('/products')}
               className="dashboard-back-link hrms-back-catalog-btn"
               title="Return to Catalog"
+              aria-label="Return to catalog"
             >
               <ArrowLeft size={15} /> <span>Back</span>
             </button>
-            <div className="hrms-header-title-wrap">
-              <button
-                type="button"
-                className="hrms-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
-              </button>
-              <div>
-                <h1 className="hrms-greeting-title">
-                  {navItems.find(n => n.id === activeTab)?.label || 'Speshway HRMS Management'}
-                </h1>
-                <p className="hrms-greeting-subtitle">Here&apos;s what&apos;s happening at Speshway HRMS today.</p>
-              </div>
+            <button
+              type="button"
+              className="hrms-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
+            <div className="hrms-header-title-text hrms-header-title-wrap">
+              <h1 className="hrms-greeting-title">
+                {navItems.find(n => n.id === activeTab)?.label || 'Speshway HRMS Management'}
+              </h1>
+              <p className="hrms-greeting-subtitle">Here&apos;s what&apos;s happening at Speshway HRMS today.</p>
             </div>
           </div>
 
