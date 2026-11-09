@@ -18,6 +18,7 @@
 
 /* Header with Lines on Left & Right */
 .our-erp-header-row {
+  scroll-margin-top: 96px;
   display: flex;
   align-items: center;
   justify-content: center;

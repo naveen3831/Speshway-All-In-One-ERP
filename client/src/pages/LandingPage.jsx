@@ -20,11 +20,18 @@ export const LandingPage = () => {
     if (hash) {
       const targetId = hash.replace('#', '');
       const timer = setTimeout(() => {
-        const el = document.getElementById(targetId);
+        let el = document.getElementById(targetId);
+        if (targetId === 'solutions' || targetId === 'solutions-title' || targetId === 'erp-solutions-heading') {
+          el =
+            document.getElementById('erp-solutions-heading') ||
+            document.getElementById('solutions-title') ||
+            document.querySelector('.our-erp-header-row') ||
+            el;
+        }
         if (el) {
           const navbar = document.querySelector('.navbar-container');
           const navbarHeight = navbar ? navbar.offsetHeight : 80;
-          const pos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+          const pos = el.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 16;
           window.scrollTo({
             top: Math.max(0, pos),
             behavior: 'smooth',

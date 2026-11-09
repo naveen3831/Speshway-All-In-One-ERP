@@ -57,9 +57,9 @@ export const OurErpSolutions = () => {
     <section id="solutions" className="our-erp-section">
       <div className="our-erp-container">
         {/* Section Header with Clean Dividers */}
-        <div className="our-erp-header-row">
+        <div id="erp-solutions-heading" className="our-erp-header-row">
           <div className="our-erp-divider-line" />
-          <h2 className="our-erp-title">{sectionTitle}</h2>
+          <h2 id="solutions-title" className="our-erp-title">{sectionTitle}</h2>
           <div className="our-erp-divider-line right" />
         </div>
 

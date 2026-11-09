@@ -40,16 +40,19 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
 
   const handleScrollToSolutions = (e) => {
     if (e) e.preventDefault();
-    const target =
-      document.getElementById('solutions') ||
-      document.querySelector('.our-erp-section') ||
-      document.getElementById('erp-cards');
+    const titleElement =
+      document.getElementById('erp-solutions-heading') ||
+      document.getElementById('solutions-title') ||
+      document.querySelector('.our-erp-header-row') ||
+      document.querySelector('.our-erp-title') ||
+      document.getElementById('solutions');
 
-    if (target) {
+    if (titleElement) {
       const navbar = document.querySelector('.navbar-container');
       const navbarHeight = navbar ? navbar.offsetHeight : 80;
-      const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - navbarHeight;
+      // Scroll directly to "Our ERP Solutions" header so stats bar above is completely out of view
+      const elementPosition = titleElement.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - navbarHeight - 16;
 
       window.scrollTo({
         top: Math.max(0, offsetPosition),
