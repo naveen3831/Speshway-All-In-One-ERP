@@ -13,6 +13,9 @@ import {
   ArrowRight,
   Headphones,
   CheckCircle2,
+  PhoneCall,
+  User,
+  MessageSquare,
 } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import './ContactCard.css';
@@ -23,7 +26,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
   const triggerRequestDemo = socketContext?.triggerRequestDemo;
 
   const cardRef = useRef(null);
-  const [activeTab, setActiveTab] = useState('info'); // 'info' | 'message'
+  const [activeTab, setActiveTab] = useState('direct'); // 'direct' | 'message'
   const [copied, setCopied] = useState(false);
 
   // Form State
@@ -76,7 +79,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
   const handleSubmitMessage = async (e) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) {
-      setErrorMsg('Please enter your name and email address.');
+      setErrorMsg('Please enter your name and work email.');
       return;
     }
 
@@ -89,9 +92,9 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
           name: name.trim(),
           email: email.trim(),
           company: 'Quick Contact Inquiry',
-          module: 'Contact Card Popover',
+          module: 'Contact Card Modal',
           message: message.trim(),
-          source: 'contact-card',
+          source: 'contact-card-modal',
         });
       }
       setIsSubmitting(false);
@@ -104,7 +107,7 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
         onClose();
       }, 2500);
     } catch (err) {
-      console.error('Failed to dispatch contact card inquiry:', err);
+      console.error('Failed to dispatch contact inquiry:', err);
       setIsSubmitting(false);
       setErrorMsg('Could not send message. Please try calling or emailing us.');
     }
@@ -114,214 +117,271 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
 
   return (
     <>
-      {/* Backdrop for click-away & mobile focus */}
+      {/* Blurred Backdrop */}
       <div className="contact-card-backdrop" onClick={onClose} />
 
+      {/* Centered Modal Card */}
       <div
         ref={cardRef}
         className="contact-card-box"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="contact-card-title"
+        aria-labelledby="contact-modal-title"
       >
-        {/* Top Header */}
-        <div className="contact-card-header">
-          <div className="contact-card-header-left">
-            <div className="contact-header-badge">
-              <Headphones size={18} />
-            </div>
-            <div>
-              <h3 id="contact-card-title" className="contact-card-title">
-                Contact Speshway
-              </h3>
-              <div className="contact-status-indicator">
-                <span className="contact-status-dot" />
-                <span className="contact-status-text">24/7 Enterprise Desk</span>
-              </div>
-            </div>
-          </div>
-
+        {/* Top Actions: Close Button */}
+        <div className="contact-modal-top-actions">
           <button
             type="button"
-            className="contact-card-close-btn"
+            className="contact-modal-close-btn"
             onClick={onClose}
-            aria-label="Close contact card"
+            aria-label="Close dialog"
+            title="Close"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
+        </div>
+
+        {/* Modal Header */}
+        <div className="contact-modal-header">
+          <div className="contact-modal-badge">
+            <Headphones size={24} />
+          </div>
+          <div className="contact-modal-header-text">
+            <div className="contact-live-status-pill">
+              <span className="contact-status-dot" />
+              <span>Support Team Online &bull; 24/7 Desk</span>
+            </div>
+            <h2 id="contact-modal-title" className="contact-modal-title">
+              Contact Speshway
+            </h2>
+            <p className="contact-modal-subtitle">
+              Have questions or looking to scale your operations? Connect directly with our enterprise team.
+            </p>
+          </div>
         </div>
 
         {/* Tab Switcher */}
-        <div className="contact-card-tabs">
+        <div className="contact-modal-tabs">
           <button
             type="button"
-            className={`contact-tab-btn ${activeTab === 'info' ? 'active' : ''}`}
-            onClick={() => setActiveTab('info')}
+            className={`contact-modal-tab ${activeTab === 'direct' ? 'active' : ''}`}
+            onClick={() => setActiveTab('direct')}
           >
-            Direct Contacts
+            <PhoneCall size={15} />
+            <span>Direct Channels</span>
           </button>
           <button
             type="button"
-            className={`contact-tab-btn ${activeTab === 'message' ? 'active' : ''}`}
+            className={`contact-modal-tab ${activeTab === 'message' ? 'active' : ''}`}
             onClick={() => setActiveTab('message')}
           >
-            Quick Message
+            <MessageSquare size={15} />
+            <span>Send a Message</span>
           </button>
         </div>
 
-        {/* TAB 1: Direct Contacts */}
-        {activeTab === 'info' && (
-          <div className="contact-card-body">
-            {/* Phone Row */}
-            <div className="contact-info-item">
-              <div className="contact-info-icon bg-emerald">
-                <Phone size={16} />
+        {/* TAB 1: Direct Channels (2x2 Interactive Grid) */}
+        {activeTab === 'direct' && (
+          <div className="contact-modal-body">
+            <div className="contact-channels-grid">
+              {/* Channel 1: Phone */}
+              <div className="contact-channel-card">
+                <div className="channel-card-top">
+                  <div className="channel-icon-wrap emerald">
+                    <Phone size={18} />
+                  </div>
+                  <a
+                    href="tel:+18005557737"
+                    className="channel-action-badge call"
+                    title="Call Toll-Free"
+                  >
+                    <span>Call Now</span>
+                    <ArrowRight size={12} />
+                  </a>
+                </div>
+                <div className="channel-card-content">
+                  <span className="channel-label">TOLL-FREE SUPPORT (24/7)</span>
+                  <a href="tel:+18005557737" className="channel-value-link">
+                    +1 (800) 555-SPESH
+                  </a>
+                  <span className="channel-subtext">Immediate technical &amp; sales desk</span>
+                </div>
               </div>
-              <div className="contact-info-content">
-                <span className="contact-info-label">Call Support (24/7)</span>
-                <a href="tel:+18005557737" className="contact-info-link">
-                  +1 (800) 555-SPESH
-                </a>
-              </div>
-              <a
-                href="tel:+18005557737"
-                className="contact-item-action-btn"
-                title="Call toll-free"
-              >
-                Call
-              </a>
-            </div>
 
-            {/* Email Row */}
-            <div className="contact-info-item">
-              <div className="contact-info-icon bg-emerald">
-                <Mail size={16} />
+              {/* Channel 2: Email */}
+              <div className="contact-channel-card">
+                <div className="channel-card-top">
+                  <div className="channel-icon-wrap emerald">
+                    <Mail size={18} />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="channel-action-badge copy"
+                    title="Copy Email Address"
+                  >
+                    {copied ? <Check size={12} /> : <Copy size={12} />}
+                    <span>{copied ? 'Copied' : 'Copy'}</span>
+                  </button>
+                </div>
+                <div className="channel-card-content">
+                  <span className="channel-label">PRIORITY INBOX</span>
+                  <a href="mailto:support@speshway.com" className="channel-value-link">
+                    support@speshway.com
+                  </a>
+                  <span className="channel-subtext">Average reply under 15 minutes</span>
+                </div>
               </div>
-              <div className="contact-info-content">
-                <span className="contact-info-label">Support &amp; Sales</span>
-                <a href="mailto:support@speshway.com" className="contact-info-link">
-                  support@speshway.com
-                </a>
-              </div>
-              <button
-                type="button"
-                onClick={handleCopyEmail}
-                className="contact-item-action-btn"
-                title="Copy email address"
-              >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-                <span>{copied ? 'Copied' : 'Copy'}</span>
-              </button>
-            </div>
 
-            {/* Location Row */}
-            <div className="contact-info-item">
-              <div className="contact-info-icon bg-slate">
-                <MapPin size={16} />
+              {/* Channel 3: Headquarters */}
+              <div className="contact-channel-card">
+                <div className="channel-card-top">
+                  <div className="channel-icon-wrap slate">
+                    <MapPin size={18} />
+                  </div>
+                  <span className="channel-tag-pill">HQ &amp; Remote</span>
+                </div>
+                <div className="channel-card-content">
+                  <span className="channel-label">GLOBAL HEADQUARTERS</span>
+                  <span className="channel-value-text">Silicon Valley, CA</span>
+                  <span className="channel-subtext">Serving clients in 25+ countries</span>
+                </div>
               </div>
-              <div className="contact-info-content">
-                <span className="contact-info-label">Headquarters</span>
-                <span className="contact-info-val">Silicon Valley &amp; Global Hubs</span>
-              </div>
-            </div>
 
-            {/* Hours Row */}
-            <div className="contact-info-item">
-              <div className="contact-info-icon bg-slate">
-                <Clock size={16} />
-              </div>
-              <div className="contact-info-content">
-                <span className="contact-info-label">Availability</span>
-                <span className="contact-info-val">24 Hours / 7 Days a Week</span>
+              {/* Channel 4: Availability */}
+              <div className="contact-channel-card">
+                <div className="channel-card-top">
+                  <div className="channel-icon-wrap slate">
+                    <Clock size={18} />
+                  </div>
+                  <span className="channel-tag-pill active">365 Days</span>
+                </div>
+                <div className="channel-card-content">
+                  <span className="channel-label">ENTERPRISE SLA</span>
+                  <span className="channel-value-text">24 / 7 / 365 Support</span>
+                  <span className="channel-subtext">Dedicated tier-1 engineering response</span>
+                </div>
               </div>
             </div>
 
             {/* Footer Actions */}
-            <div className="contact-card-footer">
+            <div className="contact-modal-footer">
               <button
                 type="button"
-                className="contact-footer-demo-btn"
+                className="contact-primary-demo-btn"
                 onClick={() => {
                   onClose();
                   if (onOpenDemo) onOpenDemo();
                   else navigate('/get-started');
                 }}
               >
-                <Sparkles size={14} />
-                <span>Book Live Demo</span>
+                <Sparkles size={16} />
+                <span>Book a Live Demo</span>
               </button>
 
               <Link
                 to="/contact"
-                className="contact-footer-full-link"
+                className="contact-full-page-link"
                 onClick={() => {
                   onClose();
                   window.scrollTo(0, 0);
                 }}
               >
-                <span>Full Contact Page</span>
-                <ArrowRight size={13} />
+                <span>Full Contact &amp; FAQs</span>
+                <ArrowRight size={14} />
               </Link>
             </div>
           </div>
         )}
 
-        {/* TAB 2: Quick Message */}
+        {/* TAB 2: Quick Message Form */}
         {activeTab === 'message' && (
-          <div className="contact-card-body">
+          <div className="contact-modal-body">
             {isSuccess ? (
-              <div className="contact-message-success">
-                <CheckCircle2 size={36} className="text-emerald" />
-                <h4>Inquiry Received!</h4>
-                <p>Our enterprise solutions team will contact you shortly.</p>
+              <div className="contact-success-box">
+                <div className="success-badge-circle">
+                  <CheckCircle2 size={40} className="text-emerald" />
+                </div>
+                <h4 className="success-heading">Message Dispatched!</h4>
+                <p className="success-copy">
+                  Thank you, <strong>{name}</strong>! Your inquiry has been routed directly to our operations desk. A specialist will follow up shortly.
+                </p>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="contact-primary-demo-btn"
+                  style={{ marginTop: '12px', alignSelf: 'center' }}
+                >
+                  Done
+                </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmitMessage} className="contact-quick-form">
-                {errorMsg && <div className="contact-form-error">{errorMsg}</div>}
+              <form onSubmit={handleSubmitMessage} className="contact-modal-form">
+                {errorMsg && <div className="contact-form-alert">{errorMsg}</div>}
 
-                <div className="contact-form-field">
-                  <label htmlFor="card-input-name">Your Name</label>
-                  <input
-                    id="card-input-name"
-                    type="text"
-                    required
-                    placeholder="e.g. Alex Morgan"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
+                <div className="modal-input-field">
+                  <label htmlFor="card-name">
+                    Full Name <span className="req">*</span>
+                  </label>
+                  <div className="modal-input-wrapper">
+                    <User size={16} className="modal-input-icon" />
+                    <input
+                      id="card-name"
+                      type="text"
+                      required
+                      placeholder="e.g. Alex Morgan"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
                 </div>
 
-                <div className="contact-form-field">
-                  <label htmlFor="card-input-email">Work Email</label>
-                  <input
-                    id="card-input-email"
-                    type="email"
-                    required
-                    placeholder="alex@company.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+                <div className="modal-input-field">
+                  <label htmlFor="card-email">
+                    Work Email <span className="req">*</span>
+                  </label>
+                  <div className="modal-input-wrapper">
+                    <Mail size={16} className="modal-input-icon" />
+                    <input
+                      id="card-email"
+                      type="email"
+                      required
+                      placeholder="alex@company.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
                 </div>
 
-                <div className="contact-form-field">
-                  <label htmlFor="card-input-msg">Message / Requirements</label>
-                  <textarea
-                    id="card-input-msg"
-                    rows={3}
-                    placeholder="How can we assist your business today?"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
+                <div className="modal-input-field">
+                  <label htmlFor="card-message">
+                    How can our team help your business?
+                  </label>
+                  <div className="modal-input-wrapper textarea-wrapper">
+                    <textarea
+                      id="card-message"
+                      rows={3}
+                      placeholder="Tell us about your industry, current workflow, or questions..."
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                  </div>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="contact-form-submit-btn"
-                >
-                  <Send size={14} />
-                  <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
-                </button>
+                <div className="contact-form-actions-row">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="contact-submit-btn"
+                  >
+                    <Send size={15} />
+                    <span>{isSubmitting ? 'Sending inquiry...' : 'Send Message'}</span>
+                  </button>
+
+                  <span className="privacy-note">
+                    🔒 Direct connection &bull; No spam guaranteed
+                  </span>
+                </div>
               </form>
             )}
           </div>
@@ -330,4 +390,3 @@ export const ContactCard = ({ isOpen, onClose, onOpenDemo, toggleRef }) => {
     </>
   );
 };
-
