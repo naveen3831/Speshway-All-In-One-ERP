@@ -73,32 +73,21 @@ const DEFAULT_SAAS_PLANS = [
 ];
 
 export const AdminPricing = () => {
-  const { socket, homeContent, setHomeContent } = useSocket();
+  const { socket, homeContent, updateNavbarVisibility } = useSocket();
 
-  // Navbar Pricing Visibility Toggle State
-  const [showPricingInNavbar, setShowPricingInNavbar] = useState(() => {
-    const stored = localStorage.getItem('speshway_navbar_pricing_visible');
-    if (stored !== null) return stored === 'true';
-    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
-    return true;
-  });
+  // Single source of truth for Navbar Pricing Visibility
+  const isPricingActive = homeContent?.navbar?.showPricing !== undefined
+    ? Boolean(homeContent.navbar.showPricing)
+    : (localStorage.getItem('speshway_navbar_pricing_visible') !== null
+        ? localStorage.getItem('speshway_navbar_pricing_visible') === 'true'
+        : true);
+
   const [toggleUpdating, setToggleUpdating] = useState(false);
   const [toggleNotice, setToggleNotice] = useState('');
 
-  // Sync state if homeContent changes via socket or external updates
-  useEffect(() => {
-    if (homeContent?.navbar?.showPricing !== undefined) {
-      setShowPricingInNavbar(Boolean(homeContent.navbar.showPricing));
-      localStorage.setItem('speshway_navbar_pricing_visible', homeContent.navbar.showPricing ? 'true' : 'false');
-    }
-  }, [homeContent?.navbar?.showPricing]);
-
   const handleToggleNavbarPricing = async () => {
-    const nextVal = !showPricingInNavbar;
-    setShowPricingInNavbar(nextVal);
-    localStorage.setItem('speshway_navbar_pricing_visible', nextVal ? 'true' : 'false');
-    window.dispatchEvent(new Event('speshway_navbar_pricing_changed'));
-
+    const nextVal = !isPricingActive;
+    setToggleUpdating(true);
     setToggleNotice(
       nextVal
         ? 'Pricing option & /pricing page are now VISIBLE and ACTIVE'
@@ -106,20 +95,10 @@ export const AdminPricing = () => {
     );
     setTimeout(() => setToggleNotice(''), 3500);
 
-    setToggleUpdating(true);
     try {
-      const updated = {
-        ...(homeContent || {}),
-        navbar: {
-          ...(homeContent?.navbar || {}),
-          showPricing: nextVal,
-        },
-      };
-      if (setHomeContent) setHomeContent(updated);
-      try {
-        localStorage.setItem('speshway_home_content', JSON.stringify(updated));
-      } catch (e) {}
-      await api.put('/home', updated);
+      if (updateNavbarVisibility) {
+        await updateNavbarVisibility({ showPricing: nextVal });
+      }
     } catch (err) {
       console.warn('API sync warning for navbar pricing toggle:', err.message);
     } finally {
@@ -366,25 +345,25 @@ export const AdminPricing = () => {
                 handleToggleNavbarPricing();
               }
             }}
-            className={`admin-navbar-toggle-btn ${showPricingInNavbar ? 'is-active' : 'is-inactive'}`}
+            className={`admin-navbar-toggle-btn ${isPricingActive ? 'is-active' : 'is-inactive'}`}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '12px',
               padding: '6px 14px',
               borderRadius: '10px',
-              backgroundColor: showPricingInNavbar ? '#ecfdf5' : '#f8fafc',
-              border: showPricingInNavbar ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
+              backgroundColor: isPricingActive ? '#ecfdf5' : '#f8fafc',
+              border: isPricingActive ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
-              boxShadow: showPricingInNavbar
+              boxShadow: isPricingActive
                 ? '0 3px 12px rgba(16, 185, 129, 0.15)'
                 : '0 2px 6px rgba(15, 23, 42, 0.05)',
               userSelect: 'none',
               outline: 'none',
             }}
             title={
-              showPricingInNavbar
+              isPricingActive
                 ? 'Click to turn OFF: hide Pricing option and /pricing page'
                 : 'Click to turn ON: show Pricing option and /pricing page'
             }
@@ -395,25 +374,25 @@ export const AdminPricing = () => {
                   width: '28px',
                   height: '28px',
                   borderRadius: '7px',
-                  backgroundColor: showPricingInNavbar ? '#d1fae5' : '#e2e8f0',
+                  backgroundColor: isPricingActive ? '#d1fae5' : '#e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: showPricingInNavbar ? '#059669' : '#64748b',
+                  color: isPricingActive ? '#059669' : '#64748b',
                   transition: 'all 0.2s ease',
                 }}
               >
-                {showPricingInNavbar ? <Eye size={16} /> : <EyeOff size={16} />}
+                {isPricingActive ? <Eye size={16} /> : <EyeOff size={16} />}
               </div>
               <span
                 style={{
                   fontSize: '0.88rem',
                   fontWeight: 700,
-                  color: showPricingInNavbar ? '#065f46' : '#475569',
+                  color: isPricingActive ? '#065f46' : '#475569',
                   whiteSpace: 'nowrap',
                 }}
               >
-                Pricing: {showPricingInNavbar ? 'ON' : 'OFF'}
+                Pricing: {isPricingActive ? 'ON' : 'OFF'}
               </span>
             </div>
 
@@ -423,7 +402,7 @@ export const AdminPricing = () => {
                 width: '38px',
                 height: '20px',
                 borderRadius: '9999px',
-                backgroundColor: showPricingInNavbar ? '#059669' : '#cbd5e1',
+                backgroundColor: isPricingActive ? '#059669' : '#cbd5e1',
                 padding: '2px',
                 display: 'flex',
                 alignItems: 'center',
@@ -439,7 +418,7 @@ export const AdminPricing = () => {
                   borderRadius: '50%',
                   backgroundColor: '#ffffff',
                   boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  transform: showPricingInNavbar ? 'translateX(18px)' : 'translateX(0px)',
+                  transform: isPricingActive ? 'translateX(18px)' : 'translateX(0px)',
                   transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               />
@@ -450,7 +429,7 @@ export const AdminPricing = () => {
             <span
               style={{
                 fontSize: '0.78rem',
-                color: showPricingInNavbar ? '#059669' : '#dc2626',
+                color: isPricingActive ? '#059669' : '#dc2626',
                 fontWeight: 600,
                 marginTop: '1px',
                 transition: 'all 0.2s ease',

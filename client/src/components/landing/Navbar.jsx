@@ -23,54 +23,50 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     setContactCardOpen(false);
   }, [location.pathname]);
 
-  // Determine whether Pricing should be visible in navbar
-  const [showPricing, setShowPricing] = useState(() => {
+  // Helper to determine boolean visibility with homeContent as primary source of truth, localStorage as fallback
+  const getPricingVisible = () => {
+    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     const stored = localStorage.getItem('speshway_navbar_pricing_visible');
     if (stored !== null) return stored === 'true';
-    if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     return true;
-  });
+  };
 
-  // Determine whether Products/Projects should be visible in navbar
-  const [showProducts, setShowProducts] = useState(() => {
+  const getProductsVisible = () => {
+    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     const stored = localStorage.getItem('speshway_navbar_products_visible');
     if (stored !== null) return stored === 'true';
-    if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     return true;
-  });
+  };
+
+  const [showPricing, setShowPricing] = useState(getPricingVisible);
+  const [showProducts, setShowProducts] = useState(getProductsVisible);
+
+  // Synchronize on homeContent updates
+  useEffect(() => {
+    setShowPricing(getPricingVisible());
+  }, [homeContent?.navbar?.showPricing]);
 
   useEffect(() => {
-    const syncVisibility = () => {
-      const stored = localStorage.getItem('speshway_navbar_pricing_visible');
-      if (stored !== null) {
-        setShowPricing(stored === 'true');
-      } else if (homeContent?.navbar?.showPricing !== undefined) {
-        setShowPricing(Boolean(homeContent.navbar.showPricing));
-      }
+    setShowProducts(getProductsVisible());
+  }, [homeContent?.navbar?.showProducts]);
+
+  // Synchronize on cross-tab storage and window events
+  useEffect(() => {
+    const handleSync = () => {
+      setShowPricing(getPricingVisible());
+      setShowProducts(getProductsVisible());
     };
 
-    const syncProductsVisibility = () => {
-      const stored = localStorage.getItem('speshway_navbar_products_visible');
-      if (stored !== null) {
-        setShowProducts(stored === 'true');
-      } else if (homeContent?.navbar?.showProducts !== undefined) {
-        setShowProducts(Boolean(homeContent.navbar.showProducts));
-      }
-    };
-
-    syncVisibility();
-    syncProductsVisibility();
-
-    window.addEventListener('speshway_navbar_pricing_changed', syncVisibility);
-    window.addEventListener('speshway_navbar_products_changed', syncProductsVisibility);
-    window.addEventListener('storage', syncVisibility);
-    window.addEventListener('storage', syncProductsVisibility);
+    window.addEventListener('speshway_navbar_pricing_changed', handleSync);
+    window.addEventListener('speshway_navbar_products_changed', handleSync);
+    window.addEventListener('speshway_navbar_visibility_changed', handleSync);
+    window.addEventListener('storage', handleSync);
 
     return () => {
-      window.removeEventListener('speshway_navbar_pricing_changed', syncVisibility);
-      window.removeEventListener('speshway_navbar_products_changed', syncProductsVisibility);
-      window.removeEventListener('storage', syncVisibility);
-      window.removeEventListener('storage', syncProductsVisibility);
+      window.removeEventListener('speshway_navbar_pricing_changed', handleSync);
+      window.removeEventListener('speshway_navbar_products_changed', handleSync);
+      window.removeEventListener('speshway_navbar_visibility_changed', handleSync);
+      window.removeEventListener('storage', handleSync);
     };
   }, [homeContent?.navbar?.showPricing, homeContent?.navbar?.showProducts]);
 

@@ -219,15 +219,17 @@ button {
   align-items: center;
   justify-content: center;
   gap: 36px;
+  z-index: 25;
+  pointer-events: auto;
 }
 
 .nav-link {
-  font-size: 0.84rem;
-  font-weight: 500;
+  font-size: 0.86rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.13em;
-  color: #475569;
-  padding: 6px 2px;
+  letter-spacing: 0.12em;
+  color: #334155;
+  padding: 8px 4px;
   background: transparent !important;
   border-radius: 0;
   border: none;
@@ -275,8 +277,8 @@ button {
   cursor: pointer;
   user-select: none;
   padding: 4px 0;
-  z-index: 10;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 20;
+  transition: opacity 0.2s ease, transform 0.25s ease;
 }
 
 .navbar-brand-unit:hover,
@@ -301,12 +303,15 @@ button {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    margin: 0;
   }
 
   /* Left Brand Unit when Projects or Pricing is ON in Admin */
   .navbar-brand-unit.is-left {
     position: static;
     margin-right: auto;
+    margin-left: 0;
+    transform: none;
   }
 }
 
