@@ -41,6 +41,136 @@
   white-space: nowrap;
 }
 
+/* Search Bar & Category Filter Tabs */
+.our-erp-filter-container {
+  margin-bottom: 32px;
+}
+
+.our-erp-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  max-width: 540px;
+  margin: 0 auto 16px auto;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease;
+}
+
+.our-erp-search-bar:focus-within {
+  border-color: #00875a;
+  box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.12);
+}
+
+.our-erp-search-bar .search-icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.our-erp-search-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #0f172a;
+  background: transparent;
+}
+
+.our-erp-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.our-erp-clear-search-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.our-erp-clear-search-btn:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+
+.our-erp-category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  max-width: 960px;
+}
+
+.our-erp-category-tabs .category-tab-btn {
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 7px 16px;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.our-erp-category-tabs .category-tab-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.our-erp-category-tabs .category-tab-btn.active {
+  background-color: #00875a;
+  color: #ffffff;
+  border-color: #00875a;
+  box-shadow: 0 2px 6px rgba(0, 135, 90, 0.2);
+}
+
+/* Empty State */
+.our-erp-empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  max-width: 480px;
+  margin: 20px auto 40px auto;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+}
+
+.our-erp-empty-text {
+  font-size: 0.98rem;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.our-erp-clear-filters-btn {
+  background-color: #00875a;
+  color: #ffffff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.our-erp-clear-filters-btn:hover {
+  background-color: #006644;
+}
+
 /* Dynamic Responsive Grid - Exactly 5 cards per row on desktop */
 .our-erp-grid {
   display: grid;
