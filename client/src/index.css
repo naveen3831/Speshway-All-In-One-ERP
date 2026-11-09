@@ -2212,7 +2212,13 @@ button {
   width: 100%;
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 50%, #e6f7ef 100%);
   border-bottom: 1px solid #e2e8f0;
-  padding: 56px 0 68px 0;
+  padding: 16px 0 48px 0;
+}
+
+@media (max-width: 768px) {
+  .product-detail-hero-section {
+    padding: 12px 0 28px 0;
+  }
 }
 
 .detail-hero-container {
@@ -2822,10 +2828,10 @@ button {
 }
 
 .admin-sidebar-menu {
-  padding: 20px 12px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
   flex: 1;
   overflow-y: auto;
 }
@@ -2834,7 +2840,7 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 7px 12px;
   border-radius: 8px;
   color: #94a3b8;
   font-size: 0.88rem;
@@ -6973,3 +6979,32 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
     padding: 16px 12px 32px !important;
   }
 }
+
+/* ==========================================================================
+   ERP DASHBOARDS: HIDE TOPBAR BACK BUTTON ON DESKTOP (SHOW IN MOBILE RESPONSIVE ONLY)
+   ========================================================================== */
+@media (min-width: 961px) {
+  .dashboard-back-link,
+  .foodway-back-btn,
+  .sana-back-btn,
+  .learn-back-btn,
+  .savitri-back-btn,
+  .bus-back-btn,
+  .tat-back-btn,
+  .ind-back-pill,
+  .vexa-back-btn,
+  .hrms-back-catalog-btn,
+  .flavora-back-catalog-btn,
+  .aneera-back-catalog-link,
+  .dairy-back-catalog-link,
+  .rf-back-catalog-btn,
+  .joy-back-catalog-btn,
+  .fleet-btn-back-vehicles,
+  .gym-btn-back-website,
+  .hosp-back-catalog-link,
+  .nexora-back-btn,
+  .salon-btn-back-services {
+    display: none !important;
+  }
+}
+

@@ -4,6 +4,7 @@ import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket } from '../context/SocketContext';
+import { normalizeProductCategory } from '../utils/adminProjects';
 import {
   Search,
   Globe,
@@ -208,13 +209,15 @@ export const ProductsPage = () => {
   }, []);
 
   // Filter out the 12 generic application modules
-  const availableProducts = (products || []).filter((p) => {
-    const slug = (p.slug || p.id || '').toLowerCase();
-    const name = (p.name || '').toLowerCase().trim();
-    if (EXCLUDED_SLUGS.has(slug)) return false;
-    if (EXCLUDED_NAMES.has(name)) return false;
-    return true;
-  });
+  const availableProducts = (products || [])
+    .filter((p) => {
+      const slug = (p.slug || p.id || '').toLowerCase();
+      const name = (p.name || '').toLowerCase().trim();
+      if (EXCLUDED_SLUGS.has(slug)) return false;
+      if (EXCLUDED_NAMES.has(name)) return false;
+      return true;
+    })
+    .map(normalizeProductCategory);
 
   const categories = [
     'All',

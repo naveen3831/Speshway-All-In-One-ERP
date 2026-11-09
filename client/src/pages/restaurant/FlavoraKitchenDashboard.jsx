@@ -323,24 +323,23 @@ export const FlavoraKitchenDashboard = () => {
               onClick={() => navigate('/products')}
               className="dashboard-back-link flavora-back-catalog-btn"
               title="Return to Catalog"
+              aria-label="Return to catalog"
             >
               <ArrowLeft size={15} /> <span>Back</span>
             </button>
-            <div className="flavora-header-title-wrap">
-              <button
-                type="button"
-                className="flavora-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
-              </button>
-              <div>
-                <h1 className="flavora-greeting-title">
-                  {navItems.find(n => n.id === activeTab)?.label || 'Flavora Kitchen Management'}
-                </h1>
-                <p className="flavora-greeting-subtitle">Here&apos;s what&apos;s happening at Flavora Kitchen today.</p>
-              </div>
+            <button
+              type="button"
+              className="flavora-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
+            <div className="flavora-header-title-text flavora-header-title-wrap">
+              <h1 className="flavora-greeting-title">
+                {navItems.find(n => n.id === activeTab)?.label || 'Flavora Kitchen Management'}
+              </h1>
+              <p className="flavora-greeting-subtitle">Here&apos;s what&apos;s happening at Flavora Kitchen today.</p>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import api from '../services/api';
-import { DEFAULT_ADMIN_PROJECTS } from '../utils/adminProjects';
+import { DEFAULT_ADMIN_PROJECTS, normalizeProductCategory } from '../utils/adminProjects';
 
 export const DEFAULT_BRANDING = {
   logoUrl: '/logo.png',
@@ -129,14 +129,16 @@ export const SocketProvider = ({ children }) => {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const clean = parsed.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
+          const clean = parsed
+            .filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id))
+            .map(normalizeProductCategory);
           if (clean.length > 0) return clean;
         }
       }
     } catch (e) {
       console.warn('Error reading speshway_products from localStorage:', e);
     }
-    return DEFAULT_ADMIN_PROJECTS;
+    return DEFAULT_ADMIN_PROJECTS.map(normalizeProductCategory);
   });
   const [modulesData, setModulesData] = useState({
     hrms: DEFAULT_TEAM_MEMBERS,
@@ -150,21 +152,23 @@ export const SocketProvider = ({ children }) => {
     try {
       const prodRes = await api.get('/products');
       if (prodRes.data?.data && Array.isArray(prodRes.data.data) && prodRes.data.data.length > 0) {
-        const clean = prodRes.data.data.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
+        const clean = prodRes.data.data
+          .filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id))
+          .map(normalizeProductCategory);
         if (clean.length > 0) {
           setProducts((prev) => {
             const safePrev = Array.isArray(prev) ? prev : [];
             const merged = clean.map((serverItem) => {
               const localMatch = safePrev.find((p) => isSameProduct(p, serverItem));
               if (localMatch) {
-                return {
+                return normalizeProductCategory({
                   ...localMatch,
                   ...serverItem,
                   // Keep latest valid image (whether from server or user edit)
                   imageUrl: serverItem.imageUrl || localMatch.imageUrl || '',
-                };
+                });
               }
-              return serverItem;
+              return normalizeProductCategory(serverItem);
             });
             try {
               localStorage.setItem('speshway_products', JSON.stringify(merged));

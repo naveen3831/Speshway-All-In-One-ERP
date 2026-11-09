@@ -6,6 +6,7 @@ import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket, isSameProduct } from '../context/SocketContext';
 import { getProductFallbackImage } from './ProductsPage';
+import { getProjectCategory } from '../utils/adminProjects';
 import {
   Globe,
   Shield,
@@ -105,7 +106,7 @@ export const ProductDetailPage = () => {
     id: 'speshway-hospitals',
     slug: 'speshway-hospitals',
     name: 'Speshway Hospitals',
-    category: 'Human Resources',
+    category: 'Healthcare & Hospitals',
     status: 'active',
     description: 'HMS Enterprise is a comprehensive Hospital Management System designed to streamline hospital operations, including patient management, appointments, EMR, billing, pharmacy, laboratory reports, inventory, and staff management — all through one centralized digital platform.',
     websiteUrl: 'https://speshway.com/hospitals',
@@ -116,7 +117,7 @@ export const ProductDetailPage = () => {
     id: 'natural-milk-dairy',
     slug: 'natural-milk-dairy',
     name: 'Natural Milk Dairy',
-    category: 'Human Resources',
+    category: 'Dairy & Agriculture',
     status: 'active',
     description: 'Natural Milk Dairy is an all-in-one Dairy Management System that simplifies product management, customer orders, subscriptions, inventory, daily deliveries, and payments through a centralized admin dashboard.',
     websiteUrl: 'https://speshway.com/natural-milk-dairy',
@@ -127,7 +128,7 @@ export const ProductDetailPage = () => {
     id: 'aneera-silks',
     slug: 'aneera-silks',
     name: 'Aneera Silks',
-    category: 'Human Resources',
+    category: 'Fashion & Luxury',
     status: 'active',
     description: 'Aneera Silks is a luxury online saree shopping destination featuring elegant silk, Banarasi, Kanchipuram, and designer collections, with beautiful product galleries, seamless shopping, secure payments, and convenient order management',
     websiteUrl: 'https://aneerasilks.com',
@@ -138,7 +139,7 @@ export const ProductDetailPage = () => {
     id: 'e-commerce',
     slug: 'e-commerce',
     name: 'E commerce',
-    category: 'Human Resources',
+    category: 'E-Commerce Retail',
     status: 'active',
     description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
     websiteUrl: 'https://nexora.speshway.com',
@@ -149,7 +150,7 @@ export const ProductDetailPage = () => {
     id: 'fleet-management',
     slug: 'fleet-management',
     name: 'Fleet Management',
-    category: 'Human Resources',
+    category: 'Logistics & Fleet',
     status: 'active',
     description: 'A smart Fleet Management System designed to simplify vehicle operations, monitor fleet activities, manage drivers and trips, and improve operational efficiency. Track fleet performance, organize vehicle records, and manage transportation operations through one centralized platform.',
     websiteUrl: 'https://fleet.speshway.com',
@@ -160,7 +161,7 @@ export const ProductDetailPage = () => {
     id: 'american-fitness-gym',
     slug: 'american-fitness-gym',
     name: 'American Fitness Gym',
-    category: 'Human Resources',
+    category: 'Fitness & Wellness',
     status: 'active',
     description: 'American Fitness Gym is a modern fitness platform designed to help fitness enthusiasts achieve their health and fitness goals. Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
     websiteUrl: 'https://americanfitness.speshway.com',
@@ -171,7 +172,7 @@ export const ProductDetailPage = () => {
     id: 'flavora-kitchen',
     slug: 'flavora-kitchen',
     name: 'Flavora Kitchen',
-    category: 'Human Resources',
+    category: 'Restaurant & Dining',
     status: 'active',
     description: 'Flavora Kitchen is an enterprise cloud kitchen and restaurant management system that streamlines live orders, online deliveries, dining table reservations, recipe costings, kitchen display systems (KDS), and inventory through a centralized digital platform.',
     websiteUrl: 'https://flavorakitchen.speshway.com',
@@ -182,7 +183,7 @@ export const ProductDetailPage = () => {
     id: 'ride-flow',
     slug: 'ride-flow',
     name: 'RIDE FLOW',
-    category: 'Human Resources',
+    category: 'Automotive & Mobility',
     status: 'active',
     description: 'RideFlow is a modern two-wheeler platform designed to help customers explore bikes, compare models, discover attractive offers, and connect with dealers. It provides a convenient and user-friendly experience for finding the right bike.',
     websiteUrl: 'https://bike.speshway.site/',
@@ -193,7 +194,7 @@ export const ProductDetailPage = () => {
     id: 'joy-events',
     slug: 'joy-events',
     name: "JOY_EVENT'S",
-    category: 'Human Resources',
+    category: 'Event Management',
     status: 'active',
     description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination. From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
     websiteUrl: 'https://joyevents.speshway.site',
@@ -215,7 +216,7 @@ export const ProductDetailPage = () => {
     id: 'saloon',
     slug: 'saloon',
     name: 'Saloon',
-    category: 'Business Intelligence',
+    category: 'Beauty & Wellness',
     status: 'active',
     description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
     websiteUrl: 'https://spysalon.speshway.com',
@@ -330,11 +331,12 @@ export const ProductDetailPage = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  marginBottom: '18px',
-                  padding: '7px 14px',
+                  marginTop: '-6px',
+                  marginBottom: '14px',
+                  padding: '6px 14px',
                   backgroundColor: '#ffffff',
                   border: '1px solid #cbd5e1',
-                  borderRadius: '8px',
+                  borderRadius: '9999px',
                   color: '#1e293b',
                   fontSize: '0.85rem',
                   fontWeight: 600,
@@ -355,13 +357,11 @@ export const ProductDetailPage = () => {
                 }}
               >
                 <ArrowLeft size={16} />
-                <span>Back to Projects</span>
+                <span>Back</span>
               </button>
 
               <div className="modal-badge-row">
-                <span className="product-category-tag">{product.category}</span>
-                <span className="badge-active">{product.status || 'Active Product'}</span>
-                <span className="badge-pro-edition">Enterprise Ready</span>
+                <span className="product-category-tag">{getProjectCategory(product)}</span>
               </div>
               <h1 className="product-detail-h1">{product.name}</h1>
               <p className="product-detail-sub">{product.description}</p>

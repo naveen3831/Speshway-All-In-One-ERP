@@ -388,23 +388,26 @@ export const VexaDashboard = () => {
         {/* Topbar with Speshway Administrative Dashboard & Admin profile matching Image 2 */}
         <header className="vexa-topbar">
           <div className="vexa-topbar-left">
-            <button onClick={() => navigate('/products')} className="dashboard-back-link vexa-back-btn">
+            <button
+              onClick={() => navigate('/products')}
+              className="dashboard-back-link vexa-back-btn"
+              title="Return to Catalog"
+              aria-label="Return to catalog"
+            >
               <ArrowLeft size={14} />
               <span>Back</span>
             </button>
-            <div className="vexa-header-title-wrap">
-              <button
-                type="button"
-                className="vexa-menu-toggle"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open navigation menu"
-              >
-                <Menu size={20} />
-              </button>
-              <span className="vexa-topbar-title">
-                {menuItems.find(m => m.id === activeTab)?.label || 'Speshway Administrative Dashboard'}
-              </span>
-            </div>
+            <button
+              type="button"
+              className="vexa-menu-toggle"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={20} />
+            </button>
+            <span className="vexa-topbar-title">
+              {menuItems.find(m => m.id === activeTab)?.label || 'Speshway Administrative Dashboard'}
+            </span>
           </div>
 
           <div className="vexa-topbar-right">

@@ -157,22 +157,22 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
             <h4 className="footer-col-title">ERP Applications</h4>
             <ul className="footer-links-list">
               <li>
-                <Link to="/product/speshway-hrms/dashboard" className="footer-link">
+                <Link to="/product/speshway-hrms" className="footer-link">
                   Speshway HRMS &amp; Payroll
                 </Link>
               </li>
               <li>
-                <Link to="/product/dairy-erp/dashboard" className="footer-link">
+                <Link to="/product/natural-milk-dairy" className="footer-link">
                   Natural Milk Dairy ERP
                 </Link>
               </li>
               <li>
-                <Link to="/product/nexora-ecommerce/dashboard" className="footer-link">
+                <Link to="/product/e-commerce" className="footer-link">
                   Nexora E-Commerce Suite
                 </Link>
               </li>
               <li>
-                <Link to="/product/aneera-sarees/dashboard" className="footer-link">
+                <Link to="/product/aneera-silks" className="footer-link">
                   Aneera Sarees Admin
                 </Link>
               </li>

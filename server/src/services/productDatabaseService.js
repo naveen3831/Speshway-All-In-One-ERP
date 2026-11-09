@@ -57,12 +57,38 @@ export const seedProductsDatabase = async () => {
       await ensureProductDefaults(/learn|lms/i, '/product/learnhub/dashboard', '/images/products/learnhub.jpg');
       await ensureProductDefaults(/foodway|foody/i, '/product/foodway/dashboard', '/images/products/foodway.jpg');
 
+      const ensureProductCategory = async (regex, category) => {
+        await Product.updateMany({ slug: { $regex: regex } }, { $set: { category } });
+      };
+
+      await ensureProductCategory(/savitri|saree/i, 'Fashion & Luxury');
+      await ensureProductCategory(/sana|stayz/i, 'Hospitality & Hotels');
+      await ensureProductCategory(/learn|lms/i, 'Education & LMS');
+      await ensureProductCategory(/foodway|foody/i, 'Food Delivery & Kitchen');
+      await ensureProductCategory(/travel|tour|bus/i, 'Bus & Travel Booking');
+      await ensureProductCategory(/ride-flow|rideflow|bike/i, 'Automotive & Mobility');
+      await ensureProductCategory(/hospital/i, 'Healthcare & Hospitals');
+      await ensureProductCategory(/dairy|milk/i, 'Dairy & Agriculture');
+      await ensureProductCategory(/vexa/i, 'Fashion & Apparel');
+      await ensureProductCategory(/aneera|silk/i, 'Fashion & Luxury');
+      await ensureProductCategory(/e-commerce|ecommerce|nexora/i, 'E-Commerce Retail');
+      await ensureProductCategory(/saloon|salon|spy-salon/i, 'Beauty & Wellness');
+      await ensureProductCategory(/fleet/i, 'Logistics & Fleet');
+      await ensureProductCategory(/fitness|gym/i, 'Fitness & Wellness');
+      await ensureProductCategory(/flavora|kitchen/i, 'Restaurant & Dining');
+      await ensureProductCategory(/joy|eventoza/i, 'Event Management');
+      await ensureProductCategory(/speshway-hrms|hrms/i, 'Human Resources');
+      await ensureProductCategory(/service-center|service/i, 'Automotive & Services');
+      await ensureProductCategory(/real-estate|estate/i, 'Real Estate & Housing');
+      await ensureProductCategory(/school-erp|school/i, 'Education & Academics');
+      await ensureProductCategory(/hotel-erp/i, 'Hospitality & Hotels');
+
       const joyExists = await Product.findOne({ slug: { $regex: /joy|eventoza/i } });
       if (!joyExists) {
         await Product.create({
           name: "JOY_EVENT'S",
           slug: 'joy-events',
-          category: 'Human Resources',
+          category: 'Event Management',
           description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination. From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
           longDescription: 'Joy Events ERP is an enterprise event management and vendor coordination platform that streamlines event bookings, venue schedules, stage decoration packages, customer leads, caterer management, and financial settlements.',
           features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
@@ -102,7 +128,7 @@ export const seedProductsDatabase = async () => {
         await Product.create({
           name: 'Flavora Kitchen',
           slug: 'flavora-kitchen',
-          category: 'Human Resources',
+          category: 'Restaurant & Dining',
           description: 'Flavora Kitchen is an enterprise cloud kitchen and restaurant management system that streamlines live orders, online deliveries, dining table reservations, recipe costings, kitchen display systems (KDS), and inventory through a centralized digital platform.',
           longDescription: 'Flavora Kitchen Restaurant & Cloud Kitchen ERP centralizes kitchen orders (KDS), dining table bookings, digital POS settlements, thermal KOT dispatching, recipe margins, and guest reviews.',
           features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
@@ -122,7 +148,7 @@ export const seedProductsDatabase = async () => {
         await Product.create({
           name: 'American Fitness Gym',
           slug: 'american-fitness-gym',
-          category: 'Human Resources',
+          category: 'Fitness & Wellness',
           description: 'American Fitness Gym is a modern fitness platform designed to help fitness enthusiasts achieve their health and fitness goals. Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
           longDescription: 'American Fitness Gym Athletic Club ERP streamlines gym operations with biometric turnstile entry, trainer rostering, class bookings, subscription tiers, locker assignment, and POS supplement sales.',
           features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
@@ -142,7 +168,7 @@ export const seedProductsDatabase = async () => {
         await Product.create({
           name: 'Fleet Management',
           slug: 'fleet-management',
-          category: 'Human Resources',
+          category: 'Logistics & Fleet',
           description: 'A smart Fleet Management System designed to simplify vehicle operations, monitor fleet activities, manage drivers and trips, and improve operational efficiency. Track fleet performance, organize vehicle records, and manage transportation operations through one centralized platform.',
           longDescription: 'Fleet Management Enterprise is a complete transport logistics ERP offering real-time GPS fleet tracking, driver rostering, automated fuel consumption logs, preventive maintenance scheduling, waybills, and geofence perimeter alerts.',
           features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
@@ -162,7 +188,7 @@ export const seedProductsDatabase = async () => {
         await Product.create({
           name: 'Natural Milk Dairy',
           slug: 'natural-milk-dairy',
-          category: 'Human Resources',
+          category: 'Dairy & Agriculture',
           description: 'Natural Milk Dairy is an all-in-one Dairy Management System that simplifies product management, customer orders, subscriptions, inventory, daily deliveries, and payments through a centralized admin dashboard.',
           longDescription: 'Complete dairy operations ERP providing farm-to-door delivery tracking, automated daily subscriptions, real-time inventory for milk and milk byproducts, temperature-controlled warehouse logging, and seamless payments.',
           features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
@@ -182,7 +208,7 @@ export const seedProductsDatabase = async () => {
         await Product.create({
           name: 'E commerce',
           slug: 'e-commerce',
-          category: 'Human Resources',
+          category: 'E-Commerce Retail',
           description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
           longDescription: 'Nexora Online Store is an enterprise multi-category retail e-commerce ERP providing centralized catalog synchronization, inventory tracking, coupon marketing, customer loyalty programs, and high-volume order fulfillment.',
           features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
@@ -202,7 +228,7 @@ export const seedProductsDatabase = async () => {
         await Product.create({
           name: 'Saloon',
           slug: 'saloon',
-          category: 'Business Intelligence',
+          category: 'Beauty & Wellness',
           description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
           longDescription: 'SPY Salon Jubilee Hills Studio ERP provides end-to-end luxury salon appointment scheduling, stylist chair allocation, beauty packages, client loyalty passes, and till billing.',
           features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
@@ -242,7 +268,7 @@ export const seedProductsDatabase = async () => {
         await Product.create({
           name: 'RideFlow',
           slug: 'ride-flow',
-          category: 'Human Resources',
+          category: 'Automotive & Mobility',
           description: 'RideFlow is a modern two-wheeler platform designed to help customers explore bikes, compare models, discover attractive offers, and connect with dealers. It provides a convenient and user-friendly experience for finding the right bike.',
           longDescription: 'RideFlow Two-Wheeler ERP provides digital bike showroom management, dealership networks, online test ride and bike bookings, customer inquiries, maintenance service requests, and sales analytics.',
           features: ['Two-Wheeler Showroom Catalog', 'Dealership Network Management', 'Online Bike Bookings', 'Service Request Workflow', 'Deals & Promotional Offers', 'Revenue & Sales Analytics'],

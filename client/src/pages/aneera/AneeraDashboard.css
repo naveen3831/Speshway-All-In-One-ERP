@@ -87,7 +87,7 @@
 .aneera-nav-list {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   padding: 0 12px;
   list-style: none;
   margin: 0;
@@ -102,7 +102,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 9.5px 14px;
+  padding: 7px 12px;
   border-radius: 8px;
   border: none;
   background: transparent;
@@ -1362,10 +1362,22 @@ body:has(.aneera-dashboard-container)::-webkit-scrollbar {
 
   .aneera-nav-left {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     min-width: 0 !important;
     flex: 1 !important;
     gap: 8px !important;
+  }
+
+  .aneera-back-catalog-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 10px !important;
+    height: 38px !important;
+    font-size: 0.82rem !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
   }
 
   .aneera-header-title-wrap {
