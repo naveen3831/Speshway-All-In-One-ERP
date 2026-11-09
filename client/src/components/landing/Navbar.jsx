@@ -87,63 +87,63 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     location.pathname === '/products' ||
     location.pathname.startsWith('/product/');
 
+  const hasNavItems = Boolean(showProducts || showPricing);
+
   return (
     <>
       <header className="navbar-container">
-        <div className="navbar-content">
-          {/* Brand Logo with User Uploaded Logo Image & Brand Name */}
+        <div className={`navbar-content ${!hasNavItems ? 'is-brand-centered' : 'is-brand-left'}`}>
+          {/* Unified Brand Unit (Logo + Vertical Divider + Brand Name & Tagline) */}
           <Link
             to="/"
-            className="brand-logo"
-            title={`${brandTitle} - Home`}
+            className={`navbar-brand-unit ${!hasNavItems ? 'is-centered' : 'is-left'}`}
+            title={`${brandTitle} - ${brandSubtitle}`}
             onClick={() => {
               setMobileMenuOpen(false);
               window.scrollTo(0, 0);
             }}
           >
-            <div className="brand-logo-wrap">
+            <div className="navbar-brand-logo-wrap">
               <img
                 src={logoUrl}
                 alt={`${brandTitle} Logo`}
-                className="brand-logo-img"
+                className="navbar-brand-logo-img"
               />
             </div>
-            <div className="brand-text">
-              <span className="brand-title">{brandTitle}</span>
-              <span className="brand-subtitle">{brandSubtitle}</span>
+            <div className="navbar-brand-divider" />
+            <div className="navbar-brand-text">
+              <span className="navbar-brand-title">{brandTitle}</span>
+              <div className="navbar-brand-subtitle-row">
+                <span className="navbar-brand-dash">—</span>
+                <span className="navbar-brand-subtitle">{brandSubtitle}</span>
+                <span className="navbar-brand-dash">—</span>
+              </div>
             </div>
           </Link>
 
-          {/* Center Navigation Links - Desktop Only */}
-          <nav className="nav-links">
-            <Link
-              to="/"
-              onClick={() => window.scrollTo(0, 0)}
-              className="nav-center-brand"
-              title={`${brandTitle} - ${brandSubtitle}`}
-            >
-              <span className="nav-center-brand-title">{brandTitle}</span>
-              <span className="nav-center-brand-subtitle">{brandSubtitle}</span>
-            </Link>
-            {showProducts && (
-              <NavLink
-                to="/projects"
-                onClick={() => window.scrollTo(0, 0)}
-                className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
-              >
-                PROJECTS
-              </NavLink>
-            )}
-            {showPricing && (
-              <NavLink
-                to="/pricing"
-                onClick={() => window.scrollTo(0, 0)}
-                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-              >
-                PRICING
-              </NavLink>
-            )}
-          </nav>
+          {/* Center Navigation Links - Desktop Only (Rendered when Projects or Pricing is ON) */}
+          {hasNavItems && (
+            <nav className="nav-links">
+              {showProducts && (
+                <NavLink
+                  to="/projects"
+                  onClick={() => window.scrollTo(0, 0)}
+                  className={({ isActive }) => (isActive || isProjectsActive ? 'nav-link active' : 'nav-link')}
+                >
+                  PROJECTS
+                </NavLink>
+              )}
+              {showPricing && (
+                <NavLink
+                  to="/pricing"
+                  onClick={() => window.scrollTo(0, 0)}
+                  className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+                >
+                  PRICING
+                </NavLink>
+              )}
+            </nav>
+          )}
 
           {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
           <div className="nav-actions">
@@ -169,18 +169,6 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="mobile-nav-drawer">
-            <Link
-              to="/"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                window.scrollTo(0, 0);
-              }}
-              className="mobile-nav-brand-item"
-              title={`${brandTitle} - ${brandSubtitle}`}
-            >
-              <span className="nav-center-brand-title">{brandTitle}</span>
-              <span className="nav-center-brand-subtitle">{brandSubtitle}</span>
-            </Link>
             {showProducts && (
               <NavLink
                 to="/projects"
