@@ -459,16 +459,6 @@ export const AdminLayout = () => {
       {/* Main Admin Content Screen */}
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
-          <div className="topbar-left">
-            <span className="topbar-page-icon-mobile" aria-hidden="true">
-              {getMobilePageIcon()}
-            </span>
-            <span className="topbar-title">
-              <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
-              <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>
-            </span>
-          </div>
-
           <div className="topbar-right">
             <div className="admin-notif-wrapper" ref={notifRef}>
               <button
