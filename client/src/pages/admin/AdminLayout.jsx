@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
@@ -24,6 +24,7 @@ import {
   Clock,
   Menu,
   X,
+  User,
 } from 'lucide-react';
 
 export const AdminLayout = () => {
@@ -42,7 +43,21 @@ export const AdminLayout = () => {
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
   const navigate = useNavigate();
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showMobileProfile, setShowMobileProfile] = useState(false);
+
+  // Close mobile sidebar and profile sheet when route changes
+  useEffect(() => {
+    setShowMobileProfile(false);
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  const isProfileActive =
+    location.pathname === '/admin/home' ||
+    location.pathname === '/admin/inquiries' ||
+    location.pathname === '/admin/settings' ||
+    location.pathname === '/admin/users';
 
   // Admin login form state
   const [email, setEmail] = useState('');
@@ -637,6 +652,171 @@ export const AdminLayout = () => {
           </ErrorBoundary>
         </div>
       </div>
+
+      {/* Mobile Bottom Navigation Bar (Mobile Responsive Only) */}
+      <nav className="admin-mobile-bottom-bar" aria-label="Admin Mobile Navigation">
+        <NavLink
+          to="/admin"
+          end
+          onClick={() => setShowMobileProfile(false)}
+          className={({ isActive }) => `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`}
+        >
+          <LayoutDashboard size={20} />
+          <span>Dashboard</span>
+        </NavLink>
+
+        <NavLink
+          to="/admin/products"
+          onClick={() => setShowMobileProfile(false)}
+          className={({ isActive }) => `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`}
+        >
+          <Package size={20} />
+          <span>Projects</span>
+        </NavLink>
+
+        <NavLink
+          to="/admin/pricing"
+          onClick={() => setShowMobileProfile(false)}
+          className={({ isActive }) => `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`}
+        >
+          <CreditCard size={20} />
+          <span>Pricing</span>
+        </NavLink>
+
+        <button
+          type="button"
+          onClick={() => setShowMobileProfile((prev) => !prev)}
+          className={`admin-bottom-nav-item ${isProfileActive || showMobileProfile ? 'active' : ''}`}
+          aria-label="Admin Profile & More Menu"
+        >
+          <div className="admin-bottom-avatar-icon">
+            <User size={20} />
+            {unreadCount > 0 && <span className="admin-bottom-dot" />}
+          </div>
+          <span>Profile</span>
+        </button>
+      </nav>
+
+      {/* Mobile Profile Bottom Sheet - Remaining admin items inside profile */}
+      {showMobileProfile && (
+        <div className="admin-profile-sheet-overlay" onClick={() => setShowMobileProfile(false)}>
+          <div className="admin-profile-sheet" onClick={(e) => e.stopPropagation()}>
+            <div className="profile-sheet-handle-bar">
+              <div className="profile-sheet-handle" />
+            </div>
+
+            <div className="profile-sheet-header">
+              <h3 className="profile-sheet-title">Admin Account &amp; Management</h3>
+              <button
+                type="button"
+                onClick={() => setShowMobileProfile(false)}
+                className="profile-sheet-close-btn"
+                aria-label="Close profile menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Admin User Profile Card */}
+            <div className="profile-sheet-user-card">
+              <div className="profile-sheet-avatar">
+                {(() => {
+                  if (!user?.name) return 'AD';
+                  const parts = user.name.trim().split(/\s+/);
+                  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+                  return user.name.substring(0, 2).toUpperCase();
+                })()}
+              </div>
+              <div className="profile-sheet-user-info">
+                <div className="profile-sheet-name-row">
+                  <span className="profile-sheet-user-name">{user?.name || 'Speshway Administrator'}</span>
+                  <span className="profile-sheet-badge">ADMIN</span>
+                </div>
+                <span className="profile-sheet-user-email">{user?.email || 'admin@gmail.com'}</span>
+              </div>
+            </div>
+
+            <div className="profile-sheet-section-label">MANAGEMENT &amp; OPTIONS</div>
+
+            {/* Remaining Menu Items shown inside Profile */}
+            <div className="profile-sheet-menu-list">
+              <NavLink
+                to="/admin/home"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon blue">
+                  <Globe size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">Home Page Options</span>
+                  <span className="profile-sheet-item-sub">Customize hero banner, titles &amp; branding</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              <NavLink
+                to="/admin/inquiries"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon purple">
+                  <Inbox size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="profile-sheet-item-title">Demo Inquiries</span>
+                    {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
+                  </div>
+                  <span className="profile-sheet-item-sub">Client leads, demo bookings &amp; contact inquiries</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              <NavLink
+                to="/admin/settings"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon emerald">
+                  <Settings size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">System Settings</span>
+                  <span className="profile-sheet-item-sub">Security, session timeout &amp; preferences</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+            </div>
+
+            <div className="profile-sheet-divider" />
+
+            {/* Live Website Link & Sign Out */}
+            <div className="profile-sheet-actions-group">
+              <Link
+                to="/"
+                onClick={() => setShowMobileProfile(false)}
+                className="profile-sheet-action-link"
+              >
+                <ArrowLeft size={16} />
+                <span>Return to Live Website</span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMobileProfile(false);
+                  setShowLogoutConfirm(true);
+                }}
+                className="profile-sheet-logout-btn"
+              >
+                <LogOut size={16} />
+                <span>Sign Out of Admin Console</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Logout Confirmation Card Modal */}
       {showLogoutConfirm && (
