@@ -4,7 +4,11 @@ import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket } from '../context/SocketContext';
-import { normalizeProductCategory } from '../utils/adminProjects';
+import {
+  normalizeProductCategory,
+  PRIMARY_ERP_CATEGORIES,
+  getPrimaryCategory,
+} from '../utils/adminProjects';
 import {
   Search,
   Globe,
@@ -85,27 +89,9 @@ const EXCLUDED_NAMES = new Set([
   'hrms portal',
 ]);
 
-export const getProductFallbackImage = (slugOrIdOrName) => {
-  const s = (slugOrIdOrName || '').toLowerCase();
-  if (s.includes('savitri') || s.includes('saree')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793792633/speshway_products/savitri-sarees.jpg';
-  if (s.includes('sana') || s.includes('stayz')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788538/speshway_products/sana-stayz.jpg';
-  if (s.includes('learn') || s.includes('lms')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/learnhub.jpg';
-  if (s.includes('food') || s.includes('kitchen-cloud')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788534/speshway_products/foodway.jpg';
-  if (s.includes('joy') || s.includes('event')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/joy-events.jpg';
-  if (s.includes('hrms')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788540/speshway_products/speshway-hrms.jpg';
-  if (s.includes('flavora') || s.includes('kitchen') || s.includes('restaurant')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788532/speshway_products/flavora-kitchen.jpg';
-  if (s.includes('fitness') || s.includes('gym')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788529/speshway_products/american-fitness-gym.jpg';
-  if (s.includes('fleet')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788533/speshway_products/fleet-management.jpg';
-  if (s.includes('ride') || s.includes('bike') || s.includes('flow')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788537/speshway_products/ride-flow.jpg';
-  if (s.includes('salon') || s.includes('saloon') || s.includes('spy')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788538/speshway_products/saloon.jpg';
-  if (s.includes('dairy') || s.includes('milk') || s.includes('madhur')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788536/speshway_products/natural-milk-dairy.jpg';
-  if (s.includes('aneera') || s.includes('silk')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788531/speshway_products/aneera-silks.jpg';
-  if (s.includes('e-com') || s.includes('ecommerce') || s.includes('e com') || s.includes('nexora')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788531/speshway_products/e-commerce.jpg';
-  if (s.includes('hospital') || s.includes('hms')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788540/speshway_products/speshway-hospitals.jpg';
-  if (s.includes('tour') || s.includes('travel') || s.includes('bus')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788542/speshway_products/tours-and-travels.jpg';
-  if (s.includes('vexa') || s.includes('style')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788543/speshway_products/vexa-style-hub.png';
-  return '';
-};
+import { getProductFallbackImage } from '../utils/productImages';
+
+export { getProductFallbackImage };
 
 export const ProductsPage = () => {
   const { products, triggerUpdateProduct, homeContent } = useSocket();
@@ -219,16 +205,16 @@ export const ProductsPage = () => {
     })
     .map(normalizeProductCategory);
 
-  const categories = [
-    'All',
-    ...Array.from(new Set(availableProducts.map((p) => p.category).filter(Boolean))),
-  ];
+  const categories = PRIMARY_ERP_CATEGORIES;
 
   const filteredProducts = availableProducts.filter((p) => {
+    const primaryCat = getPrimaryCategory(p);
     const matchesSearch =
       (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (p.description || '').toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCat = activeCategory === 'All' || p.category === activeCategory;
+      (p.description || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.category || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      primaryCat.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCat = activeCategory === 'All' || primaryCat === activeCategory;
     return matchesSearch && matchesCat;
   });
 

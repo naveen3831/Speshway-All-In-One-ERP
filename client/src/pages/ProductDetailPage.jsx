@@ -5,7 +5,7 @@ import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket, isSameProduct } from '../context/SocketContext';
-import { getProductFallbackImage } from './ProductsPage';
+import { getProductFallbackImage } from '../utils/productImages';
 import { getProjectCategory } from '../utils/adminProjects';
 import {
   Globe,

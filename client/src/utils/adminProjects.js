@@ -524,6 +524,133 @@ export const normalizeProductCategory = (prod) => {
   };
 };
 
+/**
+ * 5 High-Level Enterprise ERP Category Groups for Clean Single-Line Filter Tabs
+ */
+export const PRIMARY_ERP_CATEGORIES = [
+  'All',
+  'Human Resources',
+  'Retail & E-Commerce',
+  'Hospitality & Services',
+  'Logistics & Mobility',
+  'Healthcare & Wellness',
+];
+
+/**
+ * Maps any detailed project/industry to one of the 5 primary umbrella categories.
+ */
+export const getPrimaryCategory = (prod) => {
+  if (!prod) return 'Retail & E-Commerce';
+  const rawCat = (prod.category || '').toLowerCase();
+  const name = (prod.name || '').toLowerCase();
+  const slug = (prod.slug || prod.id || '').toLowerCase();
+
+  // 1. Human Resources (all workforce, HRMS, learning, training, education related)
+  if (
+    rawCat.includes('human') ||
+    rawCat.includes('hrms') ||
+    rawCat.includes('education') ||
+    rawCat.includes('lms') ||
+    slug.includes('hrms') ||
+    slug.includes('learn') ||
+    name.includes('hrms') ||
+    name.includes('human') ||
+    name.includes('learn')
+  ) {
+    return 'Human Resources';
+  }
+
+  // 2. Retail & E-Commerce (fashion, sarees, silks, dairy, retail, shopping, commerce)
+  if (
+    rawCat.includes('retail') ||
+    rawCat.includes('commerce') ||
+    rawCat.includes('fashion') ||
+    rawCat.includes('luxury') ||
+    rawCat.includes('apparel') ||
+    rawCat.includes('dairy') ||
+    rawCat.includes('agriculture') ||
+    slug.includes('saree') ||
+    slug.includes('silk') ||
+    slug.includes('nexora') ||
+    slug.includes('dairy') ||
+    slug.includes('vexa') ||
+    name.includes('savitri') ||
+    name.includes('aneera') ||
+    name.includes('nexora') ||
+    name.includes('dairy') ||
+    name.includes('vexa')
+  ) {
+    return 'Retail & E-Commerce';
+  }
+
+  // 3. Hospitality & Services (hotels, dining, food delivery, travel, events)
+  if (
+    rawCat.includes('hospitality') ||
+    rawCat.includes('hotel') ||
+    rawCat.includes('food') ||
+    rawCat.includes('dining') ||
+    rawCat.includes('restaurant') ||
+    rawCat.includes('kitchen') ||
+    rawCat.includes('travel') ||
+    rawCat.includes('booking') ||
+    rawCat.includes('event') ||
+    slug.includes('stay') ||
+    slug.includes('hotel') ||
+    slug.includes('food') ||
+    slug.includes('kitchen') ||
+    slug.includes('travel') ||
+    slug.includes('tour') ||
+    slug.includes('event') ||
+    name.includes('sana') ||
+    name.includes('foodway') ||
+    name.includes('flavora') ||
+    name.includes('travel') ||
+    name.includes('tour') ||
+    name.includes('joy')
+  ) {
+    return 'Hospitality & Services';
+  }
+
+  // 4. Logistics & Mobility (fleet, bikes, automotive, transport)
+  if (
+    rawCat.includes('logistics') ||
+    rawCat.includes('fleet') ||
+    rawCat.includes('automotive') ||
+    rawCat.includes('mobility') ||
+    slug.includes('fleet') ||
+    slug.includes('bike') ||
+    slug.includes('ride') ||
+    name.includes('fleet') ||
+    name.includes('ride')
+  ) {
+    return 'Logistics & Mobility';
+  }
+
+  // 5. Healthcare & Wellness (hospitals, gym, fitness, salon, beauty)
+  if (
+    rawCat.includes('health') ||
+    rawCat.includes('hospital') ||
+    rawCat.includes('wellness') ||
+    rawCat.includes('fitness') ||
+    rawCat.includes('gym') ||
+    rawCat.includes('beauty') ||
+    rawCat.includes('salon') ||
+    slug.includes('hospital') ||
+    slug.includes('care') ||
+    slug.includes('gym') ||
+    slug.includes('fitness') ||
+    slug.includes('salon') ||
+    name.includes('hospital') ||
+    name.includes('fitness') ||
+    name.includes('gym') ||
+    name.includes('salon')
+  ) {
+    return 'Healthcare & Wellness';
+  }
+
+  return 'Retail & E-Commerce';
+};
+
 
 /**
  * Resolves the public website URL for an ERP product so visitors can open its live website.
