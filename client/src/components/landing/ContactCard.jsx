@@ -12,6 +12,7 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
   // Form State matching screenshot fields & character limits
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -63,10 +64,11 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
         await triggerRequestDemo({
           name: name.trim(),
           email: email.trim(),
-          company: 'Quick Contact Message',
+          phone: phone.trim(),
+          company: 'Website Contact Popup',
           module: 'Contact Card',
           message: message.trim(),
-          source: 'contact-card',
+          source: 'contact-popup',
         });
       }
       setIsSubmitting(false);
@@ -75,6 +77,7 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
         setIsSuccess(false);
         setName('');
         setEmail('');
+        setPhone('');
         setMessage('');
         onClose();
       }, 2500);
@@ -185,7 +188,26 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
               />
             </div>
 
-            {/* Field 3: Your Message */}
+            {/* Field 3: Phone Number */}
+            <div className="contact-form-group">
+              <div className="contact-field-header">
+                <label htmlFor="card-phone" className="contact-field-label">
+                  Phone Number
+                </label>
+                <span className="contact-char-count">{phone.length}/20</span>
+              </div>
+              <input
+                id="card-phone"
+                type="tel"
+                maxLength={20}
+                placeholder="+91 98765 43210"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="contact-field-input"
+              />
+            </div>
+
+            {/* Field 4: Your Message */}
             <div className="contact-form-group">
               <div className="contact-field-header">
                 <label htmlFor="card-usermsg" className="contact-field-label">
@@ -205,14 +227,23 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
               />
             </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="contact-card-submit-btn"
-            >
-              {isSubmitting ? 'Sending Message...' : 'Send Message'}
-            </button>
+            {/* Actions: Skip and Submit Buttons */}
+            <div className="contact-card-actions-row">
+              <button
+                type="button"
+                onClick={onClose}
+                className="contact-card-skip-btn"
+              >
+                Skip
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="contact-card-submit-btn"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </button>
+            </div>
           </form>
         )}
       </div>

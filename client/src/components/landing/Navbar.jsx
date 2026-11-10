@@ -23,6 +23,16 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     setContactCardOpen(false);
   }, [location.pathname]);
 
+  // Auto-open Contact Card pop up when opening the website
+  useEffect(() => {
+    if (location.pathname === '/') {
+      const timer = setTimeout(() => {
+        setContactCardOpen(true);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   // Helper to determine boolean visibility with homeContent as primary source of truth, localStorage as fallback
   const getPricingVisible = () => {
     if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
