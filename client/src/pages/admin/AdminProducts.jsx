@@ -310,10 +310,10 @@ export const AdminProducts = () => {
       >
         <div style={{ flex: '1 1 300px' }}>
           <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
-            Categories &amp; Module Management (CRUD)
+            Projects
           </h1>
           <p className="admin-subtext" style={{ margin: 0 }}>
-            Manage ERP categories, drill down into projects, edit technologies &amp; URLs, and control modules in real-time.
+            Manage ERP projects, categories, edit technologies &amp; URLs, and control modules in real-time.
           </p>
         </div>
 

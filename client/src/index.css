@@ -3523,6 +3523,14 @@ button {
   color: var(--text-dark);
 }
 
+.topbar-title-desktop {
+  display: inline;
+}
+
+.topbar-title-mobile {
+  display: none;
+}
+
 .topbar-right {
   display: flex;
   align-items: center;
@@ -4459,10 +4467,22 @@ a.admin-kpi-card:hover {
   }
 
   .topbar-title {
-    font-size: 0.95rem !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+  }
+
+  .topbar-title-desktop {
+    display: none !important;
+  }
+
+  .topbar-title-mobile {
+    display: inline !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
   }
 
   .admin-content-inner {

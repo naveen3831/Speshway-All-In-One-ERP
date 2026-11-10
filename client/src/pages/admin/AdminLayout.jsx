@@ -65,6 +65,28 @@ export const AdminLayout = () => {
     location.pathname === '/admin/settings' ||
     location.pathname === '/admin/users';
 
+  const getMobileTopbarTitle = () => {
+    const path = location.pathname;
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return 'Projects';
+    if (path.startsWith('/admin/pricing')) return 'Pricing';
+    if (path.startsWith('/admin/inquiries')) return 'Inquiries';
+    if (path.startsWith('/admin/settings')) return 'Settings';
+    if (path.startsWith('/admin/home')) return 'Home Page';
+    if (path.startsWith('/admin/users')) return 'Users';
+    return `${brandTitle} Dashboard`;
+  };
+
+  const getDesktopTopbarTitle = () => {
+    const path = location.pathname;
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return `${brandTitle} Projects Management`;
+    if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing Plans`;
+    if (path.startsWith('/admin/inquiries')) return `${brandTitle} Demo Inquiries`;
+    if (path.startsWith('/admin/settings')) return `${brandTitle} System Settings`;
+    if (path.startsWith('/admin/home')) return `${brandTitle} Home Page Options`;
+    if (path.startsWith('/admin/users')) return `${brandTitle} User Management`;
+    return `${brandTitle} Administrative Dashboard`;
+  };
+
   // Admin login form state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -568,7 +590,10 @@ export const AdminLayout = () => {
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
           <div className="topbar-left">
-            <span className="topbar-title">{brandTitle} Administrative Dashboard</span>
+            <span className="topbar-title">
+              <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
+              <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>
+            </span>
           </div>
 
           <div className="topbar-right">
