@@ -283,22 +283,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
             <ChevronRight size={30} strokeWidth={2.4} />
           </button>
         </div>
-
-        {/* Mobile Indicator Dots */}
-        <div className="startup-plans-dots" aria-hidden="true">
-          {STARTUP_PLANS.map((plan, idx) => (
-            <button
-              key={plan.id}
-              type="button"
-              className={`startup-plan-dot ${activeIndex === idx ? 'active' : ''}`}
-              onClick={() => {
-                setActiveIndex(idx);
-                pauseAutoRotateTemporarily();
-              }}
-              aria-label={`Go to ${plan.name}`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );

@@ -443,30 +443,4 @@
     pointer-events: none;
     opacity: 0.8;
   }
-
-  /* Mobile Dots Indicator */
-  .startup-plans-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-    padding: 0 16px;
-  }
-  .startup-plan-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    background-color: #cbd5e1;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .startup-plan-dot.active {
-    width: 24px;
-    background-color: #047857;
-    border-radius: 9999px;
-    box-shadow: 0 2px 6px rgba(4, 120, 87, 0.3);
-  }
 }
