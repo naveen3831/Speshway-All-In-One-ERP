@@ -182,7 +182,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
             aria-label="Previous service card"
             title="Previous"
           >
-            <ChevronLeft size={38} strokeWidth={2.4} />
+            <ChevronLeft size={32} strokeWidth={2.4} />
           </button>
 
           <div
@@ -289,7 +289,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
             aria-label="Next service card"
             title="Next"
           >
-            <ChevronRight size={38} strokeWidth={2.4} />
+            <ChevronRight size={32} strokeWidth={2.4} />
           </button>
         </div>
       </div>
