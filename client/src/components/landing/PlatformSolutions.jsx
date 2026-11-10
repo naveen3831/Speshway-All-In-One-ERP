@@ -242,7 +242,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                     <div className="coverflow-card-inner">
                       {/* Top Icon Box */}
                       <div className="card-icon-box">
-                        <IconComponent size={22} className="card-icon-svg" />
+                        <IconComponent size={24} className="card-icon-svg" />
                       </div>
 
                       {/* Card Title */}
@@ -268,7 +268,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                           onClick={(e) => handleOpenContactPopup(e, item)}
                         >
                           <span>Book Consultation</span>
-                          <ArrowRight size={15} className="btn-arrow-icon" />
+                          <ArrowRight size={16} className="btn-arrow-icon" />
                         </button>
                       </div>
                     </div>

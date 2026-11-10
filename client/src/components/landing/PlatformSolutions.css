@@ -1,10 +1,10 @@
 /* ==========================================================================
    OUR PLATFORM SOLUTIONS - 3D COVERFLOW CAROUSEL
-   Compact 100% Viewport Height + Light Pastel Themes + Side Positioned Arrows
+   Balanced Elegance + Light Pastel Themes + Side Positioned Arrows
    ========================================================================== */
 
 .platform-solutions-section {
-  padding: 28px 20px 42px 20px;
+  padding: 32px 20px 44px 20px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
   position: relative;
   overflow: hidden;
@@ -25,21 +25,21 @@
 /* Header */
 .platform-solutions-header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .platform-solutions-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 12px;
+  padding: 4px 13px;
   background-color: #ecfdf5;
   color: #047857;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   border-radius: 9999px;
   border: 1px solid #d1fae5;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   box-shadow: 0 1px 2px rgba(4, 120, 87, 0.06);
 }
 
@@ -48,20 +48,20 @@
 }
 
 .platform-solutions-title {
-  font-size: 1.85rem;
+  font-size: 1.95rem;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.025em;
-  margin: 0 0 5px 0;
+  margin: 0 0 6px 0;
   line-height: 1.2;
 }
 
 .platform-solutions-subtitle {
-  font-size: 0.88rem;
+  font-size: 0.90rem;
   color: #64748b;
   margin: 0 auto;
-  max-width: 600px;
-  line-height: 1.4;
+  max-width: 620px;
+  line-height: 1.45;
 }
 
 /* ==========================================================================
@@ -83,8 +83,8 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 45;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -116,13 +116,13 @@
 }
 
 /* ==========================================================================
-   3D COVERFLOW STAGE - COMPACT PROPORTIONS
+   3D COVERFLOW STAGE - BALANCED PROPORTIONS
    ========================================================================== */
 .coverflow-stage {
   position: relative;
   width: calc(100% - 90px);
-  max-width: 1060px;
-  height: 380px;
+  max-width: 1120px;
+  height: 450px;
   margin: 0 auto;
   perspective: 1200px;
   perspective-origin: 50% 50%;
@@ -141,15 +141,15 @@
 }
 
 /* ==========================================================================
-   3D COVERFLOW CARD BASE - COMPACT FOR 100% VIEWPORT
+   3D COVERFLOW CARD BASE - BALANCED SIZE & READABILITY
    ========================================================================== */
 .coverflow-card {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 310px;
-  max-width: 82vw;
-  height: 350px;
+  width: 350px;
+  max-width: 84vw;
+  height: 410px;
   transform-style: preserve-3d;
   transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
               opacity 0.45s ease,
@@ -163,8 +163,8 @@
 .coverflow-card-inner {
   width: 100%;
   height: 100%;
-  border-radius: 18px;
-  padding: 20px 20px;
+  border-radius: 20px;
+  padding: 24px 22px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -175,13 +175,13 @@
 
 /* Icon Box */
 .card-icon-box {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   transition: all 0.3s ease;
 }
 
@@ -191,52 +191,52 @@
 
 /* Card Typography */
 .card-platform-title {
-  font-size: 1.20rem;
+  font-size: 1.30rem;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.02em;
-  margin: 0 0 5px 0;
+  margin: 0 0 6px 0;
   line-height: 1.25;
 }
 
 .card-platform-desc {
-  font-size: 0.80rem;
+  font-size: 0.86rem;
   color: #475569;
-  line-height: 1.45;
-  margin: 0 0 12px 0;
-  min-height: 46px;
+  line-height: 1.48;
+  margin: 0 0 14px 0;
+  min-height: 52px;
 }
 
 /* Tags List */
 .card-tags-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
   margin: 0 0 auto 0;
 }
 
 .card-tag-pill {
   align-self: flex-start;
-  padding: 3px 10px;
+  padding: 4px 11px;
   border-radius: 9999px;
-  font-size: 0.64rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.035em;
   text-transform: uppercase;
   transition: all 0.2s ease;
 }
 
 /* Action Row & Book Consultation Button */
 .card-action-row {
-  margin-top: 14px;
+  margin-top: 16px;
   padding-top: 4px;
 }
 
 .card-book-consultation-btn {
   width: 100%;
-  padding: 9px 14px;
+  padding: 10px 16px;
   border-radius: 9999px;
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
@@ -245,7 +245,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
   font-family: inherit;
   outline: none;
 }
@@ -464,14 +464,14 @@
    ========================================================================== */
 .coverflow-card.is-left {
   z-index: 10;
-  transform: translate3d(calc(-50% - 240px), -50%, -30px) rotateY(15deg) scale(0.88);
+  transform: translate3d(calc(-50% - 270px), -50%, -30px) rotateY(15deg) scale(0.88);
   opacity: 0.62;
   filter: blur(0.3px);
 }
 
 .coverflow-card.is-right {
   z-index: 10;
-  transform: translate3d(calc(-50% + 240px), -50%, -30px) rotateY(-15deg) scale(0.88);
+  transform: translate3d(calc(-50% + 270px), -50%, -30px) rotateY(-15deg) scale(0.88);
   opacity: 0.62;
   filter: blur(0.3px);
 }
@@ -492,6 +492,11 @@
 @media (max-width: 1024px) {
   .coverflow-stage {
     width: 100%;
+    height: 420px;
+  }
+  .coverflow-card {
+    width: 320px;
+    height: 380px;
   }
   .coverflow-nav-btn.prev {
     left: -4px;
@@ -500,34 +505,41 @@
     right: -4px;
   }
   .coverflow-card.is-left {
-    transform: translate3d(calc(-50% - 190px), -50%, -25px) rotateY(14deg) scale(0.86);
+    transform: translate3d(calc(-50% - 210px), -50%, -25px) rotateY(14deg) scale(0.86);
   }
   .coverflow-card.is-right {
-    transform: translate3d(calc(-50% + 190px), -50%, -25px) rotateY(-14deg) scale(0.86);
+    transform: translate3d(calc(-50% + 210px), -50%, -25px) rotateY(-14deg) scale(0.86);
   }
 }
 
 @media (max-width: 768px) {
   .platform-solutions-section {
-    padding: 36px 12px 40px 12px;
+    padding: 36px 14px 40px 14px;
     min-height: auto;
   }
   .platform-solutions-title {
-    font-size: 1.6rem;
+    font-size: 1.65rem;
   }
   .coverflow-wrapper {
     padding: 0;
   }
   .coverflow-stage {
-    height: 370px;
+    height: 395px;
     width: 100%;
   }
   .coverflow-card {
-    width: 280px;
-    height: 345px;
+    width: 295px;
+    height: 365px;
   }
   .coverflow-card-inner {
-    padding: 18px 16px;
+    padding: 20px 18px;
+  }
+  .card-platform-title {
+    font-size: 1.22rem;
+  }
+  .card-platform-desc {
+    font-size: 0.82rem;
+    min-height: 48px;
   }
   .coverflow-nav-btn.prev {
     left: -6px;
@@ -536,11 +548,11 @@
     right: -6px;
   }
   .coverflow-card.is-left {
-    transform: translate3d(calc(-50% - 90px), -50%, -20px) rotateY(12deg) scale(0.80);
+    transform: translate3d(calc(-50% - 95px), -50%, -20px) rotateY(12deg) scale(0.80);
     opacity: 0.35;
   }
   .coverflow-card.is-right {
-    transform: translate3d(calc(-50% + 90px), -50%, -20px) rotateY(-12deg) scale(0.80);
+    transform: translate3d(calc(-50% + 95px), -50%, -20px) rotateY(-12deg) scale(0.80);
     opacity: 0.35;
   }
 }
