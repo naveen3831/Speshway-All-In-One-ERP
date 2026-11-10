@@ -4479,7 +4479,7 @@ a.admin-kpi-card:hover {
     background-color: #ffffff !important;
     border-top: 1px solid #e2e8f0 !important;
     box-shadow: 0 -4px 18px rgba(15, 23, 42, 0.08) !important;
-    z-index: 990 !important;
+    z-index: 1005 !important;
     justify-content: space-around !important;
     align-items: center !important;
     padding: 0 6px !important;
@@ -4549,7 +4549,7 @@ a.admin-kpi-card:hover {
     background-color: rgba(15, 23, 42, 0.65) !important;
     backdrop-filter: blur(4px) !important;
     -webkit-backdrop-filter: blur(4px) !important;
-    z-index: 1000 !important;
+    z-index: 1010 !important;
     align-items: flex-end !important;
     justify-content: center !important;
     animation: fadeInOverlay 0.2s ease-out !important;
@@ -4803,12 +4803,14 @@ a.admin-kpi-card:hover {
   .admin-support-fullscreen-view {
     display: flex !important;
     position: fixed !important;
-    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 62px !important;
+    bottom: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
     width: 100% !important;
-    height: 100% !important;
-    height: 100dvh !important;
     background-color: #ffffff !important;
-    z-index: 1000 !important;
+    z-index: 995 !important;
     flex-direction: column !important;
     animation: fadeInFullscreen 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
     overflow: hidden !important;
@@ -4869,8 +4871,7 @@ a.admin-kpi-card:hover {
     flex: 1 !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
-    padding: 16px 16px 40px 16px !important;
-    padding-bottom: max(40px, env(safe-area-inset-bottom, 40px)) !important;
+    padding: 16px 16px 24px 16px !important;
     background-color: #ffffff !important;
   }
 
