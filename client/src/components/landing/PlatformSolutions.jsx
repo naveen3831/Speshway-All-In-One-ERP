@@ -1,44 +1,96 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Check, Sparkles } from 'lucide-react';
-import { useSocket } from '../../context/SocketContext';
-import { filterAdminProjects, DEFAULT_ADMIN_PROJECTS } from '../../utils/adminProjects';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Code2,
+  Smartphone,
+  Globe,
+  Cloud,
+  Database,
+  Shield,
+  ArrowRight,
+  Sparkles,
+} from 'lucide-react';
 import './PlatformSolutions.css';
 
+// Exact 6 platform cards matching user's reference specification
+const PLATFORM_SOLUTIONS_DATA = [
+  {
+    id: 'software-development',
+    title: 'Software Development',
+    description:
+      'Custom enterprise software solutions tailored to your unique business needs, scaling legacy workflows seamlessly.',
+    tags: [
+      'CUSTOM CRM/ERP SYSTEMS',
+      'LEGACY DATABASE MIGRATION',
+      'RESTFUL API INTEGRATION',
+    ],
+    icon: Code2,
+  },
+  {
+    id: 'mobile-app-development',
+    title: 'Mobile App Development',
+    description:
+      'High-performance iOS and Android applications built with modern frameworks to engage users globally.',
+    tags: [
+      'REACT NATIVE CROSS-PLATFORM',
+      'FLUTTER NATIVE INTERFACES',
+      'APP STORE & PLAY STORE HANDOVER',
+    ],
+    icon: Smartphone,
+  },
+  {
+    id: 'web-development',
+    title: 'Web Development',
+    description:
+      'Responsive and SEO-friendly corporate websites and web apps that drive conversions and scale indefinitely.',
+    tags: [
+      'E-COMMERCE & PAYMENTS',
+      'CORPORATE SAAS PLATFORMS',
+      'FAST STATIC SITES & HEADLESS CMS',
+    ],
+    icon: Globe,
+  },
+  {
+    id: 'cloud-solutions-devops',
+    title: 'Cloud Solutions & DevOps',
+    description:
+      'Scalable cloud infrastructures, automated deployments, and continuous integration models to optimize stability.',
+    tags: [
+      'AWS, AZURE & GCP ARCHITECTING',
+      'SECURE CLOUD MIGRATIONS',
+      'CI/CD DEPLOYMENT AUTOMATION',
+    ],
+    icon: Cloud,
+  },
+  {
+    id: 'data-analytics-bi',
+    title: 'Data Analytics & BI',
+    description:
+      'Transform raw scattered database states into sleek dashboard visualizations and actionable forecasts.',
+    tags: [
+      'POWERBI & TABLEAU BOARDS',
+      'SECURE DATA WAREHOUSING',
+      'AUTOMATED BUSINESS REPORTS',
+    ],
+    icon: Database,
+  },
+  {
+    id: 'cyber-security-audits',
+    title: 'Cyber Security & Audits',
+    description:
+      'Comprehensive security shielding, threat modeling, and compliance evaluations to secure modern businesses.',
+    tags: [
+      'VULNERABILITY AUDITS',
+      'PENETRATION ASSESSMENTS',
+      'REGULATORY COMPLIANCE GUARDRAILS',
+    ],
+    icon: Shield,
+  },
+];
+
 export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
-  const { products } = useSocket();
-
-  // Get real application projects from Admin Console / DB or fallback to DEFAULT_ADMIN_PROJECTS
-  const cards = useMemo(() => {
-    const list = filterAdminProjects(products);
-    const source = list && list.length > 0 ? list : DEFAULT_ADMIN_PROJECTS;
-    return source.map((p) => {
-      // Clean, concise description for uniform card height
-      let desc = p.description || p.longDescription || 'Enterprise-ready cloud ERP application built for modern businesses.';
-      if (desc.length > 120) {
-        desc = desc.slice(0, 117).trim() + '...';
-      }
-
-      // 4 key features
-      const features = Array.isArray(p.features) && p.features.length > 0
-        ? p.features.slice(0, 4)
-        : [
-            'Real-Time Telematics',
-            'Role-Based Access Control',
-            'Automated Invoicing & Billing',
-            'Continuous Cloud Backups',
-          ];
-
-      return {
-        id: p.id || p.slug,
-        title: p.name,
-        badge: (p.category || 'ENTERPRISE ERP').toUpperCase(),
-        subtitle: desc,
-        features,
-        websiteUrl: p.websiteUrl,
-      };
-    });
-  }, [products]);
-
+  const cards = PLATFORM_SOLUTIONS_DATA;
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
@@ -46,34 +98,30 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
   const total = cards.length;
 
   const nextSlide = useCallback(() => {
-    if (total === 0) return;
     setActiveIndex((prev) => (prev + 1) % total);
   }, [total]);
 
   const prevSlide = useCallback(() => {
-    if (total === 0) return;
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Automatic professional carousel scrolling one card after another
+  // Professional automatic carousel rotation
   useEffect(() => {
-    if (isPaused || total <= 1) return;
+    if (isPaused) return;
     const interval = setInterval(() => {
       nextSlide();
-    }, 2600); // Smooth 2.6s cadence for professional auto-scroll
+    }, 2800);
     return () => clearInterval(interval);
-  }, [isPaused, total, nextSlide]);
+  }, [isPaused, nextSlide]);
 
-  // Open the built-in contact details pop up
+  // Trigger the built-in contact details pop up
   const handleOpenContactPopup = (e, item) => {
     if (e) e.stopPropagation();
-    // Dispatch global custom event for the floating ContactCard popup
     window.dispatchEvent(
       new CustomEvent('speshway_open_contact_card', {
-        detail: { project: item?.title },
+        detail: { service: item?.title },
       })
     );
-
     if (onOpenContact) {
       onOpenContact(item);
     } else if (onOpenDemo) {
@@ -81,7 +129,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
     }
   };
 
-  // Touch and drag swipe handlers
+  // Touch swipe support
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches ? e.touches[0].clientX : e.clientX;
   };
@@ -118,8 +166,6 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
     }
   };
 
-  if (!cards || cards.length === 0) return null;
-
   return (
     <section
       id="platform-solutions"
@@ -132,11 +178,11 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
         <div className="platform-solutions-header">
           <div className="platform-solutions-badge">
             <Sparkles size={14} className="sparkle-icon" />
-            <span>Speshway Enterprise Suite</span>
+            <span>Enterprise Solutions</span>
           </div>
           <h2 className="platform-solutions-title">Our Platform Solutions</h2>
           <p className="platform-solutions-subtitle">
-            Industry-proven enterprise applications designed to run every business seamlessly
+            End-to-end software, cloud, and engineering services tailored to scale modern businesses
           </p>
         </div>
 
@@ -156,16 +202,15 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               e.stopPropagation();
               prevSlide();
             }}
-            aria-label="Previous platform solution"
+            aria-label="Previous service"
             title="Previous"
           >
-            <ChevronLeft size={34} strokeWidth={2.2} />
+            <ChevronLeft size={36} strokeWidth={2.2} />
           </button>
 
           {/* Cards Track */}
           <div className="coverflow-track">
             {cards.map((item, index) => {
-              // Calculate circular offset relative to activeIndex
               let offset = (index - activeIndex + total) % total;
               if (offset > total / 2) {
                 offset -= total;
@@ -175,7 +220,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               const isLeft = offset === -1;
               const isRight = offset === 1;
 
-              // Only render the active card and immediate neighbors (no overlapping background clutter)
+              // Only render active and immediate side cards (no overlapping background clutter)
               const isVisible = isActive || isLeft || isRight;
               if (!isVisible) return null;
 
@@ -183,6 +228,8 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               if (isActive) cardClass += ' is-active';
               else if (isLeft) cardClass += ' is-left';
               else if (isRight) cardClass += ' is-right';
+
+              const IconComponent = item.icon;
 
               return (
                 <div
@@ -192,7 +239,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                     if (!isActive) {
                       setActiveIndex(index);
                     } else {
-                      // Clicking on active card opens contact popup
+                      // Clicking active card opens contact popup
                       handleOpenContactPopup(null, item);
                     }
                   }}
@@ -204,7 +251,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                   }}
                   role="button"
                   tabIndex={0}
-                  aria-label={`${item.title} application card`}
+                  aria-label={`${item.title} card`}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       if (!isActive) {
@@ -216,33 +263,35 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                   }}
                 >
                   <div className="coverflow-card-inner">
-                    {/* Top Category Badge */}
-                    <div className="card-top-pill">{item.badge}</div>
+                    {/* Top Icon Box matching reference */}
+                    <div className="card-icon-box">
+                      <IconComponent size={22} className="card-icon-svg" />
+                    </div>
 
-                    {/* Application Name & Description */}
+                    {/* Card Title */}
                     <h3 className="card-platform-title">{item.title}</h3>
-                    <p className="card-platform-desc">{item.subtitle}</p>
 
-                    {/* 4 Application Features */}
-                    <ul className="card-features-list">
-                      {item.features.map((feat, fIdx) => (
-                        <li key={fIdx} className="card-feature-item">
-                          <span className="check-icon-circle">
-                            <Check size={14} strokeWidth={2.5} />
-                          </span>
-                          <span className="feature-text">{feat}</span>
-                        </li>
+                    {/* Card Description */}
+                    <p className="card-platform-desc">{item.description}</p>
+
+                    {/* Pill Tags matching reference */}
+                    <div className="card-tags-list">
+                      {item.tags.map((tag, tIdx) => (
+                        <div key={tIdx} className="card-tag-pill">
+                          {tag}
+                        </div>
                       ))}
-                    </ul>
+                    </div>
 
-                    {/* CTA Button - Opens Contact Details Popup */}
-                    <div className="card-cta-wrapper">
+                    {/* Action Link / Button: Learn more -> */}
+                    <div className="card-action-row">
                       <button
                         type="button"
-                        className="card-consultation-btn"
+                        className="card-learn-more-btn"
                         onClick={(e) => handleOpenContactPopup(e, item)}
                       >
-                        <span>BOOK FREE CONSULTATION</span>
+                        <span>Learn more</span>
+                        <ArrowRight size={16} className="arrow-icon" />
                       </button>
                     </div>
                   </div>
@@ -259,20 +308,20 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               e.stopPropagation();
               nextSlide();
             }}
-            aria-label="Next platform solution"
+            aria-label="Next service"
             title="Next"
           >
-            <ChevronRight size={34} strokeWidth={2.2} />
+            <ChevronRight size={36} strokeWidth={2.2} />
           </button>
         </div>
 
         {/* Carousel Pagination Dots */}
         <div className="coverflow-dots">
-          {cards.slice(0, 10).map((_, dotIdx) => (
+          {cards.map((_, dotIdx) => (
             <button
               key={dotIdx}
               type="button"
-              className={`coverflow-dot ${dotIdx === (activeIndex % 10) ? 'active' : ''}`}
+              className={`coverflow-dot ${dotIdx === activeIndex ? 'active' : ''}`}
               onClick={() => setActiveIndex(dotIdx)}
               aria-label={`Go to slide ${dotIdx + 1}`}
             />

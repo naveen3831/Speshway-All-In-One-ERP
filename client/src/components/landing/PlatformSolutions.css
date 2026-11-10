@@ -1,6 +1,6 @@
 /* ==========================================================================
    OUR PLATFORM SOLUTIONS - 3D COVERFLOW CAROUSEL
-   Real Speshway Application Data + Borderless Floating Arrows + Smooth Auto-Scroll
+   Exact Cards Specification from Reference (Software, Mobile, Web, Cloud, Data, Security)
    ========================================================================== */
 
 .platform-solutions-section {
@@ -54,7 +54,7 @@
   font-size: 1.02rem;
   color: #64748b;
   margin: 0 auto;
-  max-width: 640px;
+  max-width: 660px;
   line-height: 1.5;
 }
 
@@ -64,7 +64,7 @@
 .coverflow-stage {
   position: relative;
   width: 100%;
-  height: 510px;
+  height: 520px;
   margin: 0 auto;
   perspective: 1200px;
   perspective-origin: 50% 50%;
@@ -83,7 +83,7 @@
 }
 
 /* ==========================================================================
-   BORDERLESS FLOATING ARROW MARKS (Clean, Modern, No Card Box/Border)
+   BORDERLESS FLOATING ARROWS (Clean Chevron Marks, No Boxes/Borders)
    ========================================================================== */
 .coverflow-nav-btn {
   position: absolute;
@@ -92,7 +92,6 @@
   z-index: 35;
   width: 48px;
   height: 48px;
-  border-radius: 50%;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -132,7 +131,7 @@
   left: 50%;
   width: 380px;
   max-width: 86vw;
-  height: 440px;
+  height: 460px;
   transform-style: preserve-3d;
   transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
               opacity 0.5s ease,
@@ -148,7 +147,7 @@
   height: 100%;
   background: #ffffff;
   border-radius: 22px;
-  padding: 32px 28px;
+  padding: 34px 28px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -159,18 +158,23 @@
   overflow: hidden;
 }
 
-/* Top Pill Badge */
-.card-top-pill {
-  display: inline-block;
-  align-self: flex-start;
-  padding: 4px 12px;
-  background-color: #f1f5f9;
-  color: #475569;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  border-radius: 9999px;
-  margin-bottom: 16px;
+/* Icon Box */
+.card-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  transition: all 0.3s ease;
+}
+
+.card-icon-svg {
+  stroke-width: 2;
 }
 
 /* Card Typography */
@@ -185,74 +189,70 @@
 
 .card-platform-desc {
   font-size: 0.90rem;
-  color: #64748b;
-  line-height: 1.5;
-  margin: 0 0 22px 0;
-  min-height: 42px;
+  color: #475569;
+  line-height: 1.55;
+  margin: 0 0 20px 0;
+  min-height: 58px;
 }
 
-/* Features Checklist */
-.card-features-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 auto 0;
+/* Tags List matching Reference */
+.card-tags-list {
   display: flex;
   flex-direction: column;
-  gap: 11px;
-}
-
-.card-feature-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.check-icon-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #ecfdf5;
-  color: #047857;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.feature-text {
-  font-size: 0.90rem;
-  font-weight: 600;
-  color: #334155;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* CTA Consultation Button */
-.card-cta-wrapper {
-  margin-top: 24px;
-  padding-top: 6px;
-}
-
-.card-consultation-btn {
-  width: 100%;
-  padding: 12px 20px;
-  border-radius: 9999px;
-  font-size: 0.86rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 8px;
+  margin: 0 0 auto 0;
+}
+
+.card-tag-pill {
+  align-self: flex-start;
+  padding: 4px 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+/* Action Link / Button: Learn more -> */
+.card-action-row {
+  margin-top: 24px;
+  padding-top: 10px;
+}
+
+.card-learn-more-btn {
+  background: transparent;
+  border: none;
+  color: #047857;
+  font-size: 0.94rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  outline: none;
+}
+
+.card-learn-more-btn .arrow-icon {
+  transition: transform 0.2s ease;
+}
+
+.card-learn-more-btn:hover {
+  color: #065f46;
+}
+
+.card-learn-more-btn:hover .arrow-icon {
+  transform: translateX(4px);
 }
 
 /* ==========================================================================
-   ACTIVE CARD STATE (In the Center / Frontpiece)
+   ACTIVE CARD STATE (Center / Glowing)
    ========================================================================== */
 .coverflow-card.is-active {
   z-index: 18;
@@ -269,31 +269,25 @@
               0 10px 20px -8px rgba(15, 23, 42, 0.08);
 }
 
-.coverflow-card.is-active .card-top-pill {
-  background-color: #d1fae5;
+.coverflow-card.is-active .card-icon-box {
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
   color: #047857;
-  border: 1px solid #a7f3d0;
 }
 
-.coverflow-card.is-active .check-icon-circle {
-  background-color: #047857;
-  color: #ffffff;
+.coverflow-card.is-active .card-tag-pill {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #1e293b;
 }
 
-.coverflow-card.is-active .card-consultation-btn {
-  background: #0f172a;
-  color: #ffffff;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25);
-}
-
-.coverflow-card.is-active .card-consultation-btn:hover {
-  background: #047857;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(4, 120, 87, 0.35);
+.coverflow-card.is-active .card-learn-more-btn {
+  color: #047857;
+  font-size: 0.98rem;
 }
 
 /* ==========================================================================
-   SIDE CARDS (Single card on left, single on right - ZERO overlap clutter!)
+   SIDE CARDS (Single card on left, single on right - No Overlap Clutter)
    ========================================================================== */
 .coverflow-card.is-left {
   z-index: 8;
@@ -307,12 +301,6 @@
   transform: translate3d(calc(-50% + 330px), -50%, -35px) rotateY(-18deg) scale(0.88);
   opacity: 0.60;
   filter: blur(0.4px);
-}
-
-.coverflow-card:not(.is-active) .card-consultation-btn {
-  background: #f1f5f9;
-  color: #94a3b8;
-  pointer-events: none;
 }
 
 .coverflow-card:not(.is-active):hover {
@@ -380,14 +368,14 @@
     font-size: 1.85rem;
   }
   .coverflow-stage {
-    height: 480px;
+    height: 490px;
   }
   .coverflow-card {
     width: 310px;
-    height: 430px;
+    height: 450px;
   }
   .coverflow-card-inner {
-    padding: 24px 20px;
+    padding: 26px 20px;
   }
   .coverflow-nav-btn.prev {
     left: 4px;
