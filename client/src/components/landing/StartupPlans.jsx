@@ -68,9 +68,12 @@ const STARTUP_PLANS = [
 ];
 
 export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
-  const [activeIndex, setActiveIndex] = useState(1); // Default to middle "Startup Plan"
+  // Start with index 1 ("Startup Plan - Most Popular") in center
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const pauseTimerRef = useRef(null);
   const total = STARTUP_PLANS.length;
 
   const nextSlide = useCallback(() => {
@@ -81,20 +84,30 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Continuous auto-rotation matching Our Platform Solutions animation
+  const pauseAutoRotateTemporarily = () => {
+    setIsPaused(true);
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => {
+      setIsPaused(false);
+    }, 6000);
+  };
+
+  // Continuous auto-rotation matching Platform Solutions (pauses during interaction)
   useEffect(() => {
+    if (isPaused) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % total);
-    }, 1200); // Steady 1.2s cycle for smooth professional 3D carousel transitions
+    }, 3200);
     return () => clearInterval(interval);
-  }, [total]);
+  }, [isPaused, total]);
 
-  const handleButtonClick = (e, actionType, isActive, index) => {
-    if (e) e.stopPropagation();
-    if (!isActive) {
-      setActiveIndex(index);
-      return;
-    }
+  useEffect(() => {
+    return () => {
+      if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    };
+  }, []);
+
+  const handleButtonClick = (actionType) => {
     if (actionType === 'demo' && onOpenDemo) {
       onOpenDemo();
     } else if (onOpenGetStarted) {
@@ -102,8 +115,9 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
     }
   };
 
-  // Touch swipe support for mobile
+  // Touch swipe support matching Platform Solutions
   const handleTouchStart = (e) => {
+    pauseAutoRotateTemporarily();
     touchStartX.current = e.touches ? e.touches[0].clientX : e.clientX;
   };
 
@@ -114,9 +128,9 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const diff = touchStartX.current - touchEndX.current;
-    if (diff > 45) {
+    if (diff > 40) {
       nextSlide();
-    } else if (diff < -45) {
+    } else if (diff < -40) {
       prevSlide();
     }
     touchStartX.current = 0;
@@ -136,29 +150,30 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
           </p>
         </div>
 
-        {/* 3D Coverflow Carousel Stage with outer navigation matching Platform Solutions */}
-        <div className="coverflow-wrapper startup-plans-coverflow-wrapper">
-          {/* Borderless Left Chevron Arrow */}
+        {/* 3D Coverflow Stage with Outer Navigation on Mobile / 3-Col Grid on Desktop */}
+        <div className="startup-coverflow-wrapper">
+          {/* Borderless Left Chevron Arrow (Mobile responsive only) */}
           <button
             type="button"
-            className="coverflow-nav-btn prev startup-plans-nav-btn"
+            className="coverflow-nav-btn prev startup-coverflow-arrow"
             onClick={(e) => {
               e.stopPropagation();
               prevSlide();
+              pauseAutoRotateTemporarily();
             }}
-            aria-label="Previous startup plan"
-            title="Previous"
+            aria-label="Previous plan"
+            title="Previous Plan"
           >
-            <ChevronLeft size={32} strokeWidth={2.4} />
+            <ChevronLeft size={30} strokeWidth={2.4} />
           </button>
 
           <div
-            className="coverflow-stage startup-plans-stage"
+            className="startup-coverflow-stage"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            <div className="coverflow-track">
+            <div className="startup-coverflow-track">
               {STARTUP_PLANS.map((plan, index) => {
                 let offset = (index - activeIndex + total) % total;
                 if (offset > total / 2) {
@@ -168,9 +183,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
                 const isActive = offset === 0;
                 const isLeft = offset === -1;
                 const isRight = offset === 1;
-
-                const isVisible = isActive || isLeft || isRight;
-                if (!isVisible) return null;
 
                 let cardClass = `startup-plan-card ${plan.isPopular ? 'popular-card' : ''}`;
                 if (isActive) cardClass += ' is-active';
@@ -184,15 +196,19 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
                     onClick={() => {
                       if (!isActive) {
                         setActiveIndex(index);
+                        pauseAutoRotateTemporarily();
                       }
                     }}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${plan.name} plan`}
+                    aria-label={`${plan.name} card`}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         if (!isActive) {
                           setActiveIndex(index);
+                          pauseAutoRotateTemporarily();
+                        } else {
+                          handleButtonClick(plan.actionType);
                         }
                       }
                     }}
@@ -238,7 +254,10 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
                       <button
                         type="button"
                         className={`plan-cta-btn btn-${plan.buttonVariant}`}
-                        onClick={(e) => handleButtonClick(e, plan.actionType, isActive, index)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleButtonClick(plan.actionType);
+                        }}
                       >
                         {plan.buttonText}
                       </button>
@@ -249,21 +268,39 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
             </div>
           </div>
 
-          {/* Borderless Right Chevron Arrow */}
+          {/* Borderless Right Chevron Arrow (Mobile responsive only) */}
           <button
             type="button"
-            className="coverflow-nav-btn next startup-plans-nav-btn"
+            className="coverflow-nav-btn next startup-coverflow-arrow"
             onClick={(e) => {
               e.stopPropagation();
               nextSlide();
+              pauseAutoRotateTemporarily();
             }}
-            aria-label="Next startup plan"
-            title="Next"
+            aria-label="Next plan"
+            title="Next Plan"
           >
-            <ChevronRight size={32} strokeWidth={2.4} />
+            <ChevronRight size={30} strokeWidth={2.4} />
           </button>
+        </div>
+
+        {/* Mobile Indicator Dots */}
+        <div className="startup-plans-dots" aria-hidden="true">
+          {STARTUP_PLANS.map((plan, idx) => (
+            <button
+              key={plan.id}
+              type="button"
+              className={`startup-plan-dot ${activeIndex === idx ? 'active' : ''}`}
+              onClick={() => {
+                setActiveIndex(idx);
+                pauseAutoRotateTemporarily();
+              }}
+              aria-label={`Go to ${plan.name}`}
+            />
+          ))}
         </div>
       </div>
     </section>
   );
 };
+
