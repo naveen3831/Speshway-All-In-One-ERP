@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import './PlatformSolutions.css';
 
-// Exact 6 platform cards matching user's reference specification
+// Exact 6 platform cards with distinct light pastel themes
 const PLATFORM_SOLUTIONS_DATA = [
   {
     id: 'software-development',
@@ -26,6 +26,7 @@ const PLATFORM_SOLUTIONS_DATA = [
       'RESTFUL API INTEGRATION',
     ],
     icon: Code2,
+    themeClass: 'theme-emerald',
   },
   {
     id: 'mobile-app-development',
@@ -38,6 +39,7 @@ const PLATFORM_SOLUTIONS_DATA = [
       'APP STORE & PLAY STORE HANDOVER',
     ],
     icon: Smartphone,
+    themeClass: 'theme-violet',
   },
   {
     id: 'web-development',
@@ -50,6 +52,7 @@ const PLATFORM_SOLUTIONS_DATA = [
       'FAST STATIC SITES & HEADLESS CMS',
     ],
     icon: Globe,
+    themeClass: 'theme-blue',
   },
   {
     id: 'cloud-solutions-devops',
@@ -62,6 +65,7 @@ const PLATFORM_SOLUTIONS_DATA = [
       'CI/CD DEPLOYMENT AUTOMATION',
     ],
     icon: Cloud,
+    themeClass: 'theme-amber',
   },
   {
     id: 'data-analytics-bi',
@@ -74,6 +78,7 @@ const PLATFORM_SOLUTIONS_DATA = [
       'AUTOMATED BUSINESS REPORTS',
     ],
     icon: Database,
+    themeClass: 'theme-rose',
   },
   {
     id: 'cyber-security-audits',
@@ -86,13 +91,13 @@ const PLATFORM_SOLUTIONS_DATA = [
       'REGULATORY COMPLIANCE GUARDRAILS',
     ],
     icon: Shield,
+    themeClass: 'theme-teal',
   },
 ];
 
 export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
   const cards = PLATFORM_SOLUTIONS_DATA;
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const total = cards.length;
@@ -105,16 +110,15 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Professional automatic carousel rotation
+  // Continuous auto-rotation: rotates card-to-card steadily whether mouse is on card or not
   useEffect(() => {
-    if (isPaused) return;
     const interval = setInterval(() => {
-      nextSlide();
-    }, 2800);
+      setActiveIndex((prev) => (prev + 1) % total);
+    }, 1200); // Steady 1.2s cycle for smooth professional carousel transitions
     return () => clearInterval(interval);
-  }, [isPaused, nextSlide]);
+  }, [total]);
 
-  // Trigger the built-in contact details pop up
+  // Trigger the built-in contact details popup
   const handleOpenContactPopup = (e, item) => {
     if (e) e.stopPropagation();
     window.dispatchEvent(
@@ -150,29 +154,8 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
     touchEndX.current = 0;
   };
 
-  // Wheel horizontal navigation with throttle
-  const lastWheelTime = useRef(0);
-  const handleWheel = (e) => {
-    const now = Date.now();
-    if (now - lastWheelTime.current < 350) return;
-    if (Math.abs(e.deltaX) > 20 || Math.abs(e.deltaY) > 35) {
-      if (e.deltaX > 20 || (e.shiftKey && e.deltaY > 20)) {
-        nextSlide();
-        lastWheelTime.current = now;
-      } else if (e.deltaX < -20 || (e.shiftKey && e.deltaY < -20)) {
-        prevSlide();
-        lastWheelTime.current = now;
-      }
-    }
-  };
-
   return (
-    <section
-      id="platform-solutions"
-      className="platform-solutions-section"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
+    <section id="platform-solutions" className="platform-solutions-section">
       <div className="platform-solutions-container">
         {/* Section Header */}
         <div className="platform-solutions-header">
@@ -186,15 +169,9 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
           </p>
         </div>
 
-        {/* 3D Coverflow Carousel Stage */}
-        <div
-          className="coverflow-stage"
-          onWheel={handleWheel}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Borderless Left Chevron Arrow */}
+        {/* 3D Coverflow Carousel Stage with outer navigation */}
+        <div className="coverflow-wrapper">
+          {/* Borderless Left Chevron Arrow - Positioned completely outside the cards */}
           <button
             type="button"
             className="coverflow-nav-btn prev"
@@ -202,105 +179,106 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               e.stopPropagation();
               prevSlide();
             }}
-            aria-label="Previous service"
+            aria-label="Previous service card"
             title="Previous"
           >
-            <ChevronLeft size={36} strokeWidth={2.2} />
+            <ChevronLeft size={38} strokeWidth={2.4} />
           </button>
 
-          {/* Cards Track */}
-          <div className="coverflow-track">
-            {cards.map((item, index) => {
-              let offset = (index - activeIndex + total) % total;
-              if (offset > total / 2) {
-                offset -= total;
-              }
+          <div
+            className="coverflow-stage"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className="coverflow-track">
+              {cards.map((item, index) => {
+                let offset = (index - activeIndex + total) % total;
+                if (offset > total / 2) {
+                  offset -= total;
+                }
 
-              const isActive = offset === 0;
-              const isLeft = offset === -1;
-              const isRight = offset === 1;
+                const isActive = offset === 0;
+                const isLeft = offset === -1;
+                const isRight = offset === 1;
 
-              // Only render active and immediate side cards (no overlapping background clutter)
-              const isVisible = isActive || isLeft || isRight;
-              if (!isVisible) return null;
+                // Render active and immediate side cards
+                const isVisible = isActive || isLeft || isRight;
+                if (!isVisible) return null;
 
-              let cardClass = 'coverflow-card';
-              if (isActive) cardClass += ' is-active';
-              else if (isLeft) cardClass += ' is-left';
-              else if (isRight) cardClass += ' is-right';
+                let cardClass = `coverflow-card ${item.themeClass}`;
+                if (isActive) cardClass += ' is-active';
+                else if (isLeft) cardClass += ' is-left';
+                else if (isRight) cardClass += ' is-right';
 
-              const IconComponent = item.icon;
+                const IconComponent = item.icon;
 
-              return (
-                <div
-                  key={item.id}
-                  className={cardClass}
-                  onClick={() => {
-                    if (!isActive) {
-                      setActiveIndex(index);
-                    } else {
-                      // Clicking active card opens contact popup
-                      handleOpenContactPopup(null, item);
-                    }
-                  }}
-                  onMouseEnter={() => {
-                    // Mouse pick brings card to front
-                    if (!isActive) {
-                      setActiveIndex(index);
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`${item.title} card`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                return (
+                  <div
+                    key={item.id}
+                    className={cardClass}
+                    onClick={() => {
                       if (!isActive) {
+                        // Clicking side card brings it to front!
                         setActiveIndex(index);
                       } else {
-                        handleOpenContactPopup(e, item);
+                        // Clicking front active card opens contact popup
+                        handleOpenContactPopup(null, item);
                       }
-                    }
-                  }}
-                >
-                  <div className="coverflow-card-inner">
-                    {/* Top Icon Box matching reference */}
-                    <div className="card-icon-box">
-                      <IconComponent size={22} className="card-icon-svg" />
-                    </div>
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${item.title} card`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        if (!isActive) {
+                          setActiveIndex(index);
+                        } else {
+                          handleOpenContactPopup(e, item);
+                        }
+                      }
+                    }}
+                  >
+                    <div className="coverflow-card-inner">
+                      {/* Top Icon Box */}
+                      <div className="card-icon-box">
+                        <IconComponent size={22} className="card-icon-svg" />
+                      </div>
 
-                    {/* Card Title */}
-                    <h3 className="card-platform-title">{item.title}</h3>
+                      {/* Card Title */}
+                      <h3 className="card-platform-title">{item.title}</h3>
 
-                    {/* Card Description */}
-                    <p className="card-platform-desc">{item.description}</p>
+                      {/* Card Description */}
+                      <p className="card-platform-desc">{item.description}</p>
 
-                    {/* Pill Tags matching reference */}
-                    <div className="card-tags-list">
-                      {item.tags.map((tag, tIdx) => (
-                        <div key={tIdx} className="card-tag-pill">
-                          {tag}
-                        </div>
-                      ))}
-                    </div>
+                      {/* Pill Tags */}
+                      <div className="card-tags-list">
+                        {item.tags.map((tag, tIdx) => (
+                          <div key={tIdx} className="card-tag-pill">
+                            {tag}
+                          </div>
+                        ))}
+                      </div>
 
-                    {/* Action Link / Button: Learn more -> */}
-                    <div className="card-action-row">
-                      <button
-                        type="button"
-                        className="card-learn-more-btn"
-                        onClick={(e) => handleOpenContactPopup(e, item)}
-                      >
-                        <span>Learn more</span>
-                        <ArrowRight size={16} className="arrow-icon" />
-                      </button>
+                      {/* Book Consultation Button */}
+                      <div className="card-action-row">
+                        <button
+                          type="button"
+                          className="card-book-consultation-btn"
+                          onClick={(e) => handleOpenContactPopup(e, item)}
+                        >
+                          <span>Book Consultation</span>
+                          <ArrowRight size={15} className="btn-arrow-icon" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
-          {/* Borderless Right Chevron Arrow */}
+          {/* Borderless Right Chevron Arrow - Positioned completely outside the cards */}
           <button
             type="button"
             className="coverflow-nav-btn next"
@@ -308,10 +286,10 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               e.stopPropagation();
               nextSlide();
             }}
-            aria-label="Next service"
+            aria-label="Next service card"
             title="Next"
           >
-            <ChevronRight size={36} strokeWidth={2.2} />
+            <ChevronRight size={38} strokeWidth={2.4} />
           </button>
         </div>
 

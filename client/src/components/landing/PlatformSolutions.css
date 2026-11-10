@@ -1,17 +1,17 @@
 /* ==========================================================================
    OUR PLATFORM SOLUTIONS - 3D COVERFLOW CAROUSEL
-   Exact Cards Specification from Reference (Software, Mobile, Web, Cloud, Data, Security)
+   Light Pastel Themes + Side Positioned Arrows + 1s Steady Auto-Scroll
    ========================================================================== */
 
 .platform-solutions-section {
-  padding: 76px 24px 84px 24px;
+  padding: 76px 20px 84px 20px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
   position: relative;
   overflow: hidden;
 }
 
 .platform-solutions-container {
-  max-width: 1280px;
+  max-width: 1260px;
   margin: 0 auto;
   position: relative;
 }
@@ -19,7 +19,7 @@
 /* Header */
 .platform-solutions-header {
   text-align: center;
-  margin-bottom: 44px;
+  margin-bottom: 40px;
 }
 
 .platform-solutions-badge {
@@ -59,11 +59,63 @@
 }
 
 /* ==========================================================================
+   CAROUSEL WRAPPER & BORDERLESS SIDE-POSITIONED ARROWS
+   ========================================================================== */
+.coverflow-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* Borderless Floating Arrows - Pushed completely to the sides outside the cards */
+.coverflow-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 45;
+  width: 48px;
+  height: 48px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  padding: 0;
+}
+
+.coverflow-nav-btn.prev {
+  left: 0;
+}
+
+.coverflow-nav-btn.next {
+  right: 0;
+}
+
+.coverflow-nav-btn:hover {
+  color: #047857;
+  transform: translateY(-50%) scale(1.24);
+}
+
+.coverflow-nav-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* ==========================================================================
    3D COVERFLOW STAGE
    ========================================================================== */
 .coverflow-stage {
   position: relative;
-  width: 100%;
+  width: calc(100% - 90px);
+  max-width: 1100px;
   height: 520px;
   margin: 0 auto;
   perspective: 1200px;
@@ -83,60 +135,20 @@
 }
 
 /* ==========================================================================
-   BORDERLESS FLOATING ARROWS (Clean Chevron Marks, No Boxes/Borders)
-   ========================================================================== */
-.coverflow-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 35;
-  width: 48px;
-  height: 48px;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: #1e293b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  outline: none;
-  padding: 0;
-}
-
-.coverflow-nav-btn.prev {
-  left: calc(50% - 460px);
-}
-
-.coverflow-nav-btn.next {
-  right: calc(50% - 460px);
-}
-
-.coverflow-nav-btn:hover {
-  color: #047857;
-  transform: translateY(-50%) scale(1.22);
-}
-
-.coverflow-nav-btn:active {
-  transform: translateY(-50%) scale(0.95);
-}
-
-/* ==========================================================================
-   3D COVERFLOW CARDS
+   3D COVERFLOW CARD BASE
    ========================================================================== */
 .coverflow-card {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 380px;
-  max-width: 86vw;
+  width: 370px;
+  max-width: 84vw;
   height: 460px;
   transform-style: preserve-3d;
   transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.5s ease,
-              filter 0.5s ease,
-              box-shadow 0.5s ease;
+              opacity 0.45s ease,
+              filter 0.45s ease,
+              box-shadow 0.45s ease;
   will-change: transform, opacity;
   cursor: pointer;
   outline: none;
@@ -145,14 +157,11 @@
 .coverflow-card-inner {
   width: 100%;
   height: 100%;
-  background: #ffffff;
   border-radius: 22px;
-  padding: 34px 28px;
+  padding: 32px 26px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 28px -10px rgba(15, 23, 42, 0.08);
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
@@ -163,18 +172,15 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  color: #334155;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   transition: all 0.3s ease;
 }
 
 .card-icon-svg {
-  stroke-width: 2;
+  stroke-width: 2.2;
 }
 
 /* Card Typography */
@@ -191,11 +197,11 @@
   font-size: 0.90rem;
   color: #475569;
   line-height: 1.55;
-  margin: 0 0 20px 0;
-  min-height: 58px;
+  margin: 0 0 18px 0;
+  min-height: 56px;
 }
 
-/* Tags List matching Reference */
+/* Tags List */
 .card-tags-list {
   display: flex;
   flex-direction: column;
@@ -206,106 +212,272 @@
 .card-tag-pill {
   align-self: flex-start;
   padding: 4px 12px;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
   border-radius: 9999px;
-  font-size: 0.70rem;
+  font-size: 0.69rem;
   font-weight: 700;
-  color: #475569;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   transition: all 0.2s ease;
 }
 
-/* Action Link / Button: Learn more -> */
+/* Action Row & Book Consultation Button */
 .card-action-row {
-  margin-top: 24px;
-  padding-top: 10px;
+  margin-top: 22px;
+  padding-top: 8px;
 }
 
-.card-learn-more-btn {
-  background: transparent;
-  border: none;
-  color: #047857;
-  font-size: 0.94rem;
+.card-book-consultation-btn {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 9999px;
+  font-size: 0.88rem;
   font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
+  border: none;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   font-family: inherit;
   outline: none;
 }
 
-.card-learn-more-btn .arrow-icon {
+.card-book-consultation-btn .btn-arrow-icon {
   transition: transform 0.2s ease;
 }
 
-.card-learn-more-btn:hover {
-  color: #065f46;
-}
-
-.card-learn-more-btn:hover .arrow-icon {
+.card-book-consultation-btn:hover .btn-arrow-icon {
   transform: translateX(4px);
 }
 
 /* ==========================================================================
-   ACTIVE CARD STATE (Center / Glowing)
+   DISTINCT LIGHT PASTEL COLOR THEMES FOR EACH CARD
+   ========================================================================== */
+
+/* 1. Software Development: Mint & Emerald */
+.coverflow-card.theme-emerald .coverflow-card-inner {
+  background: linear-gradient(155deg, #f0fdf4 0%, #ecfdf5 55%, #f6fef9 100%);
+  border: 1.5px solid #a7f3d0;
+  box-shadow: 0 10px 24px -8px rgba(4, 120, 87, 0.12);
+}
+.coverflow-card.theme-emerald .card-icon-box {
+  background-color: #d1fae5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+.coverflow-card.theme-emerald .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #bbf7d0;
+  color: #047857;
+}
+.coverflow-card.theme-emerald .card-book-consultation-btn {
+  background-color: #047857;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(4, 120, 87, 0.25);
+}
+.coverflow-card.theme-emerald .card-book-consultation-btn:hover {
+  background-color: #065f46;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(4, 120, 87, 0.35);
+}
+
+/* 2. Mobile App Development: Soft Violet */
+.coverflow-card.theme-violet .coverflow-card-inner {
+  background: linear-gradient(155deg, #faf5ff 0%, #f3e8ff 55%, #fdfaff 100%);
+  border: 1.5px solid #ddd6fe;
+  box-shadow: 0 10px 24px -8px rgba(124, 58, 237, 0.12);
+}
+.coverflow-card.theme-violet .card-icon-box {
+  background-color: #ede9fe;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+}
+.coverflow-card.theme-violet .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #ddd6fe;
+  color: #6d28d9;
+}
+.coverflow-card.theme-violet .card-book-consultation-btn {
+  background-color: #7c3aed;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+}
+.coverflow-card.theme-violet .card-book-consultation-btn:hover {
+  background-color: #6d28d9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.35);
+}
+
+/* 3. Web Development: Ocean Blue */
+.coverflow-card.theme-blue .coverflow-card-inner {
+  background: linear-gradient(155deg, #f0f9ff 0%, #e0f2fe 55%, #f8fafc 100%);
+  border: 1.5px solid #bfdbfe;
+  box-shadow: 0 10px 24px -8px rgba(37, 99, 235, 0.12);
+}
+.coverflow-card.theme-blue .card-icon-box {
+  background-color: #dbeafe;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+.coverflow-card.theme-blue .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+.coverflow-card.theme-blue .card-book-consultation-btn {
+  background-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+.coverflow-card.theme-blue .card-book-consultation-btn:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+}
+
+/* 4. Cloud Solutions & DevOps: Warm Amber */
+.coverflow-card.theme-amber .coverflow-card-inner {
+  background: linear-gradient(155deg, #fffbeb 0%, #fef3c7 55%, #fffdf5 100%);
+  border: 1.5px solid #fde68a;
+  box-shadow: 0 10px 24px -8px rgba(217, 119, 6, 0.12);
+}
+.coverflow-card.theme-amber .card-icon-box {
+  background-color: #fef3c7;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+.coverflow-card.theme-amber .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #fde68a;
+  color: #b45309;
+}
+.coverflow-card.theme-amber .card-book-consultation-btn {
+  background-color: #d97706;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+}
+.coverflow-card.theme-amber .card-book-consultation-btn:hover {
+  background-color: #b45309;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(217, 119, 6, 0.35);
+}
+
+/* 5. Data Analytics & BI: Soft Rose / Coral */
+.coverflow-card.theme-rose .coverflow-card-inner {
+  background: linear-gradient(155deg, #fff1f2 0%, #ffe4e6 55%, #fff7f7 100%);
+  border: 1.5px solid #fecdd3;
+  box-shadow: 0 10px 24px -8px rgba(225, 29, 72, 0.12);
+}
+.coverflow-card.theme-rose .card-icon-box {
+  background-color: #ffe4e6;
+  color: #e11d48;
+  border: 1px solid #fecdd3;
+}
+.coverflow-card.theme-rose .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #fecdd3;
+  color: #be123c;
+}
+.coverflow-card.theme-rose .card-book-consultation-btn {
+  background-color: #e11d48;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);
+}
+.coverflow-card.theme-rose .card-book-consultation-btn:hover {
+  background-color: #be123c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(225, 29, 72, 0.35);
+}
+
+/* 6. Cyber Security & Audits: Mint & Teal */
+.coverflow-card.theme-teal .coverflow-card-inner {
+  background: linear-gradient(155deg, #f0fdfa 0%, #ccfbf1 55%, #f6fefd 100%);
+  border: 1.5px solid #99f6e4;
+  box-shadow: 0 10px 24px -8px rgba(13, 148, 136, 0.12);
+}
+.coverflow-card.theme-teal .card-icon-box {
+  background-color: #ccfbf1;
+  color: #0d9488;
+  border: 1px solid #99f6e4;
+}
+.coverflow-card.theme-teal .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #99f6e4;
+  color: #0f766e;
+}
+.coverflow-card.theme-teal .card-book-consultation-btn {
+  background-color: #0d9488;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25);
+}
+.coverflow-card.theme-teal .card-book-consultation-btn:hover {
+  background-color: #0f766e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(13, 148, 136, 0.35);
+}
+
+/* ==========================================================================
+   ACTIVE CENTER CARD
    ========================================================================== */
 .coverflow-card.is-active {
-  z-index: 18;
+  z-index: 25;
   transform: translate3d(-50%, -50%, 65px) scale(1.05);
   opacity: 1;
   filter: blur(0);
 }
 
-.coverflow-card.is-active .coverflow-card-inner {
-  background: linear-gradient(145deg, #f0fdf4 0%, #eff6ff 48%, #faf5ff 100%);
-  border: 1.5px solid rgba(4, 120, 87, 0.35);
-  box-shadow: 0 26px 54px -14px rgba(4, 120, 87, 0.24),
-              0 0 0 1px rgba(4, 120, 87, 0.15),
-              0 10px 20px -8px rgba(15, 23, 42, 0.08);
+.coverflow-card.is-active.theme-emerald .coverflow-card-inner {
+  border: 2px solid #059669;
+  box-shadow: 0 24px 50px -12px rgba(4, 120, 87, 0.25), 0 0 0 1px rgba(4, 120, 87, 0.2);
 }
-
-.coverflow-card.is-active .card-icon-box {
-  background-color: #ecfdf5;
-  border-color: #a7f3d0;
-  color: #047857;
+.coverflow-card.is-active.theme-violet .coverflow-card-inner {
+  border: 2px solid #7c3aed;
+  box-shadow: 0 24px 50px -12px rgba(124, 58, 237, 0.25), 0 0 0 1px rgba(124, 58, 237, 0.2);
 }
-
-.coverflow-card.is-active .card-tag-pill {
-  background-color: #ffffff;
-  border-color: #cbd5e1;
-  color: #1e293b;
+.coverflow-card.is-active.theme-blue .coverflow-card-inner {
+  border: 2px solid #2563eb;
+  box-shadow: 0 24px 50px -12px rgba(37, 99, 235, 0.25), 0 0 0 1px rgba(37, 99, 235, 0.2);
 }
-
-.coverflow-card.is-active .card-learn-more-btn {
-  color: #047857;
-  font-size: 0.98rem;
+.coverflow-card.is-active.theme-amber .coverflow-card-inner {
+  border: 2px solid #d97706;
+  box-shadow: 0 24px 50px -12px rgba(217, 119, 6, 0.25), 0 0 0 1px rgba(217, 119, 6, 0.2);
+}
+.coverflow-card.is-active.theme-rose .coverflow-card-inner {
+  border: 2px solid #e11d48;
+  box-shadow: 0 24px 50px -12px rgba(225, 29, 72, 0.25), 0 0 0 1px rgba(225, 29, 72, 0.2);
+}
+.coverflow-card.is-active.theme-teal .coverflow-card-inner {
+  border: 2px solid #0d9488;
+  box-shadow: 0 24px 50px -12px rgba(13, 148, 136, 0.25), 0 0 0 1px rgba(13, 148, 136, 0.2);
 }
 
 /* ==========================================================================
-   SIDE CARDS (Single card on left, single on right - No Overlap Clutter)
+   SIDE CARDS (Zero Overlap with Arrows)
    ========================================================================== */
 .coverflow-card.is-left {
-  z-index: 8;
-  transform: translate3d(calc(-50% - 330px), -50%, -35px) rotateY(18deg) scale(0.88);
-  opacity: 0.60;
-  filter: blur(0.4px);
+  z-index: 10;
+  transform: translate3d(calc(-50% - 280px), -50%, -35px) rotateY(16deg) scale(0.88);
+  opacity: 0.62;
+  filter: blur(0.3px);
 }
 
 .coverflow-card.is-right {
-  z-index: 8;
-  transform: translate3d(calc(-50% + 330px), -50%, -35px) rotateY(-18deg) scale(0.88);
-  opacity: 0.60;
-  filter: blur(0.4px);
+  z-index: 10;
+  transform: translate3d(calc(-50% + 280px), -50%, -35px) rotateY(-16deg) scale(0.88);
+  opacity: 0.62;
+  filter: blur(0.3px);
 }
 
 .coverflow-card:not(.is-active):hover {
-  opacity: 0.88;
+  opacity: 0.90;
   filter: blur(0);
+}
+
+.coverflow-card:not(.is-active) .card-book-consultation-btn {
+  opacity: 0.75;
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -345,50 +517,57 @@
 /* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
-@media (max-width: 1100px) {
+@media (max-width: 1024px) {
+  .coverflow-stage {
+    width: 100%;
+  }
   .coverflow-nav-btn.prev {
-    left: 20px;
+    left: -4px;
   }
   .coverflow-nav-btn.next {
-    right: 20px;
+    right: -4px;
   }
   .coverflow-card.is-left {
-    transform: translate3d(calc(-50% - 260px), -50%, -30px) rotateY(15deg) scale(0.86);
+    transform: translate3d(calc(-50% - 220px), -50%, -30px) rotateY(14deg) scale(0.86);
   }
   .coverflow-card.is-right {
-    transform: translate3d(calc(-50% + 260px), -50%, -30px) rotateY(-15deg) scale(0.86);
+    transform: translate3d(calc(-50% + 220px), -50%, -30px) rotateY(-14deg) scale(0.86);
   }
 }
 
 @media (max-width: 768px) {
   .platform-solutions-section {
-    padding: 56px 16px 64px 16px;
+    padding: 56px 12px 64px 12px;
   }
   .platform-solutions-title {
     font-size: 1.85rem;
   }
+  .coverflow-wrapper {
+    padding: 0;
+  }
   .coverflow-stage {
     height: 490px;
+    width: 100%;
   }
   .coverflow-card {
     width: 310px;
-    height: 450px;
+    height: 455px;
   }
   .coverflow-card-inner {
     padding: 26px 20px;
   }
   .coverflow-nav-btn.prev {
-    left: 4px;
+    left: -8px;
   }
   .coverflow-nav-btn.next {
-    right: 4px;
+    right: -8px;
   }
   .coverflow-card.is-left {
-    transform: translate3d(calc(-50% - 110px), -50%, -25px) rotateY(12deg) scale(0.80);
+    transform: translate3d(calc(-50% - 100px), -50%, -25px) rotateY(12deg) scale(0.80);
     opacity: 0.35;
   }
   .coverflow-card.is-right {
-    transform: translate3d(calc(-50% + 110px), -50%, -25px) rotateY(-12deg) scale(0.80);
+    transform: translate3d(calc(-50% + 100px), -50%, -25px) rotateY(-12deg) scale(0.80);
     opacity: 0.35;
   }
 }
