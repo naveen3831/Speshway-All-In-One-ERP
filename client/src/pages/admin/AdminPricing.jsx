@@ -313,6 +313,7 @@ export const AdminPricing = () => {
     <div className="admin-page-view">
       {/* Header Row */}
       <div
+        className="admin-page-header-row"
         style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -334,7 +335,16 @@ export const AdminPricing = () => {
         </div>
 
         {/* Top Right Corner Toggle Button for Home Navbar Pricing Link */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+        <div
+          className="admin-header-toggle-wrap"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            gap: '6px',
+            marginLeft: 'auto',
+          }}
+        >
           <div
             role="button"
             tabIndex={0}
@@ -432,6 +442,7 @@ export const AdminPricing = () => {
                 color: isPricingActive ? '#059669' : '#dc2626',
                 fontWeight: 600,
                 marginTop: '1px',
+                textAlign: 'right',
                 transition: 'all 0.2s ease',
               }}
             >

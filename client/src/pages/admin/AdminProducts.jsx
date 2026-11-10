@@ -297,6 +297,7 @@ export const AdminProducts = () => {
     <div className="admin-page-view">
       {/* Header Row - Matching Pricing Page Layout Exactly with Toggle at Top Right Corner */}
       <div
+        className="admin-page-header-row"
         style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -318,7 +319,16 @@ export const AdminProducts = () => {
         </div>
 
         {/* Top Right Corner Toggle Button (Identical to Pricing Page) */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', marginLeft: 'auto' }}>
+        <div
+          className="admin-header-toggle-wrap"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            gap: '6px',
+            marginLeft: 'auto',
+          }}
+        >
           <div
             role="button"
             tabIndex={0}
@@ -416,6 +426,7 @@ export const AdminProducts = () => {
                 color: isProductsActive ? '#059669' : '#dc2626',
                 fontWeight: 600,
                 marginTop: '1px',
+                textAlign: 'right',
                 transition: 'all 0.2s ease',
               }}
             >
