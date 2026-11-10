@@ -8,7 +8,7 @@ export const DEFAULT_HOME_CONTENT = {
     titleGreen: 'ALL IN ONE ERP',
     subtitle: 'A collection of industry-ready ERP solutions to manage your business, operations, and customers — all in one place.',
     primaryBtnText: 'View All ERPs',
-    primaryBtnLink: '/projects',
+    primaryBtnLink: '#solutions',
     secondaryBtnText: 'Request a Demo',
   },
   stats: {

@@ -9,6 +9,8 @@ import {
   getProjectColor,
   getProjectCategory,
   getWebsiteUrl,
+  PRIMARY_ERP_CATEGORIES,
+  getPrimaryCategory,
 } from '../../utils/adminProjects';
 import { getProductFallbackImage } from '../../pages/ProductsPage';
 import './OurErpSolutions.css';
@@ -25,30 +27,25 @@ export const OurErpSolutions = () => {
     return filterAdminProjects(products);
   }, [products]);
 
-  // Extract unique categories from projects
-  const categories = useMemo(() => {
-    const cats = Array.from(
-      new Set(
-        adminProjects
-          .map((p) => getProjectCategory(p))
-          .filter(Boolean)
-      )
-    );
-    return ['All', ...cats];
-  }, [adminProjects]);
+  // Clean 5 enterprise category groups (+ All) displayed on a single line
+  const categories = PRIMARY_ERP_CATEGORIES;
 
-  // Filter products by search term and active category
+  // Filter products by search term and active primary category
   const filteredProjects = useMemo(() => {
     return adminProjects.filter((prod) => {
       const term = searchTerm.toLowerCase().trim();
-      const cat = getProjectCategory(prod);
+      const detailedCat = getProjectCategory(prod);
+      const primaryCat = getPrimaryCategory(prod);
+
       const matchesSearch =
         !term ||
         (prod.name || '').toLowerCase().includes(term) ||
         (prod.description || '').toLowerCase().includes(term) ||
         (prod.features || []).some((f) => f.toLowerCase().includes(term)) ||
-        cat.toLowerCase().includes(term);
-      const matchesCat = activeCategory === 'All' || cat === activeCategory;
+        detailedCat.toLowerCase().includes(term) ||
+        primaryCat.toLowerCase().includes(term);
+
+      const matchesCat = activeCategory === 'All' || primaryCat === activeCategory;
       return matchesSearch && matchesCat;
     });
   }, [adminProjects, searchTerm, activeCategory]);
@@ -57,9 +54,9 @@ export const OurErpSolutions = () => {
     <section id="solutions" className="our-erp-section">
       <div className="our-erp-container">
         {/* Section Header with Clean Dividers */}
-        <div className="our-erp-header-row">
+        <div id="erp-solutions-heading" className="our-erp-header-row">
           <div className="our-erp-divider-line" />
-          <h2 className="our-erp-title">{sectionTitle}</h2>
+          <h2 id="solutions-title" className="our-erp-title">{sectionTitle}</h2>
           <div className="our-erp-divider-line right" />
         </div>
 
@@ -117,7 +114,7 @@ export const OurErpSolutions = () => {
             </button>
           </div>
         ) : (
-          <div className="our-erp-grid">
+          <div id="erp-cards" className="our-erp-grid">
             {filteredProjects.map((prod) => {
               const Icon = getProjectIcon(prod);
               const color = getProjectColor(prod);

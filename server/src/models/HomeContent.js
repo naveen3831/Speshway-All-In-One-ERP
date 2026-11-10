@@ -30,7 +30,7 @@ const homeContentSchema = new mongoose.Schema(
       },
       primaryBtnLink: {
         type: String,
-        default: '/projects',
+        default: '#solutions',
       },
       secondaryBtnText: {
         type: String,
