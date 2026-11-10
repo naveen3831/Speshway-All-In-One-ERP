@@ -5379,6 +5379,101 @@ a.admin-kpi-card:hover {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
+.admin-controls-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-add-project-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .admin-card-controls-bar {
+    padding: 12px 14px !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+    border-radius: 14px !important;
+  }
+
+  .admin-controls-top-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .admin-search-wrap {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 9px 12px !important;
+  }
+
+  .admin-controls-actions-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .admin-add-project-btn {
+    flex: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 0 14px !important;
+    height: 38px !important;
+    font-size: 0.84rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    border-radius: 10px !important;
+  }
+
+  .view-toggle-wrap {
+    flex-shrink: 0 !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    border-radius: 10px !important;
+    padding: 3px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .view-mode-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .category-scroll-pills {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 2px 0 4px 0 !important;
+    gap: 6px !important;
+    scrollbar-width: none !important;
+  }
+
+  .category-scroll-pills::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .cat-pill-btn {
+    padding: 6px 12px !important;
+    font-size: 0.78rem !important;
+    flex-shrink: 0 !important;
+  }
+}
+
 @media (max-width: 640px) {
   .admin-controls-top-row {
     flex-direction: column;

@@ -456,18 +456,10 @@ export const AdminProducts = () => {
             )}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="admin-controls-actions-row">
             <button
               onClick={handleAddNewProduct}
-              className="btn-hero-primary"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '9px 18px',
-                fontSize: '0.88rem',
-                whiteSpace: 'nowrap',
-              }}
+              className="btn-hero-primary admin-add-project-btn"
             >
               <Plus size={16} /> Add New Project
             </button>
