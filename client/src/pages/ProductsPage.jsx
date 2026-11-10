@@ -36,7 +36,7 @@ import {
   Image as ImageIcon,
   Loader2,
   CheckCircle,
-  Filter,
+  SlidersHorizontal,
   ChevronDown,
   Check,
   X,
@@ -284,7 +284,7 @@ export const ProductsPage = () => {
                 title={`Filter by category${activeCategory !== 'All' ? `: ${activeCategory}` : ''}`}
                 aria-label="Filter by category"
               >
-                <Filter size={18} />
+                <SlidersHorizontal size={18} />
                 {activeCategory !== 'All' && <span className="mobile-filter-active-dot" />}
               </button>
 

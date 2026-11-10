@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Shield, ExternalLink, Search, X, Filter, ChevronDown, Check } from 'lucide-react';
+import { Globe, Shield, ExternalLink, Search, X, SlidersHorizontal, Check } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import {
   filterAdminProjects,
@@ -111,7 +111,7 @@ export const OurErpSolutions = () => {
                 title={`Filter by category${activeCategory !== 'All' ? `: ${activeCategory}` : ''}`}
                 aria-label="Filter by category"
               >
-                <Filter size={18} />
+                <SlidersHorizontal size={18} />
                 {activeCategory !== 'All' && <span className="mobile-filter-active-dot" />}
               </button>
 
