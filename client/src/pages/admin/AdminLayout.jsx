@@ -562,15 +562,6 @@ export const AdminLayout = () => {
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
           <div className="topbar-left">
-            <button
-              type="button"
-              className="admin-back-btn"
-              onClick={() => navigate('/')}
-              title="Return to Home"
-              aria-label="Go to home"
-            >
-              <ArrowLeft size={16} />
-            </button>
             <span className="topbar-title">{brandTitle} Administrative Dashboard</span>
           </div>
 
