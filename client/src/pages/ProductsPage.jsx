@@ -9,6 +9,7 @@ import {
   PRIMARY_ERP_CATEGORIES,
   getPrimaryCategory,
 } from '../utils/adminProjects';
+import { getProductFallbackImage } from '../utils/productImages';
 import {
   Search,
   Globe,
@@ -92,10 +93,6 @@ const EXCLUDED_NAMES = new Set([
   'employee directory',
   'hrms portal',
 ]);
-
-import { getProductFallbackImage } from '../utils/productImages';
-
-export { getProductFallbackImage };
 
 export const ProductsPage = () => {
   const { products, triggerUpdateProduct, homeContent } = useSocket();
