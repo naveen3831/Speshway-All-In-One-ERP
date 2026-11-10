@@ -4417,7 +4417,7 @@ a.admin-kpi-card:hover {
 
 @media (max-width: 960px) {
   .admin-menu-toggle {
-    display: inline-flex !important;
+    display: none !important;
   }
 
   .admin-sidebar-close {

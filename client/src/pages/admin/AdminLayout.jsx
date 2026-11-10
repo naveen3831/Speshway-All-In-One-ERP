@@ -571,14 +571,6 @@ export const AdminLayout = () => {
             >
               <ArrowLeft size={16} />
             </button>
-            <button
-              type="button"
-              className="admin-menu-toggle"
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Open navigation menu"
-            >
-              <Menu size={20} />
-            </button>
             <span className="topbar-title">{brandTitle} Administrative Dashboard</span>
           </div>
 
