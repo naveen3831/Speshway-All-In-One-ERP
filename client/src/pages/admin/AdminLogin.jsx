@@ -243,7 +243,7 @@ export const AdminLogin = () => {
                 id="admin-email"
                 type="email"
                 required
-                placeholder="admin@gmail.com"
+                placeholder="Enter your email ID"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pro-text-input"
@@ -266,7 +266,7 @@ export const AdminLogin = () => {
                 id="admin-password"
                 type={showPassword ? 'text' : 'password'}
                 required
-                placeholder="admin123"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="pro-text-input"
