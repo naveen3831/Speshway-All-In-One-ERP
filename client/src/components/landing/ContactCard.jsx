@@ -18,6 +18,13 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const handleDismiss = () => {
+    try {
+      sessionStorage.setItem('speshway_welcome_popup_shown', 'true');
+    } catch (e) {}
+    onClose();
+  };
+
   // Close on Click Outside or Escape Key
   useEffect(() => {
     if (!isOpen) return;
@@ -29,13 +36,13 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
         toggleRef?.current &&
         !toggleRef.current.contains(e.target)
       ) {
-        onClose();
+        handleDismiss();
       }
     };
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
-        onClose();
+        handleDismiss();
       }
     };
 
@@ -79,7 +86,7 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
         setEmail('');
         setPhone('');
         setMessage('');
-        onClose();
+        handleDismiss();
       }, 2500);
     } catch (err) {
       console.error('Failed to dispatch contact inquiry:', err);
@@ -93,7 +100,7 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
   return (
     <>
       {/* Blurred Backdrop */}
-      <div className="contact-card-backdrop" onClick={onClose} />
+      <div className="contact-card-backdrop" onClick={handleDismiss} />
 
       {/* Floating Contact Card Box matching screenshot */}
       <div
@@ -114,7 +121,7 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
           <button
             type="button"
             className="contact-card-close-btn"
-            onClick={onClose}
+            onClick={handleDismiss}
             aria-label="Close"
             title="Close"
           >
@@ -137,7 +144,7 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
             </p>
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleDismiss}
               className="contact-card-submit-btn"
               style={{ marginTop: '12px' }}
             >
@@ -231,7 +238,7 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
             <div className="contact-card-actions-row">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleDismiss}
                 className="contact-card-skip-btn"
               >
                 Skip
