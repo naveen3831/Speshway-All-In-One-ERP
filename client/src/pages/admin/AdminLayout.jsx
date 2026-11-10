@@ -67,6 +67,8 @@ export const AdminLayout = () => {
 
   const getMobileTopbarTitle = () => {
     const path = location.pathname;
+    if (path.includes('/new')) return 'New Project';
+    if (path.includes('/edit')) return 'Edit Project';
     if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return 'Projects';
     if (path.startsWith('/admin/pricing')) return 'Pricing';
     if (path.startsWith('/admin/inquiries')) return 'Inquiries';
@@ -76,8 +78,33 @@ export const AdminLayout = () => {
     return `${brandTitle} Dashboard`;
   };
 
+  const getMobilePageIcon = () => {
+    const path = location.pathname;
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) {
+      return <Package size={18} />;
+    }
+    if (path.startsWith('/admin/pricing')) {
+      return <CreditCard size={18} />;
+    }
+    if (path.startsWith('/admin/inquiries')) {
+      return <Inbox size={18} />;
+    }
+    if (path.startsWith('/admin/settings')) {
+      return <Settings size={18} />;
+    }
+    if (path.startsWith('/admin/home')) {
+      return <Globe size={18} />;
+    }
+    if (path.startsWith('/admin/users')) {
+      return <User size={18} />;
+    }
+    return <LayoutDashboard size={18} />;
+  };
+
   const getDesktopTopbarTitle = () => {
     const path = location.pathname;
+    if (path.includes('/new')) return `${brandTitle} Add New Project`;
+    if (path.includes('/edit')) return `${brandTitle} Edit Project`;
     if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return `${brandTitle} Projects Management`;
     if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing Plans`;
     if (path.startsWith('/admin/inquiries')) return `${brandTitle} Demo Inquiries`;
@@ -590,6 +617,9 @@ export const AdminLayout = () => {
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
           <div className="topbar-left">
+            <span className="topbar-page-icon-mobile" aria-hidden="true">
+              {getMobilePageIcon()}
+            </span>
             <span className="topbar-title">
               <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
               <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>

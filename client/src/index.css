@@ -3531,6 +3531,10 @@ button {
   display: none;
 }
 
+.topbar-page-icon-mobile {
+  display: none;
+}
+
 .topbar-right {
   display: flex;
   align-items: center;
@@ -4464,6 +4468,18 @@ a.admin-kpi-card:hover {
     display: flex !important;
     align-items: center !important;
     gap: 10px !important;
+  }
+
+  .topbar-page-icon-mobile {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 9px !important;
+    background-color: #e6f7f0 !important;
+    color: #00875a !important;
+    flex-shrink: 0 !important;
   }
 
   .topbar-title {
