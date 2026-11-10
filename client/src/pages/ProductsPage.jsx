@@ -281,19 +281,11 @@ export const ProductsPage = () => {
                 type="button"
                 onClick={() => setShowMobileFilter((prev) => !prev)}
                 className={`catalog-mobile-filter-btn ${activeCategory !== 'All' ? 'is-active' : ''}`}
-                title="Filter by category"
+                title={`Filter by category${activeCategory !== 'All' ? `: ${activeCategory}` : ''}`}
+                aria-label="Filter by category"
               >
-                <Filter size={16} />
-                <span className="mobile-filter-text">
-                  {activeCategory === 'All' ? 'Filter' : activeCategory}
-                </span>
-                <ChevronDown
-                  size={14}
-                  style={{
-                    transform: showMobileFilter ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.2s ease',
-                  }}
-                />
+                <Filter size={18} />
+                {activeCategory !== 'All' && <span className="mobile-filter-active-dot" />}
               </button>
 
               {showMobileFilter && (

@@ -2164,39 +2164,44 @@ button {
   .catalog-mobile-filter-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 9px 13px;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    padding: 0;
     background-color: #ffffff;
     border: 1.5px solid #cbd5e1;
-    border-radius: var(--radius-pill);
-    font-size: 0.82rem;
-    font-weight: 600;
+    border-radius: 50%;
     color: #1e293b;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    white-space: nowrap;
-    max-width: 140px;
+    position: relative;
+    flex-shrink: 0;
   }
 
   .catalog-mobile-filter-btn:hover {
     background-color: #f8fafc;
     border-color: #94a3b8;
+    color: #0f172a;
   }
 
   .catalog-mobile-filter-btn.is-active {
     background-color: #ecfdf5;
     border-color: #10b981;
     color: #047857;
-    font-weight: 700;
-    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.22);
   }
 
-  .mobile-filter-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 82px;
+  .mobile-filter-active-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 9px;
+    height: 9px;
+    background-color: #10b981;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
   }
 
   /* Hide the horizontal cut-off pill tabs on mobile responsive */
