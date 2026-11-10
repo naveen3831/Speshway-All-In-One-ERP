@@ -296,133 +296,67 @@ export const AdminProducts = () => {
   return (
     <div className="admin-page-view">
       {/* Header Row - Matching Pricing Page Layout Exactly with Toggle at Top Right Corner */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '16px',
-          marginBottom: '26px',
-          paddingBottom: '16px',
-          borderBottom: '1px solid #e2e8f0',
-        }}
-      >
-        <div style={{ flex: '1 1 300px' }}>
-          <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
-            Categories &amp; Module Management (CRUD)
-          </h1>
-          <p className="admin-subtext" style={{ margin: 0 }}>
-            Manage ERP categories, drill down into projects, edit technologies &amp; URLs, and control modules in real-time.
-          </p>
-        </div>
-
-        {/* Top Right Corner Toggle Button (Identical to Pricing Page) */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', marginLeft: 'auto' }}>
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={handleToggleProductsOption}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleToggleProductsOption();
-              }
-            }}
-            className={`admin-navbar-toggle-btn ${isProductsActive ? 'is-active' : 'is-inactive'}`}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '6px 14px',
-              borderRadius: '10px',
-              backgroundColor: isProductsActive ? '#ecfdf5' : '#f8fafc',
-              border: isProductsActive ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: isProductsActive
-                ? '0 3px 12px rgba(16, 185, 129, 0.15)'
-                : '0 2px 6px rgba(15, 23, 42, 0.05)',
-              userSelect: 'none',
-              outline: 'none',
-            }}
-            title={
-              isProductsActive
-                ? 'Click to turn OFF: hide Projects option and /projects page'
-                : 'Click to turn ON: show Projects option and /projects page'
-            }
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '7px',
-                  backgroundColor: isProductsActive ? '#d1fae5' : '#e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: isProductsActive ? '#059669' : '#64748b',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {isProductsActive ? <Eye size={16} /> : <EyeOff size={16} />}
-              </div>
-              <span
-                style={{
-                  fontSize: '0.88rem',
-                  fontWeight: 700,
-                  color: isProductsActive ? '#065f46' : '#475569',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Projects: {isProductsActive ? 'ON' : 'OFF'}
-              </span>
-            </div>
-
-            {/* Switch Slider */}
-            <div
-              style={{
-                width: '38px',
-                height: '20px',
-                borderRadius: '9999px',
-                backgroundColor: isProductsActive ? '#059669' : '#cbd5e1',
-                padding: '2px',
-                display: 'flex',
-                alignItems: 'center',
-                transition: 'background-color 0.2s ease',
-                position: 'relative',
-                flexShrink: 0,
-              }}
-            >
-              <div
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  transform: isProductsActive ? 'translateX(18px)' : 'translateX(0px)',
-                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-              />
-            </div>
+      <div className="admin-page-header-row">
+        <div className="admin-header-top-row">
+          <div className="admin-header-title-wrap">
+            <h1 className="admin-heading">Projects</h1>
           </div>
 
-          {toggleNotice && (
-            <span
-              style={{
-                fontSize: '0.78rem',
-                color: isProductsActive ? '#059669' : '#dc2626',
-                fontWeight: 600,
-                marginTop: '1px',
-                transition: 'all 0.2s ease',
+          {/* Top Right Corner Toggle Button */}
+          <div className="admin-header-toggle-wrap">
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={handleToggleProductsOption}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleToggleProductsOption();
+                }
               }}
+              className={`admin-navbar-toggle-btn ${isProductsActive ? 'is-active' : 'is-inactive'}`}
+              title={
+                isProductsActive
+                  ? 'Click to turn OFF: hide Projects option and /projects page'
+                  : 'Click to turn ON: show Projects option and /projects page'
+              }
             >
-              ✓ {toggleNotice}
-            </span>
-          )}
+              <div className="admin-toggle-btn-left">
+                <div className="admin-toggle-icon-wrap">
+                  {isProductsActive ? <Eye size={15} /> : <EyeOff size={15} />}
+                </div>
+                <span className="admin-toggle-label">
+                  Projects: {isProductsActive ? 'ON' : 'OFF'}
+                </span>
+              </div>
+
+              {/* Switch Slider */}
+              <div className="admin-toggle-switch-track">
+                <div
+                  className="admin-toggle-switch-thumb"
+                  style={{
+                    transform: isProductsActive ? 'translateX(16px)' : 'translateX(0px)',
+                  }}
+                />
+              </div>
+            </div>
+
+            {toggleNotice && (
+              <span
+                className="admin-toggle-notice"
+                style={{
+                  color: isProductsActive ? '#059669' : '#dc2626',
+                }}
+              >
+                ✓ {toggleNotice}
+              </span>
+            )}
+          </div>
         </div>
+
+        <p className="admin-subtext">
+          Manage ERP projects, categories, edit technologies &amp; URLs, and control modules in real-time.
+        </p>
       </div>
 
       {statusMsg && (
@@ -456,18 +390,10 @@ export const AdminProducts = () => {
             )}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="admin-controls-actions-row">
             <button
               onClick={handleAddNewProduct}
-              className="btn-hero-primary"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '9px 18px',
-                fontSize: '0.88rem',
-                whiteSpace: 'nowrap',
-              }}
+              className="btn-hero-primary admin-add-project-btn"
             >
               <Plus size={16} /> Add New Project
             </button>

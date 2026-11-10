@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Shield, ExternalLink, Search, X } from 'lucide-react';
+import { Globe, Shield, ExternalLink, Search, X, SlidersHorizontal, Check } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import {
   filterAdminProjects,
@@ -12,7 +12,7 @@ import {
   PRIMARY_ERP_CATEGORIES,
   getPrimaryCategory,
 } from '../../utils/adminProjects';
-import { getProductFallbackImage } from '../../pages/ProductsPage';
+import { getProductFallbackImage } from '../../utils/productImages';
 import './OurErpSolutions.css';
 
 export const OurErpSolutions = () => {
@@ -20,7 +20,24 @@ export const OurErpSolutions = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const mobileFilterRef = useRef(null);
   const sectionTitle = homeContent?.solutions?.title || 'Our ERP Solutions';
+
+  // Close mobile filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (mobileFilterRef.current && !mobileFilterRef.current.contains(e.target)) {
+        setShowMobileFilter(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   // Filter ONLY projects managed in the Admin Dashboard (excludes generic modules)
   const adminProjects = useMemo(() => {
@@ -62,29 +79,85 @@ export const OurErpSolutions = () => {
 
         {/* Search Bar & Category Filter Tabs */}
         <div className="our-erp-filter-container">
-          <div className="catalog-search-bar our-erp-search-bar">
-            <Search size={18} className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search products by name or features..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="catalog-search-input our-erp-search-input"
-            />
-            {searchTerm && (
+          <div className="catalog-search-filter-wrapper our-erp-search-filter-wrapper">
+            <div className="catalog-search-bar our-erp-search-bar">
+              <Search size={18} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search products by name or features..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="catalog-search-input our-erp-search-input"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  className="our-erp-clear-search-btn"
+                  onClick={() => setSearchTerm('')}
+                  title="Clear search"
+                  aria-label="Clear search"
+                >
+                  <X size={15} />
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Responsive Only Filter Option Side of Search */}
+            <div className="catalog-mobile-filter-wrap our-erp-mobile-filter-wrap" ref={mobileFilterRef}>
               <button
                 type="button"
-                className="our-erp-clear-search-btn"
-                onClick={() => setSearchTerm('')}
-                title="Clear search"
-                aria-label="Clear search"
+                onClick={() => setShowMobileFilter((prev) => !prev)}
+                className={`catalog-mobile-filter-btn ${activeCategory !== 'All' ? 'is-active' : ''}`}
+                title={`Filter by category${activeCategory !== 'All' ? `: ${activeCategory}` : ''}`}
+                aria-label="Filter by category"
               >
-                <X size={15} />
+                <SlidersHorizontal size={18} />
+                {activeCategory !== 'All' && <span className="mobile-filter-active-dot" />}
               </button>
-            )}
+
+              {showMobileFilter && (
+                <div className="catalog-mobile-filter-dropdown">
+                  <div className="mobile-filter-dropdown-header">
+                    <span>Category Filter</span>
+                    {activeCategory !== 'All' && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveCategory('All');
+                          setShowMobileFilter(false);
+                        }}
+                        className="mobile-filter-reset-btn"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <div className="mobile-filter-options-list">
+                    {categories.map((cat) => {
+                      const isSelected = activeCategory === cat;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => {
+                            setActiveCategory(cat);
+                            setShowMobileFilter(false);
+                          }}
+                          className={`mobile-filter-option-item ${isSelected ? 'active' : ''}`}
+                        >
+                          <span>{cat}</span>
+                          {isSelected && <Check size={14} className="filter-check-icon" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="category-filter-tabs our-erp-category-tabs">
+          {/* Category Tabs - Shown on Desktop, Hidden on Mobile Responsive */}
+          <div className="category-filter-tabs our-erp-category-tabs desktop-only-filter-tabs">
             {categories.map((cat) => (
               <button
                 key={cat}

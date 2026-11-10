@@ -5,7 +5,7 @@ import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket, isSameProduct } from '../context/SocketContext';
-import { getProductFallbackImage } from './ProductsPage';
+import { getProductFallbackImage } from '../utils/productImages';
 import { getProjectCategory } from '../utils/adminProjects';
 import {
   Globe,
@@ -327,34 +327,6 @@ export const ProductDetailPage = () => {
                   }
                 }}
                 className="btn-back-link"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  marginTop: '-6px',
-                  marginBottom: '14px',
-                  padding: '6px 14px',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #cbd5e1',
-                  borderRadius: '9999px',
-                  color: '#1e293b',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-                  width: 'fit-content',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f0fdf4';
-                  e.currentTarget.style.color = '#00875a';
-                  e.currentTarget.style.borderColor = '#00875a';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#ffffff';
-                  e.currentTarget.style.color = '#1e293b';
-                  e.currentTarget.style.borderColor = '#cbd5e1';
-                }}
               >
                 <ArrowLeft size={16} />
                 <span>Back</span>

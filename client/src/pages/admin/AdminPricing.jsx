@@ -17,57 +17,61 @@ import {
 
 const DEFAULT_SAAS_PLANS = [
   {
-    slug: 'starter',
-    name: 'Starter',
-    price: '₹2,499',
-    period: '/user /month',
-    desc: 'Ideal for small businesses and growing teams needing core HR & Project tools.',
+    slug: 'subscriptions-plan',
+    name: 'Subscriptions Plan',
+    price: '48,000',
+    period: 'Yearly Renewal',
+    desc: 'Core ERP software subscription with single domain access and customer mobile app.',
     features: [
-      'Up to 25 Active Employees',
-      'HRMS & Directory Portal',
-      'Leave & Attendance Tracking',
-      'Task & Project Boards',
-      'Standard Email Support',
-      'Continuous Cloud Backups',
+      'Permitted for Single domain',
+      'Android Customer App',
+      'Master Admin Panel',
+      'Website',
+      '3 Months Support',
+      '✕ No Source Code Included',
+      '✕ Payment Gateway Integration',
     ],
     popular: false,
-    btnText: 'Start 14-Day Free Trial',
+    btnText: 'Get Started',
     order: 1,
   },
   {
-    slug: 'professional',
-    name: 'Professional',
-    price: '₹5,999',
-    period: '/user /month',
-    desc: 'Complete suite for scaling companies that need unified payroll, finance & CRM.',
+    slug: 'startup-plan',
+    name: 'Startup Plan',
+    price: '89,000',
+    period: 'One-time payment',
+    desc: 'Complete turnkey ecosystem with user, seller, and driver multi-app suite.',
     features: [
-      'Up to 200 Employees',
-      'Full Payroll & Tax Automation',
-      'Finance, Invoicing & Expenses',
-      'Client CRM & Deal Pipelines',
-      'Asset Management & Devices',
-      'Priority 24/7 Live Support',
+      'Permitted for Single domain',
+      'Android & iOS Apps for Users',
+      'Android & iOS Apps for Sellers',
+      'Android & iOS Apps for Drivers',
+      'Master Admin Panel',
+      '6 Months Support',
+      'Complete Web Panel',
+      'Payment Gateway Integration',
     ],
     popular: true,
-    btnText: 'Get Started with Pro',
+    btnText: 'Choose This Plan',
     order: 2,
   },
   {
-    slug: 'enterprise',
-    name: 'Enterprise',
-    price: 'Custom',
-    period: 'tailored quote',
-    desc: 'For large organizations demanding custom SLAs, dedicated infrastructure & audit.',
+    slug: 'enterprise-plan',
+    name: 'Enterprise Plan',
+    price: '160,000',
+    period: 'One-time payment',
+    desc: 'Multi-domain enterprise deployment with analytics, custom branding, and SLA support.',
     features: [
-      'Unlimited Employees & Users',
-      'Custom ERP Module Development',
-      'Dedicated Cloud Instance / VPC',
-      '24/7 Dedicated Account Manager',
-      'SSO / SAML / Active Directory',
-      'Custom Data Retention SLAs',
+      'Permitted for Multiple domain',
+      'Everything in Startup Plan',
+      'Advanced Analytics Dashboard',
+      'Multi-language Support',
+      '12 Months Support',
+      'Custom Branding',
+      'Priority Support',
     ],
     popular: false,
-    btnText: 'Contact Enterprise Sales',
+    btnText: 'Contact Sales',
     order: 3,
   },
 ];
@@ -113,6 +117,7 @@ export const AdminPricing = () => {
   const [isEditingInModal, setIsEditingInModal] = useState(false);
   const [modalDraft, setModalDraft] = useState(null);
   const [newModalFeatureInput, setNewModalFeatureInput] = useState('');
+  const [newModalFeatureExcluded, setNewModalFeatureExcluded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -123,7 +128,13 @@ export const AdminPricing = () => {
       const res = await api.get('/pricing');
       if (res.data && res.data.data && res.data.data.length > 0) {
         const hasOld = res.data.data.some(
-          (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+          (p) =>
+            p.slug === 'website' ||
+            p.slug === 'mobile-app' ||
+            p.slug === 'website-mobile-app' ||
+            p.slug === 'starter' ||
+            p.slug === 'professional' ||
+            p.slug === 'enterprise'
         );
         if (hasOld) {
           setPlans(DEFAULT_SAAS_PLANS);
@@ -198,13 +209,58 @@ export const AdminPricing = () => {
   };
 
   const handleAddDraftFeature = () => {
-    const text = (newModalFeatureInput || '').trim();
+    let text = (newModalFeatureInput || '').trim();
     if (!text) return;
+    if (newModalFeatureExcluded && !text.startsWith('✕ ')) {
+      text = `✕ ${text}`;
+    }
     setModalDraft((prev) => ({
       ...prev,
       features: [...(prev.features || []), text],
     }));
     setNewModalFeatureInput('');
+    setNewModalFeatureExcluded(false);
+  };
+
+  const handleToggleFeatureIncluded = (featureIdx) => {
+    setModalDraft((prev) => {
+      const feats = [...(prev.features || [])];
+      const current = feats[featureIdx];
+      if (typeof current !== 'string') return prev;
+      const isExcluded = current.startsWith('✕ ') || current.startsWith('! ') || current.startsWith('[-] ');
+      const clean = current.replace(/^([✕!]|\[-\]|\[x\])\s*/, '');
+      feats[featureIdx] = isExcluded ? clean : `✕ ${clean}`;
+      return {
+        ...prev,
+        features: feats,
+      };
+    });
+  };
+
+  const handleAddNewPlan = () => {
+    const newPlan = {
+      slug: `custom-plan-${Date.now()}`,
+      name: 'New Pricing Plan',
+      price: '99,000',
+      period: 'One-time payment',
+      desc: 'Complete turnkey ERP deployment with support.',
+      features: [
+        'Permitted for Single domain',
+        'Customer Mobile App',
+        'Master Admin Panel',
+        'Standard Support',
+      ],
+      popular: false,
+      btnText: 'Choose This Plan',
+      order: plans.length + 1,
+    };
+    setPlans((prev) => [...prev, newPlan]);
+    setSelectedPlanIdx(plans.length);
+    setIsEditingInModal(true);
+    setModalDraft(newPlan);
+    setNewModalFeatureInput('');
+    setNewModalFeatureExcluded(false);
+    setSaveSuccess(false);
   };
 
   const handleRemoveDraftFeature = (featureIdx) => {
@@ -312,378 +368,362 @@ export const AdminPricing = () => {
   return (
     <div className="admin-page-view">
       {/* Header Row */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '16px',
-          marginBottom: '26px',
-          paddingBottom: '16px',
-          borderBottom: '1px solid #e2e8f0',
-        }}
-      >
-        <div style={{ flex: '1 1 300px' }}>
-          <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
-            Pricing &amp; Plans Management
-          </h1>
-          <p className="admin-subtext" style={{ margin: 0 }}>
-            Click on any card to view its full details, edit pricing and features, or delete the plan.
-          </p>
-        </div>
-
-        {/* Top Right Corner Toggle Button for Home Navbar Pricing Link */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={handleToggleNavbarPricing}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleToggleNavbarPricing();
-              }
-            }}
-            className={`admin-navbar-toggle-btn ${isPricingActive ? 'is-active' : 'is-inactive'}`}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '6px 14px',
-              borderRadius: '10px',
-              backgroundColor: isPricingActive ? '#ecfdf5' : '#f8fafc',
-              border: isPricingActive ? '1.5px solid #10b981' : '1.5px solid #cbd5e1',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: isPricingActive
-                ? '0 3px 12px rgba(16, 185, 129, 0.15)'
-                : '0 2px 6px rgba(15, 23, 42, 0.05)',
-              userSelect: 'none',
-              outline: 'none',
-            }}
-            title={
-              isPricingActive
-                ? 'Click to turn OFF: hide Pricing option and /pricing page'
-                : 'Click to turn ON: show Pricing option and /pricing page'
-            }
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '7px',
-                  backgroundColor: isPricingActive ? '#d1fae5' : '#e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: isPricingActive ? '#059669' : '#64748b',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {isPricingActive ? <Eye size={16} /> : <EyeOff size={16} />}
-              </div>
-              <span
-                style={{
-                  fontSize: '0.88rem',
-                  fontWeight: 700,
-                  color: isPricingActive ? '#065f46' : '#475569',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Pricing: {isPricingActive ? 'ON' : 'OFF'}
-              </span>
-            </div>
-
-            {/* Switch Slider */}
-            <div
-              style={{
-                width: '38px',
-                height: '20px',
-                borderRadius: '9999px',
-                backgroundColor: isPricingActive ? '#059669' : '#cbd5e1',
-                padding: '2px',
-                display: 'flex',
-                alignItems: 'center',
-                transition: 'background-color 0.2s ease',
-                position: 'relative',
-                flexShrink: 0,
-              }}
-            >
-              <div
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  transform: isPricingActive ? 'translateX(18px)' : 'translateX(0px)',
-                  transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-              />
-            </div>
+      <div className="admin-page-header-row">
+        <div className="admin-header-top-row">
+          <div className="admin-header-title-wrap">
+            <h1 className="admin-heading">
+              <span className="admin-heading-desktop">Pricing &amp; Plans Management</span>
+              <span className="admin-heading-mobile">Pricing Plans</span>
+            </h1>
           </div>
 
-          {toggleNotice && (
-            <span
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto', flexShrink: 0 }}>
+            <button
+              type="button"
+              onClick={handleAddNewPlan}
+              className="btn-hero-primary"
               style={{
-                fontSize: '0.78rem',
-                color: isPricingActive ? '#059669' : '#dc2626',
-                fontWeight: 600,
-                marginTop: '1px',
-                transition: 'all 0.2s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '7px 16px',
+                fontSize: '0.84rem',
+                fontWeight: 700,
+                borderRadius: '8px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                whiteSpace: 'nowrap',
               }}
             >
-              ✓ {toggleNotice}
-            </span>
-          )}
+              <Plus size={15} /> <span>Add Plan</span>
+            </button>
+
+            {/* Top Right Corner Toggle Button for Home Navbar Pricing Link */}
+            <div className="admin-header-toggle-wrap">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={handleToggleNavbarPricing}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleToggleNavbarPricing();
+                  }
+                }}
+                className={`admin-navbar-toggle-btn ${isPricingActive ? 'is-active' : 'is-inactive'}`}
+                title={
+                  isPricingActive
+                    ? 'Click to turn OFF: hide Pricing option and /pricing page'
+                    : 'Click to turn ON: show Pricing option and /pricing page'
+                }
+              >
+                <div className="admin-toggle-btn-left">
+                  <div className="admin-toggle-icon-wrap">
+                    {isPricingActive ? <Eye size={15} /> : <EyeOff size={15} />}
+                  </div>
+                  <span className="admin-toggle-label">
+                    Pricing: {isPricingActive ? 'ON' : 'OFF'}
+                  </span>
+                </div>
+
+                {/* Switch Slider */}
+                <div className="admin-toggle-switch-track">
+                  <div
+                    className="admin-toggle-switch-thumb"
+                    style={{
+                      transform: isPricingActive ? 'translateX(16px)' : 'translateX(0px)',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {toggleNotice && (
+                <span
+                  className="admin-toggle-notice"
+                  style={{
+                    color: isPricingActive ? '#059669' : '#dc2626',
+                  }}
+                >
+                  ✓ {toggleNotice}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
+
+        <p className="admin-subtext">
+          Click on any card to view its full details, edit pricing and features, or delete the plan.
+        </p>
       </div>
 
-      {/* Grid of Pricing Tiers (Clean Compact Card View) */}
+      {/* Grid of Pricing Tiers (Exact Match to Landing Page Design with Edit & Delete Options) */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '18px',
-          maxWidth: '1100px',
-          marginBottom: '35px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '24px',
+          maxWidth: '1240px',
+          margin: '0 auto 40px auto',
           alignItems: 'stretch',
         }}
       >
-        {plans.map((plan, pIdx) => (
-          <div
-            key={plan.slug || pIdx}
-            onClick={() => handleOpenDetails(pIdx)}
-            className={`pricing-card ${plan.popular ? 'popular-tier' : ''}`}
-            style={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-              backgroundColor: '#ffffff',
-              border: plan.popular ? '2px solid #00875a' : '1px solid #e2e8f0',
-              borderRadius: '16px',
-              padding: '22px 20px',
-              boxShadow: plan.popular
-                ? '0 6px 18px -3px rgba(0, 135, 90, 0.15)'
-                : '0 2px 8px rgba(15, 23, 42, 0.04)',
-              cursor: 'pointer',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
-            }}
-            title="Click to view details, edit or delete"
-          >
-            {/* Popular Tag */}
-            {plan.popular && (
-              <div
-                className="popular-badge"
-                style={{
-                  position: 'absolute',
-                  top: '-10px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  backgroundColor: '#00875a',
-                  color: '#ffffff',
-                  padding: '3px 10px',
-                  borderRadius: '9999px',
-                  fontSize: '0.68rem',
-                  fontWeight: 700,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  boxShadow: '0 2px 5px rgba(0, 135, 90, 0.3)',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                <Sparkles size={11} /> Most Popular
-              </div>
-            )}
-
-            {/* Plan Title */}
-            <h3
-              style={{
-                fontSize: '1.2rem',
-                fontWeight: 800,
-                color: '#0f172a',
-                margin: '0 0 6px 0',
-              }}
-            >
-              {plan.name}
-            </h3>
-
-            {/* Plan Description */}
-            <p
-              style={{
-                fontSize: '0.8rem',
-                color: '#64748b',
-                lineHeight: 1.45,
-                margin: '0 0 14px 0',
-                minHeight: '36px',
-              }}
-            >
-              {plan.desc}
-            </p>
-
-            {/* Price Row */}
+        {plans.map((plan, pIdx) => {
+          const isStartupPopular = plan.popular || plan.slug === 'startup-plan';
+          return (
             <div
+              key={plan.slug || pIdx}
+              className={`pricing-card ${isStartupPopular ? 'popular-tier' : ''}`}
               style={{
+                height: '100%',
                 display: 'flex',
-                alignItems: 'baseline',
-                gap: '5px',
-                marginBottom: '16px',
+                flexDirection: 'column',
+                position: 'relative',
+                backgroundColor: '#ffffff',
+                border: isStartupPopular ? '2px solid #00875a' : '1.5px solid #e2e8f0',
+                borderRadius: '18px',
+                padding: '36px 28px 24px 28px',
+                boxShadow: isStartupPopular
+                  ? '0 10px 25px -4px rgba(0, 135, 90, 0.2)'
+                  : '0 4px 16px rgba(15, 23, 42, 0.05)',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               }}
             >
-              <span
+              {/* Most Popular Badge on Top */}
+              {isStartupPopular && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-13px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: '#00875a',
+                    color: '#ffffff',
+                    padding: '4px 18px',
+                    borderRadius: '9999px',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    boxShadow: '0 2px 8px rgba(0, 135, 90, 0.35)',
+                    whiteSpace: 'nowrap',
+                    letterSpacing: '0.2px',
+                    zIndex: 2,
+                  }}
+                >
+                  Most Popular
+                </div>
+              )}
+
+              {/* Plan Title */}
+              <h3
                 style={{
-                  fontSize: '1.9rem',
+                  fontSize: '1.45rem',
                   fontWeight: 800,
                   color: '#0f172a',
+                  textAlign: 'center',
+                  margin: '0 0 10px 0',
+                }}
+              >
+                {plan.name}
+              </h3>
+
+              {/* Price Row */}
+              <div
+                style={{
+                  fontSize: '2.5rem',
+                  fontWeight: 900,
+                  color: '#0f172a',
+                  textAlign: 'center',
                   letterSpacing: '-0.5px',
+                  margin: '0 0 4px 0',
+                  lineHeight: 1.1,
                 }}
               >
                 {plan.price}
-              </span>
-              {plan.period ? (
-                <span
-                  style={{
-                    fontSize: '0.78rem',
-                    color: '#64748b',
-                    fontWeight: 500,
-                  }}
-                >
-                  {plan.period}
-                </span>
-              ) : null}
-            </div>
+              </div>
 
-            {/* CTA Button Preview */}
-            <button
-              type="button"
-              style={{
-                width: '100%',
-                padding: '9px 14px',
-                borderRadius: '9999px',
-                fontSize: '0.82rem',
-                fontWeight: 700,
-                marginBottom: '18px',
-                backgroundColor: plan.popular ? '#00875a' : '#f8fafc',
-                color: plan.popular ? '#ffffff' : '#0f172a',
-                border: plan.popular ? 'none' : '1.5px solid #e2e8f0',
-                pointerEvents: 'none',
-              }}
-            >
-              {plan.btnText || 'Start 14-Day Free Trial'}
-            </button>
-
-            {/* Included Features List */}
-            <div style={{ flex: 1 }}>
-              <span
+              {/* Period / Subtitle */}
+              <div
                 style={{
-                  display: 'block',
-                  fontSize: '0.82rem',
-                  fontWeight: 700,
-                  color: '#0f172a',
-                  marginBottom: '10px',
+                  fontSize: '0.85rem',
+                  fontWeight: 500,
+                  color: '#94a3b8',
+                  textAlign: 'center',
+                  marginBottom: '26px',
                 }}
               >
-                What&apos;s included:
-              </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
-                {(plan.features || []).map((feat, fIdx) => (
-                  <div
-                    key={fIdx}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '8px',
-                      fontSize: '0.8rem',
-                      color: '#334155',
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    <Check
-                      size={14}
-                      style={{ color: '#00875a', flexShrink: 0, marginTop: '2px' }}
-                    />
-                    <span>{feat}</span>
-                  </div>
-                ))}
+                {plan.period}
+              </div>
+
+              {/* Included & Excluded Features List */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                  marginBottom: '28px',
+                  flex: 1,
+                }}
+              >
+                {(plan.features || []).map((feat, fIdx) => {
+                  const isExcluded =
+                    typeof feat === 'string' &&
+                    (feat.startsWith('✕ ') ||
+                      feat.startsWith('! ') ||
+                      feat.startsWith('[-] ') ||
+                      feat.startsWith('[x] '));
+                  const cleanText =
+                    typeof feat === 'string'
+                      ? feat.replace(/^([✕!]|\[-\]|\[x\])\s*/, '')
+                      : feat;
+                  return (
+                    <div
+                      key={fIdx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                      }}
+                    >
+                      {isExcluded ? (
+                        <span
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '50%',
+                            backgroundColor: '#fef2f2',
+                            color: '#f87171',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <X size={12} strokeWidth={2.8} />
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '50%',
+                            backgroundColor: '#ecfdf5',
+                            color: '#10b981',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Check size={12} strokeWidth={2.8} />
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          fontSize: '0.88rem',
+                          color: isExcluded ? '#94a3b8' : '#334155',
+                          fontWeight: 500,
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {cleanText}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* CTA Button Preview */}
+              <button
+                type="button"
+                style={{
+                  width: '100%',
+                  padding: '13px 20px',
+                  borderRadius: '10px',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  backgroundColor: '#00875a',
+                  color: '#ffffff',
+                  border: 'none',
+                  boxShadow: '0 4px 14px rgba(0, 135, 90, 0.25)',
+                  cursor: 'default',
+                  marginBottom: '16px',
+                }}
+              >
+                {plan.btnText || (isStartupPopular ? 'Choose This Plan' : 'Get Started')}
+              </button>
+
+              {/* Card Actions: Edit Option & Delete Option */}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '10px',
+                  paddingTop: '16px',
+                  borderTop: '1px solid #f1f5f9',
+                  width: '100%',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={(e) => handleOpenEdit(pIdx, e)}
+                  style={{
+                    flex: 1,
+                    padding: '10px 14px',
+                    backgroundColor: '#f0fdf4',
+                    color: '#166534',
+                    border: '1.5px solid #bbf7d0',
+                    borderRadius: '8px',
+                    fontSize: '0.86rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#dcfce7';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f0fdf4';
+                  }}
+                  title={`Edit ${plan.name} Details`}
+                >
+                  <Edit2 size={15} /> Edit
+                </button>
+
+                <button
+                  type="button"
+                  onClick={(e) => handleDeleteCardPlan(pIdx, e)}
+                  style={{
+                    flex: 1,
+                    padding: '10px 14px',
+                    backgroundColor: '#fef2f2',
+                    color: '#ef4444',
+                    border: '1.5px solid #fecaca',
+                    borderRadius: '8px',
+                    fontSize: '0.86rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#fee2e2';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#fef2f2';
+                  }}
+                  title={`Delete ${plan.name} Plan`}
+                >
+                  <Trash2 size={15} /> Delete
+                </button>
               </div>
             </div>
-
-            {/* Card Actions: Delete Option & Edit Details Option */}
-            <div
-              style={{
-                display: 'flex',
-                gap: '8px',
-                marginTop: 'auto',
-                paddingTop: '16px',
-                borderTop: '1px solid #f1f5f9',
-                width: '100%',
-              }}
-            >
-              <button
-                type="button"
-                onClick={(e) => handleDeleteCardPlan(pIdx, e)}
-                style={{
-                  flex: 1,
-                  padding: '9px 12px',
-                  backgroundColor: '#fef2f2',
-                  color: '#ef4444',
-                  border: '1px solid #fecaca',
-                  borderRadius: '8px',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '5px',
-                  transition: 'all 0.15s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#fee2e2';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#fef2f2';
-                }}
-                title={`Delete ${plan.name} Plan`}
-              >
-                <Trash2 size={14} /> Delete
-              </button>
-              <button
-                type="button"
-                onClick={(e) => handleOpenEdit(pIdx, e)}
-                style={{
-                  flex: 1.3,
-                  padding: '9px 12px',
-                  backgroundColor: '#f0fdf4',
-                  color: '#166534',
-                  border: '1.5px solid #bbf7d0',
-                  borderRadius: '8px',
-                  fontSize: '0.82rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '5px',
-                  transition: 'all 0.15s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#dcfce7';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f0fdf4';
-                }}
-                title={`Edit ${plan.name} Details`}
-              >
-                <Edit2 size={14} /> Edit Details
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Full-Screen Details & Edit Modal Dialog */}
@@ -1104,47 +1144,124 @@ export const AdminPricing = () => {
                       marginBottom: '6px',
                     }}
                   >
-                    Included Features ({modalDraft.features?.length || 0})
+                    Plan Features ({modalDraft.features?.length || 0}) — Click icon to toggle Included (✓) / Excluded (✕)
                   </label>
                   <div
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '6px',
-                      maxHeight: '160px',
+                      maxHeight: '200px',
                       overflowY: 'auto',
                       marginBottom: '10px',
                     }}
                   >
-                    {(modalDraft.features || []).map((feat, fIdx) => (
-                      <div
-                        key={fIdx}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          padding: '7px 10px',
-                          backgroundColor: '#f8fafc',
-                          borderRadius: '6px',
-                          border: '1px solid #e2e8f0',
-                          fontSize: '0.84rem',
-                        }}
-                      >
-                        <span style={{ color: '#334155' }}>&bull; {feat}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveDraftFeature(fIdx)}
-                          style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '2px' }}
-                          title="Remove feature"
+                    {(modalDraft.features || []).map((feat, fIdx) => {
+                      const isExcluded =
+                        typeof feat === 'string' &&
+                        (feat.startsWith('✕ ') ||
+                          feat.startsWith('! ') ||
+                          feat.startsWith('[-] ') ||
+                          feat.startsWith('[x] '));
+                      const cleanText =
+                        typeof feat === 'string'
+                          ? feat.replace(/^([✕!]|\[-\]|\[x\])\s*/, '')
+                          : feat;
+                      return (
+                        <div
+                          key={fIdx}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '7px 10px',
+                            backgroundColor: isExcluded ? '#fef2f2' : '#f8fafc',
+                            borderRadius: '6px',
+                            border: isExcluded ? '1px solid #fecaca' : '1px solid #e2e8f0',
+                            fontSize: '0.84rem',
+                          }}
                         >
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    ))}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <button
+                              type="button"
+                              onClick={() => handleToggleFeatureIncluded(fIdx)}
+                              style={{
+                                width: '22px',
+                                height: '22px',
+                                borderRadius: '50%',
+                                backgroundColor: isExcluded ? '#fee2e2' : '#ecfdf5',
+                                color: isExcluded ? '#ef4444' : '#10b981',
+                                border: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                flexShrink: 0,
+                              }}
+                              title={
+                                isExcluded
+                                  ? 'Currently Excluded (✕). Click to make Included (✓)'
+                                  : 'Currently Included (✓). Click to make Excluded (✕)'
+                              }
+                            >
+                              {isExcluded ? (
+                                <X size={12} strokeWidth={2.8} />
+                              ) : (
+                                <Check size={12} strokeWidth={2.8} />
+                              )}
+                            </button>
+                            <span
+                              style={{
+                                color: isExcluded ? '#94a3b8' : '#334155',
+                                fontWeight: 500,
+                              }}
+                            >
+                              {cleanText}
+                              {isExcluded && (
+                                <span style={{ marginLeft: '6px', fontSize: '0.72rem', color: '#ef4444', fontWeight: 600 }}>
+                                  (Excluded)
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveDraftFeature(fIdx)}
+                            style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '2px' }}
+                            title="Remove feature"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
 
-                  {/* Add Feature Input */}
-                  <div style={{ display: 'flex', gap: '6px' }}>
+                  {/* Add Feature Input with Included / Excluded Toggle */}
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                    <button
+                      type="button"
+                      onClick={() => setNewModalFeatureExcluded(!newModalFeatureExcluded)}
+                      style={{
+                        padding: '7px 10px',
+                        borderRadius: '6px',
+                        border: '1px solid',
+                        borderColor: newModalFeatureExcluded ? '#fca5a5' : '#86efac',
+                        backgroundColor: newModalFeatureExcluded ? '#fef2f2' : '#ecfdf5',
+                        color: newModalFeatureExcluded ? '#dc2626' : '#166534',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                      title="Click to toggle whether the feature to add is Included (✓) or Excluded (✕)"
+                    >
+                      {newModalFeatureExcluded ? <X size={13} /> : <Check size={13} />}
+                      {newModalFeatureExcluded ? 'Excluded (✕)' : 'Included (✓)'}
+                    </button>
                     <input
                       type="text"
                       placeholder="Add new feature..."
@@ -1358,21 +1475,65 @@ export const AdminPricing = () => {
                       overflowY: 'auto',
                     }}
                   >
-                    {(selectedPlan.features || []).map((feat, fIdx) => (
-                      <div
-                        key={fIdx}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          gap: '10px',
-                          fontSize: '0.86rem',
-                          color: '#334155',
-                        }}
-                      >
-                        <Check size={16} style={{ color: '#00875a', flexShrink: 0, marginTop: '2px' }} />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
+                    {(selectedPlan.features || []).map((feat, fIdx) => {
+                      const isExcluded =
+                        typeof feat === 'string' &&
+                        (feat.startsWith('✕ ') ||
+                          feat.startsWith('! ') ||
+                          feat.startsWith('[-] ') ||
+                          feat.startsWith('[x] '));
+                      const cleanText =
+                        typeof feat === 'string'
+                          ? feat.replace(/^([✕!]|\[-\]|\[x\])\s*/, '')
+                          : feat;
+                      return (
+                        <div
+                          key={fIdx}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            fontSize: '0.86rem',
+                            color: isExcluded ? '#94a3b8' : '#334155',
+                          }}
+                        >
+                          {isExcluded ? (
+                            <span
+                              style={{
+                                width: '18px',
+                                height: '18px',
+                                borderRadius: '50%',
+                                backgroundColor: '#fef2f2',
+                                color: '#ef4444',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                              }}
+                            >
+                              <X size={11} strokeWidth={2.8} />
+                            </span>
+                          ) : (
+                            <span
+                              style={{
+                                width: '18px',
+                                height: '18px',
+                                borderRadius: '50%',
+                                backgroundColor: '#ecfdf5',
+                                color: '#10b981',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                              }}
+                            >
+                              <Check size={11} strokeWidth={2.8} />
+                            </span>
+                          )}
+                          <span>{cleanText}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
