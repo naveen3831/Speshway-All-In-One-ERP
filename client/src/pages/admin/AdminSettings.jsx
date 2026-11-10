@@ -630,7 +630,7 @@ export const AdminSettings = () => {
 
       {/* 1. BRANDING & LOGO IDENTITY CARD */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -638,21 +638,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
-            flexWrap: 'wrap',
             gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -663,42 +665,55 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <Sparkles size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Application Logo &amp; Brand Identity
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Application Logo &amp; Brand Identity
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#ecfdf5',
+                    color: '#00875a',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Globe size={12} /> Global Brand Identity
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Change company brand name, logo icon, and tagline displayed across the website and admin console.
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                padding: '4px 12px',
-                backgroundColor: '#ecfdf5',
-                color: '#00875a',
-                borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <Globe size={13} /> Global Brand Identity
-            </span>
-
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
+            }}
+          >
             {!isEditingBranding ? (
               <button
                 type="button"
                 onClick={() => setIsEditingBranding(true)}
-                className="btn-hero-primary"
+                className="btn-hero-primary admin-settings-edit-btn"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -709,13 +724,14 @@ export const AdminSettings = () => {
                   borderRadius: '8px',
                   cursor: 'pointer',
                   boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 <Edit3 size={15} />
                 <span>Edit</span>
               </button>
             ) : (
-              <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                 <button
                   type="button"
                   onClick={handleResetDefaultBranding}
@@ -731,6 +747,7 @@ export const AdminSettings = () => {
                     fontSize: '0.78rem',
                     fontWeight: 600,
                     cursor: 'pointer',
+                    whiteSpace: 'nowrap',
                   }}
                   title="Reset to default Speshway logo and brand name"
                 >
@@ -745,11 +762,12 @@ export const AdminSettings = () => {
                     padding: '5px 12px',
                     borderRadius: '6px',
                     border: '1px solid #bbf7d0',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   Editing Mode
                 </span>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -1478,7 +1496,7 @@ export const AdminSettings = () => {
 
       {/* Main Profile Options Card */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -1486,19 +1504,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
+            gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -1509,41 +1531,55 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <User size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Administrator Profile Options
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Administrator Profile Options
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#ecfdf5',
+                    color: '#00875a',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <ShieldCheck size={12} /> Role: Super Administrator
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Change your name, login email, and administrative access password
               </span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                padding: '4px 12px',
-                backgroundColor: '#ecfdf5',
-                color: '#00875a',
-                borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <ShieldCheck size={13} /> Role: Super Administrator
-            </span>
 
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
+            }}
+          >
             {!isEditingProfile ? (
               <button
                 type="button"
                 onClick={() => setIsEditingProfile(true)}
-                className="btn-hero-primary"
+                className="btn-hero-primary admin-settings-edit-btn"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1554,6 +1590,7 @@ export const AdminSettings = () => {
                   borderRadius: '8px',
                   cursor: 'pointer',
                   boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 <Edit3 size={15} />
@@ -1569,6 +1606,7 @@ export const AdminSettings = () => {
                   padding: '5px 12px',
                   borderRadius: '6px',
                   border: '1px solid #bbf7d0',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 Editing Mode
@@ -2028,7 +2066,7 @@ export const AdminSettings = () => {
 
       {/* 3. SOCIAL MEDIA PROFILES & URL CONFIGURATION CARD */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -2036,21 +2074,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
-            flexWrap: 'wrap',
             gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -2061,26 +2101,55 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <Share2 size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Official Social Media Accounts &amp; Profile Links
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Official Social Media Accounts &amp; Profile Links
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#eff6ff',
+                    color: '#2563eb',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Share2 size={12} /> Public Header &amp; Footer
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Configure destination links for the footer social icons. Only authentic, matching platform URLs are accepted.
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
+            }}
+          >
             {!isEditingSocial ? (
               <button
                 type="button"
                 onClick={() => setIsEditingSocial(true)}
-                className="btn-hero-primary"
+                className="btn-hero-primary admin-settings-edit-btn"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -2091,13 +2160,14 @@ export const AdminSettings = () => {
                   borderRadius: '8px',
                   cursor: 'pointer',
                   boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 <Edit3 size={15} />
                 <span>Edit</span>
               </button>
             ) : (
-              <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                 <button
                   type="button"
                   onClick={handleResetDefaultSocial}
@@ -2113,6 +2183,7 @@ export const AdminSettings = () => {
                     fontSize: '0.78rem',
                     fontWeight: 600,
                     cursor: 'pointer',
+                    whiteSpace: 'nowrap',
                   }}
                   title="Reset all social media links to default Speshway handles"
                 >
@@ -2127,11 +2198,12 @@ export const AdminSettings = () => {
                     padding: '5px 12px',
                     borderRadius: '6px',
                     border: '1px solid #bbf7d0',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   Editing Mode
                 </span>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -2532,7 +2604,7 @@ export const AdminSettings = () => {
 
       {/* 4. SESSION SECURITY & INACTIVITY TIMEOUT CARD */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -2540,21 +2612,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
-            flexWrap: 'wrap',
             gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -2565,42 +2639,55 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <ShieldCheck size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Session Security &amp; Inactivity Auto-Lock
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Session Security &amp; Inactivity Auto-Lock
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#ecfdf5',
+                    color: '#00875a',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Check size={12} /> HTTP-Only Cookies Active
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Manage automatic idle timeout and secure HTTP-only cookie parameters for active administrators.
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                padding: '4px 12px',
-                backgroundColor: '#ecfdf5',
-                color: '#00875a',
-                borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <Check size={13} /> HTTP-Only Cookies Active
-            </span>
-
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
+            }}
+          >
             {!isEditingTimeout ? (
               <button
                 type="button"
                 onClick={() => setIsEditingTimeout(true)}
-                className="btn-hero-primary"
+                className="btn-hero-primary admin-settings-edit-btn"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -2611,6 +2698,7 @@ export const AdminSettings = () => {
                   borderRadius: '8px',
                   cursor: 'pointer',
                   boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 <Edit3 size={15} />
@@ -2626,6 +2714,7 @@ export const AdminSettings = () => {
                   padding: '5px 12px',
                   borderRadius: '6px',
                   border: '1px solid #bbf7d0',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 Editing Mode
