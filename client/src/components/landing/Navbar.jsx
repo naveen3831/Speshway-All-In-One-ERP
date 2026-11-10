@@ -32,13 +32,37 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     };
   }, []);
 
-  // Auto-open Contact Card pop up when opening the website
+  // Auto-open Contact Card pop up ONLY when first opening the website (never on refresh or reload)
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname !== '/') return;
+
+    try {
+      // 1. Check if user refreshed the page (browser reload)
+      const navEntries = performance.getEntriesByType?.('navigation') || [];
+      const isReload =
+        navEntries.length > 0
+          ? navEntries[0].type === 'reload'
+          : performance?.navigation?.type === 1;
+
+      if (isReload) {
+        sessionStorage.setItem('speshway_welcome_popup_shown', 'true');
+        return;
+      }
+
+      // 2. Check if already shown in this browsing session
+      const alreadyShown = sessionStorage.getItem('speshway_welcome_popup_shown');
+      if (alreadyShown) {
+        return;
+      }
+
+      // 3. Mark as shown and pop up smoothly after 700ms on first website open
+      sessionStorage.setItem('speshway_welcome_popup_shown', 'true');
       const timer = setTimeout(() => {
         setContactCardOpen(true);
       }, 700);
       return () => clearTimeout(timer);
+    } catch (e) {
+      // Fallback in case of restricted environment
     }
   }, []);
 
