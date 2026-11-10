@@ -326,18 +326,16 @@ export const AdminInquiries = () => {
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
+      {/* Search Bar */}
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
           gap: '12px',
           marginBottom: '16px',
-          flexWrap: 'wrap',
         }}
       >
-        <div style={{ position: 'relative', flex: '1', minWidth: '260px' }}>
+        <div style={{ position: 'relative', width: '100%' }}>
           <Search
             size={16}
             style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
@@ -350,73 +348,6 @@ export const AdminInquiries = () => {
             className="quick-input"
             style={{ width: '100%', paddingLeft: '36px', height: '40px', borderRadius: '8px' }}
           />
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => setFilterType('all')}
-            style={{
-              backgroundColor: filterType === 'all' ? '#10b981' : '#f1f5f9',
-              color: filterType === 'all' ? '#fff' : '#475569',
-              border: 'none',
-              padding: '8px 14px',
-              borderRadius: '8px',
-              fontWeight: 600,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            All ({inquiries.length})
-          </button>
-          <button
-            onClick={() => setFilterType('get-started')}
-            style={{
-              backgroundColor: filterType === 'get-started' ? '#2563eb' : '#f1f5f9',
-              color: filterType === 'get-started' ? '#fff' : '#475569',
-              border: 'none',
-              padding: '8px 14px',
-              borderRadius: '8px',
-              fontWeight: 600,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            Free Trials ({getStartedCount})
-          </button>
-          <button
-            onClick={() => setFilterType('demo')}
-            style={{
-              backgroundColor: filterType === 'demo' ? '#7c3aed' : '#f1f5f9',
-              color: filterType === 'demo' ? '#fff' : '#475569',
-              border: 'none',
-              padding: '8px 14px',
-              borderRadius: '8px',
-              fontWeight: 600,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            Live Demos ({demoCount})
-          </button>
-          <button
-            onClick={() => setFilterType('contact')}
-            style={{
-              backgroundColor: filterType === 'contact' ? '#0284c7' : '#f1f5f9',
-              color: filterType === 'contact' ? '#fff' : '#475569',
-              border: 'none',
-              padding: '8px 14px',
-              borderRadius: '8px',
-              fontWeight: 600,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            Contact Messages ({contactCount})
-          </button>
         </div>
       </div>
 
