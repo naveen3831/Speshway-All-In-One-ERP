@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Check, X, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Check, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import './StartupPlans.css';
 
 const STARTUP_PLANS = [
@@ -68,10 +68,33 @@ const STARTUP_PLANS = [
 ];
 
 export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
-  const [activePlanIdx, setActivePlanIdx] = useState(0);
-  const scrollRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(1); // Default to middle "Startup Plan"
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const total = STARTUP_PLANS.length;
 
-  const handleButtonClick = (actionType) => {
+  const nextSlide = useCallback(() => {
+    setActiveIndex((prev) => (prev + 1) % total);
+  }, [total]);
+
+  const prevSlide = useCallback(() => {
+    setActiveIndex((prev) => (prev - 1 + total) % total);
+  }, [total]);
+
+  // Continuous auto-rotation matching Our Platform Solutions animation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % total);
+    }, 1200); // Steady 1.2s cycle for smooth professional 3D carousel transitions
+    return () => clearInterval(interval);
+  }, [total]);
+
+  const handleButtonClick = (e, actionType, isActive, index) => {
+    if (e) e.stopPropagation();
+    if (!isActive) {
+      setActiveIndex(index);
+      return;
+    }
     if (actionType === 'demo' && onOpenDemo) {
       onOpenDemo();
     } else if (onOpenGetStarted) {
@@ -79,44 +102,31 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
     }
   };
 
-  const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const el = scrollRef.current;
-    const containerCenter = el.scrollLeft + el.offsetWidth / 2;
-    const children = el.children;
-    if (!children || children.length === 0) return;
-
-    let closestIdx = 0;
-    let minDiff = Infinity;
-    for (let i = 0; i < children.length; i++) {
-      const child = children[i];
-      const childCenter = child.offsetLeft + child.offsetWidth / 2;
-      const diff = Math.abs(containerCenter - childCenter);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestIdx = i;
-      }
-    }
-    setActivePlanIdx(closestIdx);
+  // Touch swipe support for mobile
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches ? e.touches[0].clientX : e.clientX;
   };
 
-  const scrollToPlan = (idx) => {
-    if (!scrollRef.current) return;
-    const children = scrollRef.current.children;
-    if (children && children[idx]) {
-      children[idx].scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center',
-        block: 'nearest',
-      });
-      setActivePlanIdx(idx);
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches ? e.touches[0].clientX : e.clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 45) {
+      nextSlide();
+    } else if (diff < -45) {
+      prevSlide();
     }
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   return (
     <section id="startup-plans" className="startup-plans-section">
       <div className="startup-plans-container">
-        {/* Section Header matching Screenshot */}
+        {/* Section Header */}
         <div className="startup-plans-header">
           <h2 className="startup-plans-title">
             Choose Your <span className="title-highlight">Startup Plan</span>
@@ -126,81 +136,134 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
           </p>
         </div>
 
-        {/* Pricing Cards Grid / Side Scroll on Mobile */}
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="startup-plans-grid"
-        >
-          {STARTUP_PLANS.map((plan) => (
-            <div
-              key={plan.id}
-              className={`startup-plan-card ${plan.isPopular ? 'popular-card' : ''}`}
-            >
-              {/* Most Popular Floating Badge */}
-              {plan.isPopular && (
-                <div className="plan-popular-badge">
-                  <span>{plan.badgeText}</span>
-                </div>
-              )}
+        {/* 3D Coverflow Carousel Stage with outer navigation matching Platform Solutions */}
+        <div className="coverflow-wrapper startup-plans-coverflow-wrapper">
+          {/* Borderless Left Chevron Arrow */}
+          <button
+            type="button"
+            className="coverflow-nav-btn prev startup-plans-nav-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              prevSlide();
+            }}
+            aria-label="Previous startup plan"
+            title="Previous"
+          >
+            <ChevronLeft size={32} strokeWidth={2.4} />
+          </button>
 
-              {/* Card Header */}
-              <div className="plan-header">
-                <h3 className="plan-name">{plan.name}</h3>
-                <div className="plan-price-row">
-                  <span className="plan-currency">{plan.currency}</span>
-                  <span className="plan-price-amount">{plan.price}</span>
-                </div>
-                <div className="plan-period">{plan.period}</div>
-              </div>
+          <div
+            className="coverflow-stage startup-plans-stage"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className="coverflow-track">
+              {STARTUP_PLANS.map((plan, index) => {
+                let offset = (index - activeIndex + total) % total;
+                if (offset > total / 2) {
+                  offset -= total;
+                }
 
-              {/* Features List */}
-              <ul className="plan-features-list">
-                {plan.features.map((feature, fIdx) => (
-                  <li
-                    key={fIdx}
-                    className={`plan-feature-item ${feature.included ? 'included' : 'excluded'}`}
+                const isActive = offset === 0;
+                const isLeft = offset === -1;
+                const isRight = offset === 1;
+
+                const isVisible = isActive || isLeft || isRight;
+                if (!isVisible) return null;
+
+                let cardClass = `startup-plan-card ${plan.isPopular ? 'popular-card' : ''}`;
+                if (isActive) cardClass += ' is-active';
+                else if (isLeft) cardClass += ' is-left';
+                else if (isRight) cardClass += ' is-right';
+
+                return (
+                  <div
+                    key={plan.id}
+                    className={cardClass}
+                    onClick={() => {
+                      if (!isActive) {
+                        setActiveIndex(index);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${plan.name} plan`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        if (!isActive) {
+                          setActiveIndex(index);
+                        }
+                      }
+                    }}
                   >
-                    <span className={`feature-icon-wrapper ${feature.included ? 'check' : 'cross'}`}>
-                      {feature.included ? (
-                        <Check size={12} strokeWidth={2.6} />
-                      ) : (
-                        <X size={12} strokeWidth={2.6} />
-                      )}
-                    </span>
-                    <span className="feature-item-text">{feature.text}</span>
-                  </li>
-                ))}
-              </ul>
+                    {/* Most Popular Floating Badge */}
+                    {plan.isPopular && (
+                      <div className="plan-popular-badge">
+                        <span>{plan.badgeText}</span>
+                      </div>
+                    )}
 
-              {/* Action Button */}
-              <div className="plan-button-wrapper">
-                <button
-                  type="button"
-                  className={`plan-cta-btn btn-${plan.buttonVariant}`}
-                  onClick={() => handleButtonClick(plan.actionType)}
-                >
-                  {plan.buttonText}
-                </button>
-              </div>
+                    {/* Card Header */}
+                    <div className="plan-header">
+                      <h3 className="plan-name">{plan.name}</h3>
+                      <div className="plan-price-row">
+                        <span className="plan-currency">{plan.currency}</span>
+                        <span className="plan-price-amount">{plan.price}</span>
+                      </div>
+                      <div className="plan-period">{plan.period}</div>
+                    </div>
+
+                    {/* Features List */}
+                    <ul className="plan-features-list">
+                      {plan.features.map((feature, fIdx) => (
+                        <li
+                          key={fIdx}
+                          className={`plan-feature-item ${feature.included ? 'included' : 'excluded'}`}
+                        >
+                          <span className={`feature-icon-wrapper ${feature.included ? 'check' : 'cross'}`}>
+                            {feature.included ? (
+                              <Check size={12} strokeWidth={2.6} />
+                            ) : (
+                              <X size={12} strokeWidth={2.6} />
+                            )}
+                          </span>
+                          <span className="feature-item-text">{feature.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Action Button */}
+                    <div className="plan-button-wrapper">
+                      <button
+                        type="button"
+                        className={`plan-cta-btn btn-${plan.buttonVariant}`}
+                        onClick={(e) => handleButtonClick(e, plan.actionType, isActive, index)}
+                      >
+                        {plan.buttonText}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Mobile Side Scroll Indicator Dots */}
-        <div className="startup-plans-dots" aria-hidden="true">
-          {STARTUP_PLANS.map((plan, idx) => (
-            <button
-              key={plan.id}
-              type="button"
-              className={`startup-plan-dot ${activePlanIdx === idx ? 'active' : ''}`}
-              onClick={() => scrollToPlan(idx)}
-              aria-label={`Scroll to ${plan.name}`}
-            />
-          ))}
+          {/* Borderless Right Chevron Arrow */}
+          <button
+            type="button"
+            className="coverflow-nav-btn next startup-plans-nav-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              nextSlide();
+            }}
+            aria-label="Next startup plan"
+            title="Next"
+          >
+            <ChevronRight size={32} strokeWidth={2.4} />
+          </button>
         </div>
       </div>
     </section>
   );
 };
-

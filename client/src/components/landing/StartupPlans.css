@@ -1,23 +1,24 @@
 /* ==========================================================================
-   CHOOSE YOUR STARTUP PLAN - COMPACT PRICING CARDS
-   Proportional Decreased Size matching Clean Modern SaaS Aesthetics
+   CHOOSE YOUR STARTUP PLAN - 3D COVERFLOW ANIMATION
+   Matching Our Platform Solutions animation without changing UI colors
    ========================================================================== */
 
 .startup-plans-section {
   padding: 52px 20px 64px 20px;
   background-color: #ffffff;
   position: relative;
+  overflow: hidden;
 }
 
 .startup-plans-container {
-  max-width: 1060px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
 /* Header */
 .startup-plans-header {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 }
 
 .startup-plans-title {
@@ -44,44 +45,129 @@
   line-height: 1.45;
 }
 
-/* Cards Grid */
-.startup-plans-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  align-items: stretch;
+/* ==========================================================================
+   3D COVERFLOW STAGE & NAVIGATION (Matching Platform Solutions)
+   ========================================================================== */
+.startup-plans-coverflow-wrapper {
   position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
-/* Card Styling - Compact Size */
+.startup-plans-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 45;
+  width: 46px;
+  height: 46px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  padding: 0;
+}
+
+.startup-plans-nav-btn.prev {
+  left: 0;
+}
+
+.startup-plans-nav-btn.next {
+  right: 0;
+}
+
+.startup-plans-nav-btn:hover {
+  color: #047857;
+  transform: translateY(-50%) scale(1.22);
+}
+
+.startup-plans-nav-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.startup-plans-stage {
+  position: relative;
+  width: calc(100% - 90px);
+  max-width: 1060px;
+  height: 470px;
+  margin: 0 auto;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  user-select: none;
+  touch-action: pan-y;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.startup-plans-section .coverflow-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* ==========================================================================
+   CARD STYLING - EXACT UI COLORS WITH 3D COVERFLOW TRANSFORMS
+   ========================================================================== */
 .startup-plan-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  max-width: 86vw;
+  height: 420px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-  padding: 26px 22px;
+  padding: 24px 22px;
   display: flex;
   flex-direction: column;
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.45s ease,
+              filter 0.45s ease,
+              box-shadow 0.45s ease;
+  will-change: transform, opacity;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
-.startup-plan-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08);
+/* Active Front Card */
+.startup-plan-card.is-active {
+  z-index: 25;
+  transform: translate3d(-50%, -50%, 45px) scale(1.04);
+  opacity: 1;
+  filter: blur(0);
 }
 
-/* Middle "Most Popular" Card */
+.startup-plan-card.is-active:hover {
+  transform: translate3d(-50%, -50%, 45px) scale(1.06);
+}
+
+/* Middle "Most Popular" Card Styling (Exact UI Colors) */
 .startup-plan-card.popular-card {
   border: 2px solid #047857;
-  box-shadow: 0 12px 28px -8px rgba(4, 120, 87, 0.22),
-              0 0 0 1px rgba(4, 120, 87, 0.15);
-  transform: translateY(-6px);
+  box-shadow: 0 10px 24px -8px rgba(4, 120, 87, 0.18),
+              0 0 0 1px rgba(4, 120, 87, 0.12);
 }
 
-.startup-plan-card.popular-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 18px 36px -8px rgba(4, 120, 87, 0.3);
+.startup-plan-card.popular-card.is-active {
+  border: 2px solid #047857;
+  box-shadow: 0 16px 36px -8px rgba(4, 120, 87, 0.28),
+              0 0 0 1px rgba(4, 120, 87, 0.20);
 }
 
 .plan-popular-badge {
@@ -101,11 +187,36 @@
   z-index: 2;
 }
 
+/* Side Cards 3D Positions */
+.startup-plan-card.is-left {
+  z-index: 10;
+  transform: translate3d(calc(-50% - 280px), -50%, -30px) rotateY(15deg) scale(0.88);
+  opacity: 0.65;
+  filter: blur(0.3px);
+}
+
+.startup-plan-card.is-right {
+  z-index: 10;
+  transform: translate3d(calc(-50% + 280px), -50%, -30px) rotateY(-15deg) scale(0.88);
+  opacity: 0.65;
+  filter: blur(0.3px);
+}
+
+.startup-plan-card:not(.is-active):hover {
+  opacity: 0.90;
+  filter: blur(0);
+}
+
+.startup-plan-card:not(.is-active) .plan-cta-btn {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
 /* Plan Header */
 .plan-header {
   text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
   border-bottom: 1px solid #f1f5f9;
 }
 
@@ -113,7 +224,7 @@
   font-size: 1.15rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   letter-spacing: -0.01em;
 }
 
@@ -152,7 +263,7 @@
   margin: 0 0 auto 0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 8px;
 }
 
 .plan-feature-item {
@@ -182,10 +293,10 @@
 }
 
 .feature-item-text {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: #334155;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .plan-feature-item.excluded .feature-item-text {
@@ -194,7 +305,7 @@
 
 /* CTA Buttons */
 .plan-button-wrapper {
-  margin-top: 22px;
+  margin-top: 18px;
   padding-top: 4px;
 }
 
@@ -245,130 +356,75 @@
   box-shadow: 0 6px 16px rgba(4, 120, 87, 0.16);
 }
 
-/* Orange Buttons Fallback */
-.plan-cta-btn.btn-orange {
-  background-color: #ea580c;
-  color: #ffffff;
-  box-shadow: 0 3px 10px rgba(234, 88, 12, 0.22);
-}
-
-.plan-cta-btn.btn-orange:hover {
-  background-color: #c2410c;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(234, 88, 12, 0.3);
-}
-
-/* Blue Button Fallback */
-.plan-cta-btn.btn-blue {
-  background-color: #2563eb;
-  color: #ffffff;
-  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
-}
-
-.plan-cta-btn.btn-blue:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
-}
-
 .plan-cta-btn:active {
   transform: translateY(0);
 }
 
-/* Dots Indicator - Hidden on Desktop */
-.startup-plans-dots {
-  display: none;
-}
-
 /* ==========================================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (3D Coverflow matching Platform Solutions)
    ========================================================================== */
 @media (max-width: 960px) {
-  .startup-plans-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+  .startup-plan-card.is-left {
+    transform: translate3d(calc(-50% - 215px), -50%, -25px) rotateY(14deg) scale(0.86);
   }
-  .startup-plan-card {
-    padding: 22px 16px;
-  }
-  .plan-price-amount {
-    font-size: 1.85rem;
+  .startup-plan-card.is-right {
+    transform: translate3d(calc(-50% + 215px), -50%, -25px) rotateY(-14deg) scale(0.86);
   }
 }
 
 @media (max-width: 768px) {
   .startup-plans-section {
-    padding: 36px 0 44px 0;
-    overflow: hidden;
-  }
-  .startup-plans-header {
-    padding: 0 20px;
-    margin-bottom: 20px;
-  }
-  .startup-plans-container {
-    max-width: 100%;
-  }
-  /* Mobile side-scroll container with native swipe & snap */
-  .startup-plans-grid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scroll-padding: 0 20px;
-    gap: 16px;
-    padding: 18px 20px 24px 20px;
-    margin: 0;
-    max-width: none;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .startup-plans-grid::-webkit-scrollbar {
-    display: none;
-  }
-  .startup-plan-card {
-    flex: 0 0 84%;
-    max-width: 320px;
-    min-width: 270px;
-    scroll-snap-align: center;
-    scroll-snap-stop: normal;
-  }
-  .startup-plan-card.popular-card {
-    transform: none;
-  }
-  .startup-plan-card.popular-card:hover {
-    transform: translateY(-2px);
+    padding: 36px 14px 44px 14px;
   }
   .startup-plans-title {
     font-size: 1.75rem;
   }
-
-  /* Mobile Pagination Dots */
-  .startup-plans-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    padding: 0 16px;
-  }
-  .startup-plan-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    background-color: #cbd5e1;
-    border: none;
+  .startup-plans-coverflow-wrapper {
     padding: 0;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .startup-plan-dot.active {
-    width: 24px;
-    background-color: #047857;
-    border-radius: 9999px;
-    box-shadow: 0 2px 6px rgba(4, 120, 87, 0.3);
+  .startup-plans-stage {
+    height: 445px;
+    width: 100%;
+  }
+  .startup-plan-card {
+    width: 295px;
+    height: 405px;
+    padding: 22px 18px;
+  }
+  .startup-plans-nav-btn.prev {
+    left: -6px;
+  }
+  .startup-plans-nav-btn.next {
+    right: -6px;
+  }
+  .startup-plan-card.is-left {
+    transform: translate3d(calc(-50% - 95px), -50%, -20px) rotateY(12deg) scale(0.80);
+    opacity: 0.35;
+  }
+  .startup-plan-card.is-right {
+    transform: translate3d(calc(-50% + 95px), -50%, -20px) rotateY(-12deg) scale(0.80);
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 480px) {
+  .startup-plans-stage {
+    height: 450px;
+  }
+  .startup-plan-card {
+    width: 280px;
+    height: 410px;
+    padding: 20px 16px;
+  }
+  .plan-price-amount {
+    font-size: 2rem;
+  }
+  .startup-plan-card.is-left {
+    transform: translate3d(calc(-50% - 85px), -50%, -18px) rotateY(10deg) scale(0.78);
+    opacity: 0.30;
+  }
+  .startup-plan-card.is-right {
+    transform: translate3d(calc(-50% + 85px), -50%, -18px) rotateY(-10deg) scale(0.78);
+    opacity: 0.30;
   }
 }
