@@ -292,19 +292,6 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
             <ChevronRight size={38} strokeWidth={2.4} />
           </button>
         </div>
-
-        {/* Carousel Pagination Dots */}
-        <div className="coverflow-dots">
-          {cards.map((_, dotIdx) => (
-            <button
-              key={dotIdx}
-              type="button"
-              className={`coverflow-dot ${dotIdx === activeIndex ? 'active' : ''}`}
-              onClick={() => setActiveIndex(dotIdx)}
-              aria-label={`Go to slide ${dotIdx + 1}`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );
