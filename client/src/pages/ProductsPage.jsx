@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
@@ -35,6 +35,10 @@ import {
   Image as ImageIcon,
   Loader2,
   CheckCircle,
+  Filter,
+  ChevronDown,
+  Check,
+  X,
 } from 'lucide-react';
 import { useNavigate, Navigate } from 'react-router-dom';
 
@@ -183,9 +187,22 @@ export const ProductsPage = () => {
   const [modalMode, setModalMode] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const mobileFilterRef = useRef(null);
   const [uploadingSlug, setUploadingSlug] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
   const navigate = useNavigate();
+
+  // Close mobile filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (mobileFilterRef.current && !mobileFilterRef.current.contains(e.target)) {
+        setShowMobileFilter(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Scroll to top on mount
   useEffect(() => {
@@ -238,20 +255,93 @@ export const ProductsPage = () => {
             Explore our comprehensive suite of modular, interconnected ERP applications. Click on any product to open its dedicated details, tech stack, and live features.
           </p>
 
-          {/* Search Bar */}
-          <div className="catalog-search-bar">
-            <Search size={18} className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search products by name or features..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="catalog-search-input"
-            />
+          {/* Search & Filter Bar Container */}
+          <div className="catalog-search-filter-wrapper">
+            <div className="catalog-search-bar">
+              <Search size={18} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search products by name or features..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="catalog-search-input"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="catalog-search-clear-btn"
+                  title="Clear search"
+                >
+                  <X size={15} />
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Responsive Only Filter Option Side of Search */}
+            <div className="catalog-mobile-filter-wrap" ref={mobileFilterRef}>
+              <button
+                type="button"
+                onClick={() => setShowMobileFilter((prev) => !prev)}
+                className={`catalog-mobile-filter-btn ${activeCategory !== 'All' ? 'is-active' : ''}`}
+                title="Filter by category"
+              >
+                <Filter size={16} />
+                <span className="mobile-filter-text">
+                  {activeCategory === 'All' ? 'Filter' : activeCategory}
+                </span>
+                <ChevronDown
+                  size={14}
+                  style={{
+                    transform: showMobileFilter ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.2s ease',
+                  }}
+                />
+              </button>
+
+              {showMobileFilter && (
+                <div className="catalog-mobile-filter-dropdown">
+                  <div className="mobile-filter-dropdown-header">
+                    <span>Category Filter</span>
+                    {activeCategory !== 'All' && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveCategory('All');
+                          setShowMobileFilter(false);
+                        }}
+                        className="mobile-filter-reset-btn"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <div className="mobile-filter-options-list">
+                    {categories.map((cat) => {
+                      const isSelected = activeCategory === cat;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => {
+                            setActiveCategory(cat);
+                            setShowMobileFilter(false);
+                          }}
+                          className={`mobile-filter-option-item ${isSelected ? 'active' : ''}`}
+                        >
+                          <span>{cat}</span>
+                          {isSelected && <Check size={14} className="filter-check-icon" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Category Tabs */}
-          <div className="category-filter-tabs">
+          {/* Category Tabs (Desktop Only) */}
+          <div className="category-filter-tabs desktop-only-filter-tabs">
             {categories.map((cat) => (
               <button
                 key={cat}

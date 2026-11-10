@@ -2054,6 +2054,16 @@ button {
 }
 
 /* Products Catalog Page */
+.catalog-search-filter-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 540px;
+  margin: 24px auto 16px auto;
+  position: relative;
+}
+
 .catalog-search-bar {
   display: flex;
   align-items: center;
@@ -2062,9 +2072,15 @@ button {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
   padding: 8px 18px;
+  width: 100%;
   max-width: 520px;
-  margin: 24px auto 16px auto;
   box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.catalog-search-bar:focus-within {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
 .catalog-search-input {
@@ -2073,6 +2089,32 @@ button {
   width: 100%;
   font-size: 0.92rem;
   font-family: inherit;
+  color: var(--text-dark);
+  background: transparent;
+}
+
+.catalog-search-clear-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.catalog-search-clear-btn:hover {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+/* Mobile Filter Option (Hidden on Desktop by default) */
+.catalog-mobile-filter-wrap {
+  display: none !important;
 }
 
 .category-filter-tabs {
@@ -2086,6 +2128,159 @@ button {
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 4px 12px;
+}
+
+.desktop-only-filter-tabs {
+  display: flex;
+}
+
+/* Mobile Responsive Only Filter Option Side of Search */
+@media (max-width: 768px) {
+  .catalog-search-filter-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px;
+    margin: 18px 0 12px 0;
+    box-sizing: border-box;
+  }
+
+  .catalog-search-bar {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    padding: 8px 14px;
+  }
+
+  .catalog-mobile-filter-wrap {
+    display: inline-flex !important;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .catalog-mobile-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 13px;
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: var(--radius-pill);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+    max-width: 140px;
+  }
+
+  .catalog-mobile-filter-btn:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+  }
+
+  .catalog-mobile-filter-btn.is-active {
+    background-color: #ecfdf5;
+    border-color: #10b981;
+    color: #047857;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+  }
+
+  .mobile-filter-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 82px;
+  }
+
+  /* Hide the horizontal cut-off pill tabs on mobile responsive */
+  .desktop-only-filter-tabs {
+    display: none !important;
+  }
+
+  .catalog-mobile-filter-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 220px;
+    max-width: 280px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 14px 30px -4px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.06);
+    z-index: 1000;
+    overflow: hidden;
+    animation: cardFadeUp 0.18s ease-out;
+  }
+
+  .mobile-filter-dropdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .mobile-filter-reset-btn {
+    background: transparent;
+    border: none;
+    color: #059669;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 2px 4px;
+  }
+
+  .mobile-filter-options-list {
+    padding: 6px 0;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
+  .mobile-filter-option-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 14px;
+    background: transparent;
+    border: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #334155;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+  }
+
+  .mobile-filter-option-item:hover,
+  .mobile-filter-option-item:active {
+    background-color: #f1f5f9;
+    color: #0f172a;
+  }
+
+  .mobile-filter-option-item.active {
+    background-color: #ecfdf5;
+    color: #047857;
+    font-weight: 700;
+  }
+
+  .filter-check-icon {
+    color: #059669;
+    flex-shrink: 0;
+  }
 }
 
 .category-filter-tabs::-webkit-scrollbar {
