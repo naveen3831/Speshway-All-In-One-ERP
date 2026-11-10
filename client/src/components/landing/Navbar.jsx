@@ -23,6 +23,15 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     setContactCardOpen(false);
   }, [location.pathname]);
 
+  // Listen for global custom event to open contact card from anywhere (e.g. Platform Solutions cards)
+  useEffect(() => {
+    const handleOpenContact = () => setContactCardOpen(true);
+    window.addEventListener('speshway_open_contact_card', handleOpenContact);
+    return () => {
+      window.removeEventListener('speshway_open_contact_card', handleOpenContact);
+    };
+  }, []);
+
   // Auto-open Contact Card pop up ONLY when first opening the website (never on refresh or reload)
   useEffect(() => {
     if (location.pathname !== '/') return;
@@ -62,14 +71,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     const stored = localStorage.getItem('speshway_navbar_pricing_visible');
     if (stored !== null) return stored === 'true';
-    return true;
+    return false;
   };
 
   const getProductsVisible = () => {
     if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     const stored = localStorage.getItem('speshway_navbar_products_visible');
     if (stored !== null) return stored === 'true';
-    return true;
+    return false;
   };
 
   const [showPricing, setShowPricing] = useState(getPricingVisible);

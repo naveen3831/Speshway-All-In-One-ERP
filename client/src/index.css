@@ -7831,9 +7831,9 @@ a.admin-kpi-card:hover {
    SIMPLE & PROFESSIONAL ENTERPRISE FOOTER (ALL PUBLIC PAGES)
    ========================================================================== */
 .pro-footer {
-  background-color: #0b1120;
-  color: #f8fafc;
-  border-top: 1px solid #1e293b;
+  background: linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 50%, #e6fcf0 100%);
+  color: #1e293b;
+  border-top: 1.5px solid #a7f3d0;
   margin-top: auto;
   position: relative;
   z-index: 10;
@@ -7842,7 +7842,7 @@ a.admin-kpi-card:hover {
 .pro-footer-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 30px 24px 20px 24px;
+  padding: 40px 24px 28px 24px;
 }
 
 .pro-footer-grid {
@@ -7865,11 +7865,13 @@ a.admin-kpi-card:hover {
 }
 
 .footer-logo-wrap {
-  width: 34px;
-  height: 34px;
-  border-radius: 7px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   overflow: hidden;
   background: #ffffff;
+  border: 1.5px solid #a7f3d0;
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.08);
   padding: 3px;
   display: flex;
   align-items: center;
@@ -7878,34 +7880,34 @@ a.admin-kpi-card:hover {
 }
 
 .footer-logo-wrap .brand-logo-img {
-  width: 36px;
-  height: 36px;
-  max-width: 36px;
-  max-height: 36px;
+  width: 34px;
+  height: 34px;
+  max-width: 34px;
+  max-height: 34px;
   object-fit: contain;
 }
 
 .footer-brand-title {
-  font-size: 1.05rem;
+  font-size: 1.10rem;
   font-weight: 800;
-  color: #ffffff;
-  letter-spacing: 0.05em;
+  color: #0f172a;
+  letter-spacing: 0.04em;
   display: block;
   line-height: 1.1;
 }
 
 .footer-brand-subtitle {
-  font-size: 0.60rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  color: #10b981;
+  color: #047857;
   letter-spacing: 0.12em;
   display: block;
 }
 
 .footer-tagline {
-  color: #94a3b8;
-  font-size: 0.82rem;
-  line-height: 1.45;
+  color: #64748b;
+  font-size: 0.84rem;
+  line-height: 1.5;
   margin-top: 0;
   max-width: 320px;
 }
@@ -7914,79 +7916,81 @@ a.admin-kpi-card:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .footer-social-btn {
   width: 34px;
   height: 34px;
   border-radius: 8px;
-  background-color: #141c2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #94a3b8;
+  background-color: #ffffff;
+  border: 1.5px solid #a7f3d0;
+  color: #047857;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.06);
   position: relative;
 }
 
 .footer-social-btn:hover {
-  background-color: #1e293b;
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-3px);
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(4, 120, 87, 0.15);
 }
 
 /* Authentic Social Brand Hover Colors */
 .footer-social-btn.social-btn-facebook:hover {
-  background-color: rgba(24, 119, 242, 0.14);
-  color: #1877f2;
+  background-color: #1877f2;
+  color: #ffffff;
   border-color: #1877f2;
-  box-shadow: 0 6px 18px rgba(24, 119, 242, 0.42);
-  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(24, 119, 242, 0.35);
+  transform: translateY(-2px);
 }
 
 .footer-social-btn.social-btn-x:hover,
 .footer-social-btn.social-btn-twitter:hover {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: #0f172a;
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.28);
-  transform: translateY(-3px);
+  border-color: #0f172a;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
+  transform: translateY(-2px);
 }
 
 .footer-social-btn.social-btn-linkedin:hover {
-  background-color: rgba(10, 102, 194, 0.14);
-  color: #0a66c2;
+  background-color: #0a66c2;
+  color: #ffffff;
   border-color: #0a66c2;
-  box-shadow: 0 6px 18px rgba(10, 102, 194, 0.42);
-  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(10, 102, 194, 0.35);
+  transform: translateY(-2px);
 }
 
 .footer-social-btn.social-btn-instagram:hover {
-  background: radial-gradient(circle at 30% 107%, rgba(253, 244, 151, 0.15) 0%, rgba(253, 89, 73, 0.2) 45%, rgba(214, 36, 159, 0.25) 70%, rgba(40, 90, 235, 0.2) 90%);
-  color: #e1306c;
-  border-color: #e1306c;
-  box-shadow: 0 6px 18px rgba(225, 48, 108, 0.46);
-  transform: translateY(-3px);
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 6px 16px rgba(225, 48, 108, 0.35);
+  transform: translateY(-2px);
 }
 
 .footer-social-btn.social-btn-youtube:hover {
-  background-color: rgba(255, 0, 0, 0.14);
-  color: #ff0000;
+  background-color: #ff0000;
+  color: #ffffff;
   border-color: #ff0000;
-  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.48);
-  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(255, 0, 0, 0.35);
+  transform: translateY(-2px);
 }
 
 .footer-status-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
   padding: 5px 12px;
   border-radius: 9999px;
   width: fit-content;
@@ -7997,7 +8001,7 @@ a.admin-kpi-card:hover {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #10b981;
+  background-color: #059669;
   box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   animation: pulse-emerald 2s infinite;
 }
@@ -8019,8 +8023,8 @@ a.admin-kpi-card:hover {
 
 .status-text {
   font-size: 0.78rem;
-  font-weight: 600;
-  color: #34d399;
+  font-weight: 700;
+  color: #047857;
 }
 
 .footer-security-tag {
@@ -8033,7 +8037,7 @@ a.admin-kpi-card:hover {
 }
 
 .text-emerald {
-  color: #10b981;
+  color: #047857;
 }
 
 .pro-footer-col {
@@ -8042,12 +8046,12 @@ a.admin-kpi-card:hover {
 }
 
 .footer-col-title {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #f8fafc;
-  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+  color: #0f172a;
+  margin-bottom: 14px;
 }
 
 .footer-links-list {
@@ -8056,37 +8060,40 @@ a.admin-kpi-card:hover {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
 .footer-link {
-  color: #94a3b8;
-  font-size: 0.82rem;
+  color: #475569;
+  font-size: 0.84rem;
   text-decoration: none;
   transition: all 0.15s ease;
   display: inline-block;
 }
 
 .footer-link:hover {
-  color: #34d399;
+  color: #047857;
   transform: translateX(2px);
 }
 
 .footer-link-highlight {
-  color: #34d399;
-  font-size: 0.82rem;
-  font-weight: 600;
+  color: #047857;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.15s ease;
 }
 
 .footer-link-highlight:hover {
-  color: #6ee7b7;
+  color: #065f46;
+  transform: translateX(2px);
 }
 
 .footer-btn-link {
   background: none;
   border: none;
-  color: #94a3b8;
-  font-size: 0.82rem;
+  color: #475569;
+  font-size: 0.84rem;
   text-align: left;
   cursor: pointer;
   padding: 0;
@@ -8095,18 +8102,18 @@ a.admin-kpi-card:hover {
 }
 
 .footer-btn-link:hover {
-  color: #34d399;
+  color: #047857;
 }
 
 .footer-btn-cta {
-  color: #34d399 !important;
-  font-weight: 600;
+  color: #047857 !important;
+  font-weight: 700;
 }
 
 .pro-footer-bottom {
-  background-color: #060911;
-  border-top: 1px solid #1e293b;
-  padding: 10px 24px;
+  background-color: #d1fae5;
+  border-top: 1px solid #a7f3d0;
+  padding: 12px 24px;
 }
 
 .pro-footer-bottom-container,
@@ -8121,8 +8128,9 @@ a.admin-kpi-card:hover {
 }
 
 .footer-copyright {
-  color: #64748b;
+  color: #065f46;
   font-size: 0.78rem;
+  font-weight: 600;
 }
 
 .footer-legal-links {
@@ -8133,28 +8141,30 @@ a.admin-kpi-card:hover {
 }
 
 .footer-meta-tag {
-  color: #64748b;
+  color: #065f46;
   font-size: 0.78rem;
+  font-weight: 600;
 }
 
 .footer-divider {
-  color: #334155;
+  color: #6ee7b7;
   font-size: 0.7rem;
 }
 
 .legal-link {
-  color: #64748b;
+  color: #065f46;
   font-size: 0.78rem;
+  font-weight: 600;
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .legal-link:hover {
-  color: #94a3b8;
+  color: #047857;
 }
 
 .legal-sep {
-  color: #334155;
+  color: #6ee7b7;
   font-size: 0.72rem;
 }
 
@@ -8162,21 +8172,23 @@ a.admin-kpi-card:hover {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: #1e293b;
-  color: #94a3b8;
-  border: 1px solid #334155;
+  background: #ffffff;
+  color: #047857;
+  border: 1.5px solid #a7f3d0;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.1);
 }
 
 .footer-back-to-top:hover {
-  background: #334155;
+  background: #047857;
   color: #ffffff;
-  border-color: #475569;
+  border-color: #047857;
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
 }
 
 @media (max-width: 992px) {
@@ -8840,16 +8852,16 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
 .footer-contact-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .footer-contact-item {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  color: #94a3b8;
-  font-size: 0.82rem;
-  line-height: 1.4;
+  color: #475569;
+  font-size: 0.84rem;
+  line-height: 1.5;
   text-decoration: none;
 }
 
@@ -8859,14 +8871,14 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
 }
 
 .footer-contact-link:hover {
-  color: #34d399;
+  color: #047857;
   transform: translateX(2px);
 }
 
 .footer-contact-icon {
-  color: #818cf8;
+  color: #047857;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .footer-contact-text {

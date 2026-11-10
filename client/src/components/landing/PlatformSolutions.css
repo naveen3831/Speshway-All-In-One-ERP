@@ -1,0 +1,558 @@
+/* ==========================================================================
+   OUR PLATFORM SOLUTIONS - 3D COVERFLOW CAROUSEL
+   Balanced Elegance + Light Pastel Themes + Side Positioned Arrows
+   ========================================================================== */
+
+.platform-solutions-section {
+  padding: 32px 20px 44px 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 84px);
+}
+
+.platform-solutions-container {
+  max-width: 1260px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Header */
+.platform-solutions-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.platform-solutions-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 13px;
+  background-color: #ecfdf5;
+  color: #047857;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  border: 1px solid #d1fae5;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 2px rgba(4, 120, 87, 0.06);
+}
+
+.platform-solutions-badge .sparkle-icon {
+  color: #059669;
+}
+
+.platform-solutions-title {
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin: 0 0 6px 0;
+  line-height: 1.2;
+}
+
+.platform-solutions-subtitle {
+  font-size: 0.90rem;
+  color: #64748b;
+  margin: 0 auto;
+  max-width: 620px;
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   CAROUSEL WRAPPER & BORDERLESS SIDE-POSITIONED ARROWS
+   ========================================================================== */
+.coverflow-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Borderless Floating Arrows - Pushed completely to the sides outside the cards */
+.coverflow-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 45;
+  width: 46px;
+  height: 46px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  padding: 0;
+}
+
+.coverflow-nav-btn.prev {
+  left: 0;
+}
+
+.coverflow-nav-btn.next {
+  right: 0;
+}
+
+.coverflow-nav-btn:hover {
+  color: #047857;
+  transform: translateY(-50%) scale(1.22);
+}
+
+.coverflow-nav-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* ==========================================================================
+   3D COVERFLOW STAGE - BALANCED PROPORTIONS
+   ========================================================================== */
+.coverflow-stage {
+  position: relative;
+  width: calc(100% - 90px);
+  max-width: 1120px;
+  height: 450px;
+  margin: 0 auto;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  user-select: none;
+  touch-action: pan-y;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coverflow-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* ==========================================================================
+   3D COVERFLOW CARD BASE - BALANCED SIZE & READABILITY
+   ========================================================================== */
+.coverflow-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 350px;
+  max-width: 84vw;
+  height: 410px;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.45s ease,
+              filter 0.45s ease,
+              box-shadow 0.45s ease;
+  will-change: transform, opacity;
+  cursor: pointer;
+  outline: none;
+}
+
+.coverflow-card-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Icon Box */
+.card-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.card-icon-svg {
+  stroke-width: 2.2;
+}
+
+/* Card Typography */
+.card-platform-title {
+  font-size: 1.30rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+}
+
+.card-platform-desc {
+  font-size: 0.86rem;
+  color: #475569;
+  line-height: 1.48;
+  margin: 0 0 14px 0;
+  min-height: 52px;
+}
+
+/* Tags List */
+.card-tags-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0 0 auto 0;
+}
+
+.card-tag-pill {
+  align-self: flex-start;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+/* Action Row & Book Consultation Button */
+.card-action-row {
+  margin-top: 16px;
+  padding-top: 4px;
+}
+
+.card-book-consultation-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: inherit;
+  outline: none;
+}
+
+.card-book-consultation-btn .btn-arrow-icon {
+  transition: transform 0.2s ease;
+}
+
+.card-book-consultation-btn:hover .btn-arrow-icon {
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   DISTINCT LIGHT PASTEL COLOR THEMES FOR EACH CARD
+   ========================================================================== */
+
+/* 1. Software Development: Mint & Emerald */
+.coverflow-card.theme-emerald .coverflow-card-inner {
+  background: linear-gradient(155deg, #f0fdf4 0%, #ecfdf5 55%, #f6fef9 100%);
+  border: 1.5px solid #a7f3d0;
+  box-shadow: 0 8px 20px -6px rgba(4, 120, 87, 0.12);
+}
+.coverflow-card.theme-emerald .card-icon-box {
+  background-color: #d1fae5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+.coverflow-card.theme-emerald .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #bbf7d0;
+  color: #047857;
+}
+.coverflow-card.theme-emerald .card-book-consultation-btn {
+  background-color: #047857;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(4, 120, 87, 0.22);
+}
+.coverflow-card.theme-emerald .card-book-consultation-btn:hover {
+  background-color: #065f46;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(4, 120, 87, 0.3);
+}
+
+/* 2. Mobile App Development: Soft Violet */
+.coverflow-card.theme-violet .coverflow-card-inner {
+  background: linear-gradient(155deg, #faf5ff 0%, #f3e8ff 55%, #fdfaff 100%);
+  border: 1.5px solid #ddd6fe;
+  box-shadow: 0 8px 20px -6px rgba(124, 58, 237, 0.12);
+}
+.coverflow-card.theme-violet .card-icon-box {
+  background-color: #ede9fe;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+}
+.coverflow-card.theme-violet .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #ddd6fe;
+  color: #6d28d9;
+}
+.coverflow-card.theme-violet .card-book-consultation-btn {
+  background-color: #7c3aed;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(124, 58, 237, 0.22);
+}
+.coverflow-card.theme-violet .card-book-consultation-btn:hover {
+  background-color: #6d28d9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(124, 58, 237, 0.3);
+}
+
+/* 3. Web Development: Ocean Blue */
+.coverflow-card.theme-blue .coverflow-card-inner {
+  background: linear-gradient(155deg, #f0f9ff 0%, #e0f2fe 55%, #f8fafc 100%);
+  border: 1.5px solid #bfdbfe;
+  box-shadow: 0 8px 20px -6px rgba(37, 99, 235, 0.12);
+}
+.coverflow-card.theme-blue .card-icon-box {
+  background-color: #dbeafe;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+.coverflow-card.theme-blue .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+.coverflow-card.theme-blue .card-book-consultation-btn {
+  background-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.22);
+}
+.coverflow-card.theme-blue .card-book-consultation-btn:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+}
+
+/* 4. Cloud Solutions & DevOps: Warm Amber */
+.coverflow-card.theme-amber .coverflow-card-inner {
+  background: linear-gradient(155deg, #fffbeb 0%, #fef3c7 55%, #fffdf5 100%);
+  border: 1.5px solid #fde68a;
+  box-shadow: 0 8px 20px -6px rgba(217, 119, 6, 0.12);
+}
+.coverflow-card.theme-amber .card-icon-box {
+  background-color: #fef3c7;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+.coverflow-card.theme-amber .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #fde68a;
+  color: #b45309;
+}
+.coverflow-card.theme-amber .card-book-consultation-btn {
+  background-color: #d97706;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(217, 119, 6, 0.22);
+}
+.coverflow-card.theme-amber .card-book-consultation-btn:hover {
+  background-color: #b45309;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(217, 119, 6, 0.3);
+}
+
+/* 5. Data Analytics & BI: Soft Rose / Coral */
+.coverflow-card.theme-rose .coverflow-card-inner {
+  background: linear-gradient(155deg, #fff1f2 0%, #ffe4e6 55%, #fff7f7 100%);
+  border: 1.5px solid #fecdd3;
+  box-shadow: 0 8px 20px -6px rgba(225, 29, 72, 0.12);
+}
+.coverflow-card.theme-rose .card-icon-box {
+  background-color: #ffe4e6;
+  color: #e11d48;
+  border: 1px solid #fecdd3;
+}
+.coverflow-card.theme-rose .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #fecdd3;
+  color: #be123c;
+}
+.coverflow-card.theme-rose .card-book-consultation-btn {
+  background-color: #e11d48;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(225, 29, 72, 0.22);
+}
+.coverflow-card.theme-rose .card-book-consultation-btn:hover {
+  background-color: #be123c;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(225, 29, 72, 0.3);
+}
+
+/* 6. Cyber Security & Audits: Mint & Teal */
+.coverflow-card.theme-teal .coverflow-card-inner {
+  background: linear-gradient(155deg, #f0fdfa 0%, #ccfbf1 55%, #f6fefd 100%);
+  border: 1.5px solid #99f6e4;
+  box-shadow: 0 8px 20px -6px rgba(13, 148, 136, 0.12);
+}
+.coverflow-card.theme-teal .card-icon-box {
+  background-color: #ccfbf1;
+  color: #0d9488;
+  border: 1px solid #99f6e4;
+}
+.coverflow-card.theme-teal .card-tag-pill {
+  background-color: #ffffff;
+  border: 1px solid #99f6e4;
+  color: #0f766e;
+}
+.coverflow-card.theme-teal .card-book-consultation-btn {
+  background-color: #0d9488;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.22);
+}
+.coverflow-card.theme-teal .card-book-consultation-btn:hover {
+  background-color: #0f766e;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(13, 148, 136, 0.3);
+}
+
+/* ==========================================================================
+   ACTIVE CENTER CARD
+   ========================================================================== */
+.coverflow-card.is-active {
+  z-index: 25;
+  transform: translate3d(-50%, -50%, 50px) scale(1.04);
+  opacity: 1;
+  filter: blur(0);
+}
+
+.coverflow-card.is-active.theme-emerald .coverflow-card-inner {
+  border: 2px solid #059669;
+  box-shadow: 0 20px 42px -10px rgba(4, 120, 87, 0.24), 0 0 0 1px rgba(4, 120, 87, 0.18);
+}
+.coverflow-card.is-active.theme-violet .coverflow-card-inner {
+  border: 2px solid #7c3aed;
+  box-shadow: 0 20px 42px -10px rgba(124, 58, 237, 0.24), 0 0 0 1px rgba(124, 58, 237, 0.18);
+}
+.coverflow-card.is-active.theme-blue .coverflow-card-inner {
+  border: 2px solid #2563eb;
+  box-shadow: 0 20px 42px -10px rgba(37, 99, 235, 0.24), 0 0 0 1px rgba(37, 99, 235, 0.18);
+}
+.coverflow-card.is-active.theme-amber .coverflow-card-inner {
+  border: 2px solid #d97706;
+  box-shadow: 0 20px 42px -10px rgba(217, 119, 6, 0.24), 0 0 0 1px rgba(217, 119, 6, 0.18);
+}
+.coverflow-card.is-active.theme-rose .coverflow-card-inner {
+  border: 2px solid #e11d48;
+  box-shadow: 0 20px 42px -10px rgba(225, 29, 72, 0.24), 0 0 0 1px rgba(225, 29, 72, 0.18);
+}
+.coverflow-card.is-active.theme-teal .coverflow-card-inner {
+  border: 2px solid #0d9488;
+  box-shadow: 0 20px 42px -10px rgba(13, 148, 136, 0.24), 0 0 0 1px rgba(13, 148, 136, 0.18);
+}
+
+/* ==========================================================================
+   SIDE CARDS (Zero Overlap with Arrows)
+   ========================================================================== */
+.coverflow-card.is-left {
+  z-index: 10;
+  transform: translate3d(calc(-50% - 270px), -50%, -30px) rotateY(15deg) scale(0.88);
+  opacity: 0.62;
+  filter: blur(0.3px);
+}
+
+.coverflow-card.is-right {
+  z-index: 10;
+  transform: translate3d(calc(-50% + 270px), -50%, -30px) rotateY(-15deg) scale(0.88);
+  opacity: 0.62;
+  filter: blur(0.3px);
+}
+
+.coverflow-card:not(.is-active):hover {
+  opacity: 0.90;
+  filter: blur(0);
+}
+
+.coverflow-card:not(.is-active) .card-book-consultation-btn {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .coverflow-stage {
+    width: 100%;
+    height: 420px;
+  }
+  .coverflow-card {
+    width: 320px;
+    height: 380px;
+  }
+  .coverflow-nav-btn.prev {
+    left: -4px;
+  }
+  .coverflow-nav-btn.next {
+    right: -4px;
+  }
+  .coverflow-card.is-left {
+    transform: translate3d(calc(-50% - 210px), -50%, -25px) rotateY(14deg) scale(0.86);
+  }
+  .coverflow-card.is-right {
+    transform: translate3d(calc(-50% + 210px), -50%, -25px) rotateY(-14deg) scale(0.86);
+  }
+}
+
+@media (max-width: 768px) {
+  .platform-solutions-section {
+    padding: 36px 14px 40px 14px;
+    min-height: auto;
+  }
+  .platform-solutions-title {
+    font-size: 1.65rem;
+  }
+  .coverflow-wrapper {
+    padding: 0;
+  }
+  .coverflow-stage {
+    height: 395px;
+    width: 100%;
+  }
+  .coverflow-card {
+    width: 295px;
+    height: 365px;
+  }
+  .coverflow-card-inner {
+    padding: 20px 18px;
+  }
+  .card-platform-title {
+    font-size: 1.22rem;
+  }
+  .card-platform-desc {
+    font-size: 0.82rem;
+    min-height: 48px;
+  }
+  .coverflow-nav-btn.prev {
+    left: -6px;
+  }
+  .coverflow-nav-btn.next {
+    right: -6px;
+  }
+  .coverflow-card.is-left {
+    transform: translate3d(calc(-50% - 95px), -50%, -20px) rotateY(12deg) scale(0.80);
+    opacity: 0.35;
+  }
+  .coverflow-card.is-right {
+    transform: translate3d(calc(-50% + 95px), -50%, -20px) rotateY(-12deg) scale(0.80);
+    opacity: 0.35;
+  }
+}
