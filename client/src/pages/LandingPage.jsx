@@ -4,6 +4,8 @@ import { Navbar } from '../components/landing/Navbar';
 import { Hero } from '../components/landing/Hero';
 import { StatsBar } from '../components/landing/StatsBar';
 import { OurErpSolutions } from '../components/landing/OurErpSolutions';
+import { PlatformSolutions } from '../components/landing/PlatformSolutions';
+import { StartupPlans } from '../components/landing/StartupPlans';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
@@ -58,6 +60,13 @@ export const LandingPage = () => {
         <StatsBar />
         
         <OurErpSolutions />
+
+        <PlatformSolutions onOpenDemo={() => setModalMode('demo')} />
+
+        <StartupPlans
+          onOpenGetStarted={() => setModalMode('get-started')}
+          onOpenDemo={() => setModalMode('demo')}
+        />
         
         <CtaBanner onOpenGetStarted={() => setModalMode('get-started')} />
       </main>

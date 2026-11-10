@@ -1,0 +1,278 @@
+/* ==========================================================================
+   CHOOSE YOUR STARTUP PLAN - PRICING CARDS
+   Exact Match to Design with Responsive SaaS Layout
+   ========================================================================== */
+
+.startup-plans-section {
+  padding: 80px 24px 100px 24px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.startup-plans-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* Header */
+.startup-plans-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.startup-plans-title {
+  font-size: 2.75rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.startup-plans-title .title-highlight {
+  color: #2563eb;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.startup-plans-subtitle {
+  font-size: 1.05rem;
+  color: #64748b;
+  margin: 0 auto;
+  max-width: 580px;
+  line-height: 1.5;
+}
+
+/* Cards Grid */
+.startup-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  position: relative;
+}
+
+/* Card Styling */
+.startup-plan-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 38px 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.startup-plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.08);
+}
+
+/* Middle "Most Popular" Card */
+.startup-plan-card.popular-card {
+  border: 2px solid #3b82f6;
+  box-shadow: 0 16px 36px -10px rgba(37, 99, 235, 0.16),
+              0 0 0 1px rgba(37, 99, 235, 0.1);
+  transform: translateY(-8px);
+}
+
+.startup-plan-card.popular-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 22px 42px -10px rgba(37, 99, 235, 0.22);
+}
+
+.plan-popular-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f59e0b;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 18px;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.35);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* Plan Header */
+.plan-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.plan-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.01em;
+}
+
+.plan-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.plan-currency {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.plan-price-amount {
+  font-size: 2.75rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.plan-period {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Features List */
+.plan-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plan-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-icon-wrapper {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feature-icon-wrapper.check {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.feature-icon-wrapper.cross {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+
+.feature-item-text {
+  font-size: 0.92rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.plan-feature-item.excluded .feature-item-text {
+  color: #94a3b8;
+}
+
+/* CTA Buttons */
+.plan-button-wrapper {
+  margin-top: 32px;
+  padding-top: 6px;
+}
+
+.plan-cta-btn {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  outline: none;
+}
+
+/* Orange Buttons */
+.plan-cta-btn.btn-orange {
+  background-color: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.25);
+}
+
+.plan-cta-btn.btn-orange:hover {
+  background-color: #c2410c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(234, 88, 12, 0.35);
+}
+
+/* Blue Button (Most Popular) */
+.plan-cta-btn.btn-blue {
+  background-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.plan-cta-btn.btn-blue:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}
+
+.plan-cta-btn:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .startup-plans-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .startup-plan-card {
+    padding: 30px 20px;
+  }
+  .plan-price-amount {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .startup-plans-grid {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+    margin: 0 auto;
+    gap: 32px;
+  }
+  .startup-plan-card.popular-card {
+    transform: none;
+  }
+  .startup-plan-card.popular-card:hover {
+    transform: translateY(-4px);
+  }
+  .startup-plans-title {
+    font-size: 2.15rem;
+  }
+}
