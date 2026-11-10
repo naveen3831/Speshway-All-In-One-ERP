@@ -61,7 +61,12 @@ export const LandingPage = () => {
         
         <OurErpSolutions />
 
-        <PlatformSolutions onOpenDemo={() => setModalMode('demo')} />
+        <PlatformSolutions
+          onOpenDemo={() => setModalMode('demo')}
+          onOpenContact={() => {
+            window.dispatchEvent(new CustomEvent('speshway_open_contact_card'));
+          }}
+        />
 
         <StartupPlans
           onOpenGetStarted={() => setModalMode('get-started')}

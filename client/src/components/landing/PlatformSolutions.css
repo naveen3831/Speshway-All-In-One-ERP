@@ -1,10 +1,10 @@
 /* ==========================================================================
    OUR PLATFORM SOLUTIONS - 3D COVERFLOW CAROUSEL
-   Exact recreation with Speshway's Modern Emerald & Slate UI Theme
+   Real Speshway Application Data + Borderless Floating Arrows + Smooth Auto-Scroll
    ========================================================================== */
 
 .platform-solutions-section {
-  padding: 80px 24px 90px 24px;
+  padding: 76px 24px 84px 24px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
   position: relative;
   overflow: hidden;
@@ -19,7 +19,7 @@
 /* Header */
 .platform-solutions-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 44px;
 }
 
 .platform-solutions-badge {
@@ -33,7 +33,7 @@
   font-weight: 700;
   border-radius: 9999px;
   border: 1px solid #d1fae5;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   box-shadow: 0 1px 3px rgba(4, 120, 87, 0.08);
 }
 
@@ -51,10 +51,10 @@
 }
 
 .platform-solutions-subtitle {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   color: #64748b;
   margin: 0 auto;
-  max-width: 620px;
+  max-width: 640px;
   line-height: 1.5;
 }
 
@@ -64,7 +64,7 @@
 .coverflow-stage {
   position: relative;
   width: 100%;
-  height: 520px;
+  height: 510px;
   margin: 0 auto;
   perspective: 1200px;
   perspective-origin: 50% 50%;
@@ -82,49 +82,49 @@
   transform-style: preserve-3d;
 }
 
-/* Nav Buttons (< and >) */
+/* ==========================================================================
+   BORDERLESS FLOATING ARROW MARKS (Clean, Modern, No Card Box/Border)
+   ========================================================================== */
 .coverflow-nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 25;
+  z-index: 35;
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   color: #1e293b;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
+  padding: 0;
 }
 
 .coverflow-nav-btn.prev {
-  left: 20px;
+  left: calc(50% - 460px);
 }
 
 .coverflow-nav-btn.next {
-  right: 20px;
+  right: calc(50% - 460px);
 }
 
 .coverflow-nav-btn:hover {
-  background: #047857;
-  color: #ffffff;
-  border-color: #047857;
-  transform: translateY(-50%) scale(1.08);
-  box-shadow: 0 10px 24px rgba(4, 120, 87, 0.25);
+  color: #047857;
+  transform: translateY(-50%) scale(1.22);
 }
 
 .coverflow-nav-btn:active {
-  transform: translateY(-50%) scale(0.96);
+  transform: translateY(-50%) scale(0.95);
 }
 
 /* ==========================================================================
-   3D COVERFLOW CARD
+   3D COVERFLOW CARDS
    ========================================================================== */
 .coverflow-card {
   position: absolute;
@@ -132,9 +132,9 @@
   left: 50%;
   width: 380px;
   max-width: 86vw;
-  height: 450px;
+  height: 440px;
   transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
               opacity 0.5s ease,
               filter 0.5s ease,
               box-shadow 0.5s ease;
@@ -147,13 +147,13 @@
   width: 100%;
   height: 100%;
   background: #ffffff;
-  border-radius: 24px;
-  padding: 34px 30px;
+  border-radius: 22px;
+  padding: 32px 28px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 28px -10px rgba(15, 23, 42, 0.08);
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
@@ -166,17 +166,16 @@
   padding: 4px 12px;
   background-color: #f1f5f9;
   color: #475569;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   border-radius: 9999px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 /* Card Typography */
 .card-platform-title {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.02em;
@@ -185,10 +184,10 @@
 }
 
 .card-platform-desc {
-  font-size: 0.92rem;
+  font-size: 0.90rem;
   color: #64748b;
   line-height: 1.5;
-  margin: 0 0 24px 0;
+  margin: 0 0 22px 0;
   min-height: 42px;
 }
 
@@ -199,7 +198,7 @@
   margin: 0 0 auto 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 11px;
 }
 
 .card-feature-item {
@@ -221,22 +220,25 @@
 }
 
 .feature-text {
-  font-size: 0.92rem;
+  font-size: 0.90rem;
   font-weight: 600;
   color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* CTA Consultation Button */
 .card-cta-wrapper {
-  margin-top: 26px;
-  padding-top: 10px;
+  margin-top: 24px;
+  padding-top: 6px;
 }
 
 .card-consultation-btn {
   width: 100%;
-  padding: 13px 20px;
+  padding: 12px 20px;
   border-radius: 9999px;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -250,21 +252,19 @@
 }
 
 /* ==========================================================================
-   ACTIVE CARD STATE (In the Front / Glowing Centerpiece)
+   ACTIVE CARD STATE (In the Center / Frontpiece)
    ========================================================================== */
 .coverflow-card.is-active {
-  z-index: 15;
-  transform: translate3d(-50%, -50%, 70px) scale(1.06);
+  z-index: 18;
+  transform: translate3d(-50%, -50%, 65px) scale(1.05);
   opacity: 1;
   filter: blur(0);
-  cursor: default;
 }
 
 .coverflow-card.is-active .coverflow-card-inner {
-  /* Subtle Iridescent Pastel Gradient from screenshot */
   background: linear-gradient(145deg, #f0fdf4 0%, #eff6ff 48%, #faf5ff 100%);
   border: 1.5px solid rgba(4, 120, 87, 0.35);
-  box-shadow: 0 28px 60px -15px rgba(4, 120, 87, 0.22),
+  box-shadow: 0 26px 54px -14px rgba(4, 120, 87, 0.24),
               0 0 0 1px rgba(4, 120, 87, 0.15),
               0 10px 20px -8px rgba(15, 23, 42, 0.08);
 }
@@ -293,53 +293,30 @@
 }
 
 /* ==========================================================================
-   SIDE CARDS (3D Rotation & Perspective Depth)
+   SIDE CARDS (Single card on left, single on right - ZERO overlap clutter!)
    ========================================================================== */
 .coverflow-card.is-left {
   z-index: 8;
-  transform: translate3d(calc(-50% - 310px), -50%, -35px) rotateY(22deg) scale(0.9);
-  opacity: 0.55;
+  transform: translate3d(calc(-50% - 330px), -50%, -35px) rotateY(18deg) scale(0.88);
+  opacity: 0.60;
   filter: blur(0.4px);
 }
 
 .coverflow-card.is-right {
   z-index: 8;
-  transform: translate3d(calc(-50% + 310px), -50%, -35px) rotateY(-22deg) scale(0.9);
-  opacity: 0.55;
+  transform: translate3d(calc(-50% + 330px), -50%, -35px) rotateY(-18deg) scale(0.88);
+  opacity: 0.60;
   filter: blur(0.4px);
 }
 
-.coverflow-card.is-far-left {
-  z-index: 4;
-  transform: translate3d(calc(-50% - 530px), -50%, -90px) rotateY(32deg) scale(0.78);
-  opacity: 0.25;
-  filter: blur(1px);
-}
-
-.coverflow-card.is-far-right {
-  z-index: 4;
-  transform: translate3d(calc(-50% + 530px), -50%, -90px) rotateY(-32deg) scale(0.78);
-  opacity: 0.25;
-  filter: blur(1px);
-}
-
-.coverflow-card.is-hidden {
-  z-index: 0;
-  transform: translate3d(-50%, -50%, -180px) scale(0.6);
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Inactive Card Button Styles */
 .coverflow-card:not(.is-active) .card-consultation-btn {
   background: #f1f5f9;
   color: #94a3b8;
   pointer-events: none;
 }
 
-/* Hovering inactive cards (Mouse Pick preview) */
 .coverflow-card:not(.is-active):hover {
-  opacity: 0.85;
+  opacity: 0.88;
   filter: blur(0);
 }
 
@@ -350,13 +327,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 24px;
+  gap: 8px;
+  margin-top: 22px;
 }
 
 .coverflow-dot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background-color: #cbd5e1;
   border: none;
@@ -371,7 +348,7 @@
 }
 
 .coverflow-dot.active {
-  width: 28px;
+  width: 26px;
   border-radius: 9999px;
   background-color: #047857;
   box-shadow: 0 2px 6px rgba(4, 120, 87, 0.35);
@@ -380,22 +357,24 @@
 /* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
+  .coverflow-nav-btn.prev {
+    left: 20px;
+  }
+  .coverflow-nav-btn.next {
+    right: 20px;
+  }
   .coverflow-card.is-left {
-    transform: translate3d(calc(-50% - 240px), -50%, -30px) rotateY(18deg) scale(0.88);
+    transform: translate3d(calc(-50% - 260px), -50%, -30px) rotateY(15deg) scale(0.86);
   }
   .coverflow-card.is-right {
-    transform: translate3d(calc(-50% + 240px), -50%, -30px) rotateY(-18deg) scale(0.88);
-  }
-  .coverflow-card.is-far-left,
-  .coverflow-card.is-far-right {
-    opacity: 0.15;
+    transform: translate3d(calc(-50% + 260px), -50%, -30px) rotateY(-15deg) scale(0.86);
   }
 }
 
 @media (max-width: 768px) {
   .platform-solutions-section {
-    padding: 60px 16px 70px 16px;
+    padding: 56px 16px 64px 16px;
   }
   .platform-solutions-title {
     font-size: 1.85rem;
@@ -404,32 +383,24 @@
     height: 480px;
   }
   .coverflow-card {
-    width: 320px;
+    width: 310px;
     height: 430px;
   }
   .coverflow-card-inner {
-    padding: 26px 20px;
-  }
-  .coverflow-nav-btn {
-    width: 40px;
-    height: 40px;
+    padding: 24px 20px;
   }
   .coverflow-nav-btn.prev {
-    left: 8px;
+    left: 4px;
   }
   .coverflow-nav-btn.next {
-    right: 8px;
+    right: 4px;
   }
   .coverflow-card.is-left {
-    transform: translate3d(calc(-50% - 130px), -50%, -30px) rotateY(14deg) scale(0.82);
-    opacity: 0.45;
+    transform: translate3d(calc(-50% - 110px), -50%, -25px) rotateY(12deg) scale(0.80);
+    opacity: 0.35;
   }
   .coverflow-card.is-right {
-    transform: translate3d(calc(-50% + 130px), -50%, -30px) rotateY(-14deg) scale(0.82);
-    opacity: 0.45;
-  }
-  .coverflow-card.is-far-left,
-  .coverflow-card.is-far-right {
-    display: none;
+    transform: translate3d(calc(-50% + 110px), -50%, -25px) rotateY(-12deg) scale(0.80);
+    opacity: 0.35;
   }
 }

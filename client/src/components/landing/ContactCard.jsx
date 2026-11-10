@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Sparkles, CheckCircle2 } from 'lucide-react';
+import { X, Sparkles, CheckCircle2, Phone, Mail } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import './ContactCard.css';
 
@@ -120,8 +120,20 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
         </div>
 
         <p className="contact-card-subtitle">
-          Have an ERP query? Leave us a message below.
+          Have an ERP query? Reach us directly or leave a message below.
         </p>
+
+        {/* Quick Direct Contact Details */}
+        <div className="contact-card-direct-bar">
+          <a href="tel:+18005557737" className="contact-direct-chip" title="Call Speshway Support">
+            <Phone size={13} className="direct-chip-icon" />
+            <span>+1 (800) 555-SPESH</span>
+          </a>
+          <a href="mailto:support@speshway.com" className="contact-direct-chip" title="Email Speshway Support">
+            <Mail size={13} className="direct-chip-icon" />
+            <span>support@speshway.com</span>
+          </a>
+        </div>
 
         {isSuccess ? (
           <div className="contact-card-success">

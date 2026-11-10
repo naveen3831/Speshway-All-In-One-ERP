@@ -1,105 +1,85 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Check, Sparkles } from 'lucide-react';
+import { useSocket } from '../../context/SocketContext';
+import { filterAdminProjects, DEFAULT_ADMIN_PROJECTS } from '../../utils/adminProjects';
 import './PlatformSolutions.css';
 
-const PLATFORM_SOLUTIONS = [
-  {
-    id: 'on-demand',
-    title: 'On-Demand Services',
-    subtitle: 'Create an on-demand platform like Urban Clap for home services and maintenance.',
-    features: [
-      'Service Provider Network',
-      'Booking Management',
-      'Quality Control',
-      'Service Tracking',
-    ],
-    badge: 'Home & Local Services',
-  },
-  {
-    id: 'grocery',
-    title: 'Grocery Platform',
-    subtitle: 'Build a comprehensive grocery platform like Grofers with fresh delivery features.',
-    features: [
-      'Fresh Product Management',
-      'Scheduled Delivery',
-      'Subscription Services',
-      'Quality Assurance',
-    ],
-    badge: 'Grocery & Fresh Goods',
-  },
-  {
-    id: 'quick-commerce',
-    title: 'Quick Commerce Platform',
-    subtitle: 'Build your own quick commerce app like Blinkit & Zepto with instant delivery features.',
-    features: [
-      'Customer Mobile Apps (Android & iOS)',
-      'Seller & Delivery Apps',
-      'Master Admin Panel',
-      'Web Platform',
-    ],
-    badge: '10-Min Delivery',
-  },
-  {
-    id: 'healthcare',
-    title: 'Healthcare & Telemedicine',
-    subtitle: 'Launch a digital clinic with doctor consultations, prescription delivery, and appointment scheduling.',
-    features: [
-      'Video Doctor Consultations',
-      'Digital Prescription Engine',
-      'Lab Test Booking & Reports',
-      'HIPAA Compliant Security',
-    ],
-    badge: 'Healthcare & MedTech',
-  },
-  {
-    id: 'hospitality',
-    title: 'Hospitality & Hotel Booking',
-    subtitle: 'Comprehensive hotel booking, room inventory, and guest management platform with automated check-in.',
-    features: [
-      'Multi-Property Management',
-      'Real-time Room Availability',
-      'Integrated Channel Manager',
-      'Automated Guest Invoicing',
-    ],
-    badge: 'Hotels & Hospitality',
-  },
-  {
-    id: 'logistics',
-    title: 'Logistics & Fleet Mobility',
-    subtitle: 'Real-time route optimization, driver dispatching, and live tracking for transport networks.',
-    features: [
-      'GPS Live Vehicle Tracking',
-      'Smart Route Optimization',
-      'Driver & Fleet Management',
-      'Automated Billing & POD',
-    ],
-    badge: 'Logistics & Fleet',
-  },
-];
+export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
+  const { products } = useSocket();
 
-export const PlatformSolutions = ({ onOpenDemo }) => {
+  // Get real application projects from Admin Console / DB or fallback to DEFAULT_ADMIN_PROJECTS
+  const cards = useMemo(() => {
+    const list = filterAdminProjects(products);
+    const source = list && list.length > 0 ? list : DEFAULT_ADMIN_PROJECTS;
+    return source.map((p) => {
+      // Clean, concise description for uniform card height
+      let desc = p.description || p.longDescription || 'Enterprise-ready cloud ERP application built for modern businesses.';
+      if (desc.length > 120) {
+        desc = desc.slice(0, 117).trim() + '...';
+      }
+
+      // 4 key features
+      const features = Array.isArray(p.features) && p.features.length > 0
+        ? p.features.slice(0, 4)
+        : [
+            'Real-Time Telematics',
+            'Role-Based Access Control',
+            'Automated Invoicing & Billing',
+            'Continuous Cloud Backups',
+          ];
+
+      return {
+        id: p.id || p.slug,
+        title: p.name,
+        badge: (p.category || 'ENTERPRISE ERP').toUpperCase(),
+        subtitle: desc,
+        features,
+        websiteUrl: p.websiteUrl,
+      };
+    });
+  }, [products]);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const total = PLATFORM_SOLUTIONS.length;
+  const total = cards.length;
 
   const nextSlide = useCallback(() => {
+    if (total === 0) return;
     setActiveIndex((prev) => (prev + 1) % total);
   }, [total]);
 
   const prevSlide = useCallback(() => {
+    if (total === 0) return;
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Auto-play interval that pauses on hover/interaction
+  // Automatic professional carousel scrolling one card after another
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || total <= 1) return;
     const interval = setInterval(() => {
       nextSlide();
-    }, 4500);
+    }, 2600); // Smooth 2.6s cadence for professional auto-scroll
     return () => clearInterval(interval);
-  }, [isPaused, nextSlide]);
+  }, [isPaused, total, nextSlide]);
+
+  // Open the built-in contact details pop up
+  const handleOpenContactPopup = (e, item) => {
+    if (e) e.stopPropagation();
+    // Dispatch global custom event for the floating ContactCard popup
+    window.dispatchEvent(
+      new CustomEvent('speshway_open_contact_card', {
+        detail: { project: item?.title },
+      })
+    );
+
+    if (onOpenContact) {
+      onOpenContact(item);
+    } else if (onOpenDemo) {
+      onOpenDemo(item);
+    }
+  };
 
   // Touch and drag swipe handlers
   const handleTouchStart = (e) => {
@@ -113,9 +93,9 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const diff = touchStartX.current - touchEndX.current;
-    if (diff > 50) {
+    if (diff > 45) {
       nextSlide();
-    } else if (diff < -50) {
+    } else if (diff < -45) {
       prevSlide();
     }
     touchStartX.current = 0;
@@ -126,8 +106,8 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
   const lastWheelTime = useRef(0);
   const handleWheel = (e) => {
     const now = Date.now();
-    if (now - lastWheelTime.current < 400) return;
-    if (Math.abs(e.deltaX) > 25 || Math.abs(e.deltaY) > 40) {
+    if (now - lastWheelTime.current < 350) return;
+    if (Math.abs(e.deltaX) > 20 || Math.abs(e.deltaY) > 35) {
       if (e.deltaX > 20 || (e.shiftKey && e.deltaY > 20)) {
         nextSlide();
         lastWheelTime.current = now;
@@ -137,6 +117,8 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
       }
     }
   };
+
+  if (!cards || cards.length === 0) return null;
 
   return (
     <section
@@ -150,11 +132,11 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
         <div className="platform-solutions-header">
           <div className="platform-solutions-badge">
             <Sparkles size={14} className="sparkle-icon" />
-            <span>Multi-Industry Platforms</span>
+            <span>Speshway Enterprise Suite</span>
           </div>
           <h2 className="platform-solutions-title">Our Platform Solutions</h2>
           <p className="platform-solutions-subtitle">
-            End-to-end app development for every industry
+            Industry-proven enterprise applications designed to run every business seamlessly
           </p>
         </div>
 
@@ -166,19 +148,23 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Left Arrow Button */}
+          {/* Borderless Left Chevron Arrow */}
           <button
             type="button"
             className="coverflow-nav-btn prev"
-            onClick={prevSlide}
+            onClick={(e) => {
+              e.stopPropagation();
+              prevSlide();
+            }}
             aria-label="Previous platform solution"
+            title="Previous"
           >
-            <ChevronLeft size={22} />
+            <ChevronLeft size={34} strokeWidth={2.2} />
           </button>
 
           {/* Cards Track */}
           <div className="coverflow-track">
-            {PLATFORM_SOLUTIONS.map((item, index) => {
+            {cards.map((item, index) => {
               // Calculate circular offset relative to activeIndex
               let offset = (index - activeIndex + total) % total;
               if (offset > total / 2) {
@@ -188,50 +174,56 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
               const isActive = offset === 0;
               const isLeft = offset === -1;
               const isRight = offset === 1;
-              const isFarLeft = offset === -2;
-              const isFarRight = offset === 2;
-              const isHidden = Math.abs(offset) > 2;
+
+              // Only render the active card and immediate neighbors (no overlapping background clutter)
+              const isVisible = isActive || isLeft || isRight;
+              if (!isVisible) return null;
 
               let cardClass = 'coverflow-card';
               if (isActive) cardClass += ' is-active';
               else if (isLeft) cardClass += ' is-left';
               else if (isRight) cardClass += ' is-right';
-              else if (isFarLeft) cardClass += ' is-far-left';
-              else if (isFarRight) cardClass += ' is-far-right';
-              else if (isHidden) cardClass += ' is-hidden';
 
               return (
                 <div
                   key={item.id}
                   className={cardClass}
-                  style={{ '--offset': offset }}
                   onClick={() => {
                     if (!isActive) {
                       setActiveIndex(index);
+                    } else {
+                      // Clicking on active card opens contact popup
+                      handleOpenContactPopup(null, item);
                     }
                   }}
                   onMouseEnter={() => {
                     // Mouse pick brings card to front
-                    setActiveIndex(index);
+                    if (!isActive) {
+                      setActiveIndex(index);
+                    }
                   }}
                   role="button"
                   tabIndex={0}
-                  aria-label={`${item.title} card`}
+                  aria-label={`${item.title} application card`}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
-                      setActiveIndex(index);
+                      if (!isActive) {
+                        setActiveIndex(index);
+                      } else {
+                        handleOpenContactPopup(e, item);
+                      }
                     }
                   }}
                 >
                   <div className="coverflow-card-inner">
-                    {/* Top Industry Badge */}
+                    {/* Top Category Badge */}
                     <div className="card-top-pill">{item.badge}</div>
 
-                    {/* Card Title & Description */}
+                    {/* Application Name & Description */}
                     <h3 className="card-platform-title">{item.title}</h3>
                     <p className="card-platform-desc">{item.subtitle}</p>
 
-                    {/* Features Checklist */}
+                    {/* 4 Application Features */}
                     <ul className="card-features-list">
                       {item.features.map((feat, fIdx) => (
                         <li key={fIdx} className="card-feature-item">
@@ -243,15 +235,12 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
                       ))}
                     </ul>
 
-                    {/* CTA Button */}
+                    {/* CTA Button - Opens Contact Details Popup */}
                     <div className="card-cta-wrapper">
                       <button
                         type="button"
                         className="card-consultation-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (onOpenDemo) onOpenDemo();
-                        }}
+                        onClick={(e) => handleOpenContactPopup(e, item)}
                       >
                         <span>BOOK FREE CONSULTATION</span>
                       </button>
@@ -262,24 +251,28 @@ export const PlatformSolutions = ({ onOpenDemo }) => {
             })}
           </div>
 
-          {/* Right Arrow Button */}
+          {/* Borderless Right Chevron Arrow */}
           <button
             type="button"
             className="coverflow-nav-btn next"
-            onClick={nextSlide}
+            onClick={(e) => {
+              e.stopPropagation();
+              nextSlide();
+            }}
             aria-label="Next platform solution"
+            title="Next"
           >
-            <ChevronRight size={22} />
+            <ChevronRight size={34} strokeWidth={2.2} />
           </button>
         </div>
 
         {/* Carousel Pagination Dots */}
         <div className="coverflow-dots">
-          {PLATFORM_SOLUTIONS.map((_, dotIdx) => (
+          {cards.slice(0, 10).map((_, dotIdx) => (
             <button
               key={dotIdx}
               type="button"
-              className={`coverflow-dot ${dotIdx === activeIndex ? 'active' : ''}`}
+              className={`coverflow-dot ${dotIdx === (activeIndex % 10) ? 'active' : ''}`}
               onClick={() => setActiveIndex(dotIdx)}
               aria-label={`Go to slide ${dotIdx + 1}`}
             />

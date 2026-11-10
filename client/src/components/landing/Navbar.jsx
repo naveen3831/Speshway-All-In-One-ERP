@@ -23,6 +23,15 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     setContactCardOpen(false);
   }, [location.pathname]);
 
+  // Listen for global custom event to open contact card from anywhere (e.g. Platform Solutions cards)
+  useEffect(() => {
+    const handleOpenContact = () => setContactCardOpen(true);
+    window.addEventListener('speshway_open_contact_card', handleOpenContact);
+    return () => {
+      window.removeEventListener('speshway_open_contact_card', handleOpenContact);
+    };
+  }, []);
+
   // Helper to determine boolean visibility with homeContent as primary source of truth, localStorage as fallback
   const getPricingVisible = () => {
     if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
