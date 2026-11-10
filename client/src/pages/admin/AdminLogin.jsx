@@ -11,9 +11,6 @@ import {
   ShieldCheck,
   ArrowLeft,
   Clock,
-  CheckCircle2,
-  LogOut,
-  Sparkles,
 } from 'lucide-react';
 
 export const AdminLogin = () => {
@@ -24,9 +21,7 @@ export const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
 
   const {
-    user,
     login,
-    logout,
     sessionExpired,
     sessionExpiredReason,
     dismissSessionExpired,
@@ -38,12 +33,6 @@ export const AdminLogin = () => {
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
-
-  const fillDemoAdmin = () => {
-    setEmail('admin@gmail.com');
-    setPassword('admin123');
-    setError('');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,15 +57,6 @@ export const AdminLogin = () => {
       setLoading(false);
     }
   };
-
-  const handleLogout = async () => {
-    await logout();
-    setEmail('');
-    setPassword('');
-    setError('');
-  };
-
-  const isCurrentAdmin = user && user.role === 'admin';
 
   return (
     <div className="pro-login-wrapper">
@@ -123,83 +103,6 @@ export const AdminLogin = () => {
           </div>
         )}
 
-        {/* Existing Active Admin Session Banner */}
-        {isCurrentAdmin && !sessionExpired && (
-          <div
-            style={{
-              backgroundColor: '#ecfdf5',
-              border: '1.5px solid #a7f3d0',
-              borderRadius: '14px',
-              padding: '14px 16px',
-              marginBottom: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <CheckCircle2 size={20} style={{ color: '#059669', flexShrink: 0 }} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <strong style={{ display: 'block', fontSize: '0.92rem', color: '#065f46' }}>
-                  Admin Session Active
-                </strong>
-                <span
-                  style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
-                    color: '#047857',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Signed in as <b>{user.name || 'Speshway Administrator'}</b> ({user.email || 'admin@gmail.com'})
-                </span>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                type="button"
-                onClick={() => navigate('/admin/overview')}
-                className="pro-submit-btn"
-                style={{
-                  flex: 1,
-                  margin: 0,
-                  padding: '9px 14px',
-                  fontSize: '0.88rem',
-                  gap: '6px',
-                }}
-              >
-                <span>Enter Dashboard</span>
-                <ArrowRight size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={handleLogout}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '9px 14px',
-                  borderRadius: '10px',
-                  border: '1.5px solid #fecaca',
-                  backgroundColor: '#ffffff',
-                  color: '#dc2626',
-                  fontWeight: 600,
-                  fontSize: '0.84rem',
-                  cursor: 'pointer',
-                  transition: 'background 0.15s ease',
-                }}
-                title="Sign out of the current session"
-              >
-                <LogOut size={14} />
-                <span>Sign Out</span>
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Error message */}
         {error && (
           <div className="pro-login-error">
@@ -210,31 +113,9 @@ export const AdminLogin = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="pro-login-form">
           <div className="pro-input-group">
-            <div className="pro-label-row">
-              <label htmlFor="admin-email" className="pro-label">
-                Admin Email
-              </label>
-              <button
-                type="button"
-                onClick={fillDemoAdmin}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#059669',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: 0,
-                }}
-                title="Click to fill admin@gmail.com / admin123"
-              >
-                <Sparkles size={12} />
-                <span>Fill Demo Admin</span>
-              </button>
-            </div>
+            <label htmlFor="admin-email" className="pro-label">
+              Admin Email
+            </label>
             <div className="pro-input-container">
               <span className="pro-input-icon">
                 <Mail size={18} />

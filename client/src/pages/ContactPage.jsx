@@ -5,7 +5,7 @@ import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket } from '../context/SocketContext';
-import { Mail, Phone, MapPin, Send, CheckCircle, Clock } from 'lucide-react';
+import { MapPin, Send, CheckCircle, Clock } from 'lucide-react';
 
 export const ContactPage = () => {
   const navigate = useNavigate();
@@ -61,26 +61,6 @@ export const ContactPage = () => {
             <div className="contact-info-card">
               <h3>Direct Contacts</h3>
               <p>Reach out directly for enterprise architecture consultations or support inquiries.</p>
-
-              <div className="info-item-row">
-                <div className="info-icon">
-                  <Mail size={18} />
-                </div>
-                <div>
-                  <span className="lbl">Email Us</span>
-                  <a href="mailto:support@speshway.com" className="val">support@speshway.com</a>
-                </div>
-              </div>
-
-              <div className="info-item-row">
-                <div className="info-icon">
-                  <Phone size={18} />
-                </div>
-                <div>
-                  <span className="lbl">Call Support (24/7)</span>
-                  <span className="val">+1 (800) 555-SPESH</span>
-                </div>
-              </div>
 
               <div className="info-item-row">
                 <div className="info-icon">
