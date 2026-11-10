@@ -865,15 +865,6 @@ export const AdminLayout = () => {
           {/* Top Fullscreen Sticky Header */}
           <div className="admin-support-fullscreen-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-              <button
-                type="button"
-                onClick={() => setShowMobileSupport(false)}
-                className="admin-support-fullscreen-back-btn"
-                aria-label="Back to dashboard"
-                title="Back"
-              >
-                <ArrowLeft size={19} />
-              </button>
               <div
                 style={{
                   width: '36px',
@@ -898,16 +889,6 @@ export const AdminLayout = () => {
                 </span>
               </div>
             </div>
-
-            <button
-              type="button"
-              onClick={() => setShowMobileSupport(false)}
-              className="profile-sheet-close-btn"
-              aria-label="Close support"
-              title="Close"
-            >
-              <X size={18} />
-            </button>
           </div>
 
           {/* Fullscreen Scrollable Body */}

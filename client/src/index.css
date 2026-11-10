@@ -4819,9 +4819,9 @@ a.admin-kpi-card:hover {
   .admin-support-fullscreen-header {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    padding: 12px 16px !important;
-    padding-top: max(12px, env(safe-area-inset-top, 12px)) !important;
+    justify-content: flex-start !important;
+    padding: 14px 16px !important;
+    padding-top: max(14px, env(safe-area-inset-top, 14px)) !important;
     border-bottom: 1px solid #e2e8f0 !important;
     background-color: #ffffff !important;
     flex-shrink: 0 !important;
@@ -4845,26 +4845,6 @@ a.admin-kpi-card:hover {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-  }
-
-  .admin-support-fullscreen-back-btn {
-    width: 34px !important;
-    height: 34px !important;
-    border-radius: 50% !important;
-    background-color: #f1f5f9 !important;
-    border: none !important;
-    color: #334155 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    transition: background-color 0.15s ease !important;
-    flex-shrink: 0 !important;
-  }
-
-  .admin-support-fullscreen-back-btn:hover {
-    background-color: #e2e8f0 !important;
-    color: #0f172a !important;
   }
 
   .admin-support-fullscreen-body {
