@@ -4799,6 +4799,136 @@ a.admin-kpi-card:hover {
     border-color: #bfdbfe !important;
   }
 
+  /* Full Screen Support View (Mobile Responsive) */
+  .admin-support-fullscreen-view {
+    display: flex !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    background-color: #ffffff !important;
+    z-index: 1000 !important;
+    flex-direction: column !important;
+    animation: fadeInFullscreen 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow: hidden !important;
+  }
+
+  .admin-support-fullscreen-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px 16px !important;
+    padding-top: max(12px, env(safe-area-inset-top, 12px)) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+    flex-shrink: 0 !important;
+  }
+
+  .admin-support-fullscreen-title {
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .admin-support-fullscreen-sub {
+    font-size: 0.72rem !important;
+    color: #64748b !important;
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .admin-support-fullscreen-back-btn {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    background-color: #f1f5f9 !important;
+    border: none !important;
+    color: #334155 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease !important;
+    flex-shrink: 0 !important;
+  }
+
+  .admin-support-fullscreen-back-btn:hover {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+  }
+
+  .admin-support-fullscreen-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 16px 16px 40px 16px !important;
+    padding-bottom: max(40px, env(safe-area-inset-bottom, 40px)) !important;
+    background-color: #ffffff !important;
+  }
+
+  .admin-support-live-badge {
+    background-color: #dcfce7 !important;
+    color: #15803d !important;
+    border: 1px solid #86efac !important;
+    border-radius: 9999px !important;
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    padding: 2px 7px !important;
+    flex-shrink: 0 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+  }
+
+  .admin-support-info-box {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .admin-support-info-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+  }
+
+  .admin-support-info-label {
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    color: #94a3b8 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .admin-support-info-val {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+    line-height: 1.4 !important;
+  }
+
+  @keyframes fadeInFullscreen {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .profile-sheet-item-text {
     flex: 1 !important;
     min-width: 0 !important;
@@ -4892,6 +5022,10 @@ a.admin-kpi-card:hover {
 }
 
 .admin-profile-sheet-overlay {
+  display: none;
+}
+
+.admin-support-fullscreen-view {
   display: none;
 }
 

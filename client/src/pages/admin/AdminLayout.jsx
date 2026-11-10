@@ -859,61 +859,71 @@ export const AdminLayout = () => {
         </div>
       )}
 
-      {/* Mobile Support Bottom Sheet */}
+      {/* Mobile Support Full Screen View */}
       {showMobileSupport && (
-        <div className="admin-profile-sheet-overlay" onClick={() => setShowMobileSupport(false)}>
-          <div className="admin-profile-sheet" onClick={(e) => e.stopPropagation()}>
-            <div className="profile-sheet-handle-bar">
-              <div className="profile-sheet-handle" />
-            </div>
-
-            <div className="profile-sheet-header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '10px',
-                    backgroundColor: '#e6f7f0',
-                    color: '#00875a',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Headphones size={20} />
-                </div>
-                <div>
-                  <h3 className="profile-sheet-title" style={{ margin: 0, fontSize: '1.05rem', lineHeight: 1.2 }}>
-                    24/7 Enterprise Support
-                  </h3>
-                  <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
-                    Speshway Admin Technical Help Desk
-                  </span>
-                </div>
-              </div>
+        <div className="admin-support-fullscreen-view" role="dialog" aria-modal="true" aria-label="24/7 Enterprise Support">
+          {/* Top Fullscreen Sticky Header */}
+          <div className="admin-support-fullscreen-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
               <button
                 type="button"
                 onClick={() => setShowMobileSupport(false)}
-                className="profile-sheet-close-btn"
-                aria-label="Close support menu"
+                className="admin-support-fullscreen-back-btn"
+                aria-label="Back to dashboard"
+                title="Back"
               >
-                <X size={18} />
+                <ArrowLeft size={19} />
               </button>
+              <div
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  backgroundColor: '#e6f7f0',
+                  color: '#00875a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Headphones size={19} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <h3 className="admin-support-fullscreen-title">
+                  24/7 Enterprise Support
+                </h3>
+                <span className="admin-support-fullscreen-sub">
+                  Speshway Admin Help Desk &amp; Monitoring
+                </span>
+              </div>
             </div>
 
+            <button
+              type="button"
+              onClick={() => setShowMobileSupport(false)}
+              className="profile-sheet-close-btn"
+              aria-label="Close support"
+              title="Close"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Fullscreen Scrollable Body */}
+          <div className="admin-support-fullscreen-body">
             {/* Live Uptime Status Card */}
             <div className="admin-support-status-card">
               <div className="admin-support-status-dot" />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#065f46' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#065f46' }}>
                   All Systems Operational &bull; 99.9% Uptime
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#047857' }}>
-                  Direct SLA priority technical assistance active
+                <div style={{ fontSize: '0.73rem', color: '#047857' }}>
+                  Dedicated 24/7 SLA Priority Help Desk Active
                 </div>
               </div>
+              <span className="admin-support-live-badge">Live SLA</span>
             </div>
 
             <div className="profile-sheet-section-label">INSTANT ASSISTANCE CHANNELS</div>
@@ -989,8 +999,20 @@ export const AdminLayout = () => {
 
             <div className="profile-sheet-divider" />
 
+            {/* Quick Summary Cards */}
+            <div className="admin-support-info-box">
+              <div className="admin-support-info-row">
+                <span className="admin-support-info-label">Enterprise Headquarters</span>
+                <span className="admin-support-info-val">T-Hub, Knowledge City Rd, Raidurgam, Hyderabad, Telangana 500032</span>
+              </div>
+              <div className="admin-support-info-row">
+                <span className="admin-support-info-label">Availability &amp; Coverage</span>
+                <span className="admin-support-info-val">24/7 Continuous Infrastructure Monitoring &amp; Engineering SLA</span>
+              </div>
+            </div>
+
             {/* Contact Page Link */}
-            <div className="profile-sheet-actions-group">
+            <div className="profile-sheet-actions-group" style={{ marginTop: '16px' }}>
               <Link
                 to="/contact"
                 onClick={() => setShowMobileSupport(false)}
