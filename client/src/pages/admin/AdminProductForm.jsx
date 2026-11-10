@@ -526,22 +526,28 @@ export const AdminProductForm = () => {
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   className="quick-select full-width"
                 >
-                  <option value="Fashion & Luxury">Fashion &amp; Luxury</option>
-                  <option value="Hospitality & Hotels">Hospitality &amp; Hotels</option>
-                  <option value="Education & LMS">Education &amp; LMS</option>
-                  <option value="Bus & Travel Booking">Bus &amp; Travel Booking</option>
-                  <option value="Food Delivery & Kitchen">Food Delivery &amp; Kitchen</option>
-                  <option value="Automotive & Mobility">Automotive &amp; Mobility</option>
-                  <option value="Event Management">Event Management</option>
                   <option value="Human Resources">Human Resources</option>
-                  <option value="Restaurant & Dining">Restaurant &amp; Dining</option>
-                  <option value="Fitness & Wellness">Fitness &amp; Wellness</option>
-                  <option value="Logistics & Fleet">Logistics &amp; Fleet</option>
-                  <option value="Beauty & Wellness">Beauty &amp; Wellness</option>
-                  <option value="E-Commerce Retail">E-Commerce Retail</option>
-                  <option value="Dairy & Agriculture">Dairy &amp; Agriculture</option>
-                  <option value="Fashion & Apparel">Fashion &amp; Apparel</option>
-                  <option value="Healthcare & Hospitals">Healthcare &amp; Hospitals</option>
+                  <option value="Retail & E-Commerce">Retail &amp; E-Commerce</option>
+                  <option value="Hospitality & Services">Hospitality &amp; Services</option>
+                  <option value="Logistics & Mobility">Logistics &amp; Mobility</option>
+                  <option value="Healthcare & Wellness">Healthcare &amp; Wellness</option>
+                  <optgroup label="Detailed Industry Specializations">
+                    <option value="Fashion & Luxury">Fashion &amp; Luxury</option>
+                    <option value="Hospitality & Hotels">Hospitality &amp; Hotels</option>
+                    <option value="Education & LMS">Education &amp; LMS</option>
+                    <option value="Bus & Travel Booking">Bus &amp; Travel Booking</option>
+                    <option value="Food Delivery & Kitchen">Food Delivery &amp; Kitchen</option>
+                    <option value="Automotive & Mobility">Automotive &amp; Mobility</option>
+                    <option value="Event Management">Event Management</option>
+                    <option value="Restaurant & Dining">Restaurant &amp; Dining</option>
+                    <option value="Fitness & Wellness">Fitness &amp; Wellness</option>
+                    <option value="Logistics & Fleet">Logistics &amp; Fleet</option>
+                    <option value="Beauty & Wellness">Beauty &amp; Wellness</option>
+                    <option value="E-Commerce Retail">E-Commerce Retail</option>
+                    <option value="Dairy & Agriculture">Dairy &amp; Agriculture</option>
+                    <option value="Fashion & Apparel">Fashion &amp; Apparel</option>
+                    <option value="Healthcare & Hospitals">Healthcare &amp; Hospitals</option>
+                  </optgroup>
                   {/* Keep compatibility with legacy categories if set */}
                   {formData.category && ![
                     'Fashion & Luxury', 'Hospitality & Hotels', 'Education & LMS', 'Bus & Travel Booking',
