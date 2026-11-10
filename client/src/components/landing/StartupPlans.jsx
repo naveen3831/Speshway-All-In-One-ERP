@@ -149,3 +149,4 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
     </section>
   );
 };
+
