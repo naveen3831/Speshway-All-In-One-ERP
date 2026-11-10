@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-do
 import { useAuth } from '../../context/AuthContext';
 import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
+import { AdminLogin } from './AdminLogin';
 import {
   LayoutDashboard,
   Package,
@@ -114,12 +115,6 @@ export const AdminLayout = () => {
     return `${brandTitle} Administrative Dashboard`;
   };
 
-  // Admin login form state
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // Notification state
@@ -287,28 +282,8 @@ export const AdminLayout = () => {
     return notificationItems.filter((i) => i.unread).length;
   }, [notificationItems]);
 
-  const handleAdminLogin = async (e) => {
-    e.preventDefault();
-    setLoginError('');
-    setIsSubmitting(true);
-    try {
-      const cleanEmail = email.trim().toLowerCase();
-      const cleanPassword = password.trim();
-      await login({ email: cleanEmail, password: cleanPassword });
-      dismissSessionExpired();
-    } catch (err) {
-      setLoginError(
-        err.response?.data?.message || 'Invalid admin credentials. Please try again.'
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleLogout = () => {
     logout();
-    setEmail('');
-    setPassword('');
     navigate('/admin');
   };
 
@@ -322,144 +297,9 @@ export const AdminLayout = () => {
     );
   }
 
-  // 1. If not authenticated or not an admin, show the clean standalone Admin Login Portal
+  // 1. If not authenticated or not an admin, show the dedicated Admin Login Portal
   if (!user || user.role !== 'admin') {
-    return (
-      <div className="pro-login-wrapper">
-        <div className="pro-login-card">
-          {/* Logo & Header */}
-          <div className="pro-login-header">
-            <div className="pro-logo-badge">
-              <img src={logoUrl} alt={`${brandTitle} ERP Logo`} className="pro-logo-img" />
-            </div>
-            <h1 className="pro-login-title">{brandTitle} Admin Console</h1>
-            <p className="pro-login-subtitle">
-              Sign in with your administrator credentials to manage ERP operations
-            </p>
-          </div>
-
-          {sessionExpired && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px',
-                padding: '14px 16px',
-                borderRadius: '12px',
-                backgroundColor: '#fffbeb',
-                border: '1.5px solid #fde68a',
-                color: '#92400e',
-                marginBottom: '20px',
-                fontSize: '0.88rem',
-                lineHeight: 1.45,
-                boxShadow: '0 2px 8px rgba(245, 158, 11, 0.08)',
-              }}
-            >
-              <Clock size={20} style={{ color: '#d97706', flexShrink: 0, marginTop: '2px' }} />
-              <div style={{ flex: 1 }}>
-                <strong style={{ display: 'block', fontSize: '0.92rem', marginBottom: '2px', color: '#b45309' }}>
-                  Session Expired Due to Inactivity
-                </strong>
-                <span>
-                  {sessionExpiredReason ||
-                    `You were automatically signed out after ${timeoutMinutes} minutes of inactivity for your security. Please log in again to resume.`}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {loginError && (
-            <div className="pro-login-error">
-              <span>{loginError}</span>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleAdminLogin} className="pro-login-form">
-            <div className="pro-input-group">
-              <label htmlFor="admin-email" className="pro-label">
-                Admin Email
-              </label>
-              <div className="pro-input-container">
-                <span className="pro-input-icon">
-                  <Mail size={18} />
-                </span>
-                <input
-                  id="admin-email"
-                  type="email"
-                  required
-                  placeholder="admin@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pro-text-input"
-                  autoComplete="email"
-                />
-              </div>
-            </div>
-
-            <div className="pro-input-group">
-              <div className="pro-label-row">
-                <label htmlFor="admin-password" className="pro-label">
-                  Password
-                </label>
-              </div>
-              <div className="pro-input-container">
-                <span className="pro-input-icon">
-                  <Lock size={18} />
-                </span>
-                <input
-                  id="admin-password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pro-text-input"
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  className="pro-password-toggle"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`pro-submit-btn ${isSubmitting ? 'loading' : ''}`}
-            >
-              {isSubmitting ? (
-                <span>Authenticating...</span>
-              ) : (
-                <>
-                  <span>Sign In as Admin</span>
-                  <ArrowRight size={18} />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Security Assurance */}
-          <div className="pro-security-badge">
-            <ShieldCheck size={16} className="text-emerald" />
-            <span>256-bit SSL encrypted administrative connection</span>
-          </div>
-
-          {/* Back to public link */}
-          <div className="pro-login-footer">
-            <Link to="/" className="pro-back-link">
-              <ArrowLeft size={14} /> Back to Website
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+    return <AdminLogin />;
   }
 
   // 2. Once authenticated as Admin, show strictly the Admin Dashboard Console
@@ -494,10 +334,13 @@ export const AdminLayout = () => {
 
         <nav className="admin-sidebar-menu">
           <NavLink
-            to="/admin"
-            end
+            to="/admin/overview"
             onClick={() => setSidebarOpen(false)}
-            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
+            className={({ isActive }) =>
+              isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard'
+                ? 'admin-nav-item active'
+                : 'admin-nav-item'
+            }
           >
             <LayoutDashboard size={18} />
             <span>Overview</span>
@@ -700,14 +543,13 @@ export const AdminLayout = () => {
       {/* Mobile Bottom Navigation Bar (Mobile Responsive Only) */}
       <nav className="admin-mobile-bottom-bar" aria-label="Admin Mobile Navigation">
         <NavLink
-          to="/admin"
-          end
+          to="/admin/overview"
           onClick={() => {
             setShowMobileProfile(false);
             setShowMobileSupport(false);
           }}
           className={({ isActive }) =>
-            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+            `admin-bottom-nav-item ${(isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
           }
         >
           <LayoutDashboard size={20} />
