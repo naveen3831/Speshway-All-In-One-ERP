@@ -45,10 +45,22 @@ import {
   ChevronUp,
   Folder,
 } from 'lucide-react';
-import { DEFAULT_ADMIN_PROJECTS } from '../../utils/adminProjects';
+import {
+  DEFAULT_ADMIN_PROJECTS,
+  PRIMARY_ERP_CATEGORIES,
+  getPrimaryCategory,
+} from '../../utils/adminProjects';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 
 const CATEGORY_META = {
+  // 5 Primary Enterprise Categories (matching Home Page)
+  'Human Resources': { icon: Users, color: 'emerald', bgClass: 'bg-icon-emerald', textClass: 'text-icon-emerald' },
+  'Retail & E-Commerce': { icon: ShoppingCart, color: 'blue', bgClass: 'bg-icon-blue', textClass: 'text-icon-blue' },
+  'Hospitality & Services': { icon: Home, color: 'indigo', bgClass: 'bg-icon-indigo', textClass: 'text-icon-indigo' },
+  'Logistics & Mobility': { icon: Package, color: 'orange', bgClass: 'bg-icon-orange', textClass: 'text-icon-orange' },
+  'Healthcare & Wellness': { icon: Building2, color: 'rose', bgClass: 'bg-icon-rose', textClass: 'text-icon-rose' },
+
+  // Detailed sub-category fallbacks
   'Fashion & Luxury': { icon: Sparkles, color: 'pink', bgClass: 'bg-icon-pink', textClass: 'text-icon-pink' },
   'Hospitality & Hotels': { icon: Home, color: 'indigo', bgClass: 'bg-icon-indigo', textClass: 'text-icon-indigo' },
   'Education & LMS': { icon: GraduationCap, color: 'sky', bgClass: 'bg-icon-sky', textClass: 'text-icon-sky' },
@@ -56,7 +68,6 @@ const CATEGORY_META = {
   'Food Delivery & Kitchen': { icon: Factory, color: 'orange', bgClass: 'bg-icon-orange', textClass: 'text-icon-orange' },
   'Automotive & Mobility': { icon: Wrench, color: 'blue', bgClass: 'bg-icon-blue', textClass: 'text-icon-blue' },
   'Event Management': { icon: CalendarDays, color: 'purple', bgClass: 'bg-icon-purple', textClass: 'text-icon-purple' },
-  'Human Resources': { icon: Users, color: 'emerald', bgClass: 'bg-icon-emerald', textClass: 'text-icon-emerald' },
   'Restaurant & Dining': { icon: Store, color: 'rose', bgClass: 'bg-icon-rose', textClass: 'text-icon-rose' },
   'Fitness & Wellness': { icon: Monitor, color: 'cyan', bgClass: 'bg-icon-cyan', textClass: 'text-icon-cyan' },
   'Logistics & Fleet': { icon: Package, color: 'green', bgClass: 'bg-icon-green', textClass: 'text-icon-green' },
@@ -126,7 +137,7 @@ export const AdminProducts = () => {
     ? Boolean(homeContent.navbar.showProducts)
     : (localStorage.getItem('speshway_navbar_products_visible') !== null
         ? localStorage.getItem('speshway_navbar_products_visible') === 'true'
-        : true);
+        : false);
 
   const [toggleUpdating, setToggleUpdating] = useState(false);
   const [toggleNotice, setToggleNotice] = useState('');
@@ -161,7 +172,7 @@ export const AdminProducts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [statusMsg, setStatusMsg] = useState('');
-  const [viewMode, setViewMode] = useState('categories');
+  const [viewMode, setViewMode] = useState('cards');
   const [expandedCategories, setExpandedCategories] = useState({});
 
   const toggleCategoryExpand = (catName) => {
@@ -176,51 +187,35 @@ export const AdminProducts = () => {
     return list.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
   }, [products]);
 
-  const categories = useMemo(() => {
-    const cats = new Set();
-    displayProducts.forEach((p) => {
-      if (p && p.category) {
-        const catStr = typeof p.category === 'string' ? p.category.trim() : String(p.category.name || p.category || '');
-        if (catStr) cats.add(catStr);
-      }
-    });
-    return ['All', ...Array.from(cats)];
-  }, [displayProducts]);
-
-  const visibleCategories = useMemo(() => categories.slice(0, 5), [categories]);
-  const moreCategories = useMemo(() => categories.slice(5), [categories]);
-  const [showMoreCategories, setShowMoreCategories] = useState(false);
-  const moreDropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (moreDropdownRef.current && !moreDropdownRef.current.contains(e.target)) {
-        setShowMoreCategories(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  // Strictly use the exact 5 Enterprise Categories matching the Home Page
+  const categories = PRIMARY_ERP_CATEGORIES;
 
   const categoryGroups = useMemo(() => {
+    const primaryCatNames = PRIMARY_ERP_CATEGORIES.filter((c) => c !== 'All');
     const groupMap = new Map();
+
+    primaryCatNames.forEach((catName) => {
+      groupMap.set(catName, []);
+    });
 
     displayProducts.forEach((prod) => {
       if (!prod || typeof prod !== 'object') return;
-      const cat = typeof prod.category === 'string' && prod.category.trim() ? prod.category.trim() : 'General ERP';
-      if (!groupMap.has(cat)) {
-        groupMap.set(cat, []);
+      const primaryCat = getPrimaryCategory(prod);
+      if (!groupMap.has(primaryCat)) {
+        groupMap.set(primaryCat, []);
       }
-      groupMap.get(cat).push(prod);
+      groupMap.get(primaryCat).push(prod);
     });
 
     const groups = [];
     groupMap.forEach((projs, catName) => {
-      groups.push({
-        name: catName,
-        projects: projs,
-        meta: getCategoryMetadata(catName),
-      });
+      if (projs.length > 0) {
+        groups.push({
+          name: catName,
+          projects: projs,
+          meta: getCategoryMetadata(catName),
+        });
+      }
     });
 
     return groups;
@@ -239,7 +234,8 @@ export const AdminProducts = () => {
         const projMatches = group.projects.some((p) => {
           const pName = typeof p.name === 'string' ? p.name.toLowerCase() : '';
           const pUrl = typeof p.websiteUrl === 'string' ? p.websiteUrl.toLowerCase() : '';
-          return pName.includes(term) || pUrl.includes(term);
+          const pCat = typeof p.category === 'string' ? p.category.toLowerCase() : '';
+          return pName.includes(term) || pUrl.includes(term) || pCat.includes(term);
         });
         return catMatches || projMatches;
       })
@@ -252,7 +248,8 @@ export const AdminProducts = () => {
           projects: group.projects.filter((p) => {
             const pName = typeof p.name === 'string' ? p.name.toLowerCase() : '';
             const pUrl = typeof p.websiteUrl === 'string' ? p.websiteUrl.toLowerCase() : '';
-            return pName.includes(term) || pUrl.includes(term);
+            const pCat = typeof p.category === 'string' ? p.category.toLowerCase() : '';
+            return pName.includes(term) || pUrl.includes(term) || pCat.includes(term);
           }),
         };
       });
@@ -284,11 +281,18 @@ export const AdminProducts = () => {
     return displayProducts.filter((p) => {
       if (!p || typeof p !== 'object') return false;
       const name = typeof p.name === 'string' ? p.name.toLowerCase() : '';
-      const cat = typeof p.category === 'string' ? p.category.toLowerCase() : '';
+      const detailedCat = typeof p.category === 'string' ? p.category.toLowerCase() : '';
+      const primaryCat = getPrimaryCategory(p);
       const url = typeof p.websiteUrl === 'string' ? p.websiteUrl.toLowerCase() : '';
       const term = String(searchTerm || '').toLowerCase().trim();
-      const matchesSearch = !term || name.includes(term) || cat.includes(term) || url.includes(term);
-      const matchesCat = selectedCategory === 'All' || p.category === selectedCategory;
+      const matchesSearch =
+        !term ||
+        name.includes(term) ||
+        detailedCat.includes(term) ||
+        primaryCat.toLowerCase().includes(term) ||
+        url.includes(term);
+
+      const matchesCat = selectedCategory === 'All' || primaryCat === selectedCategory;
       return matchesSearch && matchesCat;
     });
   }, [displayProducts, searchTerm, selectedCategory]);
@@ -400,13 +404,7 @@ export const AdminProducts = () => {
 
             <div className="view-toggle-wrap">
               <button
-                onClick={() => setViewMode('categories')}
-                className={`view-mode-btn ${viewMode === 'categories' ? 'active' : ''}`}
-                title="Category Cards View"
-              >
-                <Folder size={16} />
-              </button>
-              <button
+                type="button"
                 onClick={() => setViewMode('cards')}
                 className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
                 title="Project Cards View"
@@ -414,6 +412,15 @@ export const AdminProducts = () => {
                 <LayoutGrid size={16} />
               </button>
               <button
+                type="button"
+                onClick={() => setViewMode('categories')}
+                className={`view-mode-btn ${viewMode === 'categories' ? 'active' : ''}`}
+                title="Category Groups View"
+              >
+                <Folder size={16} />
+              </button>
+              <button
+                type="button"
                 onClick={() => setViewMode('table')}
                 className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
                 title="Table View"
@@ -425,72 +432,16 @@ export const AdminProducts = () => {
         </div>
 
         <div className="category-scroll-pills">
-          {visibleCategories.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => {
-                setSelectedCategory(cat);
-                setShowMoreCategories(false);
-              }}
+              type="button"
+              onClick={() => setSelectedCategory(cat)}
               className={`cat-pill-btn ${selectedCategory === cat ? 'active' : ''}`}
             >
               {cat}
             </button>
           ))}
-
-          {moreCategories.length > 0 && (
-            <div className="cat-more-dropdown-wrap" ref={moreDropdownRef}>
-              <button
-                type="button"
-                onClick={() => setShowMoreCategories((prev) => !prev)}
-                className={`cat-pill-btn cat-more-btn ${
-                  moreCategories.includes(selectedCategory) ? 'active' : ''
-                }`}
-                title="View more categories"
-              >
-                <span>
-                  {moreCategories.includes(selectedCategory)
-                    ? `More: ${selectedCategory}`
-                    : `+ More (${moreCategories.length})`}
-                </span>
-                <ChevronDown
-                  size={14}
-                  style={{
-                    transform: showMoreCategories ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.2s ease',
-                  }}
-                />
-              </button>
-
-              {showMoreCategories && (
-                <div className="cat-more-dropdown-menu">
-                  <div className="cat-more-dropdown-header">
-                    <span>Select Category</span>
-                    <span className="cat-more-count">{moreCategories.length} more</span>
-                  </div>
-                  <div className="cat-more-list">
-                    {moreCategories.map((cat) => {
-                      const isSelected = selectedCategory === cat;
-                      return (
-                        <button
-                          key={cat}
-                          type="button"
-                          onClick={() => {
-                            setSelectedCategory(cat);
-                            setShowMoreCategories(false);
-                          }}
-                          className={`cat-more-item ${isSelected ? 'selected' : ''}`}
-                        >
-                          <span>{cat}</span>
-                          {isSelected && <Check size={14} className="cat-more-check" />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
@@ -506,7 +457,15 @@ export const AdminProducts = () => {
               <div key={group.name} className="admin-category-card">
                 {/* Category Card Header */}
                 <div className="admin-cat-card-header">
-                  <div className="admin-cat-header-left">
+                  <div
+                    className="admin-cat-header-left"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setSelectedCategory(group.name);
+                      setViewMode('cards');
+                    }}
+                    title={`View all ${group.name} projects`}
+                  >
                     <div className={`admin-cat-icon-box ${meta.bgClass}`}>
                       <CatIcon className={meta.textClass} size={22} />
                     </div>
@@ -515,7 +474,7 @@ export const AdminProducts = () => {
                         {group.name}
                       </h3>
                       <span className="admin-cat-badge-count">
-                        {group.projects.length} {group.projects.length === 1 ? 'ERP System' : 'ERP Systems'}
+                        {group.projects.length} {group.projects.length === 1 ? 'ERP System' : 'ERP Systems'} (Click to View)
                       </span>
                     </div>
                   </div>

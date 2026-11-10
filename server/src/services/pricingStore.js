@@ -90,11 +90,6 @@ export const getPricingPlans = async () => {
   }
   return memoryPricing;
 };
-  } catch (err) {
-    console.warn('[PricingStore] MongoDB read fallback to memory store:', err.message);
-  }
-  return memoryPricing;
-};
 
 export const updatePricingPlan = async (slug, data) => {
   const cleanSlug = String(slug || '').toLowerCase().trim();
@@ -201,10 +196,6 @@ export const seedPricingDatabase = async () => {
     } else {
       memoryPricing = existing;
     }
-  } catch (err) {
-    console.warn('[PricingStore] Could not seed pricing into MongoDB Atlas:', err.message);
-  }
-};
   } catch (err) {
     console.warn('[PricingStore] Could not seed pricing into MongoDB Atlas:', err.message);
   }

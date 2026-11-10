@@ -80,11 +80,11 @@ const homeContentSchema = new mongoose.Schema(
     navbar: {
       showPricing: {
         type: Boolean,
-        default: true,
+        default: false,
       },
       showProducts: {
         type: Boolean,
-        default: true,
+        default: false,
       },
     },
     branding: {

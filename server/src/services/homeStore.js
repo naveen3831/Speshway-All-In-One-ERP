@@ -25,8 +25,8 @@ export const DEFAULT_HOME_CONTENT = {
     title: 'Our ERP Solutions',
   },
   navbar: {
-    showPricing: true,
-    showProducts: true,
+    showPricing: false,
+    showProducts: false,
   },
   branding: {
     logoUrl: '/logo.png',
