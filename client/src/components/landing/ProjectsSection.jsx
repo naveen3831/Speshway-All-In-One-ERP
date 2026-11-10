@@ -15,7 +15,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
-import { getProductFallbackImage } from '../../pages/ProductsPage';
+import { getProductFallbackImage } from '../../utils/productImages';
 import { normalizeProductCategory } from '../../utils/adminProjects';
 import './ProjectsSection.css';
 

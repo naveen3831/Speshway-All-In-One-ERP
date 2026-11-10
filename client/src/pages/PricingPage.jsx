@@ -6,7 +6,7 @@ import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Sparkles, X } from 'lucide-react';
 
 export const PricingPage = () => {
   const navigate = useNavigate();
@@ -47,7 +47,12 @@ export const PricingPage = () => {
       .then((res) => {
         if (mounted && res.data && res.data.data && res.data.data.length > 0) {
           const hasOld = res.data.data.some(
-            (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+            (p) =>
+              p.slug === 'website' ||
+              p.slug === 'mobile-app' ||
+              p.slug === 'website-mobile-app' ||
+              p.slug === 'starter' ||
+              p.slug === 'professional'
           );
           if (!hasOld) {
             setLivePlans(res.data.data);
@@ -66,7 +71,12 @@ export const PricingPage = () => {
     const handlePricingUpdated = (updatedPlans) => {
       if (Array.isArray(updatedPlans) && updatedPlans.length > 0) {
         const hasOld = updatedPlans.some(
-          (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+          (p) =>
+            p.slug === 'website' ||
+            p.slug === 'mobile-app' ||
+            p.slug === 'website-mobile-app' ||
+            p.slug === 'starter' ||
+            p.slug === 'professional'
         );
         if (!hasOld) {
           setLivePlans(updatedPlans);
@@ -86,71 +96,63 @@ export const PricingPage = () => {
 
   const defaultTiers = [
     {
-      slug: 'starter',
-      name: 'Starter',
-      price: isAnnual ? '₹2,499' : '₹3,299',
-      period: '/user /month',
-      desc: 'Ideal for small businesses and growing teams needing core HR & Project tools.',
+      slug: 'subscriptions-plan',
+      name: 'Subscriptions Plan',
+      price: '48,000',
+      period: 'Yearly Renewal',
+      desc: 'Core ERP software subscription with single domain access and customer mobile app.',
       features: [
-        'Up to 25 Active Employees',
-        'HRMS & Directory Portal',
-        'Leave & Attendance Tracking',
-        'Task & Project Boards',
-        'Standard Email Support',
-        'Continuous Cloud Backups',
+        'Permitted for Single domain',
+        'Android Customer App',
+        'Master Admin Panel',
+        'Website',
+        '3 Months Support',
+        '✕ No Source Code Included',
+        '✕ Payment Gateway Integration',
       ],
       popular: false,
-      btnText: 'Start 14-Day Free Trial',
+      btnText: 'Get Started',
     },
     {
-      slug: 'professional',
-      name: 'Professional',
-      price: isAnnual ? '₹5,999' : '₹7,999',
-      period: '/user /month',
-      desc: 'Complete suite for scaling companies that need unified payroll, finance & CRM.',
+      slug: 'startup-plan',
+      name: 'Startup Plan',
+      price: '89,000',
+      period: 'One-time payment',
+      desc: 'Complete turnkey ecosystem with user, seller, and driver multi-app suite.',
       features: [
-        'Up to 200 Employees',
-        'Full Payroll & Tax Automation',
-        'Finance, Invoicing & Expenses',
-        'Client CRM & Deal Pipelines',
-        'Asset Management & Devices',
-        'Priority 24/7 Live Support',
+        'Permitted for Single domain',
+        'Android & iOS Apps for Users',
+        'Android & iOS Apps for Sellers',
+        'Android & iOS Apps for Drivers',
+        'Master Admin Panel',
+        '6 Months Support',
+        'Complete Web Panel',
+        'Payment Gateway Integration',
       ],
       popular: true,
-      btnText: 'Get Started with Pro',
+      btnText: 'Choose This Plan',
     },
     {
-      slug: 'enterprise',
-      name: 'Enterprise',
-      price: 'Custom',
-      period: 'tailored quote',
-      desc: 'For large organizations demanding custom SLAs, dedicated infrastructure & audit.',
+      slug: 'enterprise-plan',
+      name: 'Enterprise Plan',
+      price: '160,000',
+      period: 'One-time payment',
+      desc: 'Multi-domain enterprise deployment with analytics, custom branding, and SLA support.',
       features: [
-        'Unlimited Employees & Users',
-        'Custom ERP Module Development',
-        'Dedicated Cloud Instance / VPC',
-        '24/7 Dedicated Account Manager',
-        'SSO / SAML / Active Directory',
-        'Custom Data Retention SLAs',
+        'Permitted for Multiple domain',
+        'Everything in Startup Plan',
+        'Advanced Analytics Dashboard',
+        'Multi-language Support',
+        '12 Months Support',
+        'Custom Branding',
+        'Priority Support',
       ],
       popular: false,
-      btnText: 'Contact Enterprise Sales',
+      btnText: 'Contact Sales',
     },
   ];
 
-  const tiers = livePlans
-    ? livePlans.map((plan) => {
-        let price = plan.price;
-        if (!isAnnual) {
-          if (plan.slug === 'starter' && plan.price === '₹2,499') price = '₹3,299';
-          if (plan.slug === 'professional' && plan.price === '₹5,999') price = '₹7,999';
-        }
-        return {
-          ...plan,
-          price,
-        };
-      })
-    : defaultTiers;
+  const tiers = livePlans || defaultTiers;
 
   return (
     <div className="landing-wrapper">
@@ -212,12 +214,20 @@ export const PricingPage = () => {
 
                 <div className="tier-features-list">
                   <span className="feat-included-label">What's included:</span>
-                  {tier.features.map((f, i) => (
-                    <div key={i} className="tier-feat-item">
-                      <Check size={16} className="text-icon-green" />
-                      <span>{f}</span>
-                    </div>
-                  ))}
+                  {tier.features.map((f, i) => {
+                    const isExcluded = typeof f === 'string' && (f.startsWith('✕ ') || f.startsWith('! ') || f.startsWith('[-] '));
+                    const cleanF = typeof f === 'string' ? f.replace(/^([✕!]|\[-\]|\[x\])\s*/, '') : f;
+                    return (
+                      <div key={i} className="tier-feat-item" style={{ opacity: isExcluded ? 0.6 : 1 }}>
+                        {isExcluded ? (
+                          <X size={15} style={{ color: '#ef4444', flexShrink: 0 }} />
+                        ) : (
+                          <Check size={16} className="text-icon-green" style={{ flexShrink: 0 }} />
+                        )}
+                        <span style={{ color: isExcluded ? '#94a3b8' : undefined }}>{cleanF}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))}

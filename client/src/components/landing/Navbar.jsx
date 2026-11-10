@@ -32,6 +32,16 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     };
   }, []);
 
+  // Auto-open Contact Card pop up when opening the website
+  useEffect(() => {
+    if (location.pathname === '/') {
+      const timer = setTimeout(() => {
+        setContactCardOpen(true);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   // Helper to determine boolean visibility with homeContent as primary source of truth, localStorage as fallback
   const getPricingVisible = () => {
     if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
@@ -158,23 +168,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
             </nav>
           )}
 
-          {/* Right Side Action: Desktop Get Started & Mobile Hamburger Button */}
+          {/* Right Side Action: Get Started Button (Desktop & Mobile) */}
           <div className="nav-actions">
             <button
               type="button"
               onClick={handleGetStarted}
-              className="btn-get-started desktop-only"
+              className="btn-get-started"
             >
               Get Started <ArrowRight size={16} />
-            </button>
-
-            <button
-              type="button"
-              className="mobile-menu-btn"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>

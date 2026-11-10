@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
+import { AdminLogin } from './AdminLogin';
 import {
   LayoutDashboard,
   Package,
@@ -24,6 +25,11 @@ import {
   Clock,
   Menu,
   X,
+  User,
+  Headphones,
+  Phone,
+  HelpCircle,
+  LifeBuoy,
 } from 'lucide-react';
 
 export const AdminLayout = () => {
@@ -42,14 +48,73 @@ export const AdminLayout = () => {
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
   const navigate = useNavigate();
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showMobileProfile, setShowMobileProfile] = useState(false);
+  const [showMobileSupport, setShowMobileSupport] = useState(false);
 
-  // Admin login form state
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Close mobile sidebar and sheets when route changes
+  useEffect(() => {
+    setShowMobileProfile(false);
+    setShowMobileSupport(false);
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  const isProfileActive =
+    location.pathname === '/admin/home' ||
+    location.pathname === '/admin/inquiries' ||
+    location.pathname === '/admin/settings' ||
+    location.pathname === '/admin/users';
+
+  const getMobileTopbarTitle = () => {
+    const path = location.pathname;
+    if (path.includes('/new')) return 'New Project';
+    if (path.includes('/edit')) return 'Edit Project';
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return 'Projects';
+    if (path.startsWith('/admin/pricing')) return 'Pricing';
+    if (path.startsWith('/admin/inquiries')) return 'Inquiries';
+    if (path.startsWith('/admin/settings')) return 'Settings';
+    if (path.startsWith('/admin/home')) return 'Home Page';
+    if (path.startsWith('/admin/users')) return 'Users';
+    return `${brandTitle} Dashboard`;
+  };
+
+  const getMobilePageIcon = () => {
+    const path = location.pathname;
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) {
+      return <Package size={18} />;
+    }
+    if (path.startsWith('/admin/pricing')) {
+      return <CreditCard size={18} />;
+    }
+    if (path.startsWith('/admin/inquiries')) {
+      return <Inbox size={18} />;
+    }
+    if (path.startsWith('/admin/settings')) {
+      return <Settings size={18} />;
+    }
+    if (path.startsWith('/admin/home')) {
+      return <Globe size={18} />;
+    }
+    if (path.startsWith('/admin/users')) {
+      return <User size={18} />;
+    }
+    return <LayoutDashboard size={18} />;
+  };
+
+  const getDesktopTopbarTitle = () => {
+    const path = location.pathname;
+    if (path.includes('/new')) return `${brandTitle} Add New Project`;
+    if (path.includes('/edit')) return `${brandTitle} Edit Project`;
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return `${brandTitle} Projects Management`;
+    if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing Plans`;
+    if (path.startsWith('/admin/inquiries')) return `${brandTitle} Demo Inquiries`;
+    if (path.startsWith('/admin/settings')) return `${brandTitle} System Settings`;
+    if (path.startsWith('/admin/home')) return `${brandTitle} Home Page Options`;
+    if (path.startsWith('/admin/users')) return `${brandTitle} User Management`;
+    return `${brandTitle} Administrative Dashboard`;
+  };
+
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // Notification state
@@ -217,28 +282,8 @@ export const AdminLayout = () => {
     return notificationItems.filter((i) => i.unread).length;
   }, [notificationItems]);
 
-  const handleAdminLogin = async (e) => {
-    e.preventDefault();
-    setLoginError('');
-    setIsSubmitting(true);
-    try {
-      const cleanEmail = email.trim().toLowerCase();
-      const cleanPassword = password.trim();
-      await login({ email: cleanEmail, password: cleanPassword });
-      dismissSessionExpired();
-    } catch (err) {
-      setLoginError(
-        err.response?.data?.message || 'Invalid admin credentials. Please try again.'
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleLogout = () => {
     logout();
-    setEmail('');
-    setPassword('');
     navigate('/admin');
   };
 
@@ -252,144 +297,9 @@ export const AdminLayout = () => {
     );
   }
 
-  // 1. If not authenticated or not an admin, show the clean standalone Admin Login Portal
+  // 1. If not authenticated or not an admin, show the dedicated Admin Login Portal
   if (!user || user.role !== 'admin') {
-    return (
-      <div className="pro-login-wrapper">
-        <div className="pro-login-card">
-          {/* Logo & Header */}
-          <div className="pro-login-header">
-            <div className="pro-logo-badge">
-              <img src={logoUrl} alt={`${brandTitle} ERP Logo`} className="pro-logo-img" />
-            </div>
-            <h1 className="pro-login-title">{brandTitle} Admin Console</h1>
-            <p className="pro-login-subtitle">
-              Sign in with your administrator credentials to manage ERP operations
-            </p>
-          </div>
-
-          {sessionExpired && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px',
-                padding: '14px 16px',
-                borderRadius: '12px',
-                backgroundColor: '#fffbeb',
-                border: '1.5px solid #fde68a',
-                color: '#92400e',
-                marginBottom: '20px',
-                fontSize: '0.88rem',
-                lineHeight: 1.45,
-                boxShadow: '0 2px 8px rgba(245, 158, 11, 0.08)',
-              }}
-            >
-              <Clock size={20} style={{ color: '#d97706', flexShrink: 0, marginTop: '2px' }} />
-              <div style={{ flex: 1 }}>
-                <strong style={{ display: 'block', fontSize: '0.92rem', marginBottom: '2px', color: '#b45309' }}>
-                  Session Expired Due to Inactivity
-                </strong>
-                <span>
-                  {sessionExpiredReason ||
-                    `You were automatically signed out after ${timeoutMinutes} minutes of inactivity for your security. Please log in again to resume.`}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {loginError && (
-            <div className="pro-login-error">
-              <span>{loginError}</span>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleAdminLogin} className="pro-login-form">
-            <div className="pro-input-group">
-              <label htmlFor="admin-email" className="pro-label">
-                Admin Email
-              </label>
-              <div className="pro-input-container">
-                <span className="pro-input-icon">
-                  <Mail size={18} />
-                </span>
-                <input
-                  id="admin-email"
-                  type="email"
-                  required
-                  placeholder="admin@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pro-text-input"
-                  autoComplete="email"
-                />
-              </div>
-            </div>
-
-            <div className="pro-input-group">
-              <div className="pro-label-row">
-                <label htmlFor="admin-password" className="pro-label">
-                  Password
-                </label>
-              </div>
-              <div className="pro-input-container">
-                <span className="pro-input-icon">
-                  <Lock size={18} />
-                </span>
-                <input
-                  id="admin-password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pro-text-input"
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  className="pro-password-toggle"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`pro-submit-btn ${isSubmitting ? 'loading' : ''}`}
-            >
-              {isSubmitting ? (
-                <span>Authenticating...</span>
-              ) : (
-                <>
-                  <span>Sign In as Admin</span>
-                  <ArrowRight size={18} />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Security Assurance */}
-          <div className="pro-security-badge">
-            <ShieldCheck size={16} className="text-emerald" />
-            <span>256-bit SSL encrypted administrative connection</span>
-          </div>
-
-          {/* Back to public link */}
-          <div className="pro-login-footer">
-            <Link to="/" className="pro-back-link">
-              <ArrowLeft size={14} /> Back to Website
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+    return <AdminLogin />;
   }
 
   // 2. Once authenticated as Admin, show strictly the Admin Dashboard Console
@@ -424,10 +334,13 @@ export const AdminLayout = () => {
 
         <nav className="admin-sidebar-menu">
           <NavLink
-            to="/admin"
-            end
+            to="/admin/overview"
             onClick={() => setSidebarOpen(false)}
-            className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
+            className={({ isActive }) =>
+              isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard'
+                ? 'admin-nav-item active'
+                : 'admin-nav-item'
+            }
           >
             <LayoutDashboard size={18} />
             <span>Overview</span>
@@ -547,24 +460,13 @@ export const AdminLayout = () => {
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
           <div className="topbar-left">
-            <button
-              type="button"
-              className="admin-back-btn"
-              onClick={() => navigate('/')}
-              title="Return to Home"
-              aria-label="Go to home"
-            >
-              <ArrowLeft size={16} />
-            </button>
-            <button
-              type="button"
-              className="admin-menu-toggle"
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Open navigation menu"
-            >
-              <Menu size={20} />
-            </button>
-            <span className="topbar-title">{brandTitle} Administrative Dashboard</span>
+            <span className="topbar-page-icon-mobile" aria-hidden="true">
+              {getMobilePageIcon()}
+            </span>
+            <span className="topbar-title">
+              <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
+              <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>
+            </span>
           </div>
 
           <div className="topbar-right">
@@ -637,6 +539,384 @@ export const AdminLayout = () => {
           </ErrorBoundary>
         </div>
       </div>
+
+      {/* Mobile Bottom Navigation Bar (Mobile Responsive Only) */}
+      <nav className="admin-mobile-bottom-bar" aria-label="Admin Mobile Navigation">
+        <NavLink
+          to="/admin/overview"
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport(false);
+          }}
+          className={({ isActive }) =>
+            `admin-bottom-nav-item ${(isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+          }
+        >
+          <LayoutDashboard size={20} />
+          <span>Dashboard</span>
+        </NavLink>
+
+        <NavLink
+          to="/admin/products"
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport(false);
+          }}
+          className={({ isActive }) =>
+            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+          }
+        >
+          <Package size={20} />
+          <span>Projects</span>
+        </NavLink>
+
+        <NavLink
+          to="/admin/pricing"
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport(false);
+          }}
+          className={({ isActive }) =>
+            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+          }
+        >
+          <CreditCard size={20} />
+          <span>Pricing</span>
+        </NavLink>
+
+        <button
+          type="button"
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport((prev) => !prev);
+          }}
+          className={`admin-bottom-nav-item ${showMobileSupport ? 'active' : ''}`}
+          aria-label="Admin 24/7 Support"
+        >
+          <Headphones size={20} />
+          <span>Support</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setShowMobileSupport(false);
+            setShowMobileProfile((prev) => !prev);
+          }}
+          className={`admin-bottom-nav-item ${
+            (isProfileActive && !showMobileSupport) || showMobileProfile ? 'active' : ''
+          }`}
+          aria-label="Admin Profile & More Menu"
+        >
+          <div className="admin-bottom-avatar-icon">
+            <User size={20} />
+            {unreadCount > 0 && <span className="admin-bottom-dot" />}
+          </div>
+          <span>Profile</span>
+        </button>
+      </nav>
+
+      {/* Mobile Profile Full Screen View - Remaining admin items inside profile */}
+      {showMobileProfile && (
+        <div className="admin-profile-fullscreen-view" role="dialog" aria-modal="true" aria-label="Admin Account & Management">
+          {/* Top Sticky Header */}
+          <div className="admin-support-fullscreen-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+              <div
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  backgroundColor: '#e6f7f0',
+                  color: '#00875a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <User size={19} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <h3 className="admin-support-fullscreen-title">
+                  Admin Account &amp; Management
+                </h3>
+                <span className="admin-support-fullscreen-sub">
+                  Profile &amp; Administrative Options
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Scrollable Content Body */}
+          <div className="admin-support-fullscreen-body">
+            {/* Admin User Profile Card */}
+            <div className="profile-sheet-user-card">
+              <div className="profile-sheet-avatar">
+                {(() => {
+                  if (!user?.name) return 'AD';
+                  const parts = user.name.trim().split(/\s+/);
+                  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+                  return user.name.substring(0, 2).toUpperCase();
+                })()}
+              </div>
+              <div className="profile-sheet-user-info">
+                <div className="profile-sheet-name-row">
+                  <span className="profile-sheet-user-name">{user?.name || 'Speshway Administrator'}</span>
+                  <span className="profile-sheet-badge">ADMIN</span>
+                </div>
+                <span className="profile-sheet-user-email">{user?.email || 'admin@gmail.com'}</span>
+              </div>
+            </div>
+
+            <div className="profile-sheet-section-label">MANAGEMENT &amp; OPTIONS</div>
+
+            {/* Remaining Menu Items shown inside Profile */}
+            <div className="profile-sheet-menu-list">
+              <NavLink
+                to="/admin/home"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon blue">
+                  <Globe size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">Home Page Options</span>
+                  <span className="profile-sheet-item-sub">Customize hero banner, titles &amp; branding</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              <NavLink
+                to="/admin/inquiries"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon purple">
+                  <Inbox size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="profile-sheet-item-title">Demo Inquiries</span>
+                    {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
+                  </div>
+                  <span className="profile-sheet-item-sub">Client leads, demo bookings &amp; contact inquiries</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              <NavLink
+                to="/admin/settings"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon emerald">
+                  <Settings size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">System Settings</span>
+                  <span className="profile-sheet-item-sub">Security, session timeout &amp; preferences</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMobileProfile(false);
+                  setShowMobileSupport(true);
+                }}
+                className="profile-sheet-item"
+                style={{ width: '100%', textAlign: 'left', background: '#ffffff', cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                <div className="profile-sheet-item-icon teal">
+                  <Headphones size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">24/7 Enterprise Support</span>
+                  <span className="profile-sheet-item-sub">Hotline, email helpdesk &amp; documentation</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </button>
+            </div>
+
+            <div className="profile-sheet-divider" />
+
+            {/* Live Website Link & Sign Out */}
+            <div className="profile-sheet-actions-group">
+              <Link
+                to="/"
+                onClick={() => setShowMobileProfile(false)}
+                className="profile-sheet-action-link"
+              >
+                <ArrowLeft size={16} />
+                <span>Return to Live Website</span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMobileProfile(false);
+                  setShowLogoutConfirm(true);
+                }}
+                className="profile-sheet-logout-btn"
+              >
+                <LogOut size={16} />
+                <span>Sign Out of Admin Console</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Support Full Screen View */}
+      {showMobileSupport && (
+        <div className="admin-support-fullscreen-view" role="dialog" aria-modal="true" aria-label="24/7 Enterprise Support">
+          {/* Top Fullscreen Sticky Header */}
+          <div className="admin-support-fullscreen-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+              <div
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  backgroundColor: '#e6f7f0',
+                  color: '#00875a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Headphones size={19} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <h3 className="admin-support-fullscreen-title">
+                  24/7 Enterprise Support
+                </h3>
+                <span className="admin-support-fullscreen-sub">
+                  Speshway Admin Help Desk &amp; Monitoring
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Fullscreen Scrollable Body */}
+          <div className="admin-support-fullscreen-body">
+            {/* Live Uptime Status Card */}
+            <div className="admin-support-status-card">
+              <div className="admin-support-status-dot" />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#065f46' }}>
+                  All Systems Operational &bull; 99.9% Uptime
+                </div>
+                <div style={{ fontSize: '0.73rem', color: '#047857' }}>
+                  Dedicated 24/7 SLA Priority Help Desk Active
+                </div>
+              </div>
+              <span className="admin-support-live-badge">Live SLA</span>
+            </div>
+
+            <div className="profile-sheet-section-label">INSTANT ASSISTANCE CHANNELS</div>
+
+            <div className="profile-sheet-menu-list">
+              {/* Phone Hotline */}
+              <a
+                href="tel:+919100006020"
+                className="profile-sheet-item"
+              >
+                <div className="profile-sheet-item-icon emerald">
+                  <Phone size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">+91 9100006020</span>
+                  <span className="profile-sheet-item-sub">24/7 Direct Telephone Support</span>
+                </div>
+                <span className="support-sheet-action-pill">Call Now</span>
+              </a>
+
+              {/* Email Support */}
+              <a
+                href="mailto:support@speshway.com?subject=Speshway%20Admin%20Dashboard%20Support"
+                className="profile-sheet-item"
+              >
+                <div className="profile-sheet-item-icon blue">
+                  <Mail size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">support@speshway.com</span>
+                  <span className="profile-sheet-item-sub">Email response within 15 minutes</span>
+                </div>
+                <span className="support-sheet-action-pill email">
+                  Email
+                </span>
+              </a>
+
+              {/* Demo Inquiries & Tickets */}
+              <NavLink
+                to="/admin/inquiries"
+                onClick={() => setShowMobileSupport(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon purple">
+                  <Inbox size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="profile-sheet-item-title">Inbound Inquiries &amp; Leads</span>
+                    {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
+                  </div>
+                  <span className="profile-sheet-item-sub">Review user demo requests &amp; inquiries</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              {/* Help Center & FAQs */}
+              <Link
+                to="/faq"
+                onClick={() => setShowMobileSupport(false)}
+                className="profile-sheet-item"
+              >
+                <div className="profile-sheet-item-icon amber">
+                  <HelpCircle size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">Help Center &amp; FAQs</span>
+                  <span className="profile-sheet-item-sub">Documentation &amp; troubleshooting guides</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </Link>
+            </div>
+
+            <div className="profile-sheet-divider" />
+
+            {/* Quick Summary Cards */}
+            <div className="admin-support-info-box">
+              <div className="admin-support-info-row">
+                <span className="admin-support-info-label">Enterprise Headquarters</span>
+                <span className="admin-support-info-val">T-Hub, Knowledge City Rd, Raidurgam, Hyderabad, Telangana 500032</span>
+              </div>
+              <div className="admin-support-info-row">
+                <span className="admin-support-info-label">Availability &amp; Coverage</span>
+                <span className="admin-support-info-val">24/7 Continuous Infrastructure Monitoring &amp; Engineering SLA</span>
+              </div>
+            </div>
+
+            {/* Contact Page Link */}
+            <div className="profile-sheet-actions-group" style={{ marginTop: '16px' }}>
+              <Link
+                to="/contact"
+                onClick={() => setShowMobileSupport(false)}
+                className="profile-sheet-action-link"
+              >
+                <LifeBuoy size={16} />
+                <span>Open Full Help &amp; Contact Page</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Logout Confirmation Card Modal */}
       {showLogoutConfirm && (

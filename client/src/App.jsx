@@ -15,6 +15,7 @@ import { FaqPage } from './pages/FaqPage';
 import { GetStartedPage } from './pages/GetStartedPage';
 
 // Admin Portal Pages
+import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminOverview } from './pages/admin/AdminOverview';
 import { AdminProducts } from './pages/admin/AdminProducts';
@@ -228,9 +229,14 @@ export default function App() {
             {/* 2. AUTHENTICATION */}
             <Route path="/login" element={<Login />} />
 
-            {/* 3. ADMIN DASHBOARD */}
+            {/* 3. ADMIN AUTHENTICATION */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLogin />} />
+
+            {/* 4. ADMIN DASHBOARD */}
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminOverview />} />
+              <Route path="overview" element={<AdminOverview />} />
+              <Route path="dashboard" element={<AdminOverview />} />
               <Route path="products" element={<AdminProducts />} />
               <Route path="projects" element={<AdminProducts />} />
               <Route path="projects/new" element={<AdminProductForm />} />

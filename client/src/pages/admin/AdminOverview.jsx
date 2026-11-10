@@ -40,7 +40,7 @@ export const AdminOverview = () => {
           <div className="kpi-icon-wrap bg-green-subtle">
             <Package size={22} className="text-green" />
           </div>
-          <div>
+          <div className="kpi-info-wrap">
             <span className="kpi-label">Active ERP Projects</span>
             <span className="kpi-value">{displayProjects.length}</span>
             <span className="kpi-trend positive">&uarr; Synced in Realtime</span>
@@ -51,7 +51,7 @@ export const AdminOverview = () => {
           <div className="kpi-icon-wrap bg-purple-subtle">
             <Inbox size={22} className="text-purple" />
           </div>
-          <div>
+          <div className="kpi-info-wrap">
             <span className="kpi-label">Customer Leads</span>
             <span className="kpi-value">{inquiries.length}</span>
             <span className="kpi-trend positive">&rarr; Manage Leads</span>
@@ -62,7 +62,7 @@ export const AdminOverview = () => {
           <div className="kpi-icon-wrap bg-orange-subtle">
             <Globe size={22} className="text-orange" />
           </div>
-          <div>
+          <div className="kpi-info-wrap">
             <span className="kpi-label">System Uptime</span>
             <span className="kpi-value">{stats.uptime || '99.9%'}</span>
             <span className="kpi-trend positive">Zero Incident SLA</span>

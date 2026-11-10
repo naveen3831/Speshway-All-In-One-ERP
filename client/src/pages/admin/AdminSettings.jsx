@@ -25,6 +25,8 @@ import {
   Instagram,
   Youtube,
   Clock,
+  Edit3,
+  X,
 } from 'lucide-react';
 
 // Platform detector helper
@@ -220,6 +222,7 @@ export const AdminSettings = () => {
     setSavingTimeout(true);
     updateSessionTimeout(selectedTimeout);
     setTimeoutSuccess(`Session inactivity timeout successfully set to ${selectedTimeout} minutes!`);
+    setIsEditingTimeout(false);
     setTimeout(() => {
       setSavingTimeout(false);
       setTimeout(() => setTimeoutSuccess(''), 4500);
@@ -258,6 +261,50 @@ export const AdminSettings = () => {
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Card Editing States (Default to clean read-only view mode)
+  const [isEditingBranding, setIsEditingBranding] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [isEditingSocial, setIsEditingSocial] = useState(false);
+  const [isEditingTimeout, setIsEditingTimeout] = useState(false);
+
+  const handleCancelBranding = () => {
+    setBrandTitle(currentBranding.brandTitle || 'SPESHWAY');
+    setBrandSubtitle(currentBranding.brandSubtitle || 'ALL IN ONE ERP');
+    setLogoUrl(currentBranding.logoUrl || '/logo.png');
+    setBrandingError('');
+    setIsEditingBranding(false);
+  };
+
+  const handleCancelProfile = () => {
+    if (user) {
+      setName(user.name || 'Speshway Administrator');
+      setEmail(user.email || 'admin@gmail.com');
+      setDepartment(user.department || 'Executive Administration');
+    }
+    setNewPassword('');
+    setConfirmPassword('');
+    setErrorMsg('');
+    setIsEditingProfile(false);
+  };
+
+  const handleCancelSocial = () => {
+    setSocialForm({
+      facebook: currentSocial.facebook || 'https://facebook.com/speshway',
+      twitter: currentSocial.twitter || 'https://x.com/speshway',
+      linkedin: currentSocial.linkedin || 'https://linkedin.com/company/speshway',
+      instagram: currentSocial.instagram || 'https://instagram.com/speshway',
+      youtube: currentSocial.youtube || 'https://youtube.com/@speshway',
+    });
+    setSocialErrors({});
+    setSocialGeneralError('');
+    setIsEditingSocial(false);
+  };
+
+  const handleCancelTimeout = () => {
+    setSelectedTimeout(timeoutMinutes || 10);
+    setIsEditingTimeout(false);
+  };
 
   useEffect(() => {
     if (currentBranding) {
@@ -369,6 +416,7 @@ export const AdminSettings = () => {
       };
       await updateBranding(updated);
       setBrandingSuccess('Application Logo and Brand Name successfully updated across the entire platform!');
+      setIsEditingBranding(false);
       setTimeout(() => setBrandingSuccess(''), 4500);
     } catch (err) {
       setBrandingError('Failed to save branding changes: ' + err.message);
@@ -432,6 +480,7 @@ export const AdminSettings = () => {
       setNewPassword('');
       setConfirmPassword('');
       setSuccessMsg('Profile settings updated successfully! Sidebar profile synchronized.');
+      setIsEditingProfile(false);
       setTimeout(() => setSuccessMsg(''), 4000);
     } catch (err) {
       setErrorMsg('Failed to update profile. Please try again.');
@@ -483,6 +532,7 @@ export const AdminSettings = () => {
     try {
       await updateSocialLinks(normalizedPayload);
       setSocialSuccess('Official social media account links saved successfully! Footer links are now synchronized.');
+      setIsEditingSocial(false);
       setTimeout(() => setSocialSuccess(''), 4500);
     } catch (err) {
       setSocialGeneralError('Failed to save social media links: ' + err.message);
@@ -580,7 +630,7 @@ export const AdminSettings = () => {
 
       {/* 1. BRANDING & LOGO IDENTITY CARD */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -588,21 +638,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
-            flexWrap: 'wrap',
             gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -613,56 +665,110 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <Sparkles size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Application Logo &amp; Brand Identity
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Application Logo &amp; Brand Identity
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#ecfdf5',
+                    color: '#00875a',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Globe size={12} /> Global Brand Identity
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Change company brand name, logo icon, and tagline displayed across the website and admin console.
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                padding: '4px 12px',
-                backgroundColor: '#ecfdf5',
-                color: '#00875a',
-                borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <Globe size={13} /> Global Brand Identity
-            </span>
-            <button
-              type="button"
-              onClick={handleResetDefaultBranding}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                borderRadius: '8px',
-                border: '1px solid #e2e8f0',
-                backgroundColor: '#f8fafc',
-                color: '#64748b',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-              title="Reset to default Speshway logo and brand name"
-            >
-              <RefreshCw size={13} /> Reset Default
-            </button>
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
+            }}
+          >
+            {!isEditingBranding ? (
+              <button
+                type="button"
+                onClick={() => setIsEditingBranding(true)}
+                className="btn-hero-primary admin-settings-edit-btn"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  padding: '7px 16px',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Edit3 size={15} />
+                <span>Edit</span>
+              </button>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  onClick={handleResetDefaultBranding}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0',
+                    backgroundColor: '#f8fafc',
+                    color: '#64748b',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                  title="Reset to default Speshway logo and brand name"
+                >
+                  <RefreshCw size={13} /> Reset Default
+                </button>
+                <span
+                  style={{
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    color: '#00875a',
+                    backgroundColor: '#dcfce7',
+                    padding: '5px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid #bbf7d0',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Editing Mode
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -705,50 +811,37 @@ export const AdminSettings = () => {
           </div>
         )}
 
-        <form onSubmit={handleSaveBranding}>
+        {/* VIEW MODE: Clean Read-only Display (Form Inputs Hidden) */}
+        {!isEditingBranding ? (
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
               gap: '24px',
-              marginBottom: '24px',
             }}
           >
-            {/* Left Column: Brand Name & Subtitle inputs */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            {/* Left Column: View Fields */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <label
+                <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
+                  Application Brand Name
+                </span>
+                <div
                   style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
+                    padding: '10px 14px',
+                    backgroundColor: '#f8fafc',
+                    border: '1.5px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '0.95rem',
                     fontWeight: 700,
-                    color: '#1e293b',
-                    marginBottom: '6px',
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
                   }}
                 >
-                  Application Brand Name *
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    required
-                    value={brandTitle}
-                    onChange={(e) => setBrandTitle(e.target.value)}
-                    placeholder="e.g. SPESHWAY or Your Brand Name"
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px 10px 36px',
-                      borderRadius: '8px',
-                      border: '1.5px solid #cbd5e1',
-                      fontSize: '0.95rem',
-                      fontWeight: 700,
-                      color: '#0f172a',
-                    }}
-                  />
-                  <Globe
-                    size={16}
-                    style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
-                  />
+                  <Globe size={16} style={{ color: '#00875a' }} />
+                  <span>{brandTitle || 'SPESHWAY'}</span>
                 </div>
                 <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
                   Primary brand name shown in header navbar, footers, and admin panels.
@@ -756,145 +849,65 @@ export const AdminSettings = () => {
               </div>
 
               <div>
-                <label
+                <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
+                  Brand Subtitle / Tagline
+                </span>
+                <div
                   style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    color: '#1e293b',
-                    marginBottom: '6px',
+                    padding: '10px 14px',
+                    backgroundColor: '#f8fafc',
+                    border: '1.5px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
                   }}
                 >
-                  Brand Subtitle / Tagline
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    value={brandSubtitle}
-                    onChange={(e) => setBrandSubtitle(e.target.value)}
-                    placeholder="e.g. ALL IN ONE ERP"
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px 10px 36px',
-                      borderRadius: '8px',
-                      border: '1.5px solid #cbd5e1',
-                      fontSize: '0.9rem',
-                      fontWeight: 600,
-                      color: '#0f172a',
-                    }}
-                  />
-                  <Sparkles
-                    size={16}
-                    style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
-                  />
+                  <Sparkles size={16} style={{ color: '#00875a' }} />
+                  <span>{brandSubtitle || 'ALL IN ONE ERP'}</span>
                 </div>
                 <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
                   Subtitle shown directly below the logo in the header and footer.
                 </span>
               </div>
 
-              {/* Logo URL Input alternative */}
               <div>
-                <label
+                <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
+                  Logo Image URL or Local Path
+                </span>
+                <div
                   style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    color: '#1e293b',
-                    marginBottom: '6px',
+                    padding: '10px 14px',
+                    backgroundColor: '#f8fafc',
+                    border: '1.5px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '0.88rem',
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    wordBreak: 'break-all',
                   }}
                 >
-                  Logo Image URL or Local Path
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    value={logoUrl}
-                    onChange={(e) => setLogoUrl(e.target.value)}
-                    placeholder="/logo.png or https://example.com/logo.png"
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px 10px 36px',
-                      borderRadius: '8px',
-                      border: '1.5px solid #cbd5e1',
-                      fontSize: '0.88rem',
-                      color: '#0f172a',
-                    }}
-                  />
-                  <Image
-                    size={16}
-                    style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
-                  />
+                  <Image size={16} style={{ color: '#00875a', flexShrink: 0 }} />
+                  <span>{logoUrl || '/logo.png'}</span>
                 </div>
                 <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
-                  Direct URL or upload a file using the upload box on the right.
+                  Direct URL or active image asset.
                 </span>
               </div>
             </div>
 
-            {/* Right Column: Logo Upload & Live Previews */}
+            {/* Right Column: Previews in View Mode */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    color: '#1e293b',
-                    marginBottom: '6px',
-                  }}
-                >
-                  Upload New Logo Image (PNG, SVG, JPG, WebP)
-                </label>
-                <div
-                  style={{
-                    border: '2px dashed #cbd5e1',
-                    borderRadius: '12px',
-                    padding: '16px',
-                    textAlign: 'center',
-                    backgroundColor: '#f8fafc',
-                    cursor: 'pointer',
-                    transition: 'border-color 0.2s',
-                    position: 'relative',
-                  }}
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    if (e.dataTransfer.files?.[0]) {
-                      const fakeEvent = { target: { files: e.dataTransfer.files } };
-                      handleLogoUpload(fakeEvent);
-                    }
-                  }}
-                >
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoUpload}
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      opacity: 0,
-                      cursor: 'pointer',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
-                  <Upload size={26} style={{ color: '#00875a', margin: '0 auto 6px auto', display: 'block' }} />
-                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#1e293b' }}>
-                    Click to browse or drag and drop logo here
-                  </span>
-                  <span style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', marginTop: '3px' }}>
-                    Transparent PNG or SVG recommended
-                  </span>
-                </div>
-              </div>
-
-              {/* Live Preview Box */}
               <div
                 style={{
                   backgroundColor: '#f8fafc',
                   borderRadius: '12px',
-                  padding: '14px',
+                  padding: '16px',
                   border: '1px solid #e2e8f0',
                 }}
               >
@@ -912,7 +925,7 @@ export const AdminSettings = () => {
                   Live Visual Previews (Real-time Preview)
                 </span>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
-                  {/* Navbar Light Preview */}
+                  {/* Website Navbar (Light) */}
                   <div
                     style={{
                       backgroundColor: '#ffffff',
@@ -1043,42 +1056,403 @@ export const AdminSettings = () => {
               </div>
             </div>
           </div>
-
-          {/* Save Branding Action Button */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '12px',
-              justifyContent: 'flex-end',
-              paddingTop: '16px',
-              borderTop: '1px solid #f1f5f9',
-            }}
-          >
-            <button
-              type="submit"
-              disabled={savingBranding}
-              className="btn-hero-primary"
+        ) : (
+          /* EDIT MODE: Form Inputs & File Upload */
+          <form onSubmit={handleSaveBranding}>
+            <div
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 24px',
-                fontSize: '0.9rem',
-                fontWeight: 700,
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '24px',
+                marginBottom: '24px',
               }}
             >
-              {savingBranding ? (
-                <>
-                  <Save size={16} /> Saving Branding...
-                </>
-              ) : (
-                <>
-                  <Save size={16} /> Save Logo &amp; Brand Name
-                </>
-              )}
-            </button>
-          </div>
-        </form>
+              {/* Left Column: Brand Name & Subtitle inputs */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Application Brand Name *
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="text"
+                      required
+                      value={brandTitle}
+                      onChange={(e) => setBrandTitle(e.target.value)}
+                      placeholder="e.g. SPESHWAY or Your Brand Name"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 10px 36px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.95rem',
+                        fontWeight: 700,
+                        color: '#0f172a',
+                      }}
+                    />
+                    <Globe
+                      size={16}
+                      style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Primary brand name shown in header navbar, footers, and admin panels.
+                  </span>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Brand Subtitle / Tagline
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="text"
+                      value={brandSubtitle}
+                      onChange={(e) => setBrandSubtitle(e.target.value)}
+                      placeholder="e.g. ALL IN ONE ERP"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 10px 36px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.9rem',
+                        fontWeight: 600,
+                        color: '#0f172a',
+                      }}
+                    />
+                    <Sparkles
+                      size={16}
+                      style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Subtitle shown directly below the logo in the header and footer.
+                  </span>
+                </div>
+
+                {/* Logo URL Input alternative */}
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Logo Image URL or Local Path
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="text"
+                      value={logoUrl}
+                      onChange={(e) => setLogoUrl(e.target.value)}
+                      placeholder="/logo.png or https://example.com/logo.png"
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 10px 36px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.88rem',
+                        color: '#0f172a',
+                      }}
+                    />
+                    <Image
+                      size={16}
+                      style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Direct URL or upload a file using the upload box on the right.
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column: Logo Upload & Live Previews */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Upload New Logo Image (PNG, SVG, JPG, WebP)
+                  </label>
+                  <div
+                    style={{
+                      border: '2px dashed #cbd5e1',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      textAlign: 'center',
+                      backgroundColor: '#f8fafc',
+                      cursor: 'pointer',
+                      transition: 'border-color 0.2s',
+                      position: 'relative',
+                    }}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      if (e.dataTransfer.files?.[0]) {
+                        const fakeEvent = { target: { files: e.dataTransfer.files } };
+                        handleLogoUpload(fakeEvent);
+                      }
+                    }}
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        opacity: 0,
+                        cursor: 'pointer',
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                    <Upload size={26} style={{ color: '#00875a', margin: '0 auto 6px auto', display: 'block' }} />
+                    <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#1e293b' }}>
+                      Click to browse or drag and drop logo here
+                    </span>
+                    <span style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', marginTop: '3px' }}>
+                      Transparent PNG or SVG recommended
+                    </span>
+                  </div>
+                </div>
+
+                {/* Live Preview Box */}
+                <div
+                  style={{
+                    backgroundColor: '#f8fafc',
+                    borderRadius: '12px',
+                    padding: '14px',
+                    border: '1px solid #e2e8f0',
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'block',
+                      fontSize: '0.74rem',
+                      fontWeight: 800,
+                      color: '#475569',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    Live Visual Previews (Real-time Preview)
+                  </span>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
+                    {/* Navbar Light Preview */}
+                    <div
+                      style={{
+                        backgroundColor: '#ffffff',
+                        border: '1.5px solid #e2e8f0',
+                        borderRadius: '10px',
+                        padding: '12px 14px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                      }}
+                    >
+                      <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>
+                        Website Navbar (Light)
+                      </span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div
+                          style={{
+                            width: '38px',
+                            height: '38px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <img
+                            src={logoUrl || '/logo.png'}
+                            alt="Preview"
+                            style={{ maxWidth: '36px', maxHeight: '36px', objectFit: 'contain' }}
+                            onError={(e) => {
+                              e.target.src = '/logo.png';
+                            }}
+                          />
+                        </div>
+                        <div style={{ minWidth: 0, overflow: 'hidden' }}>
+                          <div
+                            style={{
+                              fontSize: '0.95rem',
+                              fontWeight: 900,
+                              color: '#0f172a',
+                              letterSpacing: '-0.02em',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {brandTitle || 'BRAND NAME'}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: '0.62rem',
+                              fontWeight: 800,
+                              color: '#00875a',
+                              letterSpacing: '0.12em',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {brandSubtitle || 'ALL IN ONE ERP'}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Admin Dark Preview */}
+                    <div
+                      style={{
+                        backgroundColor: '#062a1e',
+                        border: '1.5px solid #0b4532',
+                        borderRadius: '10px',
+                        padding: '12px 14px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                      }}
+                    >
+                      <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#6ee7b7', display: 'block', marginBottom: '6px' }}>
+                        Admin Sidebar (Dark)
+                      </span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div
+                          style={{
+                            width: '38px',
+                            height: '38px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <img
+                            src={logoUrl || '/logo.png'}
+                            alt="Preview"
+                            style={{ maxWidth: '36px', maxHeight: '36px', objectFit: 'contain' }}
+                            onError={(e) => {
+                              e.target.src = '/logo.png';
+                            }}
+                          />
+                        </div>
+                        <div style={{ minWidth: 0, overflow: 'hidden' }}>
+                          <div
+                            style={{
+                              fontSize: '0.95rem',
+                              fontWeight: 900,
+                              color: '#ffffff',
+                              letterSpacing: '-0.02em',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {brandTitle || 'BRAND NAME'}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: '0.62rem',
+                              fontWeight: 800,
+                              color: '#34d399',
+                              letterSpacing: '0.12em',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            ADMIN CONSOLE
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Save Branding Action Buttons (Cancel & Save) */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '12px',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingTop: '16px',
+                borderTop: '1px solid #f1f5f9',
+              }}
+            >
+              <button
+                type="button"
+                onClick={handleCancelBranding}
+                className="btn-hero-secondary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '10px 20px',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                <X size={15} /> Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={savingBranding}
+                className="btn-hero-primary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 24px',
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                {savingBranding ? (
+                  <>
+                    <Save size={16} /> Saving Branding...
+                  </>
+                ) : (
+                  <>
+                    <Save size={16} /> Save Logo &amp; Brand Name
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
 
       {/* Messages for Profile */}
@@ -1122,7 +1496,7 @@ export const AdminSettings = () => {
 
       {/* Main Profile Options Card */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -1130,19 +1504,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
+            gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -1153,38 +1531,234 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <User size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Administrator Profile Options
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Administrator Profile Options
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#ecfdf5',
+                    color: '#00875a',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <ShieldCheck size={12} /> Role: Super Administrator
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Change your name, login email, and administrative access password
               </span>
             </div>
           </div>
-          <span
+
+          <div
+            className="admin-settings-card-corner-action"
             style={{
-              padding: '4px 12px',
-              backgroundColor: '#ecfdf5',
-              color: '#00875a',
-              borderRadius: '9999px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
-              gap: '4px',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
             }}
           >
-            <ShieldCheck size={13} /> Role: Super Administrator
-          </span>
+            {!isEditingProfile ? (
+              <button
+                type="button"
+                onClick={() => setIsEditingProfile(true)}
+                className="btn-hero-primary admin-settings-edit-btn"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  padding: '7px 16px',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Edit3 size={15} />
+                <span>Edit</span>
+              </button>
+            ) : (
+              <span
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  color: '#00875a',
+                  backgroundColor: '#dcfce7',
+                  padding: '5px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid #bbf7d0',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Editing Mode
+              </span>
+            )}
+          </div>
         </div>
 
-        {/* Profile Avatar & Form Grid */}
-        <form onSubmit={handleSaveProfile}>
+        {/* VIEW MODE: Clean Read-only Display (Form Inputs Hidden) */}
+        {!isEditingProfile ? (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'auto 1fr',
+              gap: '28px',
+              alignItems: 'center',
+            }}
+          >
+            {/* Avatar Preview */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '16px',
+                backgroundColor: '#f8fafc',
+                borderRadius: '14px',
+                border: '1px solid #e2e8f0',
+                minWidth: '130px',
+              }}
+            >
+              <div
+                style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: '#00875a',
+                  color: '#ffffff',
+                  fontSize: '1.4rem',
+                  fontWeight: 800,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 12px rgba(0, 135, 90, 0.25)',
+                }}
+              >
+                {initials}
+              </div>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569' }}>
+                Sidebar Avatar
+              </span>
+            </div>
+
+            {/* Read-only Profile Fields */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+              <div>
+                <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
+                  Administrator Display Name
+                </span>
+                <div
+                  style={{
+                    padding: '10px 14px',
+                    backgroundColor: '#f8fafc',
+                    border: '1.5px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '0.92rem',
+                    fontWeight: 700,
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <User size={16} style={{ color: '#00875a' }} />
+                  <span>{name || 'Speshway Administrator'}</span>
+                </div>
+              </div>
+
+              <div>
+                <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
+                  Login Email Address
+                </span>
+                <div
+                  style={{
+                    padding: '10px 14px',
+                    backgroundColor: '#f8fafc',
+                    border: '1.5px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '0.92rem',
+                    fontWeight: 600,
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <Mail size={16} style={{ color: '#00875a' }} />
+                  <span>{email || 'admin@gmail.com'}</span>
+                </div>
+              </div>
+
+              <div>
+                <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
+                  Department / Office
+                </span>
+                <div
+                  style={{
+                    padding: '10px 14px',
+                    backgroundColor: '#f8fafc',
+                    border: '1.5px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '0.92rem',
+                    fontWeight: 600,
+                    color: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <Building size={16} style={{ color: '#00875a' }} />
+                  <span>{department || 'Executive Administration'}</span>
+                </div>
+              </div>
+
+              <div>
+                <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#64748b', marginBottom: '6px' }}>
+                  Account Password
+                </span>
+                <div
+                  style={{
+                    padding: '10px 14px',
+                    backgroundColor: '#f8fafc',
+                    border: '1.5px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '0.92rem',
+                    fontWeight: 600,
+                    color: '#64748b',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <Lock size={16} style={{ color: '#00875a' }} />
+                  <span>•••••••••••• (Encrypted)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* Profile Avatar & Form Grid */
+          <form onSubmit={handleSaveProfile}>
           <div
             style={{
               display: 'grid',
@@ -1432,16 +2006,34 @@ export const AdminSettings = () => {
             </div>
           </div>
 
-          {/* Form Action Buttons */}
+          {/* Form Action Buttons: Cancel & Save */}
           <div
             style={{
               display: 'flex',
               gap: '12px',
               justifyContent: 'flex-end',
+              alignItems: 'center',
               paddingTop: '16px',
               borderTop: '1px solid #f1f5f9',
             }}
           >
+            <button
+              type="button"
+              onClick={handleCancelProfile}
+              className="btn-hero-secondary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '10px 20px',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                borderRadius: '8px',
+                cursor: 'pointer',
+              }}
+            >
+              <X size={15} /> Cancel
+            </button>
             <button
               type="submit"
               disabled={saving}
@@ -1453,6 +2045,8 @@ export const AdminSettings = () => {
                 padding: '10px 22px',
                 fontSize: '0.88rem',
                 fontWeight: 700,
+                borderRadius: '8px',
+                cursor: 'pointer',
               }}
             >
               {saving ? (
@@ -1467,11 +2061,12 @@ export const AdminSettings = () => {
             </button>
           </div>
         </form>
+      )}
       </div>
 
       {/* 3. SOCIAL MEDIA PROFILES & URL CONFIGURATION CARD */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -1479,21 +2074,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
-            flexWrap: 'wrap',
             gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -1504,41 +2101,110 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <Share2 size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Official Social Media Accounts &amp; Profile Links
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Official Social Media Accounts &amp; Profile Links
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#eff6ff',
+                    color: '#2563eb',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Share2 size={12} /> Public Header &amp; Footer
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Configure destination links for the footer social icons. Only authentic, matching platform URLs are accepted.
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <button
-              type="button"
-              onClick={handleResetDefaultSocial}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                borderRadius: '8px',
-                border: '1px solid #e2e8f0',
-                backgroundColor: '#f8fafc',
-                color: '#64748b',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-              title="Reset all social media links to default Speshway handles"
-            >
-              <RefreshCw size={13} /> Reset Default Links
-            </button>
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
+            }}
+          >
+            {!isEditingSocial ? (
+              <button
+                type="button"
+                onClick={() => setIsEditingSocial(true)}
+                className="btn-hero-primary admin-settings-edit-btn"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  padding: '7px 16px',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Edit3 size={15} />
+                <span>Edit</span>
+              </button>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  onClick={handleResetDefaultSocial}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0',
+                    backgroundColor: '#f8fafc',
+                    color: '#64748b',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                  title="Reset all social media links to default Speshway handles"
+                >
+                  <RefreshCw size={13} /> Reset Default Links
+                </button>
+                <span
+                  style={{
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    color: '#00875a',
+                    backgroundColor: '#dcfce7',
+                    padding: '5px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid #bbf7d0',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Editing Mode
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -1585,7 +2251,91 @@ export const AdminSettings = () => {
           </div>
         )}
 
-        <form onSubmit={handleSaveSocial}>
+        {/* VIEW MODE: Clean Read-only Display (Form Inputs Hidden) */}
+        {!isEditingSocial ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+            {SOCIAL_PLATFORMS.map((platform) => {
+              const val = socialForm[platform.key] || '';
+              return (
+                <div
+                  key={platform.key}
+                  style={{
+                    padding: '16px 18px',
+                    borderRadius: '12px',
+                    backgroundColor: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '8px',
+                          backgroundColor: platform.badgeBg,
+                          border: `1px solid ${platform.badgeBorder}`,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {platform.icon}
+                      </span>
+                      <strong style={{ fontSize: '0.92rem', color: '#0f172a' }}>{platform.name}</strong>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: '#059669',
+                        backgroundColor: '#d1fae5',
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      Active
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '0.82rem',
+                      color: val ? '#2563eb' : '#94a3b8',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {val ? (
+                      <a
+                        href={val}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: '#2563eb',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}
+                      >
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{val}</span>
+                        <ExternalLink size={12} style={{ flexShrink: 0 }} />
+                      </a>
+                    ) : (
+                      'Not configured'
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <form onSubmit={handleSaveSocial}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
             {SOCIAL_PLATFORMS.map((platform) => {
               const val = socialForm[platform.key] || '';
@@ -1791,17 +2541,35 @@ export const AdminSettings = () => {
             })}
           </div>
 
-          {/* Save Action Button */}
+          {/* Save Action Buttons (Cancel & Save) */}
           <div
             style={{
               display: 'flex',
               gap: '12px',
               justifyContent: 'flex-end',
+              alignItems: 'center',
               paddingTop: '20px',
               marginTop: '24px',
               borderTop: '1px solid #f1f5f9',
             }}
           >
+            <button
+              type="button"
+              onClick={handleCancelSocial}
+              className="btn-hero-secondary"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '10px 20px',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                borderRadius: '8px',
+                cursor: 'pointer',
+              }}
+            >
+              <X size={15} /> Cancel
+            </button>
             <button
               type="submit"
               disabled={savingSocial || Object.values(socialErrors).some(Boolean)}
@@ -1813,6 +2581,7 @@ export const AdminSettings = () => {
                 padding: '11px 26px',
                 fontSize: '0.9rem',
                 fontWeight: 700,
+                borderRadius: '8px',
                 opacity: Object.values(socialErrors).some(Boolean) ? 0.6 : 1,
                 cursor: Object.values(socialErrors).some(Boolean) ? 'not-allowed' : 'pointer',
               }}
@@ -1829,12 +2598,13 @@ export const AdminSettings = () => {
             </button>
           </div>
         </form>
+      )}
       </div>
 
 
       {/* 4. SESSION SECURITY & INACTIVITY TIMEOUT CARD */}
       <div
-        className="admin-card"
+        className="admin-card admin-settings-card"
         style={{
           marginBottom: '28px',
           borderRadius: '16px',
@@ -1842,21 +2612,23 @@ export const AdminSettings = () => {
           border: '1px solid #e2e8f0',
           boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
           backgroundColor: '#ffffff',
+          position: 'relative',
         }}
       >
         <div
+          className="admin-settings-card-header"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
             paddingBottom: '16px',
             marginBottom: '24px',
             borderBottom: '1px solid #f1f5f9',
-            flexWrap: 'wrap',
             gap: '12px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             <div
               style={{
                 width: '38px',
@@ -1867,36 +2639,87 @@ export const AdminSettings = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '2px',
               }}
             >
               <ShieldCheck size={20} />
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
-                Session Security &amp; Inactivity Auto-Lock
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Session Security &amp; Inactivity Auto-Lock
+                </h3>
+                <span
+                  style={{
+                    padding: '3px 10px',
+                    backgroundColor: '#ecfdf5',
+                    color: '#00875a',
+                    borderRadius: '9999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Check size={12} /> HTTP-Only Cookies Active
+                </span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '4px', lineHeight: 1.4 }}>
                 Manage automatic idle timeout and secure HTTP-only cookie parameters for active administrators.
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                padding: '4px 12px',
-                backgroundColor: '#ecfdf5',
-                color: '#00875a',
-                borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <Check size={13} /> HTTP-Only Cookies Active
-            </span>
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              flexShrink: 0,
+              marginLeft: 'auto',
+            }}
+          >
+            {!isEditingTimeout ? (
+              <button
+                type="button"
+                onClick={() => setIsEditingTimeout(true)}
+                className="btn-hero-primary admin-settings-edit-btn"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  padding: '7px 16px',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Edit3 size={15} />
+                <span>Edit</span>
+              </button>
+            ) : (
+              <span
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  color: '#00875a',
+                  backgroundColor: '#dcfce7',
+                  padding: '5px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid #bbf7d0',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Editing Mode
+              </span>
+            )}
           </div>
         </div>
 
@@ -1921,42 +2744,45 @@ export const AdminSettings = () => {
           </div>
         )}
 
-        <form onSubmit={handleSaveTimeout}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+        {/* VIEW MODE: Clean Read-only Display (Form Inputs Hidden) */}
+        {!isEditingTimeout ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
             <div style={{ backgroundColor: '#f8fafc', padding: '18px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
+              <span style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
                 Inactivity Auto-Logout Duration
-              </label>
+              </span>
               <p style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '14px', lineHeight: 1.4 }}>
                 If you leave the tab or stay idle for this duration, your session will automatically lock to safeguard company data.
               </p>
-              <select
-                value={selectedTimeout}
-                onChange={(e) => setSelectedTimeout(Number(e.target.value))}
+              <div
                 style={{
-                  width: '100%',
                   padding: '10px 14px',
-                  borderRadius: '10px',
-                  border: '1.5px solid #cbd5e1',
                   backgroundColor: '#ffffff',
+                  border: '1.5px solid #cbd5e1',
+                  borderRadius: '10px',
                   fontSize: '0.92rem',
-                  fontWeight: 600,
+                  fontWeight: 700,
                   color: '#0f172a',
-                  outline: 'none',
-                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
                 }}
               >
-                <option value={5}>5 Minutes (High Security Mode)</option>
-                <option value={10}>10 Minutes (Standard ERP - Recommended)</option>
-                <option value={15}>15 Minutes (Extended Workspace)</option>
-                <option value={30}>30 Minutes (Long Duration Session)</option>
-              </select>
+                <Clock size={16} style={{ color: '#00875a' }} />
+                <span>
+                  {selectedTimeout === 5 && '5 Minutes (High Security Mode)'}
+                  {selectedTimeout === 10 && '10 Minutes (Standard ERP - Recommended)'}
+                  {selectedTimeout === 15 && '15 Minutes (Extended Workspace)'}
+                  {selectedTimeout === 30 && '30 Minutes (Long Duration Session)'}
+                  {![5, 10, 15, 30].includes(selectedTimeout) && `${selectedTimeout} Minutes`}
+                </span>
+              </div>
             </div>
 
             <div style={{ backgroundColor: '#f8fafc', padding: '18px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
+              <span style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
                 Sliding Session Engine
-              </label>
+              </span>
               <p style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '12px', lineHeight: 1.45 }}>
                 • <strong>Active Browsing:</strong> Moving mouse, clicking, or typing refreshes your session continuously.
                 <br />
@@ -1981,35 +2807,117 @@ export const AdminSettings = () => {
               </div>
             </div>
           </div>
+        ) : (
+          <form onSubmit={handleSaveTimeout}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+              <div style={{ backgroundColor: '#f8fafc', padding: '18px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
+                  Inactivity Auto-Logout Duration
+                </label>
+                <p style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '14px', lineHeight: 1.4 }}>
+                  If you leave the tab or stay idle for this duration, your session will automatically lock to safeguard company data.
+                </p>
+                <select
+                  value={selectedTimeout}
+                  onChange={(e) => setSelectedTimeout(Number(e.target.value))}
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    borderRadius: '10px',
+                    border: '1.5px solid #cbd5e1',
+                    backgroundColor: '#ffffff',
+                    fontSize: '0.92rem',
+                    fontWeight: 600,
+                    color: '#0f172a',
+                    outline: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <option value={5}>5 Minutes (High Security Mode)</option>
+                  <option value={10}>10 Minutes (Standard ERP - Recommended)</option>
+                  <option value={15}>15 Minutes (Extended Workspace)</option>
+                  <option value={30}>30 Minutes (Long Duration Session)</option>
+                </select>
+              </div>
 
-          <div
-            style={{
-              display: 'flex',
-              gap: '12px',
-              justifyContent: 'flex-end',
-              paddingTop: '20px',
-              borderTop: '1px solid #f1f5f9',
-            }}
-          >
-            <button
-              type="submit"
-              disabled={savingTimeout}
-              className="btn-hero-primary"
+              <div style={{ backgroundColor: '#f8fafc', padding: '18px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: '#1e293b', marginBottom: '8px' }}>
+                  Sliding Session Engine
+                </label>
+                <p style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '12px', lineHeight: 1.45 }}>
+                  • <strong>Active Browsing:</strong> Moving mouse, clicking, or typing refreshes your session continuously.
+                  <br />
+                  • <strong>Returning After Idle:</strong> Returning to the tab after {selectedTimeout} minutes will immediately ask for login.
+                  <br />
+                  • <strong>Security:</strong> Sessions are stored via HTTP-Only cookies to eliminate XSS risks.
+                </p>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    color: '#059669',
+                    backgroundColor: '#d1fae5',
+                    padding: '4px 10px',
+                    borderRadius: '6px',
+                  }}
+                >
+                  <Clock size={13} /> Realtime Auto-Lock Engine Online
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons: Cancel & Save */}
+            <div
               style={{
-                display: 'inline-flex',
+                display: 'flex',
+                gap: '12px',
+                justifyContent: 'flex-end',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '11px 26px',
-                fontSize: '0.9rem',
-                fontWeight: 700,
-                cursor: 'pointer',
+                paddingTop: '20px',
+                borderTop: '1px solid #f1f5f9',
               }}
             >
-              <Save size={16} />
-              {savingTimeout ? 'Saving Timeout...' : 'Save Inactivity Timeout'}
-            </button>
-          </div>
-        </form>
+              <button
+                type="button"
+                onClick={handleCancelTimeout}
+                className="btn-hero-secondary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '10px 20px',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                <X size={15} /> Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={savingTimeout}
+                className="btn-hero-primary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '11px 26px',
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                <Save size={16} />
+                {savingTimeout ? 'Saving Timeout...' : 'Save Inactivity Timeout'}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

@@ -136,6 +136,21 @@ npm run dev
 | `PUT` | `/api/users/:id` | Update user details | Admin |
 | `DELETE` | `/api/users/:id` | Delete user | Admin |
 
+### Production Nginx routing
+
+The Docker reverse proxy configuration in [`nginx.conf`](./nginx.conf) sends direct
+requests to `/admin` and `/admin/...` to the frontend container's `/index.html`,
+so React Router can handle them. Install it in the active proxy container's mounted
+Nginx configuration. If HTTPS is terminated by a different Nginx instance, apply
+the same routing there instead. Validate and reload from inside the proxy container:
+
+```bash
+docker exec <nginx-container> nginx -t
+docker exec <nginx-container> nginx -s reload
+```
+
+Direct navigation to `https://your-domain/admin` should then load the admin page,
+including on refresh.
 
 ---
 

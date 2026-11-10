@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navbar } from '../components/landing/Navbar';
 import { CtaBanner } from '../components/landing/CtaBanner';
 import { Footer } from '../components/landing/Footer';
@@ -9,6 +9,7 @@ import {
   PRIMARY_ERP_CATEGORIES,
   getPrimaryCategory,
 } from '../utils/adminProjects';
+import { getProductFallbackImage } from '../utils/productImages';
 import {
   Search,
   Globe,
@@ -35,6 +36,10 @@ import {
   Image as ImageIcon,
   Loader2,
   CheckCircle,
+  SlidersHorizontal,
+  ChevronDown,
+  Check,
+  X,
 } from 'lucide-react';
 import { useNavigate, Navigate } from 'react-router-dom';
 
@@ -88,28 +93,6 @@ const EXCLUDED_NAMES = new Set([
   'employee directory',
   'hrms portal',
 ]);
-
-export const getProductFallbackImage = (slugOrIdOrName) => {
-  const s = (slugOrIdOrName || '').toLowerCase();
-  if (s.includes('savitri') || s.includes('saree')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793792633/speshway_products/savitri-sarees.jpg';
-  if (s.includes('sana') || s.includes('stayz')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788538/speshway_products/sana-stayz.jpg';
-  if (s.includes('learn') || s.includes('lms')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/learnhub.jpg';
-  if (s.includes('food') || s.includes('kitchen-cloud')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788534/speshway_products/foodway.jpg';
-  if (s.includes('joy') || s.includes('event')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788535/speshway_products/joy-events.jpg';
-  if (s.includes('hrms')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788540/speshway_products/speshway-hrms.jpg';
-  if (s.includes('flavora') || s.includes('kitchen') || s.includes('restaurant')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788532/speshway_products/flavora-kitchen.jpg';
-  if (s.includes('fitness') || s.includes('gym')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788529/speshway_products/american-fitness-gym.jpg';
-  if (s.includes('fleet')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788533/speshway_products/fleet-management.jpg';
-  if (s.includes('ride') || s.includes('bike') || s.includes('flow')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788537/speshway_products/ride-flow.jpg';
-  if (s.includes('salon') || s.includes('saloon') || s.includes('spy')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788538/speshway_products/saloon.jpg';
-  if (s.includes('dairy') || s.includes('milk') || s.includes('madhur')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788536/speshway_products/natural-milk-dairy.jpg';
-  if (s.includes('aneera') || s.includes('silk')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788531/speshway_products/aneera-silks.jpg';
-  if (s.includes('e-com') || s.includes('ecommerce') || s.includes('e com') || s.includes('nexora')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788531/speshway_products/e-commerce.jpg';
-  if (s.includes('hospital') || s.includes('hms')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788540/speshway_products/speshway-hospitals.jpg';
-  if (s.includes('tour') || s.includes('travel') || s.includes('bus')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788542/speshway_products/tours-and-travels.jpg';
-  if (s.includes('vexa') || s.includes('style')) return 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793788543/speshway_products/vexa-style-hub.png';
-  return '';
-};
 
 export const ProductsPage = () => {
   const { products, triggerUpdateProduct, homeContent } = useSocket();
@@ -201,9 +184,22 @@ export const ProductsPage = () => {
   const [modalMode, setModalMode] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const mobileFilterRef = useRef(null);
   const [uploadingSlug, setUploadingSlug] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
   const navigate = useNavigate();
+
+  // Close mobile filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (mobileFilterRef.current && !mobileFilterRef.current.contains(e.target)) {
+        setShowMobileFilter(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Scroll to top on mount
   useEffect(() => {
@@ -256,20 +252,85 @@ export const ProductsPage = () => {
             Explore our comprehensive suite of modular, interconnected ERP applications. Click on any product to open its dedicated details, tech stack, and live features.
           </p>
 
-          {/* Search Bar */}
-          <div className="catalog-search-bar">
-            <Search size={18} className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search products by name or features..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="catalog-search-input"
-            />
+          {/* Search & Filter Bar Container */}
+          <div className="catalog-search-filter-wrapper">
+            <div className="catalog-search-bar">
+              <Search size={18} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search products by name or features..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="catalog-search-input"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="catalog-search-clear-btn"
+                  title="Clear search"
+                >
+                  <X size={15} />
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Responsive Only Filter Option Side of Search */}
+            <div className="catalog-mobile-filter-wrap" ref={mobileFilterRef}>
+              <button
+                type="button"
+                onClick={() => setShowMobileFilter((prev) => !prev)}
+                className={`catalog-mobile-filter-btn ${activeCategory !== 'All' ? 'is-active' : ''}`}
+                title={`Filter by category${activeCategory !== 'All' ? `: ${activeCategory}` : ''}`}
+                aria-label="Filter by category"
+              >
+                <SlidersHorizontal size={18} />
+                {activeCategory !== 'All' && <span className="mobile-filter-active-dot" />}
+              </button>
+
+              {showMobileFilter && (
+                <div className="catalog-mobile-filter-dropdown">
+                  <div className="mobile-filter-dropdown-header">
+                    <span>Category Filter</span>
+                    {activeCategory !== 'All' && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveCategory('All');
+                          setShowMobileFilter(false);
+                        }}
+                        className="mobile-filter-reset-btn"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <div className="mobile-filter-options-list">
+                    {categories.map((cat) => {
+                      const isSelected = activeCategory === cat;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => {
+                            setActiveCategory(cat);
+                            setShowMobileFilter(false);
+                          }}
+                          className={`mobile-filter-option-item ${isSelected ? 'active' : ''}`}
+                        >
+                          <span>{cat}</span>
+                          {isSelected && <Check size={14} className="filter-check-icon" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Category Tabs */}
-          <div className="category-filter-tabs">
+          {/* Category Tabs (Desktop Only) */}
+          <div className="category-filter-tabs desktop-only-filter-tabs">
             {categories.map((cat) => (
               <button
                 key={cat}

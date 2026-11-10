@@ -2,57 +2,61 @@ import PricingPlan from '../models/PricingPlan.js';
 
 export const DEFAULT_PRICING_PLANS = [
   {
-    slug: 'starter',
-    name: 'Starter',
-    price: '₹2,499',
-    period: '/user /month',
-    desc: 'Ideal for small businesses and growing teams needing core HR & Project tools.',
+    slug: 'subscriptions-plan',
+    name: 'Subscriptions Plan',
+    price: '48,000',
+    period: 'Yearly Renewal',
+    desc: 'Core ERP software subscription with single domain access and customer mobile app.',
     features: [
-      'Up to 25 Active Employees',
-      'HRMS & Directory Portal',
-      'Leave & Attendance Tracking',
-      'Task & Project Boards',
-      'Standard Email Support',
-      'Continuous Cloud Backups',
+      'Permitted for Single domain',
+      'Android Customer App',
+      'Master Admin Panel',
+      'Website',
+      '3 Months Support',
+      '✕ No Source Code Included',
+      '✕ Payment Gateway Integration',
     ],
     popular: false,
-    btnText: 'Start 14-Day Free Trial',
+    btnText: 'Get Started',
     order: 1,
   },
   {
-    slug: 'professional',
-    name: 'Professional',
-    price: '₹5,999',
-    period: '/user /month',
-    desc: 'Complete suite for scaling companies that need unified payroll, finance & CRM.',
+    slug: 'startup-plan',
+    name: 'Startup Plan',
+    price: '89,000',
+    period: 'One-time payment',
+    desc: 'Complete turnkey ecosystem with user, seller, and driver multi-app suite.',
     features: [
-      'Up to 200 Employees',
-      'Full Payroll & Tax Automation',
-      'Finance, Invoicing & Expenses',
-      'Client CRM & Deal Pipelines',
-      'Asset Management & Devices',
-      'Priority 24/7 Live Support',
+      'Permitted for Single domain',
+      'Android & iOS Apps for Users',
+      'Android & iOS Apps for Sellers',
+      'Android & iOS Apps for Drivers',
+      'Master Admin Panel',
+      '6 Months Support',
+      'Complete Web Panel',
+      'Payment Gateway Integration',
     ],
     popular: true,
-    btnText: 'Get Started with Pro',
+    btnText: 'Choose This Plan',
     order: 2,
   },
   {
-    slug: 'enterprise',
-    name: 'Enterprise',
-    price: 'Custom',
-    period: 'tailored quote',
-    desc: 'For large organizations demanding custom SLAs, dedicated infrastructure & audit.',
+    slug: 'enterprise-plan',
+    name: 'Enterprise Plan',
+    price: '160,000',
+    period: 'One-time payment',
+    desc: 'Multi-domain enterprise deployment with analytics, custom branding, and SLA support.',
     features: [
-      'Unlimited Employees & Users',
-      'Custom ERP Module Development',
-      'Dedicated Cloud Instance / VPC',
-      '24/7 Dedicated Account Manager',
-      'SSO / SAML / Active Directory',
-      'Custom Data Retention SLAs',
+      'Permitted for Multiple domain',
+      'Everything in Startup Plan',
+      'Advanced Analytics Dashboard',
+      'Multi-language Support',
+      '12 Months Support',
+      'Custom Branding',
+      'Priority Support',
     ],
     popular: false,
-    btnText: 'Contact Enterprise Sales',
+    btnText: 'Contact Sales',
     order: 3,
   },
 ];
@@ -64,7 +68,13 @@ export const getPricingPlans = async () => {
     const dbPlans = await PricingPlan.find({}).sort({ order: 1 }).lean();
     if (dbPlans && dbPlans.length > 0) {
       const hasOldPlans = dbPlans.some(
-        (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+        (p) =>
+          p.slug === 'website' ||
+          p.slug === 'mobile-app' ||
+          p.slug === 'website-mobile-app' ||
+          p.slug === 'starter' ||
+          p.slug === 'professional' ||
+          p.slug === 'enterprise'
       );
       if (hasOldPlans) {
         await seedPricingDatabase();
@@ -73,6 +83,8 @@ export const getPricingPlans = async () => {
       memoryPricing = dbPlans;
       return dbPlans;
     }
+    await seedPricingDatabase();
+    return memoryPricing;
   } catch (err) {
     console.warn('[PricingStore] MongoDB read fallback to memory store:', err.message);
   }
@@ -146,13 +158,30 @@ export const seedPricingDatabase = async () => {
   try {
     const existing = await PricingPlan.find({}).sort({ order: 1 }).lean();
     const hasOldPlans = existing.some(
-      (p) => p.slug === 'website' || p.slug === 'mobile-app' || p.slug === 'website-mobile-app'
+      (p) =>
+        p.slug === 'website' ||
+        p.slug === 'mobile-app' ||
+        p.slug === 'website-mobile-app' ||
+        p.slug === 'starter' ||
+        p.slug === 'professional' ||
+        p.slug === 'enterprise'
     );
 
     if (existing.length === 0 || hasOldPlans) {
-      console.log('🌱 Seeding/migrating SaaS pricing tiers (Starter, Professional, Enterprise) into MongoDB Atlas...');
+      console.log('🌱 Seeding/migrating SaaS pricing tiers (Subscriptions, Startup, Enterprise) into MongoDB Atlas...');
       if (hasOldPlans) {
-        await PricingPlan.deleteMany({ slug: { $in: ['website', 'mobile-app', 'website-mobile-app'] } });
+        await PricingPlan.deleteMany({
+          slug: {
+            $in: [
+              'website',
+              'mobile-app',
+              'website-mobile-app',
+              'starter',
+              'professional',
+              'enterprise',
+            ],
+          },
+        });
       }
       for (const plan of DEFAULT_PRICING_PLANS) {
         await PricingPlan.findOneAndUpdate(
