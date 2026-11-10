@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Check, X, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 import './StartupPlans.css';
 
@@ -68,11 +68,48 @@ const STARTUP_PLANS = [
 ];
 
 export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
+  const [activePlanIdx, setActivePlanIdx] = useState(0);
+  const scrollRef = useRef(null);
+
   const handleButtonClick = (actionType) => {
     if (actionType === 'demo' && onOpenDemo) {
       onOpenDemo();
     } else if (onOpenGetStarted) {
       onOpenGetStarted();
+    }
+  };
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const el = scrollRef.current;
+    const containerCenter = el.scrollLeft + el.offsetWidth / 2;
+    const children = el.children;
+    if (!children || children.length === 0) return;
+
+    let closestIdx = 0;
+    let minDiff = Infinity;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const childCenter = child.offsetLeft + child.offsetWidth / 2;
+      const diff = Math.abs(containerCenter - childCenter);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIdx = i;
+      }
+    }
+    setActivePlanIdx(closestIdx);
+  };
+
+  const scrollToPlan = (idx) => {
+    if (!scrollRef.current) return;
+    const children = scrollRef.current.children;
+    if (children && children[idx]) {
+      children[idx].scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest',
+      });
+      setActivePlanIdx(idx);
     }
   };
 
@@ -89,8 +126,12 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
           </p>
         </div>
 
-        {/* Pricing Cards Grid */}
-        <div className="startup-plans-grid">
+        {/* Pricing Cards Grid / Side Scroll on Mobile */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="startup-plans-grid"
+        >
           {STARTUP_PLANS.map((plan) => (
             <div
               key={plan.id}
@@ -143,6 +184,19 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
                 </button>
               </div>
             </div>
+          ))}
+        </div>
+
+        {/* Mobile Side Scroll Indicator Dots */}
+        <div className="startup-plans-dots" aria-hidden="true">
+          {STARTUP_PLANS.map((plan, idx) => (
+            <button
+              key={plan.id}
+              type="button"
+              className={`startup-plan-dot ${activePlanIdx === idx ? 'active' : ''}`}
+              onClick={() => scrollToPlan(idx)}
+              aria-label={`Scroll to ${plan.name}`}
+            />
           ))}
         </div>
       </div>
