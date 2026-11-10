@@ -479,11 +479,11 @@ export const AdminPricing = () => {
                 flexDirection: 'column',
                 position: 'relative',
                 backgroundColor: '#ffffff',
-                border: isStartupPopular ? '2px solid #2563eb' : '1.5px solid #e2e8f0',
+                border: isStartupPopular ? '2px solid #00875a' : '1.5px solid #e2e8f0',
                 borderRadius: '18px',
                 padding: '36px 28px 24px 28px',
                 boxShadow: isStartupPopular
-                  ? '0 10px 25px -4px rgba(37, 99, 235, 0.15)'
+                  ? '0 10px 25px -4px rgba(0, 135, 90, 0.2)'
                   : '0 4px 16px rgba(15, 23, 42, 0.05)',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               }}
@@ -496,13 +496,13 @@ export const AdminPricing = () => {
                     top: '-13px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    backgroundColor: '#f59e0b',
+                    backgroundColor: '#00875a',
                     color: '#ffffff',
                     padding: '4px 18px',
                     borderRadius: '9999px',
                     fontSize: '0.78rem',
                     fontWeight: 700,
-                    boxShadow: '0 2px 8px rgba(245, 158, 11, 0.4)',
+                    boxShadow: '0 2px 8px rgba(0, 135, 90, 0.35)',
                     whiteSpace: 'nowrap',
                     letterSpacing: '0.2px',
                     zIndex: 2,
@@ -640,12 +640,10 @@ export const AdminPricing = () => {
                   borderRadius: '10px',
                   fontSize: '0.95rem',
                   fontWeight: 700,
-                  backgroundColor: isStartupPopular ? '#2563eb' : '#ff7a00',
+                  backgroundColor: '#00875a',
                   color: '#ffffff',
                   border: 'none',
-                  boxShadow: isStartupPopular
-                    ? '0 4px 12px rgba(37, 99, 235, 0.25)'
-                    : '0 4px 12px rgba(255, 122, 0, 0.25)',
+                  boxShadow: '0 4px 14px rgba(0, 135, 90, 0.25)',
                   cursor: 'default',
                   marginBottom: '16px',
                 }}
