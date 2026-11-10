@@ -25,6 +25,10 @@ import {
   Menu,
   X,
   User,
+  Headphones,
+  Phone,
+  HelpCircle,
+  LifeBuoy,
 } from 'lucide-react';
 
 export const AdminLayout = () => {
@@ -46,10 +50,12 @@ export const AdminLayout = () => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMobileProfile, setShowMobileProfile] = useState(false);
+  const [showMobileSupport, setShowMobileSupport] = useState(false);
 
-  // Close mobile sidebar and profile sheet when route changes
+  // Close mobile sidebar and sheets when route changes
   useEffect(() => {
     setShowMobileProfile(false);
+    setShowMobileSupport(false);
     setSidebarOpen(false);
   }, [location.pathname]);
 
@@ -641,8 +647,13 @@ export const AdminLayout = () => {
         <NavLink
           to="/admin"
           end
-          onClick={() => setShowMobileProfile(false)}
-          className={({ isActive }) => `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`}
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport(false);
+          }}
+          className={({ isActive }) =>
+            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+          }
         >
           <LayoutDashboard size={20} />
           <span>Dashboard</span>
@@ -650,8 +661,13 @@ export const AdminLayout = () => {
 
         <NavLink
           to="/admin/products"
-          onClick={() => setShowMobileProfile(false)}
-          className={({ isActive }) => `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`}
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport(false);
+          }}
+          className={({ isActive }) =>
+            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+          }
         >
           <Package size={20} />
           <span>Projects</span>
@@ -659,8 +675,13 @@ export const AdminLayout = () => {
 
         <NavLink
           to="/admin/pricing"
-          onClick={() => setShowMobileProfile(false)}
-          className={({ isActive }) => `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`}
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport(false);
+          }}
+          className={({ isActive }) =>
+            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+          }
         >
           <CreditCard size={20} />
           <span>Pricing</span>
@@ -668,8 +689,26 @@ export const AdminLayout = () => {
 
         <button
           type="button"
-          onClick={() => setShowMobileProfile((prev) => !prev)}
-          className={`admin-bottom-nav-item ${isProfileActive || showMobileProfile ? 'active' : ''}`}
+          onClick={() => {
+            setShowMobileProfile(false);
+            setShowMobileSupport((prev) => !prev);
+          }}
+          className={`admin-bottom-nav-item ${showMobileSupport ? 'active' : ''}`}
+          aria-label="Admin 24/7 Support"
+        >
+          <Headphones size={20} />
+          <span>Support</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setShowMobileSupport(false);
+            setShowMobileProfile((prev) => !prev);
+          }}
+          className={`admin-bottom-nav-item ${
+            (isProfileActive && !showMobileSupport) || showMobileProfile ? 'active' : ''
+          }`}
           aria-label="Admin Profile & More Menu"
         >
           <div className="admin-bottom-avatar-icon">
@@ -770,6 +809,25 @@ export const AdminLayout = () => {
                 </div>
                 <ArrowRight size={15} className="profile-sheet-item-arrow" />
               </NavLink>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMobileProfile(false);
+                  setShowMobileSupport(true);
+                }}
+                className="profile-sheet-item"
+                style={{ width: '100%', textAlign: 'left', background: '#ffffff', cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                <div className="profile-sheet-item-icon teal">
+                  <Headphones size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">24/7 Enterprise Support</span>
+                  <span className="profile-sheet-item-sub">Hotline, email helpdesk &amp; documentation</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </button>
             </div>
 
             <div className="profile-sheet-divider" />
@@ -796,6 +854,151 @@ export const AdminLayout = () => {
                 <LogOut size={16} />
                 <span>Sign Out of Admin Console</span>
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Support Bottom Sheet */}
+      {showMobileSupport && (
+        <div className="admin-profile-sheet-overlay" onClick={() => setShowMobileSupport(false)}>
+          <div className="admin-profile-sheet" onClick={(e) => e.stopPropagation()}>
+            <div className="profile-sheet-handle-bar">
+              <div className="profile-sheet-handle" />
+            </div>
+
+            <div className="profile-sheet-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '10px',
+                    backgroundColor: '#e6f7f0',
+                    color: '#00875a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Headphones size={20} />
+                </div>
+                <div>
+                  <h3 className="profile-sheet-title" style={{ margin: 0, fontSize: '1.05rem', lineHeight: 1.2 }}>
+                    24/7 Enterprise Support
+                  </h3>
+                  <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                    Speshway Admin Technical Help Desk
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowMobileSupport(false)}
+                className="profile-sheet-close-btn"
+                aria-label="Close support menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Live Uptime Status Card */}
+            <div className="admin-support-status-card">
+              <div className="admin-support-status-dot" />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#065f46' }}>
+                  All Systems Operational &bull; 99.9% Uptime
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#047857' }}>
+                  Direct SLA priority technical assistance active
+                </div>
+              </div>
+            </div>
+
+            <div className="profile-sheet-section-label">INSTANT ASSISTANCE CHANNELS</div>
+
+            <div className="profile-sheet-menu-list">
+              {/* Phone Hotline */}
+              <a
+                href="tel:+919100006020"
+                className="profile-sheet-item"
+              >
+                <div className="profile-sheet-item-icon emerald">
+                  <Phone size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">+91 9100006020</span>
+                  <span className="profile-sheet-item-sub">24/7 Direct Telephone Support</span>
+                </div>
+                <span className="support-sheet-action-pill">Call Now</span>
+              </a>
+
+              {/* Email Support */}
+              <a
+                href="mailto:support@speshway.com?subject=Speshway%20Admin%20Dashboard%20Support"
+                className="profile-sheet-item"
+              >
+                <div className="profile-sheet-item-icon blue">
+                  <Mail size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">support@speshway.com</span>
+                  <span className="profile-sheet-item-sub">Email response within 15 minutes</span>
+                </div>
+                <span className="support-sheet-action-pill email">
+                  Email
+                </span>
+              </a>
+
+              {/* Demo Inquiries & Tickets */}
+              <NavLink
+                to="/admin/inquiries"
+                onClick={() => setShowMobileSupport(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon purple">
+                  <Inbox size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="profile-sheet-item-title">Inbound Inquiries &amp; Leads</span>
+                    {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
+                  </div>
+                  <span className="profile-sheet-item-sub">Review user demo requests &amp; inquiries</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              {/* Help Center & FAQs */}
+              <Link
+                to="/faq"
+                onClick={() => setShowMobileSupport(false)}
+                className="profile-sheet-item"
+              >
+                <div className="profile-sheet-item-icon amber">
+                  <HelpCircle size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">Help Center &amp; FAQs</span>
+                  <span className="profile-sheet-item-sub">Documentation &amp; troubleshooting guides</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </Link>
+            </div>
+
+            <div className="profile-sheet-divider" />
+
+            {/* Contact Page Link */}
+            <div className="profile-sheet-actions-group">
+              <Link
+                to="/contact"
+                onClick={() => setShowMobileSupport(false)}
+                className="profile-sheet-action-link"
+              >
+                <LifeBuoy size={16} />
+                <span>Open Full Help &amp; Contact Page</span>
+              </Link>
             </div>
           </div>
         </div>

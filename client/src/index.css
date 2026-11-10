@@ -4491,20 +4491,22 @@ a.admin-kpi-card:hover {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 3px !important;
+    gap: 2px !important;
     flex: 1 !important;
+    min-width: 0 !important;
     height: 100% !important;
     color: #64748b !important;
     background: transparent !important;
     border: none !important;
     text-decoration: none !important;
-    font-size: 0.72rem !important;
+    font-size: 0.68rem !important;
     font-weight: 600 !important;
     font-family: inherit !important;
     cursor: pointer !important;
     transition: all 0.15s ease !important;
-    padding: 4px 2px !important;
+    padding: 3px 1px !important;
     border-radius: 8px !important;
+    white-space: nowrap !important;
   }
 
   .admin-bottom-nav-item:hover {
@@ -4747,6 +4749,54 @@ a.admin-kpi-card:hover {
   .profile-sheet-item-icon.emerald {
     background-color: #ecfdf5 !important;
     color: #059669 !important;
+  }
+
+  .profile-sheet-item-icon.teal {
+    background-color: #f0fdfa !important;
+    color: #0d9488 !important;
+  }
+
+  .profile-sheet-item-icon.amber {
+    background-color: #fffbeb !important;
+    color: #d97706 !important;
+  }
+
+  .admin-support-status-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5) !important;
+    border: 1px solid #bbf7d0 !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .admin-support-status-dot {
+    width: 9px !important;
+    height: 9px !important;
+    background-color: #10b981 !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .support-sheet-action-pill {
+    background-color: #ecfdf5 !important;
+    color: #047857 !important;
+    border: 1px solid #a7f3d0 !important;
+    border-radius: 9999px !important;
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    padding: 3px 9px !important;
+    flex-shrink: 0 !important;
+    text-decoration: none !important;
+  }
+
+  .support-sheet-action-pill.email {
+    background-color: #eff6ff !important;
+    color: #2563eb !important;
+    border-color: #bfdbfe !important;
   }
 
   .profile-sheet-item-text {
