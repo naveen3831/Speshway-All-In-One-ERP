@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   ArrowLeft,
   Clock,
-  Sparkles,
 } from 'lucide-react';
 
 export const AdminLogin = () => {
@@ -34,12 +33,6 @@ export const AdminLogin = () => {
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
-
-  const fillDemoAdmin = () => {
-    setEmail('admin@gmail.com');
-    setPassword('admin123');
-    setError('');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -120,31 +113,9 @@ export const AdminLogin = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="pro-login-form">
           <div className="pro-input-group">
-            <div className="pro-label-row">
-              <label htmlFor="admin-email" className="pro-label">
-                Admin Email
-              </label>
-              <button
-                type="button"
-                onClick={fillDemoAdmin}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#059669',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: 0,
-                }}
-                title="Click to fill admin@gmail.com / admin123"
-              >
-                <Sparkles size={12} />
-                <span>Fill Demo Admin</span>
-              </button>
-            </div>
+            <label htmlFor="admin-email" className="pro-label">
+              Admin Email
+            </label>
             <div className="pro-input-container">
               <span className="pro-input-icon">
                 <Mail size={18} />
