@@ -108,7 +108,7 @@ export const AdminLayout = () => {
     if (path.includes('/edit')) return `${brandTitle} Edit Project`;
     if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return `${brandTitle} Projects Management`;
     if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing Plans`;
-    if (path.startsWith('/admin/inquiries')) return `${brandTitle} Demo Inquiries`;
+    if (path.startsWith('/admin/inquiries')) return `${brandTitle} Enquiries`;
     if (path.startsWith('/admin/settings')) return `${brandTitle} System Settings`;
     if (path.startsWith('/admin/home')) return `${brandTitle} Home Page Options`;
     if (path.startsWith('/admin/users')) return `${brandTitle} User Management`;
@@ -370,7 +370,7 @@ export const AdminLayout = () => {
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Inbox size={18} />
-            <span>Demo Inquiries</span>
+            <span>Enquiries</span>
           </NavLink>
 
           <NavLink
@@ -673,7 +673,7 @@ export const AdminLayout = () => {
                 </div>
                 <div className="profile-sheet-item-text">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="profile-sheet-item-title">Demo Inquiries</span>
+                    <span className="profile-sheet-item-title">Enquiries</span>
                     {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
                   </div>
                   <span className="profile-sheet-item-sub">Client leads, demo bookings &amp; contact inquiries</span>
