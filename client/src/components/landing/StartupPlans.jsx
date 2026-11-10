@@ -122,9 +122,9 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
                   >
                     <span className={`feature-icon-wrapper ${feature.included ? 'check' : 'cross'}`}>
                       {feature.included ? (
-                        <Check size={14} strokeWidth={2.5} />
+                        <Check size={12} strokeWidth={2.6} />
                       ) : (
-                        <X size={14} strokeWidth={2.5} />
+                        <X size={12} strokeWidth={2.6} />
                       )}
                     </span>
                     <span className="feature-item-text">{feature.text}</span>
