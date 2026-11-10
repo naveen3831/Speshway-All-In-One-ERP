@@ -6242,9 +6242,9 @@ a.admin-kpi-card:hover {
    SIMPLE & PROFESSIONAL ENTERPRISE FOOTER (ALL PUBLIC PAGES)
    ========================================================================== */
 .pro-footer {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  color: #334155;
-  border-top: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 50%, #e6fcf0 100%);
+  color: #1e293b;
+  border-top: 1.5px solid #a7f3d0;
   margin-top: auto;
   position: relative;
   z-index: 10;
@@ -6281,8 +6281,8 @@ a.admin-kpi-card:hover {
   border-radius: 8px;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  border: 1.5px solid #a7f3d0;
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.08);
   padding: 3px;
   display: flex;
   align-items: center;
@@ -6335,23 +6335,23 @@ a.admin-kpi-card:hover {
   height: 34px;
   border-radius: 8px;
   background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
+  border: 1.5px solid #a7f3d0;
+  color: #047857;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.06);
   position: relative;
 }
 
 .footer-social-btn:hover {
-  background-color: #f1f5f9;
-  color: #0f172a;
-  border-color: #cbd5e1;
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 10px rgba(4, 120, 87, 0.15);
 }
 
 /* Authentic Social Brand Hover Colors */
@@ -6522,8 +6522,8 @@ a.admin-kpi-card:hover {
 }
 
 .pro-footer-bottom {
-  background-color: #f1f5f9;
-  border-top: 1px solid #e2e8f0;
+  background-color: #d1fae5;
+  border-top: 1px solid #a7f3d0;
   padding: 12px 24px;
 }
 
@@ -6539,9 +6539,9 @@ a.admin-kpi-card:hover {
 }
 
 .footer-copyright {
-  color: #64748b;
+  color: #065f46;
   font-size: 0.78rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .footer-legal-links {
@@ -6552,19 +6552,20 @@ a.admin-kpi-card:hover {
 }
 
 .footer-meta-tag {
-  color: #64748b;
+  color: #065f46;
   font-size: 0.78rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .footer-divider {
-  color: #cbd5e1;
+  color: #6ee7b7;
   font-size: 0.7rem;
 }
 
 .legal-link {
-  color: #64748b;
+  color: #065f46;
   font-size: 0.78rem;
+  font-weight: 600;
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -6574,7 +6575,7 @@ a.admin-kpi-card:hover {
 }
 
 .legal-sep {
-  color: #cbd5e1;
+  color: #6ee7b7;
   font-size: 0.72rem;
 }
 
@@ -6583,22 +6584,22 @@ a.admin-kpi-card:hover {
   align-items: center;
   gap: 5px;
   background: #ffffff;
-  color: #334155;
-  border: 1px solid #cbd5e1;
+  color: #047857;
+  border: 1.5px solid #a7f3d0;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.1);
 }
 
 .footer-back-to-top:hover {
   background: #047857;
   color: #ffffff;
   border-color: #047857;
-  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.2);
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
 }
 
 @media (max-width: 992px) {

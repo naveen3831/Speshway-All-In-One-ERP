@@ -11,7 +11,7 @@ const STARTUP_PLANS = [
     period: 'Yearly Renewal',
     isPopular: false,
     buttonText: 'Get Started',
-    buttonVariant: 'orange',
+    buttonVariant: 'light-green',
     actionType: 'get-started',
     features: [
       { text: 'Permitted for Single domain', included: true },
@@ -32,7 +32,7 @@ const STARTUP_PLANS = [
     isPopular: true,
     badgeText: 'Most Popular',
     buttonText: 'Choose This Plan',
-    buttonVariant: 'blue',
+    buttonVariant: 'green',
     actionType: 'get-started',
     features: [
       { text: 'Permitted for Single domain', included: true },
@@ -53,7 +53,7 @@ const STARTUP_PLANS = [
     period: 'One-time payment',
     isPopular: false,
     buttonText: 'Contact Sales',
-    buttonVariant: 'orange',
+    buttonVariant: 'light-green',
     actionType: 'demo',
     features: [
       { text: 'Permitted for Multiple domain', included: true },
