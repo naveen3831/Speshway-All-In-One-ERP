@@ -41,8 +41,8 @@ export const DEFAULT_HOME_CONTENT = {
     title: 'Our ERP Solutions',
   },
   navbar: {
-    showPricing: true,
-    showProducts: true,
+    showPricing: false,
+    showProducts: false,
   },
   branding: DEFAULT_BRANDING,
   socialLinks: DEFAULT_SOCIAL_LINKS,
@@ -302,14 +302,14 @@ export const SocketProvider = ({ children }) => {
   }, [homeContent?.socialLinks]);
 
   const updateNavbarVisibility = async (partialUpdates = {}) => {
-    const currentNavbar = homeContent?.navbar || { showPricing: true, showProducts: true };
+    const currentNavbar = homeContent?.navbar || { showPricing: false, showProducts: false };
     const nextNavbar = {
       showPricing: partialUpdates.showPricing !== undefined
         ? Boolean(partialUpdates.showPricing)
-        : Boolean(currentNavbar.showPricing ?? true),
+        : Boolean(currentNavbar.showPricing ?? false),
       showProducts: partialUpdates.showProducts !== undefined
         ? Boolean(partialUpdates.showProducts)
-        : Boolean(currentNavbar.showProducts ?? true),
+        : Boolean(currentNavbar.showProducts ?? false),
     };
 
     const updatedHome = {

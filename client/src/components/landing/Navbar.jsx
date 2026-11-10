@@ -28,14 +28,14 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     if (homeContent?.navbar?.showPricing !== undefined) return Boolean(homeContent.navbar.showPricing);
     const stored = localStorage.getItem('speshway_navbar_pricing_visible');
     if (stored !== null) return stored === 'true';
-    return true;
+    return false;
   };
 
   const getProductsVisible = () => {
     if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     const stored = localStorage.getItem('speshway_navbar_products_visible');
     if (stored !== null) return stored === 'true';
-    return true;
+    return false;
   };
 
   const [showPricing, setShowPricing] = useState(getPricingVisible);

@@ -119,7 +119,7 @@ export const ProductsPage = () => {
     if (homeContent?.navbar?.showProducts !== undefined) return Boolean(homeContent.navbar.showProducts);
     const stored = localStorage.getItem('speshway_navbar_products_visible');
     if (stored !== null) return stored === 'true';
-    return true;
+    return false;
   };
 
   const [showProducts, setShowProducts] = useState(getProductsVisible);

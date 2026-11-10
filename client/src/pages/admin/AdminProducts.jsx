@@ -126,7 +126,7 @@ export const AdminProducts = () => {
     ? Boolean(homeContent.navbar.showProducts)
     : (localStorage.getItem('speshway_navbar_products_visible') !== null
         ? localStorage.getItem('speshway_navbar_products_visible') === 'true'
-        : true);
+        : false);
 
   const [toggleUpdating, setToggleUpdating] = useState(false);
   const [toggleNotice, setToggleNotice] = useState('');

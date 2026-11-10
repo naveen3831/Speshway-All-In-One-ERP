@@ -46,7 +46,8 @@ export const AdminHomeSettings = () => {
       title: homeContent?.solutions?.title || DEFAULT_HOME_CONTENT.solutions.title,
     },
     navbar: {
-      showPricing: homeContent?.navbar?.showPricing !== undefined ? homeContent.navbar.showPricing : true,
+      showPricing: homeContent?.navbar?.showPricing !== undefined ? homeContent.navbar.showPricing : false,
+      showProducts: homeContent?.navbar?.showProducts !== undefined ? homeContent.navbar.showProducts : false,
     },
     branding: homeContent?.branding || {
       logoUrl: '/logo.png',

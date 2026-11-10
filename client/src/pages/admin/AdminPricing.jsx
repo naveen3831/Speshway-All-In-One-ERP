@@ -80,7 +80,7 @@ export const AdminPricing = () => {
     ? Boolean(homeContent.navbar.showPricing)
     : (localStorage.getItem('speshway_navbar_pricing_visible') !== null
         ? localStorage.getItem('speshway_navbar_pricing_visible') === 'true'
-        : true);
+        : false);
 
   const [toggleUpdating, setToggleUpdating] = useState(false);
   const [toggleNotice, setToggleNotice] = useState('');
