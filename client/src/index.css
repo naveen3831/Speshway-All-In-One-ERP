@@ -4819,8 +4819,9 @@ a.admin-kpi-card:hover {
     border-color: #bfdbfe !important;
   }
 
-  /* Full Screen Support View (Mobile Responsive) */
-  .admin-support-fullscreen-view {
+  /* Full Screen Support & Profile Views (Mobile Responsive) */
+  .admin-support-fullscreen-view,
+  .admin-profile-fullscreen-view {
     display: flex !important;
     position: fixed !important;
     top: 0 !important;
@@ -5026,7 +5027,8 @@ a.admin-kpi-card:hover {
   display: none;
 }
 
-.admin-support-fullscreen-view {
+.admin-support-fullscreen-view,
+.admin-profile-fullscreen-view {
   display: none;
 }
 

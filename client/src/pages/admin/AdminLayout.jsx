@@ -744,26 +744,40 @@ export const AdminLayout = () => {
         </button>
       </nav>
 
-      {/* Mobile Profile Bottom Sheet - Remaining admin items inside profile */}
+      {/* Mobile Profile Full Screen View - Remaining admin items inside profile */}
       {showMobileProfile && (
-        <div className="admin-profile-sheet-overlay" onClick={() => setShowMobileProfile(false)}>
-          <div className="admin-profile-sheet" onClick={(e) => e.stopPropagation()}>
-            <div className="profile-sheet-handle-bar">
-              <div className="profile-sheet-handle" />
-            </div>
-
-            <div className="profile-sheet-header">
-              <h3 className="profile-sheet-title">Admin Account &amp; Management</h3>
-              <button
-                type="button"
-                onClick={() => setShowMobileProfile(false)}
-                className="profile-sheet-close-btn"
-                aria-label="Close profile menu"
+        <div className="admin-profile-fullscreen-view" role="dialog" aria-modal="true" aria-label="Admin Account & Management">
+          {/* Top Sticky Header */}
+          <div className="admin-support-fullscreen-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+              <div
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  backgroundColor: '#e6f7f0',
+                  color: '#00875a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
               >
-                <X size={18} />
-              </button>
+                <User size={19} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <h3 className="admin-support-fullscreen-title">
+                  Admin Account &amp; Management
+                </h3>
+                <span className="admin-support-fullscreen-sub">
+                  Profile &amp; Administrative Options
+                </span>
+              </div>
             </div>
+          </div>
 
+          {/* Scrollable Content Body */}
+          <div className="admin-support-fullscreen-body">
             {/* Admin User Profile Card */}
             <div className="profile-sheet-user-card">
               <div className="profile-sheet-avatar">
