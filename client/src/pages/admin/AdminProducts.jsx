@@ -172,7 +172,7 @@ export const AdminProducts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [statusMsg, setStatusMsg] = useState('');
-  const [viewMode, setViewMode] = useState('categories');
+  const [viewMode, setViewMode] = useState('cards');
   const [expandedCategories, setExpandedCategories] = useState({});
 
   const toggleCategoryExpand = (catName) => {
@@ -478,13 +478,7 @@ export const AdminProducts = () => {
 
             <div className="view-toggle-wrap">
               <button
-                onClick={() => setViewMode('categories')}
-                className={`view-mode-btn ${viewMode === 'categories' ? 'active' : ''}`}
-                title="Category Cards View"
-              >
-                <Folder size={16} />
-              </button>
-              <button
+                type="button"
                 onClick={() => setViewMode('cards')}
                 className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
                 title="Project Cards View"
@@ -492,6 +486,15 @@ export const AdminProducts = () => {
                 <LayoutGrid size={16} />
               </button>
               <button
+                type="button"
+                onClick={() => setViewMode('categories')}
+                className={`view-mode-btn ${viewMode === 'categories' ? 'active' : ''}`}
+                title="Category Groups View"
+              >
+                <Folder size={16} />
+              </button>
+              <button
+                type="button"
                 onClick={() => setViewMode('table')}
                 className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
                 title="Table View"
@@ -528,7 +531,15 @@ export const AdminProducts = () => {
               <div key={group.name} className="admin-category-card">
                 {/* Category Card Header */}
                 <div className="admin-cat-card-header">
-                  <div className="admin-cat-header-left">
+                  <div
+                    className="admin-cat-header-left"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setSelectedCategory(group.name);
+                      setViewMode('cards');
+                    }}
+                    title={`View all ${group.name} projects`}
+                  >
                     <div className={`admin-cat-icon-box ${meta.bgClass}`}>
                       <CatIcon className={meta.textClass} size={22} />
                     </div>
@@ -537,7 +548,7 @@ export const AdminProducts = () => {
                         {group.name}
                       </h3>
                       <span className="admin-cat-badge-count">
-                        {group.projects.length} {group.projects.length === 1 ? 'ERP System' : 'ERP Systems'}
+                        {group.projects.length} {group.projects.length === 1 ? 'ERP System' : 'ERP Systems'} (Click to View)
                       </span>
                     </div>
                   </div>
