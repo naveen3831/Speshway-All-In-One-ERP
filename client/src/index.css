@@ -3507,10 +3507,10 @@ button {
 .admin-topbar {
   background-color: #ffffff;
   border-bottom: 1px solid var(--border-subtle);
-  padding: 14px 28px;
+  padding: 12px 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -4460,8 +4460,9 @@ a.admin-kpi-card:hover {
   }
 
   .admin-topbar {
-    padding: 0 12px !important;
-    height: 56px !important;
+    padding: 0 16px !important;
+    height: 52px !important;
+    justify-content: flex-end !important;
   }
 
   .topbar-left {

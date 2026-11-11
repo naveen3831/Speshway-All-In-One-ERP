@@ -106,10 +106,9 @@ export const AdminLayout = () => {
     const path = location.pathname;
     if (path.includes('/new')) return `${brandTitle} Add New Project`;
     if (path.includes('/edit')) return `${brandTitle} Edit Project`;
-    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return `${brandTitle} Project Management`;
-    if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing`;
-    if (path.startsWith('/admin/inquiries')) return `${brandTitle} Inquiries`;
-    if (path.startsWith('/admin/home')) return `${brandTitle} Homepage Options`;
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return `${brandTitle} Projects Management`;
+    if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing Plans`;
+    if (path.startsWith('/admin/inquiries')) return `${brandTitle} Enquiries`;
     if (path.startsWith('/admin/settings')) return `${brandTitle} System Settings`;
     if (path.startsWith('/admin/users')) return `${brandTitle} User Management`;
     return `${brandTitle} Administrative Dashboard`;
@@ -361,7 +360,7 @@ export const AdminLayout = () => {
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <CreditCard size={18} />
-            <span>Pricing</span>
+            <span>Pricing Plans</span>
           </NavLink>
 
           <NavLink
@@ -370,7 +369,7 @@ export const AdminLayout = () => {
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Inbox size={18} />
-            <span>Inquiries</span>
+            <span>Enquiries</span>
           </NavLink>
 
           <NavLink
@@ -379,7 +378,7 @@ export const AdminLayout = () => {
             className={({ isActive }) => (isActive ? 'admin-nav-item active' : 'admin-nav-item')}
           >
             <Globe size={18} />
-            <span>Homepage Options</span>
+            <span>Home Page Options</span>
           </NavLink>
 
           <NavLink
@@ -459,16 +458,6 @@ export const AdminLayout = () => {
       {/* Main Admin Content Screen */}
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
-          <div className="topbar-left">
-            <span className="topbar-page-icon-mobile" aria-hidden="true">
-              {getMobilePageIcon()}
-            </span>
-            <span className="topbar-title">
-              <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
-              <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>
-            </span>
-          </div>
-
           <div className="topbar-right">
             <div className="admin-notif-wrapper" ref={notifRef}>
               <button
@@ -674,21 +663,6 @@ export const AdminLayout = () => {
             {/* Remaining Menu Items shown inside Profile */}
             <div className="profile-sheet-menu-list">
               <NavLink
-                to="/admin/home"
-                onClick={() => setShowMobileProfile(false)}
-                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
-              >
-                <div className="profile-sheet-item-icon blue">
-                  <Globe size={18} />
-                </div>
-                <div className="profile-sheet-item-text">
-                  <span className="profile-sheet-item-title">Homepage Options</span>
-                  <span className="profile-sheet-item-sub">Customize hero banner, titles &amp; branding</span>
-                </div>
-                <ArrowRight size={15} className="profile-sheet-item-arrow" />
-              </NavLink>
-
-              <NavLink
                 to="/admin/inquiries"
                 onClick={() => setShowMobileProfile(false)}
                 className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
@@ -698,10 +672,25 @@ export const AdminLayout = () => {
                 </div>
                 <div className="profile-sheet-item-text">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="profile-sheet-item-title">Inquiries</span>
+                    <span className="profile-sheet-item-title">Enquiries</span>
                     {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
                   </div>
                   <span className="profile-sheet-item-sub">Client leads, demo bookings &amp; contact inquiries</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
+              <NavLink
+                to="/admin/home"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon blue">
+                  <Globe size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <span className="profile-sheet-item-title">Home Page Options</span>
+                  <span className="profile-sheet-item-sub">Customize hero banner, titles &amp; branding</span>
                 </div>
                 <ArrowRight size={15} className="profile-sheet-item-arrow" />
               </NavLink>
