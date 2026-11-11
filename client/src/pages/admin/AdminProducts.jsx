@@ -43,7 +43,6 @@ import {
   Factory,
   ChevronDown,
   ChevronUp,
-  Folder,
 } from 'lucide-react';
 import {
   DEFAULT_ADMIN_PROJECTS,
@@ -410,14 +409,6 @@ export const AdminProducts = () => {
                 title="Project Cards View"
               >
                 <LayoutGrid size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('categories')}
-                className={`view-mode-btn ${viewMode === 'categories' ? 'active' : ''}`}
-                title="Category Groups View"
-              >
-                <Folder size={16} />
               </button>
               <button
                 type="button"
