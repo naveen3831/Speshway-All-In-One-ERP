@@ -6,6 +6,14 @@ import './ContactCard.css';
 export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
   const socketContext = useSocket();
   const triggerRequestDemo = socketContext?.triggerRequestDemo;
+  const contactInfo = socketContext?.contactInfo;
+  const homeContent = socketContext?.homeContent;
+
+  const phoneDisplay = contactInfo?.phone || homeContent?.contact?.phone || '+1 (800) 555-SPESH';
+  const phoneRaw = contactInfo?.phoneRaw || homeContent?.contact?.phoneRaw || '+18005557737';
+  const supportEmail = contactInfo?.email || homeContent?.contact?.email || 'support@speshway.com';
+  const telHref = `tel:${phoneRaw.replace(/^tel:/i, '').trim()}`;
+  const mailtoHref = `mailto:${supportEmail.replace(/^mailto:/i, '').trim()}`;
 
   const cardRef = useRef(null);
 
@@ -135,13 +143,13 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
 
         {/* Quick Direct Contact Details */}
         <div className="contact-card-direct-bar">
-          <a href="tel:+18005557737" className="contact-direct-chip" title="Call Speshway Support">
+          <a href={telHref} className="contact-direct-chip" title={`Call Speshway Support: ${phoneDisplay}`}>
             <Phone size={13} className="direct-chip-icon" />
-            <span>+1 (800) 555-SPESH</span>
+            <span>{phoneDisplay}</span>
           </a>
-          <a href="mailto:support@speshway.com" className="contact-direct-chip" title="Email Speshway Support">
+          <a href={mailtoHref} className="contact-direct-chip" title={`Email Speshway Support: ${supportEmail}`}>
             <Mail size={13} className="direct-chip-icon" />
-            <span>support@speshway.com</span>
+            <span>{supportEmail}</span>
           </a>
         </div>
 

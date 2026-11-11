@@ -3,9 +3,9 @@ import { io } from 'socket.io-client';
 import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS, normalizeProductCategory } from '../utils/adminProjects';
 import { getProductFallbackImage } from '../utils/productImages';
-import { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT } from '../constants/branding';
+import { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT, DEFAULT_CONTACT_INFO } from '../constants/branding';
 
-export { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT };
+export { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT, DEFAULT_CONTACT_INFO };
 
 const SocketContext = createContext(null);
 
@@ -243,6 +243,41 @@ export const SocketProvider = ({ children }) => {
     return merged;
   };
 
+  const [contactInfo, setContactInfo] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_contact_info');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return { ...DEFAULT_CONTACT_INFO, ...parsed };
+      }
+    } catch (e) {}
+    return DEFAULT_CONTACT_INFO;
+  });
+
+  const updateContactInfo = async (newContactInfo) => {
+    const merged = { ...DEFAULT_CONTACT_INFO, ...(contactInfo || {}), ...(newContactInfo || {}) };
+    setContactInfo(merged);
+    try {
+      localStorage.setItem('speshway_contact_info', JSON.stringify(merged));
+      window.dispatchEvent(new Event('speshway_contact_info_changed'));
+    } catch (e) {}
+
+    try {
+      const updatedHome = {
+        ...(homeContent || {}),
+        contact: merged,
+      };
+      setHomeContent(updatedHome);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+      } catch (e) {}
+      await api.put('/home', updatedHome);
+    } catch (err) {
+      console.warn('Could not persist contact info to API:', err.message);
+    }
+    return merged;
+  };
+
   useEffect(() => {
     if (homeContent?.branding) {
       setBranding((prev) => {
@@ -268,6 +303,19 @@ export const SocketProvider = ({ children }) => {
       });
     }
   }, [homeContent?.socialLinks]);
+
+  useEffect(() => {
+    if (homeContent?.contact) {
+      setContactInfo((prev) => {
+        const next = { ...DEFAULT_CONTACT_INFO, ...(prev || {}), ...homeContent.contact };
+        try {
+          localStorage.setItem('speshway_contact_info', JSON.stringify(next));
+          window.dispatchEvent(new Event('speshway_contact_info_changed'));
+        } catch (e) {}
+        return next;
+      });
+    }
+  }, [homeContent?.contact]);
 
   const updateNavbarVisibility = async (partialUpdates = {}) => {
     const currentNavbar = homeContent?.navbar || { showPricing: false, showProducts: false };
@@ -874,6 +922,9 @@ export const SocketProvider = ({ children }) => {
         socialLinks,
         setSocialLinks,
         updateSocialLinks,
+        contactInfo,
+        setContactInfo,
+        updateContactInfo,
         triggerAddProduct,
         triggerUpdateProduct,
         triggerDeleteProduct,

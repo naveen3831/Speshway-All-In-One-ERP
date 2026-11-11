@@ -40,6 +40,11 @@ export const DEFAULT_HOME_CONTENT = {
     instagram: 'https://instagram.com/speshway',
     youtube: 'https://youtube.com/@speshway',
   },
+  contact: {
+    phone: '+1 (800) 555-SPESH',
+    phoneRaw: '+18005557737',
+    email: 'support@speshway.com',
+  },
 };
 
 let memoryHomeContent = { ...DEFAULT_HOME_CONTENT };
@@ -60,6 +65,7 @@ export const getHomeContent = async () => {
         },
         branding: { ...DEFAULT_HOME_CONTENT.branding, ...(dbContent.branding || {}) },
         socialLinks: { ...DEFAULT_HOME_CONTENT.socialLinks, ...(dbContent.socialLinks || {}) },
+        contact: { ...DEFAULT_HOME_CONTENT.contact, ...(dbContent.contact || {}) },
       };
       return memoryHomeContent;
     }
@@ -96,6 +102,7 @@ export const updateHomeContent = async (newData) => {
     navbar: mergedNavbar,
     branding: { ...memoryHomeContent.branding, ...(updatePayload.branding || {}) },
     socialLinks: { ...memoryHomeContent.socialLinks, ...(updatePayload.socialLinks || {}) },
+    contact: { ...memoryHomeContent.contact, ...(updatePayload.contact || {}) },
   };
 
   // Persist to MongoDB
@@ -136,6 +143,7 @@ export const seedHomeDatabase = async () => {
           solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(existing.solutions || {}) },
           navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(existing.navbar || {}) },
           branding: { ...DEFAULT_HOME_CONTENT.branding, ...(existing.branding || {}) },
+          contact: { ...DEFAULT_HOME_CONTENT.contact, ...(existing.contact || {}) },
         };
       }
     }

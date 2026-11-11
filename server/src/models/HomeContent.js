@@ -123,6 +123,20 @@ const homeContentSchema = new mongoose.Schema(
         default: 'https://youtube.com/@speshway',
       },
     },
+    contact: {
+      phone: {
+        type: String,
+        default: '+1 (800) 555-SPESH',
+      },
+      phoneRaw: {
+        type: String,
+        default: '+18005557737',
+      },
+      email: {
+        type: String,
+        default: 'support@speshway.com',
+      },
+    },
   },
   {
     timestamps: true,
