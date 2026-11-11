@@ -4,6 +4,13 @@ export const DEFAULT_BRANDING = {
   brandSubtitle: 'ALL IN ONE ERP',
 };
 
+export const DEFAULT_CONTACT_INFO = {
+  phone: '+91 9100006020',
+  phoneRaw: '+919100006020',
+  whatsapp: '+919100006020',
+  email: 'info@speshway.com',
+};
+
 export const DEFAULT_SOCIAL_LINKS = {
   facebook: 'https://facebook.com/speshway',
   twitter: 'https://x.com/speshway',
@@ -41,4 +48,5 @@ export const DEFAULT_HOME_CONTENT = {
   },
   branding: DEFAULT_BRANDING,
   socialLinks: DEFAULT_SOCIAL_LINKS,
+  contact: DEFAULT_CONTACT_INFO,
 };

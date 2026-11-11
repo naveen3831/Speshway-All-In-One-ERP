@@ -123,6 +123,24 @@ const homeContentSchema = new mongoose.Schema(
         default: 'https://youtube.com/@speshway',
       },
     },
+    contact: {
+      phone: {
+        type: String,
+        default: '+91 9100006020',
+      },
+      phoneRaw: {
+        type: String,
+        default: '+919100006020',
+      },
+      whatsapp: {
+        type: String,
+        default: '+919100006020',
+      },
+      email: {
+        type: String,
+        default: 'info@speshway.com',
+      },
+    },
   },
   {
     timestamps: true,

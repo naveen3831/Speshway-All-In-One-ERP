@@ -1,11 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Sparkles, CheckCircle2, Phone, Mail } from 'lucide-react';
+import { WhatsAppIcon, getWhatsAppUrl } from '../common/WhatsAppIcon';
 import { useSocket } from '../../context/SocketContext';
 import './ContactCard.css';
 
 export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
   const socketContext = useSocket();
   const triggerRequestDemo = socketContext?.triggerRequestDemo;
+  const contactInfo = socketContext?.contactInfo;
+  const homeContent = socketContext?.homeContent;
+
+  const phoneDisplay = contactInfo?.phone || homeContent?.contact?.phone || '+91 9100006020';
+  const phoneRaw = contactInfo?.phoneRaw || homeContent?.contact?.phoneRaw || '+919100006020';
+  const whatsappRaw = contactInfo?.whatsapp || homeContent?.contact?.whatsapp || phoneRaw;
+  const supportEmail = contactInfo?.email || homeContent?.contact?.email || 'info@speshway.com';
+  const telHref = `tel:${phoneRaw.replace(/^tel:/i, '').trim()}`;
+  const mailtoHref = `mailto:${supportEmail.replace(/^mailto:/i, '').trim()}`;
+  const whatsappHref = getWhatsAppUrl(whatsappRaw, 'Hi Speshway, I am interested in Speshway ERP.');
+  const whatsappDisplay = contactInfo?.whatsapp || homeContent?.contact?.whatsapp || phoneDisplay;
 
   const cardRef = useRef(null);
 
@@ -135,13 +147,23 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
 
         {/* Quick Direct Contact Details */}
         <div className="contact-card-direct-bar">
-          <a href="tel:+18005557737" className="contact-direct-chip" title="Call Speshway Support">
-            <Phone size={13} className="direct-chip-icon" />
-            <span>+1 (800) 555-SPESH</span>
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-direct-chip contact-whatsapp-chip"
+            title={`Chat with Speshway on WhatsApp: ${whatsappDisplay}`}
+          >
+            <WhatsAppIcon size={13} color="#25D366" />
+            <span>WhatsApp</span>
           </a>
-          <a href="mailto:support@speshway.com" className="contact-direct-chip" title="Email Speshway Support">
+          <a href={telHref} className="contact-direct-chip" title={`Call Speshway Support: ${phoneDisplay}`}>
+            <Phone size={13} className="direct-chip-icon" />
+            <span>{phoneDisplay}</span>
+          </a>
+          <a href={mailtoHref} className="contact-direct-chip" title={`Email Speshway Support: ${supportEmail}`}>
             <Mail size={13} className="direct-chip-icon" />
-            <span>support@speshway.com</span>
+            <span>{supportEmail}</span>
           </a>
         </div>
 

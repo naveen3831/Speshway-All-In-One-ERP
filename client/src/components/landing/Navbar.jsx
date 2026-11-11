@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, X, MessageSquare } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
+import { WhatsAppIcon, getWhatsAppUrl } from '../common/WhatsAppIcon';
 import { ContactCard } from './ContactCard';
 import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 
 export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { homeContent, branding } = useSocket();
+  const { homeContent, branding, contactInfo } = useSocket();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactCardOpen, setContactCardOpen] = useState(false);
   const contactToggleRef = useRef(null);
@@ -16,6 +17,27 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
+
+  const whatsappNumber =
+    contactInfo?.whatsapp ||
+    contactInfo?.phoneRaw ||
+    contactInfo?.phone ||
+    homeContent?.contact?.whatsapp ||
+    homeContent?.contact?.phoneRaw ||
+    homeContent?.contact?.phone ||
+    '+91 9100006020';
+
+  const whatsappUrl = getWhatsAppUrl(
+    whatsappNumber,
+    'Hi Speshway, I would like to know more about Speshway ERP.'
+  );
+
+  const handleWhatsAppClick = (e) => {
+    if (typeof navigator !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent || '')) {
+      e.preventDefault();
+      window.location.href = whatsappUrl;
+    }
+  };
 
   // Close mobile drawer & contact card when route changes
   useEffect(() => {
@@ -261,25 +283,19 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         )}
       </header>
 
-      {/* Floating Contact Toggle on the Right Side of the Website */}
-      <button
-        type="button"
-        ref={contactToggleRef}
-        onClick={() => setContactCardOpen((prev) => !prev)}
-        className={`floating-website-contact-btn ${contactCardOpen ? 'active' : ''}`}
-        aria-label={contactCardOpen ? 'Close contact card' : 'Open contact card'}
-        aria-expanded={contactCardOpen}
-        title={contactCardOpen ? 'Close contact' : 'Contact Speshway'}
+      {/* Floating WhatsApp Action Button on Bottom-Right of Website */}
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleWhatsAppClick}
+        className="floating-website-contact-btn floating-website-whatsapp-btn"
+        aria-label="Chat with us on WhatsApp"
+        title={`Chat with Speshway on WhatsApp: ${contactInfo?.phone || whatsappNumber}`}
       >
-        {contactCardOpen ? (
-          <X size={22} />
-        ) : (
-          <>
-            <MessageSquare size={22} strokeWidth={2.2} />
-            <span className="contact-toggle-dot" />
-          </>
-        )}
-      </button>
+        <WhatsAppIcon size={28} color="#ffffff" />
+        <span className="contact-toggle-dot" />
+      </a>
 
       {/* Contact Card Popover */}
       <ContactCard

@@ -40,6 +40,29 @@ export const DEFAULT_HOME_CONTENT = {
     instagram: 'https://instagram.com/speshway',
     youtube: 'https://youtube.com/@speshway',
   },
+  contact: {
+    phone: '+91 9100006020',
+    phoneRaw: '+919100006020',
+    whatsapp: '+919100006020',
+    email: 'info@speshway.com',
+  },
+};
+
+const sanitizeContact = (contact) => {
+  const merged = { ...DEFAULT_HOME_CONTENT.contact, ...(contact || {}) };
+  if (!merged.phone || merged.phone.includes('555-SPESH') || merged.phone.includes('1800')) {
+    merged.phone = '+91 9100006020';
+  }
+  if (!merged.phoneRaw || merged.phoneRaw.includes('18005557737') || merged.phoneRaw.includes('555')) {
+    merged.phoneRaw = '+919100006020';
+  }
+  if (!merged.whatsapp || merged.whatsapp.includes('18005557737') || merged.whatsapp.includes('555')) {
+    merged.whatsapp = '+919100006020';
+  }
+  if (!merged.email || merged.email === 'support@speshway.com') {
+    merged.email = 'info@speshway.com';
+  }
+  return merged;
 };
 
 let memoryHomeContent = { ...DEFAULT_HOME_CONTENT };
@@ -60,6 +83,7 @@ export const getHomeContent = async () => {
         },
         branding: { ...DEFAULT_HOME_CONTENT.branding, ...(dbContent.branding || {}) },
         socialLinks: { ...DEFAULT_HOME_CONTENT.socialLinks, ...(dbContent.socialLinks || {}) },
+        contact: sanitizeContact(dbContent.contact),
       };
       return memoryHomeContent;
     }
@@ -96,6 +120,7 @@ export const updateHomeContent = async (newData) => {
     navbar: mergedNavbar,
     branding: { ...memoryHomeContent.branding, ...(updatePayload.branding || {}) },
     socialLinks: { ...memoryHomeContent.socialLinks, ...(updatePayload.socialLinks || {}) },
+    contact: sanitizeContact(updatePayload.contact || memoryHomeContent.contact),
   };
 
   // Persist to MongoDB
@@ -136,6 +161,7 @@ export const seedHomeDatabase = async () => {
           solutions: { ...DEFAULT_HOME_CONTENT.solutions, ...(existing.solutions || {}) },
           navbar: { ...DEFAULT_HOME_CONTENT.navbar, ...(existing.navbar || {}) },
           branding: { ...DEFAULT_HOME_CONTENT.branding, ...(existing.branding || {}) },
+          contact: sanitizeContact(existing.contact),
         };
       }
     }

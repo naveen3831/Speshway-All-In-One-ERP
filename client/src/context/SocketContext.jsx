@@ -2,9 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS, normalizeProductCategory } from '../utils/adminProjects';
-import { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT } from '../constants/branding';
+import { getProductFallbackImage } from '../utils/productImages';
+import { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT, DEFAULT_CONTACT_INFO } from '../constants/branding';
 
-export { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT };
+export { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT, DEFAULT_CONTACT_INFO };
 
 const SocketContext = createContext(null);
 
@@ -89,7 +90,13 @@ export const SocketProvider = ({ children }) => {
         if (Array.isArray(parsed) && parsed.length > 0) {
           const clean = parsed
             .filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id))
-            .map(normalizeProductCategory);
+            .map(normalizeProductCategory)
+            .map((p) => {
+              if (p.imageUrl && p.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
+                return { ...p, imageUrl: getProductFallbackImage(p.slug || p.id || p.name) || '' };
+              }
+              return p;
+            });
           if (clean.length > 0) return clean;
         }
       }
@@ -118,15 +125,18 @@ export const SocketProvider = ({ children }) => {
             const safePrev = Array.isArray(prev) ? prev : [];
             const merged = clean.map((serverItem) => {
               const localMatch = safePrev.find((p) => isSameProduct(p, serverItem));
-              if (localMatch) {
-                return normalizeProductCategory({
-                  ...localMatch,
-                  ...serverItem,
-                  // Keep latest valid image (whether from server or user edit)
-                  imageUrl: serverItem.imageUrl || localMatch.imageUrl || '',
-                });
+              const base = localMatch
+                ? {
+                    ...localMatch,
+                    ...serverItem,
+                    // Keep latest valid image (whether from server or user edit)
+                    imageUrl: serverItem.imageUrl || localMatch.imageUrl || '',
+                  }
+                : serverItem;
+              if (base.imageUrl && base.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
+                base.imageUrl = getProductFallbackImage(base.slug || base.id || base.name) || '';
               }
-              return normalizeProductCategory(serverItem);
+              return normalizeProductCategory(base);
             });
             try {
               localStorage.setItem('speshway_products', JSON.stringify(merged));
@@ -233,6 +243,58 @@ export const SocketProvider = ({ children }) => {
     return merged;
   };
 
+  const sanitizeContactInfo = (obj) => {
+    const merged = { ...DEFAULT_CONTACT_INFO, ...(obj || {}) };
+    if (!merged.phone || merged.phone.includes('555-SPESH') || merged.phone.includes('1800')) {
+      merged.phone = DEFAULT_CONTACT_INFO.phone;
+    }
+    if (!merged.phoneRaw || merged.phoneRaw.includes('18005557737') || merged.phoneRaw.includes('555')) {
+      merged.phoneRaw = DEFAULT_CONTACT_INFO.phoneRaw;
+    }
+    if (!merged.whatsapp || merged.whatsapp.includes('18005557737') || merged.whatsapp.includes('555')) {
+      merged.whatsapp = DEFAULT_CONTACT_INFO.whatsapp;
+    }
+    if (!merged.email || merged.email === 'support@speshway.com') {
+      merged.email = DEFAULT_CONTACT_INFO.email;
+    }
+    return merged;
+  };
+
+  const [contactInfo, setContactInfo] = useState(() => {
+    try {
+      const saved = localStorage.getItem('speshway_contact_info');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return sanitizeContactInfo(parsed);
+      }
+    } catch (e) {}
+    return DEFAULT_CONTACT_INFO;
+  });
+
+  const updateContactInfo = async (newContactInfo) => {
+    const merged = sanitizeContactInfo({ ...(contactInfo || {}), ...(newContactInfo || {}) });
+    setContactInfo(merged);
+    try {
+      localStorage.setItem('speshway_contact_info', JSON.stringify(merged));
+      window.dispatchEvent(new Event('speshway_contact_info_changed'));
+    } catch (e) {}
+
+    try {
+      const updatedHome = {
+        ...(homeContent || {}),
+        contact: merged,
+      };
+      setHomeContent(updatedHome);
+      try {
+        localStorage.setItem('speshway_home_content', JSON.stringify(updatedHome));
+      } catch (e) {}
+      await api.put('/home', updatedHome);
+    } catch (err) {
+      console.warn('Could not persist contact info to API:', err.message);
+    }
+    return merged;
+  };
+
   useEffect(() => {
     if (homeContent?.branding) {
       setBranding((prev) => {
@@ -258,6 +320,19 @@ export const SocketProvider = ({ children }) => {
       });
     }
   }, [homeContent?.socialLinks]);
+
+  useEffect(() => {
+    if (homeContent?.contact) {
+      setContactInfo((prev) => {
+        const next = sanitizeContactInfo({ ...(prev || {}), ...homeContent.contact });
+        try {
+          localStorage.setItem('speshway_contact_info', JSON.stringify(next));
+          window.dispatchEvent(new Event('speshway_contact_info_changed'));
+        } catch (e) {}
+        return next;
+      });
+    }
+  }, [homeContent?.contact]);
 
   const updateNavbarVisibility = async (partialUpdates = {}) => {
     const currentNavbar = homeContent?.navbar || { showPricing: false, showProducts: false };
@@ -864,6 +939,9 @@ export const SocketProvider = ({ children }) => {
         socialLinks,
         setSocialLinks,
         updateSocialLinks,
+        contactInfo,
+        setContactInfo,
+        updateContactInfo,
         triggerAddProduct,
         triggerUpdateProduct,
         triggerDeleteProduct,

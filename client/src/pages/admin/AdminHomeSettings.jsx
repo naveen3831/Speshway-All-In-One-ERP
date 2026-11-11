@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useSocket, DEFAULT_HOME_CONTENT } from '../../context/SocketContext';
+import { WhatsAppIcon } from '../../components/common/WhatsAppIcon';
 import {
   Sparkles,
   BarChart3,
   Layers,
   Save,
   Check,
-  ExternalLink,
   Edit3,
   X,
+  Phone,
+  Mail,
+  Headphones,
 } from 'lucide-react';
 
 export const AdminHomeSettings = () => {
@@ -21,6 +24,7 @@ export const AdminHomeSettings = () => {
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [isEditingStats, setIsEditingStats] = useState(false);
   const [isEditingSolutions, setIsEditingSolutions] = useState(false);
+  const [isEditingContact, setIsEditingContact] = useState(false);
 
   const [form, setForm] = useState(() => ({
     hero: {
@@ -45,6 +49,12 @@ export const AdminHomeSettings = () => {
     solutions: {
       title: homeContent?.solutions?.title || DEFAULT_HOME_CONTENT.solutions.title,
     },
+    contact: {
+      phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+91 9100006020',
+      phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+919100006020',
+      whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+919100006020',
+      email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'info@speshway.com',
+    },
     navbar: {
       showPricing: homeContent?.navbar?.showPricing !== undefined ? homeContent.navbar.showPricing : false,
       showProducts: homeContent?.navbar?.showProducts !== undefined ? homeContent.navbar.showProducts : false,
@@ -64,6 +74,7 @@ export const AdminHomeSettings = () => {
         hero: { ...prev.hero, ...(homeContent.hero || {}) },
         stats: { ...prev.stats, ...(homeContent.stats || {}) },
         solutions: { ...prev.solutions, ...(homeContent.solutions || {}) },
+        contact: { ...prev.contact, ...(homeContent.contact || {}) },
         navbar: { ...prev.navbar, ...(homeContent.navbar || {}) },
         branding: { ...prev.branding, ...(homeContent.branding || {}) },
       }));
@@ -118,6 +129,17 @@ export const AdminHomeSettings = () => {
         },
       }));
       setIsEditingSolutions(false);
+    } else if (sectionName === 'contact') {
+      setForm((prev) => ({
+        ...prev,
+        contact: {
+          phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+91 9100006020',
+          phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+919100006020',
+          whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+919100006020',
+          email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'info@speshway.com',
+        },
+      }));
+      setIsEditingContact(false);
     }
   };
 
@@ -149,6 +171,7 @@ export const AdminHomeSettings = () => {
         if (sectionName === 'hero') setIsEditingHero(false);
         if (sectionName === 'stats') setIsEditingStats(false);
         if (sectionName === 'solutions') setIsEditingSolutions(false);
+        if (sectionName === 'contact') setIsEditingContact(false);
       }, 1200);
     }
   };
@@ -176,25 +199,6 @@ export const AdminHomeSettings = () => {
             Customize the hero banner, live stats counter, and solution titles displayed on the public landing page.
           </p>
         </div>
-
-        <a
-          href="/"
-          target="_blank"
-          rel="noreferrer"
-          className="btn-secondary-action"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            textDecoration: 'none',
-            padding: '9px 16px',
-            borderRadius: '8px',
-            fontSize: '0.88rem',
-            fontWeight: 600,
-          }}
-        >
-          View Live Home Page <ExternalLink size={14} />
-        </a>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -1000,6 +1004,452 @@ export const AdminHomeSettings = () => {
                       <span>Saved!</span>
                     </>
                   ) : savingSection === 'solutions' ? (
+                    <>
+                      <Save size={18} />
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save size={18} />
+                      <span>Save Changes</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* CARD 4: FLOATING CONTACT & SUPPORT OPTIONS */}
+        <div
+          className="admin-card"
+          style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            border: '1px solid #cbd5e1',
+            padding: '24px',
+            boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
+          }}
+        >
+          {/* Card Header with Edit Button */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px',
+              marginBottom: '20px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '10px',
+                  backgroundColor: '#dcfce7',
+                  color: '#00875a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Headphones size={20} />
+              </div>
+              <div>
+                <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#0f172a' }}>
+                  Floating Contact &amp; Support Options
+                </h2>
+                <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                  Direct phone dialer, phone label, and support email displayed on the website floating contact widget.
+                </span>
+              </div>
+            </div>
+
+            {!isEditingContact ? (
+              <button
+                type="button"
+                onClick={() => setIsEditingContact(true)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  padding: '8px 18px',
+                  backgroundColor: '#00875a',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <Edit3 size={15} />
+                <span>Edit</span>
+              </button>
+            ) : (
+              <span
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  color: '#00875a',
+                  backgroundColor: '#dcfce7',
+                  padding: '5px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid #a3e9c4',
+                }}
+              >
+                Editing Mode
+              </span>
+            )}
+          </div>
+
+          {/* VIEW MODE: Clean Read-only Display with exact pills matching website */}
+          {!isEditingContact ? (
+            <div
+              style={{
+                backgroundColor: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '12px',
+                padding: '20px',
+              }}
+            >
+              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '12px' }}>
+                Current Public Quick Contact Badges:
+              </span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+                <a
+                  href={`https://api.whatsapp.com/send?phone=${String(form.contact?.whatsapp || form.contact?.phoneRaw || '+919100006020').replace(/[^\d]/g, '')}&text=${encodeURIComponent('Hi Speshway, I am interested in Speshway ERP.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Click to test WhatsApp chat link"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 18px',
+                    borderRadius: '9999px',
+                    backgroundColor: '#e6f7ef',
+                    border: '1.5px solid #a3e9c4',
+                    color: '#00875a',
+                    fontWeight: 700,
+                    fontSize: '0.92rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 1px 3px rgba(37, 211, 102, 0.12)',
+                  }}
+                >
+                  <WhatsAppIcon size={18} color="#25D366" />
+                  <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+91 9100006020'}</span>
+                </a>
+                <a
+                  href={`tel:${form.contact?.phoneRaw || form.contact?.phone || '+919100006020'}`}
+                  title="Click to test call link"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 18px',
+                    borderRadius: '9999px',
+                    backgroundColor: '#e6f7ef',
+                    border: '1.5px solid #a3e9c4',
+                    color: '#00875a',
+                    fontWeight: 700,
+                    fontSize: '0.92rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 1px 3px rgba(0, 135, 90, 0.08)',
+                  }}
+                >
+                  <Phone size={16} />
+                  <span>{form.contact?.phone || '+91 9100006020'}</span>
+                </a>
+                <a
+                  href={`mailto:${form.contact?.email || 'info@speshway.com'}`}
+                  title="Click to test mail link"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 18px',
+                    borderRadius: '9999px',
+                    backgroundColor: '#e6f7ef',
+                    border: '1.5px solid #a3e9c4',
+                    color: '#00875a',
+                    fontWeight: 700,
+                    fontSize: '0.92rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 1px 3px rgba(0, 135, 90, 0.08)',
+                  }}
+                >
+                  <Mail size={16} />
+                  <span>{form.contact?.email || 'info@speshway.com'}</span>
+                </a>
+              </div>
+              <div style={{ marginTop: '14px', fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5 }}>
+                WhatsApp Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>wa.me/{String(form.contact?.whatsapp || form.contact?.phoneRaw || '+919100006020').replace(/[^\d]/g, '')}</code>
+                <span style={{ margin: '0 8px' }}>•</span>
+                Dial Link Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>tel:{form.contact?.phoneRaw || '+919100006020'}</code>
+                <span style={{ margin: '0 8px' }}>•</span>
+                Email Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>mailto:{form.contact?.email || 'info@speshway.com'}</code>
+              </div>
+            </div>
+          ) : (
+            /* EDIT MODE: Inputs & Save Changes Option */
+            <div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                  gap: '16px',
+                  marginBottom: '20px',
+                }}
+              >
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
+                    Phone Display Text
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', display: 'flex' }}>
+                      <Phone size={16} />
+                    </div>
+                    <input
+                      type="text"
+                      value={form.contact?.phone ?? ''}
+                      onChange={(e) => handleChange('contact', 'phone', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px 9px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="+91 9100006020"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Visible phone text shown inside the floating contact chip.
+                  </span>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
+                    WhatsApp Target Number (wa.me/ link)
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#25D366', display: 'flex' }}>
+                      <WhatsAppIcon size={16} color="#25D366" />
+                    </div>
+                    <input
+                      type="text"
+                      value={form.contact?.whatsapp ?? ''}
+                      onChange={(e) => handleChange('contact', 'whatsapp', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px 9px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="+919100006020"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Tapping the floating WhatsApp button opens chat to this number.
+                  </span>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
+                    Dial Target Number (tel: link)
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', display: 'flex' }}>
+                      <Phone size={16} />
+                    </div>
+                    <input
+                      type="text"
+                      value={form.contact?.phoneRaw ?? ''}
+                      onChange={(e) => handleChange('contact', 'phoneRaw', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px 9px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="+919100006020"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Exact number passed to phones/callers (e.g. +919100006020).
+                  </span>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
+                    Support Email Address (mailto: link)
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', display: 'flex' }}>
+                      <Mail size={16} />
+                    </div>
+                    <input
+                      type="email"
+                      value={form.contact?.email ?? ''}
+                      onChange={(e) => handleChange('contact', 'email', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px 9px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="info@speshway.com"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Inquiries and tickets are directed here when email chip is tapped.
+                  </span>
+                </div>
+              </div>
+
+              {/* REAL-TIME PREVIEW OF THE PILLS IN EDIT MODE */}
+              <div
+                style={{
+                  backgroundColor: '#f8fafc',
+                  border: '1.5px dashed #cbd5e1',
+                  borderRadius: '10px',
+                  padding: '14px 18px',
+                  marginBottom: '20px',
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '0.74rem',
+                    fontWeight: 700,
+                    color: '#64748b',
+                    display: 'block',
+                    marginBottom: '10px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  Live Preview as you type
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 18px',
+                      borderRadius: '9999px',
+                      backgroundColor: '#e6f7ef',
+                      border: '1.5px solid #a3e9c4',
+                      color: '#00875a',
+                      fontWeight: 700,
+                      fontSize: '0.92rem',
+                    }}
+                  >
+                    <WhatsAppIcon size={18} color="#25D366" />
+                    <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+91 9100006020'}</span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 18px',
+                      borderRadius: '9999px',
+                      backgroundColor: '#e6f7ef',
+                      border: '1.5px solid #a3e9c4',
+                      color: '#00875a',
+                      fontWeight: 700,
+                      fontSize: '0.92rem',
+                    }}
+                  >
+                    <Phone size={16} />
+                    <span>{form.contact?.phone || '+91 9100006020'}</span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 18px',
+                      borderRadius: '9999px',
+                      backgroundColor: '#e6f7ef',
+                      border: '1.5px solid #a3e9c4',
+                      color: '#00875a',
+                      fontWeight: 700,
+                      fontSize: '0.92rem',
+                    }}
+                  >
+                    <Mail size={16} />
+                    <span>{form.contact?.email || 'info@speshway.com'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* SAVE & CANCEL BUTTONS FOR CONTACT */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => handleCancel('contact')}
+                  style={{
+                    padding: '10px 18px',
+                    backgroundColor: '#ffffff',
+                    color: '#475569',
+                    border: '1.5px solid #cbd5e1',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '0.9rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <X size={16} />
+                  <span>Cancel</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSave('contact')}
+                  disabled={savingSection === 'contact'}
+                  style={{
+                    padding: '10px 24px',
+                    backgroundColor: savedSection === 'contact' ? '#059669' : '#00875a',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '0.9rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 2px 8px rgba(0, 135, 90, 0.3)',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {savedSection === 'contact' ? (
+                    <>
+                      <Check size={18} />
+                      <span>Saved!</span>
+                    </>
+                  ) : savingSection === 'contact' ? (
                     <>
                       <Save size={18} />
                       <span>Saving...</span>
