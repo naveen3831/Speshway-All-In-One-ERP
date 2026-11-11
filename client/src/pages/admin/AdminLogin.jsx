@@ -131,7 +131,7 @@ export const AdminLogin = () => {
                 id="admin-email"
                 type="email"
                 required
-                placeholder="Enter your email"
+                placeholder="Enter your email ID"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pro-text-input"
