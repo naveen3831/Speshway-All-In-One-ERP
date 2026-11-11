@@ -4,6 +4,7 @@ import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS, normalizeProductCategory } from '../utils/adminProjects';
 import { getProductFallbackImage } from '../utils/productImages';
 import { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT, DEFAULT_CONTACT_INFO } from '../constants/branding';
+import { safeJsonParse } from '../utils/jsonUtils';
 
 export { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT, DEFAULT_CONTACT_INFO };
 
@@ -85,20 +86,18 @@ export const SocketProvider = ({ children }) => {
   const [products, setProducts] = useState(() => {
     try {
       const saved = localStorage.getItem('speshway_products');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const clean = parsed
-            .filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id))
-            .map(normalizeProductCategory)
-            .map((p) => {
-              if (p.imageUrl && p.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
-                return { ...p, imageUrl: getProductFallbackImage(p.slug || p.id || p.name) || '' };
-              }
-              return p;
-            });
-          if (clean.length > 0) return clean;
-        }
+      const parsed = safeJsonParse(saved, null);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const clean = parsed
+          .filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id))
+          .map(normalizeProductCategory)
+          .map((p) => {
+            if (p.imageUrl && p.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
+              return { ...p, imageUrl: getProductFallbackImage(p.slug || p.id || p.name) || '' };
+            }
+            return p;
+          });
+        if (clean.length > 0) return clean;
       }
     } catch (e) {
       console.warn('Error reading speshway_products from localStorage:', e);
@@ -168,18 +167,17 @@ export const SocketProvider = ({ children }) => {
   const [homeContent, setHomeContent] = useState(() => {
     try {
       const saved = localStorage.getItem('speshway_home_content');
-      if (saved) return JSON.parse(saved);
+      const parsed = safeJsonParse(saved, null);
+      if (parsed && typeof parsed === 'object') return parsed;
     } catch (e) {}
     return DEFAULT_HOME_CONTENT;
   });
 
-    const [branding, setBranding] = useState(() => {
+  const [branding, setBranding] = useState(() => {
     try {
       const saved = localStorage.getItem('speshway_branding');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') return { ...DEFAULT_BRANDING, ...parsed };
-      }
+      const parsed = safeJsonParse(saved, null);
+      if (parsed && typeof parsed === 'object') return { ...DEFAULT_BRANDING, ...parsed };
     } catch (e) {}
     return DEFAULT_BRANDING;
   });
@@ -187,10 +185,8 @@ export const SocketProvider = ({ children }) => {
   const [socialLinks, setSocialLinks] = useState(() => {
     try {
       const saved = localStorage.getItem('speshway_social_links');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') return { ...DEFAULT_SOCIAL_LINKS, ...parsed };
-      }
+      const parsed = safeJsonParse(saved, null);
+      if (parsed && typeof parsed === 'object') return { ...DEFAULT_SOCIAL_LINKS, ...parsed };
     } catch (e) {}
     return DEFAULT_SOCIAL_LINKS;
   });
@@ -263,10 +259,8 @@ export const SocketProvider = ({ children }) => {
   const [contactInfo, setContactInfo] = useState(() => {
     try {
       const saved = localStorage.getItem('speshway_contact_info');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') return sanitizeContactInfo(parsed);
-      }
+      const parsed = safeJsonParse(saved, null);
+      if (parsed && typeof parsed === 'object') return sanitizeContactInfo(parsed);
     } catch (e) {}
     return DEFAULT_CONTACT_INFO;
   });

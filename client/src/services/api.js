@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { safeJsonParse } from '../utils/jsonUtils';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
@@ -12,16 +13,10 @@ const api = axios.create({
 // Request interceptor to attach JWT token fallback
 api.interceptors.request.use(
   (config) => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      try {
-        const { token } = JSON.parse(user);
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-      } catch (err) {
-        console.error('Error reading auth token', err);
-      }
+    const rawUser = localStorage.getItem('user');
+    const parsedUser = safeJsonParse(rawUser, null);
+    if (parsedUser && parsedUser.token) {
+      config.headers.Authorization = `Bearer ${parsedUser.token}`;
     }
     return config;
   },

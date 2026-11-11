@@ -21,6 +21,7 @@ export const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
 
   const {
+    user,
     login,
     sessionExpired,
     sessionExpiredReason,
@@ -29,6 +30,12 @@ export const AdminLogin = () => {
   } = useAuth();
   const { branding, homeContent } = useSocket();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (user && (user.role === 'admin' || !user.role)) {
+      navigate('/admin/overview', { replace: true });
+    }
+  }, [user, navigate]);
 
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';

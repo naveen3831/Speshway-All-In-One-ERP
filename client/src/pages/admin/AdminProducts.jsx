@@ -54,6 +54,31 @@ import {
 import { getProductFallbackImage } from '../../utils/productImages';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 
+const SafeLayoutGrid = ({ size = 16, className = '' }) => {
+  if (LayoutGrid) {
+    const Component = LayoutGrid;
+    return <Component size={size} className={className} />;
+  }
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+    </svg>
+  );
+};
+
 const CATEGORY_META = {
   // 5 Primary Enterprise Categories (matching Home Page)
   'Human Resources': { icon: Users, color: 'emerald', bgClass: 'bg-icon-emerald', textClass: 'text-icon-emerald' },
@@ -105,7 +130,7 @@ const iconMap = {
   TrendingUp,
   PieChart,
   Handshake,
-  LayoutGrid,
+  LayoutGrid: SafeLayoutGrid,
   List,
   Layers,
   Building2,
@@ -426,7 +451,7 @@ export const AdminProducts = () => {
                 className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
                 title="Project Cards View"
               >
-                <LayoutGrid size={16} />
+                <SafeLayoutGrid size={16} />
               </button>
               <button
                 type="button"
