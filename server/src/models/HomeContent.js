@@ -132,6 +132,10 @@ const homeContentSchema = new mongoose.Schema(
         type: String,
         default: '+18005557737',
       },
+      whatsapp: {
+        type: String,
+        default: '+18005557737',
+      },
       email: {
         type: String,
         default: 'support@speshway.com',

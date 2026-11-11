@@ -7,6 +7,7 @@ export const DEFAULT_BRANDING = {
 export const DEFAULT_CONTACT_INFO = {
   phone: '+1 (800) 555-SPESH',
   phoneRaw: '+18005557737',
+  whatsapp: '+18005557737',
   email: 'support@speshway.com',
 };
 

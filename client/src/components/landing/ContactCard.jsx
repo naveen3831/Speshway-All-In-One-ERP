@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Sparkles, CheckCircle2, Phone, Mail } from 'lucide-react';
+import { WhatsAppIcon, getWhatsAppUrl } from '../common/WhatsAppIcon';
 import { useSocket } from '../../context/SocketContext';
 import './ContactCard.css';
 
@@ -11,9 +12,12 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
 
   const phoneDisplay = contactInfo?.phone || homeContent?.contact?.phone || '+1 (800) 555-SPESH';
   const phoneRaw = contactInfo?.phoneRaw || homeContent?.contact?.phoneRaw || '+18005557737';
+  const whatsappRaw = contactInfo?.whatsapp || homeContent?.contact?.whatsapp || phoneRaw;
   const supportEmail = contactInfo?.email || homeContent?.contact?.email || 'support@speshway.com';
   const telHref = `tel:${phoneRaw.replace(/^tel:/i, '').trim()}`;
   const mailtoHref = `mailto:${supportEmail.replace(/^mailto:/i, '').trim()}`;
+  const whatsappHref = getWhatsAppUrl(whatsappRaw, 'Hello! I would like to know more about Speshway ERP.');
+  const whatsappDisplay = contactInfo?.whatsapp || homeContent?.contact?.whatsapp || phoneDisplay;
 
   const cardRef = useRef(null);
 
@@ -143,6 +147,16 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
 
         {/* Quick Direct Contact Details */}
         <div className="contact-card-direct-bar">
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-direct-chip contact-whatsapp-chip"
+            title={`Chat with Speshway on WhatsApp: ${whatsappDisplay}`}
+          >
+            <WhatsAppIcon size={13} color="#25D366" />
+            <span>WhatsApp</span>
+          </a>
           <a href={telHref} className="contact-direct-chip" title={`Call Speshway Support: ${phoneDisplay}`}>
             <Phone size={13} className="direct-chip-icon" />
             <span>{phoneDisplay}</span>

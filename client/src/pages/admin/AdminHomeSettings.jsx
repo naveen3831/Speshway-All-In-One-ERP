@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useSocket, DEFAULT_HOME_CONTENT } from '../../context/SocketContext';
+import { WhatsAppIcon } from '../../components/common/WhatsAppIcon';
 import {
   Sparkles,
   BarChart3,
@@ -51,6 +52,7 @@ export const AdminHomeSettings = () => {
     contact: {
       phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+1 (800) 555-SPESH',
       phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+18005557737',
+      whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+18005557737',
       email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'support@speshway.com',
     },
     navbar: {
@@ -133,6 +135,7 @@ export const AdminHomeSettings = () => {
         contact: {
           phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+1 (800) 555-SPESH',
           phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+18005557737',
+          whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+18005557737',
           email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'support@speshway.com',
         },
       }));
@@ -1118,6 +1121,29 @@ export const AdminHomeSettings = () => {
               </span>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
                 <a
+                  href={`https://wa.me/${String(form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737').replace(/[^\d]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Click to test WhatsApp chat link"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 18px',
+                    borderRadius: '9999px',
+                    backgroundColor: '#e6f7ef',
+                    border: '1.5px solid #a3e9c4',
+                    color: '#00875a',
+                    fontWeight: 700,
+                    fontSize: '0.92rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 1px 3px rgba(37, 211, 102, 0.12)',
+                  }}
+                >
+                  <WhatsAppIcon size={18} color="#25D366" />
+                  <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737'}</span>
+                </a>
+                <a
                   href={`tel:${form.contact?.phoneRaw || form.contact?.phone || '+18005557737'}`}
                   title="Click to test call link"
                   style={{
@@ -1161,6 +1187,8 @@ export const AdminHomeSettings = () => {
                 </a>
               </div>
               <div style={{ marginTop: '14px', fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5 }}>
+                WhatsApp Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>wa.me/{String(form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737').replace(/[^\d]/g, '')}</code>
+                <span style={{ margin: '0 8px' }}>•</span>
                 Dial Link Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>tel:{form.contact?.phoneRaw || '+18005557737'}</code>
                 <span style={{ margin: '0 8px' }}>•</span>
                 Email Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>mailto:{form.contact?.email || 'support@speshway.com'}</code>
@@ -1172,7 +1200,7 @@ export const AdminHomeSettings = () => {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
                   gap: '16px',
                   marginBottom: '20px',
                 }}
@@ -1203,6 +1231,35 @@ export const AdminHomeSettings = () => {
                   </div>
                   <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
                     Visible phone text shown inside the floating contact chip.
+                  </span>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
+                    WhatsApp Target Number (wa.me/ link)
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#25D366', display: 'flex' }}>
+                      <WhatsAppIcon size={16} color="#25D366" />
+                    </div>
+                    <input
+                      type="text"
+                      value={form.contact?.whatsapp ?? ''}
+                      onChange={(e) => handleChange('contact', 'whatsapp', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '9px 12px 9px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="+18005557737"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Tapping the floating WhatsApp button opens chat to this number.
                   </span>
                 </div>
 
@@ -1289,6 +1346,23 @@ export const AdminHomeSettings = () => {
                   Live Preview as you type
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 18px',
+                      borderRadius: '9999px',
+                      backgroundColor: '#e6f7ef',
+                      border: '1.5px solid #a3e9c4',
+                      color: '#00875a',
+                      fontWeight: 700,
+                      fontSize: '0.92rem',
+                    }}
+                  >
+                    <WhatsAppIcon size={18} color="#25D366" />
+                    <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737'}</span>
+                  </div>
                   <div
                     style={{
                       display: 'inline-flex',
