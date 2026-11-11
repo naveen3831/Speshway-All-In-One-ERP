@@ -1,22 +1,5 @@
 export const initialProducts = [
   {
-    id: 'savitri-sarees',
-    name: 'Savitri Sarees',
-    slug: 'savitri-sarees',
-    category: 'Fashion & Luxury',
-    description: 'Savitri Sarees is a premium online saree shopping platform offering a beautiful collection of handloom, bridal, and festive sarees.',
-    longDescription: 'Savitri Sarees ERP empowers handloom textile weavers, master artisans, and bridal showrooms with catalog variant tracking, silk mark authentication, and artisan payouts.',
-    features: ['Handloom Artisan Registry', 'Pure Silk Mark Verification', 'Bridal Customization Engine', 'Loom Batch Inventory Tracking', 'Multi-Store POS Integration', 'Customer Loyalty & Wishlists'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind CSS'],
-    websiteUrl: 'https://saree.speshway.site/',
-    adminUrl: '/product/savitri-sarees/dashboard',
-    imageUrl: 'https://res.cloudinary.com/ddgjubbbx/image/upload/v1793792633/speshway_products/savitri-sarees.jpg',
-    iconName: 'Sparkles',
-    color: 'emerald',
-    status: 'active',
-    popularity: 99,
-  },
-  {
     id: 'sana-stayz',
     name: 'Sana Stayz',
     slug: 'sana-stayz',

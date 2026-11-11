@@ -48,6 +48,8 @@ import {
   DEFAULT_ADMIN_PROJECTS,
   PRIMARY_ERP_CATEGORIES,
   getPrimaryCategory,
+  EXCLUDED_SLUGS,
+  EXCLUDED_NAMES,
 } from '../../utils/adminProjects';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 
@@ -185,7 +187,14 @@ export const AdminProducts = () => {
 
   const displayProducts = useMemo(() => {
     const list = Array.isArray(products) && products.length > 0 ? products : DEFAULT_ADMIN_PROJECTS;
-    return list.filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id));
+    return list.filter((p) => {
+      if (!p || typeof p !== 'object') return false;
+      const slug = String(p.slug || p.id || '').toLowerCase().trim();
+      const name = String(p.name || '').toLowerCase().trim();
+      if (!slug && !name) return false;
+      if (EXCLUDED_SLUGS.has(slug) || EXCLUDED_NAMES.has(name)) return false;
+      return true;
+    });
   }, [products]);
 
   // Strictly use the exact 5 Enterprise Categories matching the Home Page
