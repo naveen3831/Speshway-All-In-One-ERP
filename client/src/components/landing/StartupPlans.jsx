@@ -172,6 +172,8 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onMouseEnter={pauseAutoRotateTemporarily}
+            onMouseLeave={() => setIsPaused(false)}
           >
             <div className="startup-coverflow-track">
               {STARTUP_PLANS.map((plan, index) => {
