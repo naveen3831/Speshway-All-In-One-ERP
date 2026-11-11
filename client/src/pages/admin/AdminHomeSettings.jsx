@@ -7,7 +7,6 @@ import {
   Layers,
   Save,
   Check,
-  ExternalLink,
   Edit3,
   X,
 } from 'lucide-react';
@@ -176,25 +175,6 @@ export const AdminHomeSettings = () => {
             Customize the hero banner, live stats counter, and solution titles displayed on the public landing page.
           </p>
         </div>
-
-        <a
-          href="/"
-          target="_blank"
-          rel="noreferrer"
-          className="btn-secondary-action"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            textDecoration: 'none',
-            padding: '9px 16px',
-            borderRadius: '8px',
-            fontSize: '0.88rem',
-            fontWeight: 600,
-          }}
-        >
-          View Live Home Page <ExternalLink size={14} />
-        </a>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
