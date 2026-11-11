@@ -18,6 +18,7 @@ import { seedProductsDatabase } from './services/productDatabaseService.js';
 import { seedEmployeesDatabase } from './services/employeeDatabaseService.js';
 import { seedPricingDatabase } from './services/pricingStore.js';
 import { seedHomeDatabase } from './services/homeStore.js';
+import { verifySmtpConnection } from './services/emailService.js';
 
 // Connect to MongoDB
 connectDB().then(async (connected) => {
@@ -45,6 +46,7 @@ httpServer.listen(PORT, '0.0.0.0', () => {
   console.log(`📡 WebSocket server active for real-time updates`);
   console.log(`☁️ Cloudinary storage connected: ${process.env.CLOUDINARY_CLOUD_NAME || 'ddgjubbbx'}`);
   console.log(`🔐 Seed Admin ready: admin@gmail.com / admin123`);
+  verifySmtpConnection();
 });
 
 // Handle unhandled promise rejections

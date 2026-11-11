@@ -2,6 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Inquiry from '../models/Inquiry.js';
 import { getIO, liveState } from '../services/socketService.js';
+import {
+  sendInquiryConfirmationEmail,
+  sendInquiryReplyEmail,
+  sendInquiryStatusEmail,
+} from '../services/emailService.js';
 
 const router = express.Router();
 
@@ -134,6 +139,19 @@ router.post('/', async (req, res) => {
       io.emit('activity:new', activity);
     }
 
+    // Send automated email confirmation to customer via SMTP
+    if (memoryItem.email) {
+      sendInquiryConfirmationEmail({
+        name: memoryItem.name,
+        email: memoryItem.email,
+        module: memoryItem.module,
+        company: memoryItem.company,
+        message: memoryItem.message,
+      }).catch((mailErr) =>
+        console.warn('[Inquiry] Automated confirmation email notice:', mailErr.message)
+      );
+    }
+
     return res.status(201).json({
       success: true,
       message: 'Inquiry received successfully and dispatched to admin.',
@@ -148,12 +166,12 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @desc    Update inquiry status
+// @desc    Update inquiry status & optionally notify customer via email
 // @route   PATCH /api/inquiries/:id/status
 // @access  Public
 router.patch('/:id/status', async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, notifyCustomer, note } = req.body;
     const { id } = req.params;
 
     let updated = await Inquiry.findOneAndUpdate(
@@ -172,9 +190,118 @@ router.patch('/:id/status', async (req, res) => {
       io.emit('demo:status_updated', { id, status });
     }
 
+    // Optionally notify customer via SMTP if requested or if status changed to contacted/qualified
+    if (notifyCustomer) {
+      const recipientEmail = updated?.email || liveState.modulesData.demoRequests.find(i => i.id === id)?.email;
+      const recipientName = updated?.name || liveState.modulesData.demoRequests.find(i => i.id === id)?.name;
+      const moduleName = updated?.module || liveState.modulesData.demoRequests.find(i => i.id === id)?.module;
+
+      if (recipientEmail) {
+        sendInquiryStatusEmail({
+          to: recipientEmail,
+          customerName: recipientName,
+          newStatus: status,
+          inquiryModule: moduleName,
+          note: note || '',
+        }).catch((mailErr) => console.warn('[Inquiry] Status update email error:', mailErr.message));
+      }
+    }
+
     res.json({ success: true, data: updated || { id, status } });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// @desc    Reply to customer inquiry via SMTP Email
+// @route   POST /api/inquiries/:id/reply
+// @access  Public
+router.post('/:id/reply', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { subject, replyMessage, adminName } = req.body;
+
+    if (!replyMessage || !replyMessage.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Reply message cannot be empty.',
+      });
+    }
+
+    let inq = await Inquiry.findOne(getInquiryQuery(id));
+    if (!inq) {
+      inq = liveState.modulesData.demoRequests.find(
+        (i) => i.id === id || i._id?.toString() === id
+      );
+    }
+
+    if (!inq || !inq.email) {
+      return res.status(404).json({
+        success: false,
+        message: 'Inquiry or customer email address not found.',
+      });
+    }
+
+    // Send email via Gmail SMTP (Nodemailer)
+    const info = await sendInquiryReplyEmail({
+      to: inq.email,
+      customerName: inq.name,
+      subject: subject?.trim(),
+      replyMessage: replyMessage.trim(),
+      inquiryModule: inq.module,
+      adminName: adminName?.trim() || 'SPESHWAY Admin Team',
+    });
+
+    // Automatically update status to 'contacted' if it was 'new'
+    if (inq.status === 'new') {
+      await Inquiry.findOneAndUpdate(getInquiryQuery(id), { status: 'contacted' });
+      liveState.modulesData.demoRequests = liveState.modulesData.demoRequests.map((i) =>
+        i.id === id || i._id?.toString() === id ? { ...i, status: 'contacted' } : i
+      );
+      const io = getIO();
+      if (io) {
+        io.emit('demo:status_updated', { id, status: 'contacted' });
+      }
+    }
+
+    return res.json({
+      success: true,
+      message: `Reply email successfully sent to ${inq.email}`,
+      messageId: info?.messageId,
+    });
+  } catch (err) {
+    console.error('Inquiry reply error:', err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Failed to dispatch email reply.',
+    });
+  }
+});
+
+// @desc    Test SMTP email dispatch
+// @route   POST /api/inquiries/test-smtp
+// @access  Public
+router.post('/test-smtp', async (req, res) => {
+  try {
+    const { to } = req.body;
+    const targetEmail = to || process.env.SMTP_USER || 'naveenkumar970100@gmail.com';
+    const info = await sendInquiryReplyEmail({
+      to: targetEmail,
+      customerName: 'Naveen Kumar',
+      subject: 'Test Email — SPESHWAY ERP Nodemailer SMTP',
+      replyMessage:
+        'This is a verification email from your SPESHWAY All-In-One ERP application.\nYour Gmail SMTP credentials (naveenkumar970100@gmail.com) are active and verified to send emails to customers who submit inquiries.',
+      inquiryModule: 'SMTP System Diagnostics',
+      adminName: 'SPESHWAY Automation',
+    });
+
+    return res.json({
+      success: true,
+      message: `Test email successfully sent to ${targetEmail}`,
+      messageId: info?.messageId,
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
   }
 });
 
