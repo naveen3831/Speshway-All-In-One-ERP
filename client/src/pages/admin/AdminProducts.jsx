@@ -51,6 +51,7 @@ import {
   EXCLUDED_SLUGS,
   EXCLUDED_NAMES,
 } from '../../utils/adminProjects';
+import { getProductFallbackImage } from '../../utils/productImages';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
 
 const CATEGORY_META = {
@@ -82,6 +83,13 @@ const CATEGORY_META = {
 const getCategoryMetadata = (catName) => {
   if (catName && CATEGORY_META[catName]) return CATEGORY_META[catName];
   return { icon: FolderKanban, color: 'emerald', bgClass: 'bg-icon-emerald', textClass: 'text-icon-emerald' };
+};
+
+const getResolvedProdImg = (prod) => {
+  if (!prod) return '';
+  const raw = prod.imageUrl && typeof prod.imageUrl === 'string' ? prod.imageUrl.trim() : '';
+  if (raw && !raw.includes('res.cloudinary.com/ddgjubbbx')) return raw;
+  return getProductFallbackImage(prod.slug || prod.id || prod.name) || raw;
 };
 
 const iconMap = {
@@ -501,13 +509,16 @@ export const AdminProducts = () => {
                       return (
                         <div key={pId} className="admin-cat-project-item">
                           <div className="admin-cat-proj-left">
-                            {prod.imageUrl && typeof prod.imageUrl === 'string' && prod.imageUrl.trim() ? (
-                              <img src={prod.imageUrl} alt={pName} className="admin-cat-proj-thumb" />
-                            ) : (
-                              <div className={`admin-cat-proj-icon-fallback bg-icon-${pColor}`}>
-                                <ProjIcon size={14} className={`text-icon-${pColor}`} />
-                              </div>
-                            )}
+                            {(() => {
+                              const thumb = getResolvedProdImg(prod);
+                              return thumb ? (
+                                <img src={thumb} alt={pName} className="admin-cat-proj-thumb" />
+                              ) : (
+                                <div className={`admin-cat-proj-icon-fallback bg-icon-${pColor}`}>
+                                  <ProjIcon size={14} className={`text-icon-${pColor}`} />
+                                </div>
+                              );
+                            })()}
                             <div className="admin-cat-proj-info">
                               <span
                                 className="admin-cat-proj-name"
@@ -660,11 +671,14 @@ export const AdminProducts = () => {
               >
                 <div className="admin-prod-card-top">
                   <div className={`admin-card-icon-box bg-icon-${pColor}`}>
-                    {prod.imageUrl && typeof prod.imageUrl === 'string' && prod.imageUrl.trim() ? (
-                      <img src={prod.imageUrl} alt={pName} className="admin-card-custom-img" />
-                    ) : (
-                      <Icon className={`text-icon-${pColor}`} size={22} />
-                    )}
+                    {(() => {
+                      const cardImg = getResolvedProdImg(prod);
+                      return cardImg ? (
+                        <img src={cardImg} alt={pName} className="admin-card-custom-img" />
+                      ) : (
+                        <Icon className={`text-icon-${pColor}`} size={22} />
+                      );
+                    })()}
                   </div>
                   <div className="admin-prod-card-badges">
                     <span className="prod-badge-category">{pCategory}</span>
@@ -743,11 +757,14 @@ export const AdminProducts = () => {
                       <td>
                         <div className="table-prod-info">
                           <div className={`table-prod-icon bg-icon-${pColor}`}>
-                            {prod.imageUrl && typeof prod.imageUrl === 'string' && prod.imageUrl.trim() ? (
-                              <img src={prod.imageUrl} alt={pName} className="admin-table-custom-img" />
-                            ) : (
-                              <Layers size={18} className={`text-icon-${pColor}`} />
-                            )}
+                            {(() => {
+                              const tblImg = getResolvedProdImg(prod);
+                              return tblImg ? (
+                                <img src={tblImg} alt={pName} className="admin-table-custom-img" />
+                              ) : (
+                                <Layers size={18} className={`text-icon-${pColor}`} />
+                              );
+                            })()}
                           </div>
                           <div>
                             <strong className="prod-table-name">{pName}</strong>

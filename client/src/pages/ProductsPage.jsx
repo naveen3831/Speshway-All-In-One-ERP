@@ -363,7 +363,10 @@ export const ProductsPage = () => {
                   </div>
 
                   {(() => {
-                    const imgUrl = prod.imageUrl || getProductFallbackImage(prod.slug || prod.id || prod.name);
+                    const rawImg = prod.imageUrl || '';
+                    const imgUrl = (rawImg && !rawImg.includes('res.cloudinary.com/ddgjubbbx'))
+                      ? rawImg
+                      : (getProductFallbackImage(prod.slug || prod.id || prod.name) || rawImg);
                     return imgUrl ? (
                       <div className="catalog-card-image-wrap">
                         <img

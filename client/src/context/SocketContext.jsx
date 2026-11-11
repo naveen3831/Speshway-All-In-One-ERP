@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import api from '../services/api';
 import { DEFAULT_ADMIN_PROJECTS, normalizeProductCategory } from '../utils/adminProjects';
+import { getProductFallbackImage } from '../utils/productImages';
 import { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT } from '../constants/branding';
 
 export { DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_HOME_CONTENT };
@@ -89,7 +90,13 @@ export const SocketProvider = ({ children }) => {
         if (Array.isArray(parsed) && parsed.length > 0) {
           const clean = parsed
             .filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id))
-            .map(normalizeProductCategory);
+            .map(normalizeProductCategory)
+            .map((p) => {
+              if (p.imageUrl && p.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
+                return { ...p, imageUrl: getProductFallbackImage(p.slug || p.id || p.name) || '' };
+              }
+              return p;
+            });
           if (clean.length > 0) return clean;
         }
       }
@@ -118,15 +125,18 @@ export const SocketProvider = ({ children }) => {
             const safePrev = Array.isArray(prev) ? prev : [];
             const merged = clean.map((serverItem) => {
               const localMatch = safePrev.find((p) => isSameProduct(p, serverItem));
-              if (localMatch) {
-                return normalizeProductCategory({
-                  ...localMatch,
-                  ...serverItem,
-                  // Keep latest valid image (whether from server or user edit)
-                  imageUrl: serverItem.imageUrl || localMatch.imageUrl || '',
-                });
+              const base = localMatch
+                ? {
+                    ...localMatch,
+                    ...serverItem,
+                    // Keep latest valid image (whether from server or user edit)
+                    imageUrl: serverItem.imageUrl || localMatch.imageUrl || '',
+                  }
+                : serverItem;
+              if (base.imageUrl && base.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
+                base.imageUrl = getProductFallbackImage(base.slug || base.id || base.name) || '';
               }
-              return normalizeProductCategory(serverItem);
+              return normalizeProductCategory(base);
             });
             try {
               localStorage.setItem('speshway_products', JSON.stringify(merged));
