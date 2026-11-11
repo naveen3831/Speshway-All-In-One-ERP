@@ -24,8 +24,6 @@ import {
   TrendingUp,
   PieChart,
   Handshake,
-  LayoutGrid,
-  List,
   Eye,
   EyeOff,
   Check,
@@ -419,24 +417,6 @@ export const AdminProducts = () => {
             >
               <Plus size={16} /> Add New Project
             </button>
-            <div className="view-toggle-wrap">
-              <button
-                type="button"
-                onClick={() => setViewMode('cards')}
-                className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
-                title="Project Cards View"
-              >
-                <LayoutGrid size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('table')}
-                className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
-                title="Table View"
-              >
-                <List size={16} />
-              </button>
-            </div>
           </div>
         </div>
 
