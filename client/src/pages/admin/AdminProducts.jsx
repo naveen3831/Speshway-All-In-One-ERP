@@ -24,6 +24,8 @@ import {
   TrendingUp,
   PieChart,
   Handshake,
+  LayoutGrid,
+  List,
   Eye,
   EyeOff,
   Check,
