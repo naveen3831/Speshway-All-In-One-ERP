@@ -459,16 +459,6 @@ export const AdminLayout = () => {
       {/* Main Admin Content Screen */}
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
-          <div className="topbar-left">
-            <span className="topbar-page-icon-mobile" aria-hidden="true">
-              {getMobilePageIcon()}
-            </span>
-            <span className="topbar-title">
-              <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
-              <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>
-            </span>
-          </div>
-
           <div className="topbar-right">
             <div className="admin-notif-wrapper" ref={notifRef}>
               <button
@@ -673,6 +663,24 @@ export const AdminLayout = () => {
 
             {/* Remaining Menu Items shown inside Profile */}
             <div className="profile-sheet-menu-list">
+              <NavLink
+                to="/admin/inquiries"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
+              >
+                <div className="profile-sheet-item-icon purple">
+                  <Inbox size={18} />
+                </div>
+                <div className="profile-sheet-item-text">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="profile-sheet-item-title">Enquiries</span>
+                    {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
+                  </div>
+                  <span className="profile-sheet-item-sub">Client leads, demo bookings &amp; contact inquiries</span>
+                </div>
+                <ArrowRight size={15} className="profile-sheet-item-arrow" />
+              </NavLink>
+
               <NavLink
                 to="/admin/home"
                 onClick={() => setShowMobileProfile(false)}

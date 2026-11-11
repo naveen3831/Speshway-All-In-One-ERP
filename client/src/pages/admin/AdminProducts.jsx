@@ -24,8 +24,6 @@ import {
   TrendingUp,
   PieChart,
   Handshake,
-  LayoutGrid,
-  List,
   Eye,
   EyeOff,
   Check,
@@ -400,7 +398,6 @@ export const AdminProducts = () => {
             >
               <Plus size={16} /> Add New Project
             </button>
-
             <div className="view-toggle-wrap">
               <button
                 type="button"
