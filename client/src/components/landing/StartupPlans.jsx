@@ -70,10 +70,8 @@ const STARTUP_PLANS = [
 export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
   // Start with index 1 ("Startup Plan - Most Popular") in center
   const [activeIndex, setActiveIndex] = useState(1);
-  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const pauseTimerRef = useRef(null);
   const total = STARTUP_PLANS.length;
 
   const nextSlide = useCallback(() => {
@@ -84,28 +82,15 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  const pauseAutoRotateTemporarily = () => {
-    setIsPaused(true);
-    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
-    pauseTimerRef.current = setTimeout(() => {
-      setIsPaused(false);
-    }, 6000);
-  };
-
-  // Continuous auto-rotation matching Platform Solutions (pauses during interaction)
+  // Continuous auto-rotation on mobile responsive (matching Our Platform Solutions)
   useEffect(() => {
-    if (isPaused) return;
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % total);
-    }, 3200);
+      if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+        setActiveIndex((prev) => (prev + 1) % total);
+      }
+    }, 1600);
     return () => clearInterval(interval);
-  }, [isPaused, total]);
-
-  useEffect(() => {
-    return () => {
-      if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
-    };
-  }, []);
+  }, [total]);
 
   const handleButtonClick = (actionType) => {
     if (actionType === 'demo' && onOpenDemo) {
@@ -117,7 +102,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
 
   // Touch swipe support matching Platform Solutions
   const handleTouchStart = (e) => {
-    pauseAutoRotateTemporarily();
     touchStartX.current = e.touches ? e.touches[0].clientX : e.clientX;
   };
 
@@ -159,7 +143,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
             onClick={(e) => {
               e.stopPropagation();
               prevSlide();
-              pauseAutoRotateTemporarily();
             }}
             aria-label="Previous plan"
             title="Previous Plan"
@@ -172,8 +155,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            onMouseEnter={pauseAutoRotateTemporarily}
-            onMouseLeave={() => setIsPaused(false)}
           >
             <div className="startup-coverflow-track">
               {STARTUP_PLANS.map((plan, index) => {
@@ -198,7 +179,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
                     onClick={() => {
                       if (!isActive) {
                         setActiveIndex(index);
-                        pauseAutoRotateTemporarily();
                       }
                     }}
                     role="button"
@@ -208,7 +188,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         if (!isActive) {
                           setActiveIndex(index);
-                          pauseAutoRotateTemporarily();
                         } else {
                           handleButtonClick(plan.actionType);
                         }
@@ -277,7 +256,6 @@ export const StartupPlans = ({ onOpenGetStarted, onOpenDemo }) => {
             onClick={(e) => {
               e.stopPropagation();
               nextSlide();
-              pauseAutoRotateTemporarily();
             }}
             aria-label="Next plan"
             title="Next Plan"
