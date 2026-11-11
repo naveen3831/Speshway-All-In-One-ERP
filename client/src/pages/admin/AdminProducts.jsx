@@ -113,8 +113,7 @@ const getCategoryMetadata = (catName) => {
 const getResolvedProdImg = (prod) => {
   if (!prod) return '';
   const raw = prod.imageUrl && typeof prod.imageUrl === 'string' ? prod.imageUrl.trim() : '';
-  if (raw && !raw.includes('res.cloudinary.com/ddgjubbbx')) return raw;
-  return getProductFallbackImage(prod.slug || prod.id || prod.name) || raw;
+  return raw || getProductFallbackImage(prod.slug || prod.id || prod.name) || '';
 };
 
 const iconMap = {

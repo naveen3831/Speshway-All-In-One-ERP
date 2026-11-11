@@ -90,13 +90,7 @@ export const SocketProvider = ({ children }) => {
       if (Array.isArray(parsed) && parsed.length > 0) {
         const clean = parsed
           .filter((p) => p && typeof p === 'object' && (p.name || p.slug || p.id))
-          .map(normalizeProductCategory)
-          .map((p) => {
-            if (p.imageUrl && p.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
-              return { ...p, imageUrl: getProductFallbackImage(p.slug || p.id || p.name) || '' };
-            }
-            return p;
-          });
+          .map(normalizeProductCategory);
         if (clean.length > 0) return clean;
       }
     } catch (e) {
@@ -132,9 +126,6 @@ export const SocketProvider = ({ children }) => {
                     imageUrl: serverItem.imageUrl || localMatch.imageUrl || '',
                   }
                 : serverItem;
-              if (base.imageUrl && base.imageUrl.includes('res.cloudinary.com/ddgjubbbx')) {
-                base.imageUrl = getProductFallbackImage(base.slug || base.id || base.name) || '';
-              }
               return normalizeProductCategory(base);
             });
             try {

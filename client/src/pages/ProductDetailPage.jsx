@@ -365,10 +365,8 @@ export const ProductDetailPage = () => {
                 </div>
                 <div className="preview-icon-giant">
                   {(() => {
-                    const rawImg = product.imageUrl || '';
-                    const heroImg = (rawImg && !rawImg.includes('res.cloudinary.com/ddgjubbbx'))
-                      ? rawImg
-                      : (getProductFallbackImage(product.slug || product.id || product.name) || rawImg);
+                    const rawImg = product.imageUrl && typeof product.imageUrl === 'string' ? product.imageUrl.trim() : '';
+                    const heroImg = rawImg || getProductFallbackImage(product.slug || product.id || product.name) || '';
                     return heroImg ? (
                       <img
                         src={heroImg}
