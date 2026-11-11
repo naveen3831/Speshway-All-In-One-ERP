@@ -110,7 +110,6 @@ export const AdminLayout = () => {
     if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing Plans`;
     if (path.startsWith('/admin/inquiries')) return `${brandTitle} Enquiries`;
     if (path.startsWith('/admin/settings')) return `${brandTitle} System Settings`;
-    if (path.startsWith('/admin/home')) return `${brandTitle} Home Page Options`;
     if (path.startsWith('/admin/users')) return `${brandTitle} User Management`;
     return `${brandTitle} Administrative Dashboard`;
   };

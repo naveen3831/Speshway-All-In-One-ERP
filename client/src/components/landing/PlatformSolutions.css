@@ -514,45 +514,90 @@
 
 @media (max-width: 768px) {
   .platform-solutions-section {
-    padding: 36px 14px 40px 14px;
+    padding: 32px 8px 38px 8px;
     min-height: auto;
+    overflow: hidden;
   }
   .platform-solutions-title {
     font-size: 1.65rem;
   }
   .coverflow-wrapper {
     padding: 0;
+    width: 100%;
+    position: relative;
   }
   .coverflow-stage {
-    height: 395px;
+    height: 405px;
     width: 100%;
   }
   .coverflow-card {
-    width: 295px;
-    height: 365px;
+    width: min(252px, calc(100vw - 96px));
+    max-width: calc(100vw - 96px);
+    height: 380px;
   }
   .coverflow-card-inner {
-    padding: 20px 18px;
+    padding: 18px 15px;
+  }
+  .card-icon-box {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 10px;
+  }
+  .card-icon-box .card-icon-svg {
+    width: 20px;
+    height: 20px;
   }
   .card-platform-title {
-    font-size: 1.22rem;
+    font-size: 1.15rem;
+    margin: 0 0 5px 0;
   }
   .card-platform-desc {
-    font-size: 0.82rem;
-    min-height: 48px;
+    font-size: 0.79rem;
+    line-height: 1.42;
+    min-height: 44px;
+    margin: 0 0 10px 0;
+  }
+  .card-tags-list {
+    gap: 5px;
+  }
+  .card-tag-pill {
+    font-size: 0.62rem;
+    padding: 3px 8px;
+    letter-spacing: 0.025em;
+    white-space: normal;
+    line-height: 1.25;
+  }
+  .card-action-row {
+    margin-top: 12px;
+  }
+  .card-book-consultation-btn {
+    padding: 8px 14px;
+    font-size: 0.80rem;
+  }
+  .coverflow-nav-btn {
+    width: 36px;
+    height: 36px;
+    z-index: 45;
+  }
+  .coverflow-nav-btn svg {
+    width: 26px;
+    height: 26px;
   }
   .coverflow-nav-btn.prev {
-    left: -6px;
+    left: 2px;
   }
   .coverflow-nav-btn.next {
-    right: -6px;
+    right: 2px;
+  }
+  .coverflow-card.is-active {
+    transform: translate3d(-50%, -50%, 30px) scale(1.02);
   }
   .coverflow-card.is-left {
-    transform: translate3d(calc(-50% - 95px), -50%, -20px) rotateY(12deg) scale(0.80);
-    opacity: 0.35;
+    transform: translate3d(calc(-50% - 80px), -50%, -20px) rotateY(12deg) scale(0.80);
+    opacity: 0.32;
   }
   .coverflow-card.is-right {
-    transform: translate3d(calc(-50% + 95px), -50%, -20px) rotateY(-12deg) scale(0.80);
-    opacity: 0.35;
+    transform: translate3d(calc(-50% + 80px), -50%, -20px) rotateY(-12deg) scale(0.80);
+    opacity: 0.32;
   }
 }
