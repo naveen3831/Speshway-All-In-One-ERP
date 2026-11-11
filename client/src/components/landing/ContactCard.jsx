@@ -10,13 +10,13 @@ export const ContactCard = ({ isOpen, onClose, toggleRef }) => {
   const contactInfo = socketContext?.contactInfo;
   const homeContent = socketContext?.homeContent;
 
-  const phoneDisplay = contactInfo?.phone || homeContent?.contact?.phone || '+1 (800) 555-SPESH';
-  const phoneRaw = contactInfo?.phoneRaw || homeContent?.contact?.phoneRaw || '+18005557737';
+  const phoneDisplay = contactInfo?.phone || homeContent?.contact?.phone || '+91 9100006020';
+  const phoneRaw = contactInfo?.phoneRaw || homeContent?.contact?.phoneRaw || '+919100006020';
   const whatsappRaw = contactInfo?.whatsapp || homeContent?.contact?.whatsapp || phoneRaw;
-  const supportEmail = contactInfo?.email || homeContent?.contact?.email || 'support@speshway.com';
+  const supportEmail = contactInfo?.email || homeContent?.contact?.email || 'info@speshway.com';
   const telHref = `tel:${phoneRaw.replace(/^tel:/i, '').trim()}`;
   const mailtoHref = `mailto:${supportEmail.replace(/^mailto:/i, '').trim()}`;
-  const whatsappHref = getWhatsAppUrl(whatsappRaw, 'Hello! I would like to know more about Speshway ERP.');
+  const whatsappHref = getWhatsAppUrl(whatsappRaw, 'Hi Speshway, I am interested in Speshway ERP.');
   const whatsappDisplay = contactInfo?.whatsapp || homeContent?.contact?.whatsapp || phoneDisplay;
 
   const cardRef = useRef(null);

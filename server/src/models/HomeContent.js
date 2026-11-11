@@ -126,19 +126,19 @@ const homeContentSchema = new mongoose.Schema(
     contact: {
       phone: {
         type: String,
-        default: '+1 (800) 555-SPESH',
+        default: '+91 9100006020',
       },
       phoneRaw: {
         type: String,
-        default: '+18005557737',
+        default: '+919100006020',
       },
       whatsapp: {
         type: String,
-        default: '+18005557737',
+        default: '+919100006020',
       },
       email: {
         type: String,
-        default: 'support@speshway.com',
+        default: 'info@speshway.com',
       },
     },
   },

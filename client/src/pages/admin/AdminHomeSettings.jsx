@@ -50,10 +50,10 @@ export const AdminHomeSettings = () => {
       title: homeContent?.solutions?.title || DEFAULT_HOME_CONTENT.solutions.title,
     },
     contact: {
-      phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+1 (800) 555-SPESH',
-      phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+18005557737',
-      whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+18005557737',
-      email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'support@speshway.com',
+      phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+91 9100006020',
+      phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+919100006020',
+      whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+919100006020',
+      email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'info@speshway.com',
     },
     navbar: {
       showPricing: homeContent?.navbar?.showPricing !== undefined ? homeContent.navbar.showPricing : false,
@@ -133,10 +133,10 @@ export const AdminHomeSettings = () => {
       setForm((prev) => ({
         ...prev,
         contact: {
-          phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+1 (800) 555-SPESH',
-          phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+18005557737',
-          whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+18005557737',
-          email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'support@speshway.com',
+          phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+91 9100006020',
+          phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+919100006020',
+          whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+919100006020',
+          email: homeContent?.contact?.email || DEFAULT_HOME_CONTENT?.contact?.email || 'info@speshway.com',
         },
       }));
       setIsEditingContact(false);
@@ -1121,7 +1121,7 @@ export const AdminHomeSettings = () => {
               </span>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
                 <a
-                  href={`https://wa.me/${String(form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737').replace(/[^\d]/g, '')}`}
+                  href={`https://api.whatsapp.com/send?phone=${String(form.contact?.whatsapp || form.contact?.phoneRaw || '+919100006020').replace(/[^\d]/g, '')}&text=${encodeURIComponent('Hi Speshway, I am interested in Speshway ERP.')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Click to test WhatsApp chat link"
@@ -1141,10 +1141,10 @@ export const AdminHomeSettings = () => {
                   }}
                 >
                   <WhatsAppIcon size={18} color="#25D366" />
-                  <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737'}</span>
+                  <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+91 9100006020'}</span>
                 </a>
                 <a
-                  href={`tel:${form.contact?.phoneRaw || form.contact?.phone || '+18005557737'}`}
+                  href={`tel:${form.contact?.phoneRaw || form.contact?.phone || '+919100006020'}`}
                   title="Click to test call link"
                   style={{
                     display: 'inline-flex',
@@ -1162,10 +1162,10 @@ export const AdminHomeSettings = () => {
                   }}
                 >
                   <Phone size={16} />
-                  <span>{form.contact?.phone || '+1 (800) 555-SPESH'}</span>
+                  <span>{form.contact?.phone || '+91 9100006020'}</span>
                 </a>
                 <a
-                  href={`mailto:${form.contact?.email || 'support@speshway.com'}`}
+                  href={`mailto:${form.contact?.email || 'info@speshway.com'}`}
                   title="Click to test mail link"
                   style={{
                     display: 'inline-flex',
@@ -1183,15 +1183,15 @@ export const AdminHomeSettings = () => {
                   }}
                 >
                   <Mail size={16} />
-                  <span>{form.contact?.email || 'support@speshway.com'}</span>
+                  <span>{form.contact?.email || 'info@speshway.com'}</span>
                 </a>
               </div>
               <div style={{ marginTop: '14px', fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5 }}>
-                WhatsApp Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>wa.me/{String(form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737').replace(/[^\d]/g, '')}</code>
+                WhatsApp Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>wa.me/{String(form.contact?.whatsapp || form.contact?.phoneRaw || '+919100006020').replace(/[^\d]/g, '')}</code>
                 <span style={{ margin: '0 8px' }}>•</span>
-                Dial Link Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>tel:{form.contact?.phoneRaw || '+18005557737'}</code>
+                Dial Link Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>tel:{form.contact?.phoneRaw || '+919100006020'}</code>
                 <span style={{ margin: '0 8px' }}>•</span>
-                Email Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>mailto:{form.contact?.email || 'support@speshway.com'}</code>
+                Email Target: <code style={{ backgroundColor: '#e2e8f0', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: '#334155' }}>mailto:{form.contact?.email || 'info@speshway.com'}</code>
               </div>
             </div>
           ) : (
@@ -1226,7 +1226,7 @@ export const AdminHomeSettings = () => {
                         fontWeight: 600,
                         boxSizing: 'border-box',
                       }}
-                      placeholder="+1 (800) 555-SPESH"
+                      placeholder="+91 9100006020"
                     />
                   </div>
                   <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
@@ -1255,7 +1255,7 @@ export const AdminHomeSettings = () => {
                         fontWeight: 600,
                         boxSizing: 'border-box',
                       }}
-                      placeholder="+18005557737"
+                      placeholder="+919100006020"
                     />
                   </div>
                   <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
@@ -1284,11 +1284,11 @@ export const AdminHomeSettings = () => {
                         fontWeight: 600,
                         boxSizing: 'border-box',
                       }}
-                      placeholder="+18005557737"
+                      placeholder="+919100006020"
                     />
                   </div>
                   <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
-                    Exact number passed to phones/callers (e.g. +18005557737).
+                    Exact number passed to phones/callers (e.g. +919100006020).
                   </span>
                 </div>
 
@@ -1313,7 +1313,7 @@ export const AdminHomeSettings = () => {
                         fontWeight: 600,
                         boxSizing: 'border-box',
                       }}
-                      placeholder="support@speshway.com"
+                      placeholder="info@speshway.com"
                     />
                   </div>
                   <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
@@ -1361,7 +1361,7 @@ export const AdminHomeSettings = () => {
                     }}
                   >
                     <WhatsAppIcon size={18} color="#25D366" />
-                    <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+18005557737'}</span>
+                    <span>WhatsApp: {form.contact?.whatsapp || form.contact?.phoneRaw || '+91 9100006020'}</span>
                   </div>
                   <div
                     style={{
@@ -1378,7 +1378,7 @@ export const AdminHomeSettings = () => {
                     }}
                   >
                     <Phone size={16} />
-                    <span>{form.contact?.phone || '+1 (800) 555-SPESH'}</span>
+                    <span>{form.contact?.phone || '+91 9100006020'}</span>
                   </div>
                   <div
                     style={{
@@ -1395,7 +1395,7 @@ export const AdminHomeSettings = () => {
                     }}
                   >
                     <Mail size={16} />
-                    <span>{form.contact?.email || 'support@speshway.com'}</span>
+                    <span>{form.contact?.email || 'info@speshway.com'}</span>
                   </div>
                 </div>
               </div>

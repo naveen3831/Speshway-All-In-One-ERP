@@ -15,18 +15,23 @@ export const WhatsAppIcon = ({ size = 24, className = '', color = 'currentColor'
 );
 
 export const formatWhatsAppDigits = (raw) => {
-  if (!raw) return '';
-  return String(raw).replace(/[^\d]/g, '');
+  if (!raw) return '919100006020';
+  const cleaned = String(raw).replace(/[^\d]/g, '');
+  if (!cleaned || cleaned === '18005557737' || cleaned.includes('5557737') || cleaned.includes('1800555')) {
+    return '919100006020';
+  }
+  // Standard 10-digit Indian mobile number without country code
+  if (cleaned.length === 10) {
+    return `91${cleaned}`;
+  }
+  return cleaned;
 };
 
-export const getWhatsAppUrl = (raw, message = '') => {
+export const getWhatsAppUrl = (raw, message = 'Hi Speshway, I am interested in Speshway ERP.') => {
   const digits = formatWhatsAppDigits(raw);
-  if (!digits) return 'https://wa.me/';
-  const base = `https://wa.me/${digits}`;
-  if (message) {
-    return `${base}?text=${encodeURIComponent(message)}`;
-  }
-  return base;
+  const textParam = message ? `&text=${encodeURIComponent(message)}` : '';
+  return `https://api.whatsapp.com/send?phone=${digits}${textParam}`;
 };
 
 export default WhatsAppIcon;
+

@@ -25,12 +25,19 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
     homeContent?.contact?.whatsapp ||
     homeContent?.contact?.phoneRaw ||
     homeContent?.contact?.phone ||
-    '+18005557737';
+    '+91 9100006020';
 
   const whatsappUrl = getWhatsAppUrl(
     whatsappNumber,
-    'Hello! I would like to know more about Speshway ERP.'
+    'Hi Speshway, I would like to know more about Speshway ERP.'
   );
+
+  const handleWhatsAppClick = (e) => {
+    if (typeof navigator !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent || '')) {
+      e.preventDefault();
+      window.location.href = whatsappUrl;
+    }
+  };
 
   // Close mobile drawer & contact card when route changes
   useEffect(() => {
@@ -281,6 +288,7 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={handleWhatsAppClick}
         className="floating-website-contact-btn floating-website-whatsapp-btn"
         aria-label="Chat with us on WhatsApp"
         title={`Chat with Speshway on WhatsApp: ${contactInfo?.phone || whatsappNumber}`}

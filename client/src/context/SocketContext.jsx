@@ -243,19 +243,36 @@ export const SocketProvider = ({ children }) => {
     return merged;
   };
 
+  const sanitizeContactInfo = (obj) => {
+    const merged = { ...DEFAULT_CONTACT_INFO, ...(obj || {}) };
+    if (!merged.phone || merged.phone.includes('555-SPESH') || merged.phone.includes('1800')) {
+      merged.phone = DEFAULT_CONTACT_INFO.phone;
+    }
+    if (!merged.phoneRaw || merged.phoneRaw.includes('18005557737') || merged.phoneRaw.includes('555')) {
+      merged.phoneRaw = DEFAULT_CONTACT_INFO.phoneRaw;
+    }
+    if (!merged.whatsapp || merged.whatsapp.includes('18005557737') || merged.whatsapp.includes('555')) {
+      merged.whatsapp = DEFAULT_CONTACT_INFO.whatsapp;
+    }
+    if (!merged.email || merged.email === 'support@speshway.com') {
+      merged.email = DEFAULT_CONTACT_INFO.email;
+    }
+    return merged;
+  };
+
   const [contactInfo, setContactInfo] = useState(() => {
     try {
       const saved = localStorage.getItem('speshway_contact_info');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') return { ...DEFAULT_CONTACT_INFO, ...parsed };
+        if (parsed && typeof parsed === 'object') return sanitizeContactInfo(parsed);
       }
     } catch (e) {}
     return DEFAULT_CONTACT_INFO;
   });
 
   const updateContactInfo = async (newContactInfo) => {
-    const merged = { ...DEFAULT_CONTACT_INFO, ...(contactInfo || {}), ...(newContactInfo || {}) };
+    const merged = sanitizeContactInfo({ ...(contactInfo || {}), ...(newContactInfo || {}) });
     setContactInfo(merged);
     try {
       localStorage.setItem('speshway_contact_info', JSON.stringify(merged));
@@ -307,7 +324,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (homeContent?.contact) {
       setContactInfo((prev) => {
-        const next = { ...DEFAULT_CONTACT_INFO, ...(prev || {}), ...homeContent.contact };
+        const next = sanitizeContactInfo({ ...(prev || {}), ...homeContent.contact });
         try {
           localStorage.setItem('speshway_contact_info', JSON.stringify(next));
           window.dispatchEvent(new Event('speshway_contact_info_changed'));

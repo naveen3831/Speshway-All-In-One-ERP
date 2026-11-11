@@ -5,10 +5,10 @@ export const DEFAULT_BRANDING = {
 };
 
 export const DEFAULT_CONTACT_INFO = {
-  phone: '+1 (800) 555-SPESH',
-  phoneRaw: '+18005557737',
-  whatsapp: '+18005557737',
-  email: 'support@speshway.com',
+  phone: '+91 9100006020',
+  phoneRaw: '+919100006020',
+  whatsapp: '+919100006020',
+  email: 'info@speshway.com',
 };
 
 export const DEFAULT_SOCIAL_LINKS = {
