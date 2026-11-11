@@ -1862,7 +1862,7 @@ export const AdminSettings = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@gmail.com"
+                    placeholder="Enter your email"
                     style={{
                       width: '100%',
                       padding: '10px 14px 10px 36px',
