@@ -253,10 +253,10 @@ router.put('/:id', async (req, res) => {
       body.features = body.features.split(',').map((f) => f.trim()).filter(Boolean);
     }
 
-    if (body.imageUrl) {
+    if (body.imageUrl !== undefined) {
       if (typeof body.imageUrl === 'string' && body.imageUrl.startsWith('data:image/')) {
         body.imageUrl = await saveBase64Image(body.imageUrl, body.slug || rawId);
-      } else {
+      } else if (body.imageUrl && typeof body.imageUrl === 'string' && !body.imageUrl.includes('res.cloudinary.com') && /^https?:\/\//i.test(body.imageUrl)) {
         const cloud = await uploadToCloudinary(body.imageUrl, 'speshway_products');
         body.imageUrl = (cloud && typeof cloud === 'object') ? (cloud.url || cloud.secure_url || body.imageUrl) : (cloud || body.imageUrl);
       }
@@ -288,9 +288,16 @@ router.put('/:id', async (req, res) => {
 
       let existing = await Product.findOne({ $or: searchConditions });
       if (existing) {
+        const updateDoc = {
+          ...body,
+          slug: existing.slug || body.slug || rawId,
+        };
+        if (body.imageUrl !== undefined) {
+          updateDoc.imageUrl = body.imageUrl;
+        }
         updated = await Product.findByIdAndUpdate(
           existing._id,
-          { $set: { ...body, slug: existing.slug || body.slug || rawId, ...(body.imageUrl ? { imageUrl: body.imageUrl } : {}) } },
+          { $set: updateDoc },
           { new: true, runValidators: false, lean: true }
         );
       } else {

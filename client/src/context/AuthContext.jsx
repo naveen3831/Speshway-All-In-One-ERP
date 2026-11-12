@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { authService } from '../services/authService';
+import { safeJsonParse } from '../utils/jsonUtils';
 
 const AuthContext = createContext(null);
 
@@ -123,9 +124,9 @@ export const AuthProvider = ({ children }) => {
   // 1. Initial Session Load & Verification
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
-    if (savedUser) {
+    const parsed = safeJsonParse(savedUser, null);
+    if (parsed) {
       try {
-        const parsed = JSON.parse(savedUser);
         const lastActive = Number(localStorage.getItem(STORAGE_LAST_ACTIVITY_KEY));
         const maxIdleMs = timeoutMinutes * 60 * 1000;
 
@@ -144,7 +145,7 @@ export const AuthProvider = ({ children }) => {
           });
         }
       } catch (err) {
-        console.error('Failed to parse saved user credentials', err);
+        console.error('Failed to handle saved user credentials', err);
         localStorage.removeItem('user');
       }
     }

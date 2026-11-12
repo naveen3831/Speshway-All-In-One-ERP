@@ -398,7 +398,23 @@ export const filterAdminProjects = (products) => {
   });
 
   const list = valid.length > 0 ? valid : DEFAULT_ADMIN_PROJECTS;
-  return list.map(normalizeProductCategory);
+
+  // Preserve canonical display order matching reference catalog layout
+  const orderMap = new Map();
+  DEFAULT_ADMIN_PROJECTS.forEach((item, index) => {
+    orderMap.set(String(item.slug || '').toLowerCase(), index);
+    orderMap.set(String(item.id || '').toLowerCase(), index);
+  });
+
+  const sorted = [...list].sort((a, b) => {
+    const aSlug = String(a.slug || a.id || '').toLowerCase();
+    const bSlug = String(b.slug || b.id || '').toLowerCase();
+    const aIdx = orderMap.has(aSlug) ? orderMap.get(aSlug) : 999;
+    const bIdx = orderMap.has(bSlug) ? orderMap.get(bSlug) : 999;
+    return aIdx - bIdx;
+  });
+
+  return sorted.map(normalizeProductCategory);
 };
 
 /**

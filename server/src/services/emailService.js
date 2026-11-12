@@ -1,7 +1,14 @@
-import nodemailer from 'nodemailer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+
+let nodemailer = null;
+try {
+  const mod = await import('nodemailer');
+  nodemailer = mod.default || mod;
+} catch (e) {
+  console.warn('⚠️ [EmailService] nodemailer package not available; email dispatch will run in mock mode.');
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +28,16 @@ let transporter = null;
 
 const getTransporter = () => {
   if (transporter) return transporter;
+
+  if (!nodemailer) {
+    return {
+      verify: async () => false,
+      sendMail: async (opts) => {
+        console.log('ℹ️ [EmailService Mock] sendMail called for:', opts?.to, opts?.subject);
+        return { messageId: 'mock-' + Date.now() };
+      },
+    };
+  }
 
   const smtpUser = process.env.SMTP_USER || 'naveenkumar970100@gmail.com';
   const smtpPass = (process.env.SMTP_PASS || 'mypbeksafsszjlii').replace(/\s+/g, '');

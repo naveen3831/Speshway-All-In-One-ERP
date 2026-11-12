@@ -11,6 +11,7 @@ export const getProductFallbackImage = (slugOrIdOrName) => {
   if (s.includes('ride') || s.includes('bike') || s.includes('flow')) return '/images/products/ride-flow.jpg';
   if (s.includes('salon') || s.includes('saloon') || s.includes('spy')) return '/images/products/saloon.jpg';
   if (s.includes('dairy') || s.includes('milk') || s.includes('madhur')) return '/images/products/natural-milk-dairy.jpg';
+  if (s.includes('savitri')) return '/images/products/savitri-sarees.jpg';
   if (s.includes('aneera') || s.includes('silk') || s.includes('saree')) return '/images/products/aneera-silks.jpg';
   if (s.includes('e-com') || s.includes('ecommerce') || s.includes('e com') || s.includes('nexora') || s.includes('store')) return '/images/products/e-commerce.jpg';
   if (s.includes('hospital') || s.includes('hms')) return '/images/products/speshway-hospitals.jpg';

@@ -191,10 +191,8 @@ export const OurErpSolutions = () => {
             {filteredProjects.map((prod) => {
               const Icon = getProjectIcon(prod);
               const color = getProjectColor(prod);
-              const rawImg = prod.imageUrl || '';
-              const imgUrl = (rawImg && !rawImg.includes('res.cloudinary.com/ddgjubbbx'))
-                ? rawImg
-                : (getProductFallbackImage(prod.slug || prod.id || prod.name) || rawImg);
+              const rawImg = prod.imageUrl && typeof prod.imageUrl === 'string' ? prod.imageUrl.trim() : '';
+              const imgUrl = rawImg || getProductFallbackImage(prod.slug || prod.id || prod.name) || '';
               const detailRoute = `/product/${prod.slug || prod.id}`;
               const dashboardRoute = getDashboardRoute(prod);
 

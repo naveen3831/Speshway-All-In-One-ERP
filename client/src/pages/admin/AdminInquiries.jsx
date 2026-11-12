@@ -193,34 +193,7 @@ export const AdminInquiries = () => {
       {/* Top Header */}
       <div className="admin-page-header">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-            <h1 className="admin-heading" style={{ margin: 0 }}>Customer Inquiries &amp; Leads</h1>
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                color: '#059669',
-                backgroundColor: '#ecfdf5',
-                border: '1px solid #a7f3d0',
-                padding: '2px 8px',
-                borderRadius: '12px',
-              }}
-            >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#10b981',
-                  display: 'inline-block',
-                }}
-              />
-              Live Synced
-            </span>
-          </div>
+          <h1 className="admin-heading" style={{ margin: '0 0 4px 0' }}>Customer Inquiries &amp; Leads</h1>
           <p className="admin-subtext" style={{ margin: 0 }}>
             Real-time inbound customer submissions from Demo Bookings, Contact Messages, and Get Started Free Trials.
           </p>

@@ -24,6 +24,8 @@ import {
   TrendingUp,
   PieChart,
   Handshake,
+  LayoutGrid,
+  List,
   Eye,
   EyeOff,
   Check,
@@ -51,6 +53,31 @@ import {
 } from '../../utils/adminProjects';
 import { getProductFallbackImage } from '../../utils/productImages';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
+
+const SafeLayoutGrid = ({ size = 16, className = '' }) => {
+  if (LayoutGrid) {
+    const Component = LayoutGrid;
+    return <Component size={size} className={className} />;
+  }
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+    </svg>
+  );
+};
 
 const CATEGORY_META = {
   // 5 Primary Enterprise Categories (matching Home Page)
@@ -86,8 +113,7 @@ const getCategoryMetadata = (catName) => {
 const getResolvedProdImg = (prod) => {
   if (!prod) return '';
   const raw = prod.imageUrl && typeof prod.imageUrl === 'string' ? prod.imageUrl.trim() : '';
-  if (raw && !raw.includes('res.cloudinary.com/ddgjubbbx')) return raw;
-  return getProductFallbackImage(prod.slug || prod.id || prod.name) || raw;
+  return raw || getProductFallbackImage(prod.slug || prod.id || prod.name) || '';
 };
 
 const iconMap = {
@@ -103,7 +129,7 @@ const iconMap = {
   TrendingUp,
   PieChart,
   Handshake,
-  LayoutGrid,
+  LayoutGrid: SafeLayoutGrid,
   List,
   Layers,
   Building2,
@@ -417,6 +443,24 @@ export const AdminProducts = () => {
             >
               <Plus size={16} /> Add New Project
             </button>
+            <div className="view-toggle-wrap">
+              <button
+                type="button"
+                onClick={() => setViewMode('cards')}
+                className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
+                title="Project Cards View"
+              >
+                <SafeLayoutGrid size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('table')}
+                className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
+                title="Table View"
+              >
+                <List size={16} />
+              </button>
+            </div>
           </div>
         </div>
 
