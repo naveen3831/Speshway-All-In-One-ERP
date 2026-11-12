@@ -116,7 +116,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
   {
     id: 'foodway',
     slug: 'foodway',
-    name: 'FOODWAY',
+    name: 'Food Way',
     category: 'Food Delivery & Kitchen',
     description: 'FoodWay is a modern online food ordering platform that helps customers explore nearby partner kitchens, customize dishes, track live deliveries, and order delicious meals seamlessly.',
     longDescription: 'Next-gen cloud kitchen and food delivery ERP with thermal KOT kitchen display systems, rider telematics dispatch, menu 86 inventory control, and multi-outlet settlements.',
@@ -131,26 +131,9 @@ export const DEFAULT_ADMIN_PROJECTS = [
     popularity: 98,
   },
   {
-    id: 'tours-and-travels',
-    slug: 'tours-and-travels',
-    name: 'TOURS & TRAVELS',
-    category: 'Bus & Travel Booking',
-    description: 'STAR TOURS & TRAVELS is an online bus ticket booking platform designed to make travel easy with quick bus searches, seat selection, secure online ticketing, and real-time travel updates.',
-    longDescription: 'Interstate passenger transit and bus fleet ERP covering seat layout matrix, online booking dispatch, route rostering, GPS bus tracking, and passenger manifests.',
-    features: ['Online Bus Ticketing Engine', 'Seat Selection Matrix', 'Fleet GPS Telematics', 'Interstate Route Rosters', 'Automated Boarding Passes'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://bus.speshway.site/',
-    adminUrl: '/product/tours-and-travels/dashboard',
-    imageUrl: '/images/products/tours-and-travels.jpg',
-    iconName: 'Plane',
-    color: 'cyan',
-    status: 'active',
-    popularity: 97,
-  },
-  {
     id: 'ride-flow',
     slug: 'ride-flow',
-    name: 'RIDE FLOW',
+    name: 'Ride Flow',
     category: 'Automotive & Mobility',
     description: 'RideFlow is a modern two-wheeler platform designed to help customers explore bikes, compare models, discover attractive offers, and connect with dealers.',
     longDescription: 'RideFlow Two-Wheeler ERP provides digital bike showroom management, dealership networks, online test ride and bike bookings, customer inquiries, and sales analytics.',
@@ -267,6 +250,57 @@ export const DEFAULT_ADMIN_PROJECTS = [
     popularity: 99,
   },
   {
+    id: 'speshway-hrms',
+    slug: 'speshway-hrms',
+    name: 'Speshway HRMS',
+    category: 'Human Resources',
+    description: 'Speshway HRMS is an all-in-one Human Resource Management System designed to simplify workforce management and automate daily HR operations.',
+    longDescription: 'Manage employees, attendance, leave requests, payroll, recruitment, and performance through a centralized platform.',
+    features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://speshwayhrms.com/',
+    adminUrl: '/product/speshway-hrms/dashboard',
+    imageUrl: '/images/products/speshway-hrms.jpg',
+    iconName: 'Layers',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'joy-events',
+    slug: 'joy-events',
+    name: 'Joy Events',
+    category: 'Events & Experiences',
+    description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination.',
+    longDescription: 'From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
+    features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
+    websiteUrl: 'https://joyevents.speshway.site/',
+    adminUrl: '/product/joy-events/dashboard',
+    imageUrl: '/images/products/joy-events.jpg',
+    iconName: 'Calendar',
+    color: 'emerald',
+    status: 'active',
+    popularity: 99,
+  },
+  {
+    id: 'tours-and-travels',
+    slug: 'tours-and-travels',
+    name: 'TOURS & TRAVELS',
+    category: 'Bus & Travel Booking',
+    description: 'STAR TOURS & TRAVELS is an online bus ticket booking platform designed to make travel easy with quick bus searches, seat selection, secure online ticketing, and real-time travel updates.',
+    longDescription: 'Interstate passenger transit and bus fleet ERP covering seat layout matrix, online booking dispatch, route rostering, GPS bus tracking, and passenger manifests.',
+    features: ['Online Bus Ticketing Engine', 'Seat Selection Matrix', 'Fleet GPS Telematics', 'Interstate Route Rosters', 'Automated Boarding Passes'],
+    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
+    websiteUrl: 'https://bus.speshway.site/',
+    adminUrl: '/product/tours-and-travels/dashboard',
+    imageUrl: '/images/products/tours-and-travels.jpg',
+    iconName: 'Plane',
+    color: 'cyan',
+    status: 'active',
+    popularity: 97,
+  },
+  {
     id: 'fleet-management',
     slug: 'fleet-management',
     name: 'Fleet Management',
@@ -317,40 +351,6 @@ export const DEFAULT_ADMIN_PROJECTS = [
     status: 'active',
     popularity: 99,
   },
-  {
-    id: 'speshway-hrms',
-    slug: 'speshway-hrms',
-    name: 'SPESHWAY-HRMS',
-    category: 'Human Resources',
-    description: 'Speshway HRMS is an all-in-one Human Resource Management System designed to simplify workforce management and automate daily HR operations.',
-    longDescription: 'Manage employees, attendance, leave requests, payroll, recruitment, and performance through a centralized platform.',
-    features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://speshwayhrms.com/',
-    adminUrl: '/product/speshway-hrms/dashboard',
-    imageUrl: '/images/products/speshway-hrms.jpg',
-    iconName: 'Layers',
-    color: 'emerald',
-    status: 'active',
-    popularity: 99,
-  },
-  {
-    id: 'joy-events',
-    slug: 'joy-events',
-    name: "JOY_EVENT'S",
-    category: 'Event Management',
-    description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination.',
-    longDescription: 'From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
-    features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
-    technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://joyevents.speshway.site/',
-    adminUrl: '/product/joy-events/dashboard',
-    imageUrl: '/images/products/joy-events.jpg',
-    iconName: 'Calendar',
-    color: 'emerald',
-    status: 'active',
-    popularity: 99,
-  },
 ];
 
 /**
@@ -375,7 +375,7 @@ export const PROJECT_CATEGORY_MAP = {
   'saloon': 'Beauty & Wellness',
   'fleet-management': 'Logistics & Fleet',
   'american-fitness-gym': 'Fitness & Wellness',
-  'joy-events': 'Event Management',
+  'joy-events': 'Events & Experiences',
   'speshway-hrms': 'Human Resources',
   'service-center': 'Automotive & Services',
   'real-estate': 'Real Estate & Housing',
@@ -499,7 +499,7 @@ export const getProjectCategory = (prod) => {
   if (slug.includes('salon') || slug.includes('saloon') || slug.includes('spy') || name.includes('salon') || name.includes('saloon')) return 'Beauty & Wellness';
   if (slug.includes('fleet') || slug.includes('truck') || name.includes('fleet')) return 'Logistics & Fleet';
   if (slug.includes('gym') || slug.includes('fitness') || name.includes('american fitness') || name.includes('gym')) return 'Fitness & Wellness';
-  if (slug.includes('event') || slug.includes('joy') || name.includes('joy event')) return 'Event Management';
+  if (slug.includes('event') || slug.includes('joy') || name.includes('joy event')) return 'Events & Experiences';
   if (slug.includes('service') || name.includes('service center')) return 'Automotive & Services';
   if (slug.includes('estate') || slug.includes('real') || name.includes('real estate')) return 'Real Estate & Housing';
   if (slug.includes('hrms') || name.includes('hrms') || name.includes('human resources')) return 'Human Resources';
@@ -535,10 +535,55 @@ export const PRIMARY_ERP_CATEGORIES = [
   'Hospitality & Services',
   'Logistics & Mobility',
   'Healthcare & Wellness',
+  'Agriculture',
 ];
 
 /**
- * Maps any detailed project/industry to one of the 5 primary umbrella categories.
+ * Format project title in clean title case matching reference design
+ */
+export const formatProjectTitle = (prod) => {
+  if (!prod) return '';
+  const name = String(prod.name || '').trim();
+  const slug = String(prod.slug || prod.id || '').toLowerCase();
+  if (slug.includes('ride-flow') || name.toLowerCase().includes('ride flow')) return 'Ride Flow';
+  if (slug.includes('foodway') || name.toLowerCase().includes('foodway') || name.toLowerCase().includes('food way')) return 'Food Way';
+  if (slug.includes('learnhub') || name.toLowerCase().includes('learnhub') || name.toLowerCase().includes('learn hub')) return 'Learn Hub';
+  if (slug.includes('joy-event') || name.toLowerCase().includes('joy')) return 'Joy Events';
+  if (slug.includes('speshway-hrms') || name.toLowerCase().includes('hrms')) return 'Speshway HRMS';
+  if (slug.includes('tours-and-travels') || name.toLowerCase().includes('tours')) return 'Tours & Travels';
+  if (slug.includes('american-fitness') || name.toLowerCase().includes('fitness')) return 'American Fitness Gym';
+  if (slug.includes('flavora') || name.toLowerCase().includes('flavora')) return 'Flavora Kitchen';
+  return name;
+};
+
+/**
+ * Clean 1-line project description matching the exact reference design
+ */
+export const getProjectShortDescription = (prod) => {
+  if (!prod) return '';
+  const slug = String(prod.slug || prod.id || '').toLowerCase();
+  const name = String(prod.name || '').toLowerCase();
+  if (slug.includes('sana') || name.includes('sana')) return 'Complete hotel & hospitality management solution.';
+  if (slug.includes('learn') || name.includes('learn')) return 'Learning management system for institutions and training.';
+  if (slug.includes('food') || name.includes('food')) return 'On-demand food ordering and kitchen management.';
+  if (slug.includes('ride') || name.includes('ride')) return 'Vehicle, ride, and fleet management platform.';
+  if (slug.includes('hospital') || name.includes('hospital')) return 'Hospital management system for modern healthcare.';
+  if (slug.includes('dairy') || name.includes('dairy') || name.includes('milk')) return 'Dairy operations, collection, and distribution management.';
+  if (slug.includes('vexa') || name.includes('vexa')) return 'Apparel retail and inventory management solution.';
+  if (slug.includes('aneera') || name.includes('aneera') || name.includes('saree')) return 'Premium saree and fashion retail platform.';
+  if (slug.includes('nexora') || name.includes('nexora') || slug.includes('e-com')) return 'End-to-end e-commerce solution for modern retail.';
+  if (slug.includes('salon') || slug.includes('spy') || name.includes('salon')) return 'Salon and spa management with bookings and billing.';
+  if (slug.includes('hrms') || name.includes('hrms')) return 'HR, payroll, and employee lifecycle management.';
+  if (slug.includes('joy') || name.includes('joy') || name.includes('event')) return 'Event planning and management platform.';
+  if (slug.includes('tour') || name.includes('travel')) return 'Bus ticketing and travel fleet management platform.';
+  if (slug.includes('fitness') || name.includes('gym')) return 'Gym membership, workout schedules, and trainer ERP.';
+  if (slug.includes('fleet') || name.includes('truck')) return 'Vehicle tracking, dispatch, and fleet management.';
+  if (slug.includes('flavora') || name.includes('kitchen')) return 'Restaurant POS, kitchen display, and dining management.';
+  return prod.shortDescription || prod.description || 'Industry-specific ERP platform to digitize and automate your business.';
+};
+
+/**
+ * Maps any detailed project/industry to one of the primary umbrella categories.
  */
 export const getPrimaryCategory = (prod) => {
   if (!prod) return 'Retail & E-Commerce';
@@ -546,7 +591,19 @@ export const getPrimaryCategory = (prod) => {
   const name = (prod.name || '').toLowerCase();
   const slug = (prod.slug || prod.id || '').toLowerCase();
 
-  // 1. Human Resources (all workforce, HRMS, learning, training, education related)
+  // 1. Agriculture (dairy, farming, milk, livestock)
+  if (
+    rawCat.includes('dairy') ||
+    rawCat.includes('agriculture') ||
+    slug.includes('dairy') ||
+    slug.includes('milk') ||
+    name.includes('dairy') ||
+    name.includes('milk')
+  ) {
+    return 'Agriculture';
+  }
+
+  // 2. Human Resources (all workforce, HRMS, learning, training, education related)
   if (
     rawCat.includes('human') ||
     rawCat.includes('hrms') ||
@@ -561,24 +618,20 @@ export const getPrimaryCategory = (prod) => {
     return 'Human Resources';
   }
 
-  // 2. Retail & E-Commerce (fashion, sarees, silks, dairy, retail, shopping, commerce)
+  // 3. Retail & E-Commerce (fashion, sarees, silks, retail, shopping, commerce)
   if (
     rawCat.includes('retail') ||
     rawCat.includes('commerce') ||
     rawCat.includes('fashion') ||
     rawCat.includes('luxury') ||
     rawCat.includes('apparel') ||
-    rawCat.includes('dairy') ||
-    rawCat.includes('agriculture') ||
     slug.includes('saree') ||
     slug.includes('silk') ||
     slug.includes('nexora') ||
-    slug.includes('dairy') ||
     slug.includes('vexa') ||
     name.includes('savitri') ||
     name.includes('aneera') ||
     name.includes('nexora') ||
-    name.includes('dairy') ||
     name.includes('vexa')
   ) {
     return 'Retail & E-Commerce';

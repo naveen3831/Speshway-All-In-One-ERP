@@ -11,6 +11,8 @@ import {
   getWebsiteUrl,
   PRIMARY_ERP_CATEGORIES,
   getPrimaryCategory,
+  formatProjectTitle,
+  getProjectShortDescription,
 } from '../../utils/adminProjects';
 import { getProductFallbackImage } from '../../utils/productImages';
 import './OurErpSolutions.css';
@@ -70,11 +72,17 @@ export const OurErpSolutions = () => {
   return (
     <section id="solutions" className="our-erp-section">
       <div className="our-erp-container">
-        {/* Section Header with Clean Dividers */}
-        <div id="erp-solutions-heading" className="our-erp-header-row">
-          <div className="our-erp-divider-line" />
+        {/* Section Header with Design-Matched Badge & Subtitle */}
+        <div id="erp-solutions-heading" className="our-erp-header-center">
+          <div className="our-erp-top-badge">
+            <span className="our-erp-badge-dash" />
+            <span className="our-erp-badge-text">OUR PRODUCTS</span>
+            <span className="our-erp-badge-dash" />
+          </div>
           <h2 id="solutions-title" className="our-erp-title">{sectionTitle}</h2>
-          <div className="our-erp-divider-line right" />
+          <p className="our-erp-subtitle">
+            Industry-specific ERP platforms to digitize, automate, and grow your business.
+          </p>
         </div>
 
         {/* Search Bar & Category Filter Tabs */}
@@ -195,6 +203,9 @@ export const OurErpSolutions = () => {
               const imgUrl = rawImg || getProductFallbackImage(prod.slug || prod.id || prod.name) || '';
               const detailRoute = `/product/${prod.slug || prod.id}`;
               const dashboardRoute = getDashboardRoute(prod);
+              const displayTitle = formatProjectTitle(prod);
+              const displayCategory = getProjectCategory(prod);
+              const displayDesc = getProjectShortDescription(prod);
 
               return (
                 <div
@@ -209,13 +220,13 @@ export const OurErpSolutions = () => {
                       navigate(detailRoute);
                     }
                   }}
-                  title={`View ${prod.name} Details`}
+                  title={`View ${displayTitle} Details`}
                 >
-                  {imgUrl ? (
-                    <div className="our-erp-img-banner">
+                  <div className="our-erp-img-banner">
+                    {imgUrl ? (
                       <img
                         src={imgUrl}
-                        alt={prod.name}
+                        alt={displayTitle}
                         className="our-erp-banner-img"
                         loading="lazy"
                         onError={(e) => {
@@ -225,15 +236,24 @@ export const OurErpSolutions = () => {
                           }
                         }}
                       />
-                    </div>
-                  ) : (
-                    <div className={`our-erp-icon-wrap icon-box-${color}`}>
-                      <Icon size={24} />
-                    </div>
-                  )}
+                    ) : (
+                      <div className={`our-erp-icon-wrap icon-box-${color}`}>
+                        <Icon size={24} />
+                      </div>
+                    )}
+                  </div>
+
                   <div className="our-erp-card-body">
-                    <span className="our-erp-category-tag">{getProjectCategory(prod)}</span>
-                    <h3 className="our-erp-card-title">{prod.name}</h3>
+                    <div className="our-erp-category-tag">
+                      <Icon size={11} className="our-erp-tag-icon" />
+                      <span>{displayCategory}</span>
+                    </div>
+
+                    <h3 className="our-erp-card-title">{displayTitle}</h3>
+
+                    <p className="our-erp-card-desc" title={displayDesc}>
+                      {displayDesc}
+                    </p>
 
                     <div className="our-erp-card-actions">
                       <button
@@ -244,9 +264,9 @@ export const OurErpSolutions = () => {
                           const url = getWebsiteUrl(prod);
                           window.open(url, '_blank', 'noopener,noreferrer');
                         }}
-                        title={`Open live ${prod.name} Website`}
+                        title={`Open live ${displayTitle} Website`}
                       >
-                        <Globe size={13} />
+                        <Globe size={11} />
                         <span>Website</span>
                       </button>
 
@@ -257,10 +277,10 @@ export const OurErpSolutions = () => {
                           e.stopPropagation();
                           navigate(dashboardRoute);
                         }}
-                        title={`Open live in-site ${prod.name} Dashboard`}
+                        title={`Open live in-site ${displayTitle} Dashboard`}
                       >
-                        <Shield size={13} />
                         <span>View ERP</span>
+                        <span className="our-erp-btn-arrow">↗</span>
                       </button>
                     </div>
                   </div>
