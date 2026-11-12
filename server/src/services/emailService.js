@@ -26,11 +26,12 @@ for (const p of envPaths) {
   }
 }
 
-// Production Cloudinary CDN image assets for 100% email client compatibility
+// Production Cloudinary CDN image assets for 100% email client compatibility (Using exact user uploaded PNG, zero white background)
 export const BRAND_LOGO_URL =
-  'https://res.cloudinary.com/ddgjubbbx/image/upload/v1794460763/speshway_branding/speshway_logo_transparent.png';
+  'https://res.cloudinary.com/ddgjubbbx/image/upload/v1794464164/speshway_branding/bz6jugfl4ockg6pzhxgb.png';
+// Background watermark logo calibrated to subtle ~6% opacity (between 5% and 7%) for soft, non-intrusive appearance
 export const BRAND_WATERMARK_URL =
-  'https://res.cloudinary.com/ddgjubbbx/image/upload/v1794460912/speshway_branding/speshway_watermark.png';
+  'https://res.cloudinary.com/ddgjubbbx/image/upload/v1794467467/speshway_branding/oaabwyjojcmmoon7mpnq.png';
 
 // Lazy-initialized transporter
 let transporter = null;
@@ -78,7 +79,7 @@ const getFromAddress = () => {
 };
 
 /**
- * Generate SPESHWAY branded email wrapper HTML matching reference design
+ * Generate SPESHWAY branded email wrapper HTML matching reference design (Image 2)
  * - Rich Emerald Header with SPESHWAY Logo and clean Typography
  * - Dark Theme Container (#18191a) with Watermark in the background
  * - Zero attachments: All images loaded directly via HTTPS CDN URLs
@@ -97,24 +98,24 @@ const renderEmailWrapper = ({ title = 'SPESHWAY', subtitle = 'ALL-IN-ONE ERP SOL
 </head>
 <body style="margin: 0; padding: 24px 12px; background-color: #0b0f17; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
   <!-- Email Card Container -->
-  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 580px; margin: 0 auto; background-color: #18191a; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
-    <!-- Top Green Header Bar Matching Reference -->
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 540px; margin: 0 auto; background-color: #18191a; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+    <!-- Top Header Bar with White Background for 100% Logo Visibility & Clarity -->
     <tr>
-      <td style="background-color: #047857; background: linear-gradient(135deg, #047857 0%, #065f46 100%); padding: 22px 20px; text-align: center; border-radius: 14px 14px 0 0;">
+      <td style="background-color: #ffffff; padding: 22px 20px; text-align: center; border-radius: 14px 14px 0 0; border-bottom: 2.5px solid #27813a;">
         <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto;">
           <tr>
             <td valign="middle" style="padding-right: 14px;">
               <img src="${BRAND_LOGO_URL}" 
                    alt="SPESHWAY Logo" 
-                   width="46" 
-                   height="56" 
-                   style="display: block; width: 46px; height: auto; max-height: 58px; border: 0; outline: none; text-decoration: none;" />
+                   width="48" 
+                   height="58" 
+                   style="display: block; width: 48px; height: auto; max-height: 60px; border: 0; outline: none; text-decoration: none;" />
             </td>
             <td valign="middle" align="left" style="text-align: left;">
-              <h1 style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: 0.03em; line-height: 1.2;">
+              <h1 style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #15803d; letter-spacing: 0.03em; line-height: 1.2;">
                 ${title}
               </h1>
-              <p style="margin: 3px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; color: #ffffff; opacity: 0.95; letter-spacing: 0.08em; text-transform: uppercase;">
+              <p style="margin: 3px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; color: #1e3a8a; letter-spacing: 0.08em; text-transform: uppercase;">
                 ${subtitle}
               </p>
             </td>
@@ -123,14 +124,14 @@ const renderEmailWrapper = ({ title = 'SPESHWAY', subtitle = 'ALL-IN-ONE ERP SOL
       </td>
     </tr>
 
-    <!-- Body Section with Low-Transparency Watermark in Background -->
+    <!-- Body Section with Watermark Centered in Background -->
     <tr>
-      <td style="background-color: #18191a; background-image: url('${BRAND_WATERMARK_URL}'); background-repeat: no-repeat; background-position: center center; background-size: 280px auto; padding: 32px 26px; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.65;">
+      <td style="background-color: #18191a; background-image: url('${BRAND_WATERMARK_URL}'); background-repeat: no-repeat; background-position: center 48%; background-size: 260px auto; padding: 28px 24px; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.65;">
         ${bodyHtml}
       </td>
     </tr>
 
-    <!-- Footer -->
+    <!-- Footer Matching Reference -->
     <tr>
       <td style="background-color: #141517; padding: 18px 24px; text-align: center; font-size: 12px; color: #6b7280; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0 0 14px 14px;">
         © ${currentYear} SPESHWAY Technologies. All rights reserved.
@@ -143,9 +144,16 @@ const renderEmailWrapper = ({ title = 'SPESHWAY', subtitle = 'ALL-IN-ONE ERP SOL
 
 /**
  * Send an acknowledgment email to a customer right after they submit an inquiry
- * Matches the reference design with Dark Theme + Watermark Background and NO attachments
+ * Matches the reference design (Image 2) with Dark Theme + Watermark Background and NO attachments
  */
-export const sendInquiryConfirmationEmail = async ({ name, email, module, company, message }) => {
+export const sendInquiryConfirmationEmail = async ({
+  name,
+  email,
+  phone,
+  module,
+  company,
+  message,
+}) => {
   if (!email) return null;
 
   try {
@@ -153,29 +161,33 @@ export const sendInquiryConfirmationEmail = async ({ name, email, module, compan
     const smtpUser = process.env.SMTP_USER || 'naveenkumar970100@gmail.com';
 
     const bodyHtml = `
-      <p style="font-size: 16px; margin: 0 0 16px 0; color: #ffffff;">Hello <b style="color: #ffffff;">${(name || 'Valued Client').toUpperCase()}</b>,</p>
+      <p style="font-size: 15px; margin: 0 0 12px 0; color: #ffffff;">Hello <b style="color: #ffffff;">${(name || 'Valued Client').toUpperCase()}</b>,</p>
       
-      <p style="margin: 0 0 16px 0; color: #cbd5e1; font-size: 14.5px; line-height: 1.65;">
-        Thank you for reaching out to <strong style="color: #ffffff;">SPESHWAY</strong>. We have successfully received your inquiry and our enterprise solutions team has been notified.
+      <p style="margin: 0 0 14px 0; color: #cbd5e1; font-size: 14px; line-height: 1.55;">
+        Thank you for reaching out to <strong style="color: #ffffff;">SPESHWAY</strong>. We have received your inquiry and our enterprise solutions team has been notified.
       </p>
 
-      <!-- Inquiry Details Card with Emerald Accent Matching Reference -->
-      <div style="background-color: #232428; background-color: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-left: 3px solid #10b981; padding: 16px 18px; border-radius: 0 8px 8px 0; margin: 22px 0;">
-        <p style="margin: 0 0 8px 0; font-size: 12.5px; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em;">
+      <!-- Inquiry Details Card with Logo Green Accent Matching Reference -->
+      <div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-left: 3px solid #44a849; padding: 14px 16px; border-radius: 0 8px 8px 0; margin: 16px 0;">
+        <p style="margin: 0 0 8px 0; font-size: 11.5px; font-weight: 800; color: #44a849; text-transform: uppercase; letter-spacing: 0.05em;">
           INQUIRY DETAILS:
         </p>
-        <p style="margin: 4px 0; font-size: 14px; color: #e2e8f0;"><strong style="color: #94a3b8;">Module / Solution:</strong> ${module || 'All-In-One Complete Suite'}</p>
-        ${company ? `<p style="margin: 4px 0; font-size: 14px; color: #e2e8f0;"><strong style="color: #94a3b8;">Organization:</strong> ${company}</p>` : ''}
-        ${message ? `<p style="margin: 8px 0 0 0; font-size: 13.5px; color: #94a3b8; font-style: italic; border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 6px;">"${message}"</p>` : ''}
+        <p style="margin: 3px 0; font-size: 13.5px; color: #e2e8f0;">
+          <strong style="color: #94a3b8;">Module / Solution:</strong> ${module || 'All-In-One Complete Suite'}
+        </p>
+        ${company ? `<p style="margin: 3px 0; font-size: 13.5px; color: #e2e8f0;"><strong style="color: #94a3b8;">Organization:</strong> ${company}</p>` : ''}
+        ${email ? `<p style="margin: 3px 0; font-size: 13.5px; color: #e2e8f0;"><strong style="color: #94a3b8;">Work Email:</strong> <span style="color: #e2e8f0;">${email}</span></p>` : ''}
+        ${phone ? `<p style="margin: 3px 0; font-size: 13.5px; color: #e2e8f0;"><strong style="color: #94a3b8;">Contact Number:</strong> <span style="color: #e2e8f0;">${phone}</span></p>` : ''}
+        ${message ? `<p style="margin: 8px 0 0 0; font-size: 13px; color: #cbd5e1; border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 6px;">"${message}"</p>` : ''}
       </div>
 
-      <p style="margin: 0 0 20px 0; color: #cbd5e1; font-size: 14.5px; line-height: 1.65;">
-        One of our product specialists will review your requirements and reach out to you with tailored demo access and solution architecture details.
+      <p style="margin: 0 0 16px 0; color: #cbd5e1; font-size: 13.5px; line-height: 1.55;">
+        One of our product specialists will connect with you shortly with tailored demo access and solution architecture details.
       </p>
 
-      <div style="border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 18px; margin-top: 26px;">
-        <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.5;">
-          Need urgent assistance? Reply directly to this email or contact us at <a href="mailto:${smtpUser}" style="color: #10b981; text-decoration: none; font-weight: 600;">${smtpUser}</a>.
+      <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 14px; margin-top: 18px;">
+        <p style="margin: 0; font-size: 12.5px; color: #94a3b8; line-height: 1.45;">
+          Need assistance? Reply directly to this email or contact us at <a href="mailto:${smtpUser}" style="color: #44a849; text-decoration: none; font-weight: 600;">${smtpUser}</a>.
         </p>
       </div>
     `;
@@ -203,12 +215,27 @@ export const sendInquiryConfirmationEmail = async ({ name, email, module, compan
 };
 
 /**
+ * Helper to strip redundant outer greetings or sign-offs from admin reply text
+ * so the inner card remains clean, compact, and structured (matching Image 2).
+ */
+const cleanReplyContent = (rawText) => {
+  if (!rawText) return '';
+  return rawText
+    .replace(/^(?:hello|hi|dear)\s+[^,\n]+,\s*/i, '')
+    .replace(/^thank you for reaching out to speshway[^.\n]*[.\n]\s*/i, '')
+    .replace(/(?:\n|^)(?:best regards|warm regards|sincerely|thanks and regards|regards)[,\s][\s\S]*$/i, '')
+    .trim();
+};
+
+/**
  * Send an email reply/update from the Admin to the customer
- * Exact match with reference design: Top Green Header, Dark Theme (#18191a), Watermark in background, and NO attachments!
+ * Exact match with reference design: Top Green Header, Dark Theme (#18191a), Watermark in background, Compact Details Card, and ZERO attachments!
  */
 export const sendInquiryReplyEmail = async ({
   to,
   customerName,
+  customerPhone,
+  company,
   subject,
   replyMessage,
   inquiryModule,
@@ -225,43 +252,45 @@ export const sendInquiryReplyEmail = async ({
   const smtpUser = process.env.SMTP_USER || 'naveenkumar970100@gmail.com';
   const mailSubject = subject || `Update regarding your SPESHWAY inquiry (${inquiryModule || 'ERP Solution'})`;
 
+  // Clean redundant greetings/sign-offs to keep the card compact & matching Image 2
+  const cleanedText = cleanReplyContent(replyMessage) || replyMessage.trim();
+
   // Convert newlines in reply message to clean HTML paragraphs
-  const formattedReply = replyMessage
+  const formattedReply = cleanedText
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
-    .map((line) => `<p style="margin: 0 0 10px 0; line-height: 1.65; color: #f1f5f9; font-size: 14.5px;">${line}</p>`)
+    .map((line) => `<p style="margin: 4px 0; line-height: 1.55; color: #e2e8f0; font-size: 14px;">${line}</p>`)
     .join('');
 
   const bodyHtml = `
-    <p style="font-size: 16px; margin: 0 0 16px 0; color: #ffffff;">Hello <b style="color: #ffffff;">${(customerName || 'Valued Client').toUpperCase()}</b>,</p>
+    <p style="font-size: 15px; margin: 0 0 12px 0; color: #ffffff;">Hello <b style="color: #ffffff;">${(customerName || 'Valued Client').toUpperCase()}</b>,</p>
     
-    <p style="margin: 0 0 16px 0; color: #cbd5e1; font-size: 14.5px; line-height: 1.65;">
-      Thank you for reaching out to <strong style="color: #ffffff;">SPESHWAY</strong>. Our enterprise solutions team has reviewed your request regarding <strong>${inquiryModule || 'our ERP solutions'}</strong> and has prepared the following response for you:
+    <p style="margin: 0 0 14px 0; color: #cbd5e1; font-size: 14px; line-height: 1.55;">
+      We have an update regarding your inquiry for <strong style="color: #ffffff;">${inquiryModule || 'SPESHWAY ERP Solutions'}</strong>:
     </p>
 
-    <!-- Response Message Card Styled Exactly Like Reference Design -->
-    <div style="background-color: #232428; background-color: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-left: 3px solid #10b981; padding: 18px 20px; border-radius: 0 8px 8px 0; margin: 22px 0;">
-      <p style="margin: 0 0 12px 0; font-size: 12.5px; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em;">
+    <!-- Response Details Card -->
+    <div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-left: 3px solid #44a849; padding: 14px 16px; border-radius: 0 8px 8px 0; margin: 16px 0;">
+      <p style="margin: 0 0 8px 0; font-size: 11.5px; font-weight: 800; color: #44a849; text-transform: uppercase; letter-spacing: 0.05em;">
         MESSAGE FROM SPESHWAY TEAM:
       </p>
-      ${formattedReply}
-      ${
-        inquiryModule
-          ? `<p style="margin: 12px 0 0 0; font-size: 12.5px; color: #94a3b8; border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 8px;">
-               <strong style="color: #e2e8f0;">Referenced Module / Solution:</strong> ${inquiryModule}
-             </p>`
-          : ''
-      }
+      <div style="margin: 4px 0 10px 0;">
+        ${formattedReply}
+      </div>
+      <div style="border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 8px; margin-top: 8px;">
+        <p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;">
+          <strong style="color: #94a3b8;">Module / Solution:</strong> ${inquiryModule || 'All-In-One Complete Suite'}
+        </p>
+        ${company ? `<p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;"><strong style="color: #94a3b8;">Organization:</strong> ${company}</p>` : ''}
+        ${to ? `<p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;"><strong style="color: #94a3b8;">Work Email:</strong> ${to}</p>` : ''}
+        ${customerPhone ? `<p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;"><strong style="color: #94a3b8;">Contact Number:</strong> ${customerPhone}</p>` : ''}
+      </div>
     </div>
 
-    <p style="margin: 0 0 20px 0; color: #cbd5e1; font-size: 14.5px; line-height: 1.65;">
-      One of our product specialists will be happy to assist you further with tailored demo access, customized module workflows, and solution architecture details.
-    </p>
-
-    <div style="border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 18px; margin-top: 26px;">
-      <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.5;">
-        Need urgent assistance? Reply directly to this email or contact us at <a href="mailto:${smtpUser}" style="color: #10b981; text-decoration: none; font-weight: 600;">${smtpUser}</a>.
+    <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 14px; margin-top: 18px;">
+      <p style="margin: 0; font-size: 12.5px; color: #94a3b8; line-height: 1.45;">
+        Need urgent assistance? Reply directly to this email or reach us at <a href="mailto:${smtpUser}" style="color: #44a849; text-decoration: none; font-weight: 600;">${smtpUser}</a>.
       </p>
     </div>
   `;
@@ -290,6 +319,8 @@ export const sendInquiryReplyEmail = async ({
 export const sendInquiryStatusEmail = async ({
   to,
   customerName,
+  customerPhone,
+  company,
   newStatus,
   inquiryModule,
   note,
@@ -298,31 +329,59 @@ export const sendInquiryStatusEmail = async ({
 
   try {
     const statusLabels = {
-      new: 'Received & Pending Review',
+      new: 'Received & In Review',
       contacted: 'In Touch with Product Specialist',
       qualified: 'Demo Qualified & Solution Ready',
       closed: 'Inquiry Completed',
     };
 
+    const statusDescriptions = {
+      new: 'Your inquiry has been received and queued for review.',
+      contacted: 'Our specialist has reviewed your requirements and reached out regarding next steps.',
+      qualified: 'Your inquiry has been qualified. Tailored demo access and solution details are prepared.',
+      closed: 'This inquiry lifecycle has been completed. Thank you for connecting with SPESHWAY.',
+    };
+
+    const statusColors = {
+      new: '#f59e0b',
+      contacted: '#38bdf8',
+      qualified: '#34d399',
+      closed: '#94a3b8',
+    };
+
     const statusTitle = statusLabels[newStatus] || newStatus;
+    const accentColor = statusColors[newStatus] || '#44a849';
     const transport = getTransporter();
     const smtpUser = process.env.SMTP_USER || 'naveenkumar970100@gmail.com';
 
     const bodyHtml = `
-      <p style="margin: 0 0 14px 0; font-size: 16px; color: #ffffff;">Hello <b style="color: #ffffff;">${(customerName || 'Client').toUpperCase()}</b>,</p>
-      <p style="margin: 0 0 16px 0; color: #cbd5e1; font-size: 14.5px; line-height: 1.65;">
-        We have an update regarding your inquiry for <strong style="color: #ffffff;">${inquiryModule || 'SPESHWAY ERP'}</strong>:
+      <p style="margin: 0 0 12px 0; font-size: 15px; color: #ffffff;">Hello <b style="color: #ffffff;">${(customerName || 'Valued Client').toUpperCase()}</b>,</p>
+      
+      <p style="margin: 0 0 14px 0; color: #cbd5e1; font-size: 14px; line-height: 1.55;">
+        Your inquiry for <strong style="color: #ffffff;">${inquiryModule || 'SPESHWAY All-In-One ERP'}</strong> has an update:
       </p>
 
-      <div style="background-color: #232428; background-color: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-left: 3px solid #10b981; border-radius: 0 8px 8px 0; padding: 16px 18px; margin: 18px 0;">
-        <span style="font-size: 11.5px; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em;">Current Status:</span>
-        <p style="margin: 6px 0 0 0; font-size: 16px; font-weight: 800; color: #34d399;">${statusTitle}</p>
-        ${note ? `<p style="margin: 8px 0 0 0; font-size: 13.5px; color: #cbd5e1; border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 6px;">${note}</p>` : ''}
+      <!-- Status & Inquiry Details Card -->
+      <div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-left: 3px solid ${accentColor}; border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 16px 0;">
+        <span style="font-size: 11px; font-weight: 800; color: ${accentColor}; text-transform: uppercase; letter-spacing: 0.05em;">Current Status:</span>
+        <p style="margin: 4px 0 6px 0; font-size: 16px; font-weight: 800; color: ${accentColor};">${statusTitle}</p>
+        <p style="margin: 0 0 10px 0; font-size: 13.5px; color: #cbd5e1; line-height: 1.5;">
+          ${note || statusDescriptions[newStatus] || ''}
+        </p>
+
+        <div style="border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 8px; margin-top: 8px;">
+          <p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;">
+            <strong style="color: #94a3b8;">Module / Solution:</strong> ${inquiryModule || 'All-In-One Complete Suite'}
+          </p>
+          ${company ? `<p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;"><strong style="color: #94a3b8;">Organization:</strong> ${company}</p>` : ''}
+          ${to ? `<p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;"><strong style="color: #94a3b8;">Work Email:</strong> ${to}</p>` : ''}
+          ${customerPhone ? `<p style="margin: 3px 0; font-size: 13px; color: #e2e8f0;"><strong style="color: #94a3b8;">Contact Number:</strong> ${customerPhone}</p>` : ''}
+        </div>
       </div>
 
-      <div style="border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 18px; margin-top: 24px;">
-        <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.5;">
-          Have questions? Reply directly to this email or reach us anytime at <a href="mailto:${smtpUser}" style="color: #10b981; text-decoration: none; font-weight: 600;">${smtpUser}</a>.
+      <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 14px; margin-top: 18px;">
+        <p style="margin: 0; font-size: 12.5px; color: #94a3b8; line-height: 1.45;">
+          Have questions? Reply directly to this email or reach us anytime at <a href="mailto:${smtpUser}" style="color: #44a849; text-decoration: none; font-weight: 600;">${smtpUser}</a>.
         </p>
       </div>
     `;

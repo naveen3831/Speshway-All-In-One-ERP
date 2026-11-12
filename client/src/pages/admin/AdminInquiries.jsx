@@ -71,11 +71,17 @@ export const AdminInquiries = () => {
   const [isSendingReply, setIsSendingReply] = useState(false);
   const [replyStatusMsg, setReplyStatusMsg] = useState({ type: '', text: '' });
 
+  // Status progression states
+  const [updatingStatusId, setUpdatingStatusId] = useState(null);
+  const [statusFeedback, setStatusFeedback] = useState(null);
+
+  const STATUS_FLOW = ['new', 'contacted', 'qualified', 'closed'];
+
   const handleOpenReplyModal = (inq) => {
     setSelectedInquiry(inq);
     setReplySubject(`Update on your SPESHWAY inquiry: ${inq.module || 'All-In-One Complete Suite'}`);
     setReplyMessage(
-      `Hello ${inq.name || 'Valued Client'},\n\nThank you for reaching out to SPESHWAY regarding our ${inq.module || 'ERP solutions'}.\n\nWe have reviewed your request for ${inq.company || 'your organization'} and would be delighted to assist you with system onboarding and a live product demonstration.\n\nPlease let us know if you have any specific requirements or preferred timing for a walkthrough.\n\nBest regards,\nSPESHWAY Enterprise Solutions Team`
+      `We have reviewed your request for ${inq.company || 'your organization'} regarding our ${inq.module || 'ERP solutions'}.\n\nOur enterprise solutions team would be delighted to assist you with tailored demo access, module walkthroughs, and system onboarding. Please let us know your preferred timing.`
     );
     setReplyStatusMsg({ type: '', text: '' });
   };
@@ -123,12 +129,59 @@ export const AdminInquiries = () => {
     }
   };
 
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = async (id, newStatus, currentStatus) => {
+    const curStatus = currentStatus || 'new';
+    const currentIndex = STATUS_FLOW.indexOf(curStatus);
+    const targetIndex = STATUS_FLOW.indexOf(newStatus);
+
+    if (targetIndex < currentIndex) {
+      return; // Forward-only progression: past stages cannot be re-selected
+    }
+    if (targetIndex === currentIndex) {
+      return;
+    }
+
+    setUpdatingStatusId(id);
+    const skippedCount = targetIndex - currentIndex - 1;
+    if (skippedCount > 0) {
+      setStatusFeedback({
+        type: 'info',
+        text: `Executing skipped stages and dispatching notification emails in sequence...`,
+      });
+    }
+
     try {
-      await api.patch(`/inquiries/${id}/status`, { status: newStatus, notifyCustomer: true });
-      if (refreshInquiries) refreshInquiries();
+      const res = await api.patch(`/inquiries/${id}/status`, {
+        status: newStatus,
+        notifyCustomer: true,
+      });
+
+      if (res.data?.executedSteps && res.data.executedSteps.length > 1) {
+        setStatusFeedback({
+          type: 'success',
+          text: `Auto-completed skipped stage: ${res.data.executedSteps.map((s) => s.toUpperCase()).join(' ➔ ')} & dispatched notification emails.`,
+        });
+      } else {
+        setStatusFeedback({
+          type: 'success',
+          text: `Stage updated to ${newStatus.toUpperCase()} & customer notified via email.`,
+        });
+      }
+
+      if (refreshInquiries) {
+        await refreshInquiries();
+      }
     } catch (err) {
       console.error('Failed to update inquiry status:', err);
+      setStatusFeedback({
+        type: 'error',
+        text: err.response?.data?.message || err.message || 'Failed to update inquiry status.',
+      });
+    } finally {
+      setUpdatingStatusId(null);
+      setTimeout(() => {
+        setStatusFeedback(null);
+      }, 4500);
     }
   };
 
@@ -158,6 +211,49 @@ export const AdminInquiries = () => {
       return 'demo';
     }
     return 'get-started';
+  };
+
+  // Helper to format customer name on a single row, shortening multi-word names (e.g. "Giri Sai Krishna Teja" -> "G. S. K. Teja")
+  const formatCustomerName = (fullName) => {
+    if (!fullName || typeof fullName !== 'string') return 'Client';
+    const parts = fullName.trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return 'Client';
+    if (parts.length === 1) {
+      return parts[0];
+    }
+    if (parts.length === 2) {
+      if (fullName.length > 20) {
+        return `${parts[0][0].toUpperCase()}. ${parts[1]}`;
+      }
+      return `${parts[0]} ${parts[1]}`;
+    }
+    // 3 or more words: e.g. "giri sai krishna teja" -> "G. S. K. Teja"
+    const lastName = parts[parts.length - 1];
+    const capitalizedLast = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+    const initials = parts
+      .slice(0, -1)
+      .map((p) => p[0].toUpperCase() + '.')
+      .join(' ');
+    return `${initials} ${capitalizedLast}`;
+  };
+
+  // Helper to format Date on top and Time underneath ("date kinda time pettu")
+  const formatDateAndTime = (dateStr) => {
+    if (!dateStr) return { date: 'Just now', time: '' };
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return { date: String(dateStr), time: '' };
+      const dateFormatted = d.toLocaleDateString('en-GB'); // e.g. 12/11/2026
+      const timeFormatted = d.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      });
+      return { date: dateFormatted, time: timeFormatted };
+    } catch (e) {
+      return { date: String(dateStr), time: '' };
+    }
   };
 
   const filteredInquiries = inquiries.filter((inq) => {
@@ -209,6 +305,68 @@ export const AdminInquiries = () => {
           </button>
         </div>
       </div>
+
+      {/* Real-time Status / Execution Feedback Alert */}
+      {statusFeedback && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px 16px',
+            marginBottom: '16px',
+            borderRadius: '8px',
+            fontSize: '0.85rem',
+            fontWeight: 500,
+            backgroundColor:
+              statusFeedback.type === 'error'
+                ? '#fef2f2'
+                : statusFeedback.type === 'info'
+                ? '#eff6ff'
+                : '#f0fdf4',
+            color:
+              statusFeedback.type === 'error'
+                ? '#b91c1c'
+                : statusFeedback.type === 'info'
+                ? '#1d4ed8'
+                : '#15803d',
+            border: `1px solid ${
+              statusFeedback.type === 'error'
+                ? '#fecaca'
+                : statusFeedback.type === 'info'
+                ? '#bfdbfe'
+                : '#bbf7d0'
+            }`,
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+            animation: 'fadeIn 0.2s ease',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {statusFeedback.type === 'error' ? (
+              <AlertCircle size={16} />
+            ) : statusFeedback.type === 'info' ? (
+              <RefreshCw size={16} className="animate-spin" />
+            ) : (
+              <CheckCircle2 size={16} />
+            )}
+            <span>{statusFeedback.text}</span>
+          </div>
+          <button
+            onClick={() => setStatusFeedback(null)}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: 'inherit',
+              padding: '2px',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
 
       {/* Metric Cards (4 cards covering All, Free Trials, Demos, Contact) */}
       <div
@@ -343,12 +501,12 @@ export const AdminInquiries = () => {
             <table className="admin-data-table">
               <thead>
                 <tr>
-                  <th>Lead / Type</th>
+                  <th style={{ minWidth: '150px' }}>Lead / Type</th>
                   <th>Contact Info</th>
                   <th>Organization &amp; Team</th>
                   <th>Module Focus &amp; Message</th>
                   <th>Status</th>
-                  <th>Received</th>
+                  <th style={{ minWidth: '110px' }}>Received</th>
                   <th style={{ textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
@@ -363,14 +521,28 @@ export const AdminInquiries = () => {
 
                   return (
                     <tr key={inquiryId}>
-                      <td>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                          <span style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>
-                            {inq.name}
+                      <td style={{ minWidth: '150px', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                          <span
+                            style={{
+                              fontWeight: 700,
+                              color: '#0f172a',
+                              fontSize: '0.90rem',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              maxWidth: '180px',
+                              display: 'block',
+                            }}
+                            title={inq.name}
+                          >
+                            {formatCustomerName(inq.name)}
                           </span>
                           <span
                             style={{
-                              display: 'inline-block',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              whiteSpace: 'nowrap',
                               width: 'fit-content',
                               fontSize: '0.72rem',
                               fontWeight: 700,
@@ -477,43 +649,102 @@ export const AdminInquiries = () => {
                       </td>
 
                       <td>
-                        <select
-                          value={inq.status || 'new'}
-                          onChange={(e) => handleStatusChange(inquiryId, e.target.value)}
-                          style={{
-                            fontSize: '0.78rem',
-                            fontWeight: 600,
-                            padding: '4px 8px',
-                            borderRadius: '6px',
-                            border: '1px solid #cbd5e1',
-                            backgroundColor:
-                              inq.status === 'qualified'
-                                ? '#ecfdf5'
-                                : inq.status === 'contacted'
-                                ? '#eff6ff'
-                                : inq.status === 'closed'
-                                ? '#f8fafc'
-                                : '#fffbeb',
-                            color:
-                              inq.status === 'qualified'
-                                ? '#047857'
-                                : inq.status === 'contacted'
-                                ? '#1d4ed8'
-                                : inq.status === 'closed'
-                                ? '#64748b'
-                                : '#b45309',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          <option value="new">● New</option>
-                          <option value="contacted">● Contacted</option>
-                          <option value="qualified">✔ Qualified</option>
-                          <option value="closed">✕ Closed</option>
-                        </select>
+                        {(() => {
+                          const currentStatus = inq.status || 'new';
+                          const currentIndex = STATUS_FLOW.indexOf(currentStatus);
+                          const isUpdating = updatingStatusId === inquiryId;
+
+                          return (
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                              <select
+                                value={currentStatus}
+                                disabled={isUpdating}
+                                onChange={(e) => handleStatusChange(inquiryId, e.target.value, currentStatus)}
+                                title={
+                                  currentStatus === 'closed'
+                                    ? 'Completed inquiry (Final stage)'
+                                    : 'Inquiry lifecycle status (Forward-only progression)'
+                                }
+                                style={{
+                                  fontSize: '0.78rem',
+                                  fontWeight: 600,
+                                  padding: '4px 8px',
+                                  borderRadius: '6px',
+                                  border: '1px solid #cbd5e1',
+                                  backgroundColor:
+                                    currentStatus === 'qualified'
+                                      ? '#ecfdf5'
+                                      : currentStatus === 'contacted'
+                                      ? '#eff6ff'
+                                      : currentStatus === 'closed'
+                                      ? '#f8fafc'
+                                      : '#fffbeb',
+                                  color:
+                                    currentStatus === 'qualified'
+                                      ? '#047857'
+                                      : currentStatus === 'contacted'
+                                      ? '#1d4ed8'
+                                      : currentStatus === 'closed'
+                                      ? '#64748b'
+                                      : '#b45309',
+                                  cursor: isUpdating ? 'wait' : 'pointer',
+                                  opacity: isUpdating ? 0.65 : 1,
+                                  transition: 'all 0.15s ease',
+                                }}
+                              >
+                                <option
+                                  value="new"
+                                  disabled={currentIndex > 0}
+                                  style={currentIndex > 0 ? { color: '#94a3b8' } : { color: '#b45309' }}
+                                >
+                                  {currentIndex > 0 ? '✓ New (Done)' : '● New'}
+                                </option>
+                                <option
+                                  value="contacted"
+                                  disabled={currentIndex > 1}
+                                  style={currentIndex > 1 ? { color: '#94a3b8' } : { color: '#1d4ed8' }}
+                                >
+                                  {currentIndex > 1 ? '✓ Contacted (Done)' : '● Contacted'}
+                                </option>
+                                <option
+                                  value="qualified"
+                                  disabled={currentIndex > 2}
+                                  style={currentIndex > 2 ? { color: '#94a3b8' } : { color: '#047857' }}
+                                >
+                                  {currentIndex > 2 ? '✓ Qualified (Done)' : '✔ Qualified'}
+                                </option>
+                                <option
+                                  value="closed"
+                                  disabled={currentIndex > 3}
+                                  style={{ color: '#475569' }}
+                                >
+                                  ✕ Closed
+                                </option>
+                              </select>
+                              {isUpdating && (
+                                <RefreshCw size={13} className="animate-spin" style={{ color: '#059669' }} />
+                              )}
+                            </div>
+                          );
+                        })()}
                       </td>
 
-                      <td style={{ fontSize: '0.8rem', color: '#64748b', whiteSpace: 'nowrap' }}>
-                        {dateStr ? new Date(dateStr).toLocaleString() : 'Just now'}
+                      <td style={{ whiteSpace: 'nowrap', minWidth: '110px' }}>
+                        {(() => {
+                          const { date, time } = formatDateAndTime(dateStr);
+                          return (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                              <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#334155' }}>
+                                {date}
+                              </span>
+                              {time && (
+                                <span style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 500 }}>
+                                  {time}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </td>
 
                       <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
