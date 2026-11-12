@@ -144,8 +144,9 @@ router.post('/', async (req, res) => {
       sendInquiryConfirmationEmail({
         name: memoryItem.name,
         email: memoryItem.email,
-        module: memoryItem.module,
+        phone: memoryItem.phone,
         company: memoryItem.company,
+        module: memoryItem.module,
         message: memoryItem.message,
       }).catch((mailErr) =>
         console.warn('[Inquiry] Automated confirmation email notice:', mailErr.message)
@@ -166,49 +167,141 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @desc    Update inquiry status & optionally notify customer via email
+// @desc    Update inquiry status & optionally notify customer via email (Sequential forward-only with automatic skipped steps execution)
 // @route   PATCH /api/inquiries/:id/status
 // @access  Public
 router.patch('/:id/status', async (req, res) => {
   try {
-    const { status, notifyCustomer, note } = req.body;
+    const { status, notifyCustomer = true, note } = req.body;
     const { id } = req.params;
 
-    let updated = await Inquiry.findOneAndUpdate(
-      getInquiryQuery(id),
-      { status },
-      { new: true }
-    );
+    const STATUS_FLOW = ['new', 'contacted', 'qualified', 'closed'];
 
-    // Update in-memory
-    liveState.modulesData.demoRequests = liveState.modulesData.demoRequests.map((inq) =>
-      inq.id === id || inq._id?.toString() === id ? { ...inq, status } : inq
-    );
-
-    const io = getIO();
-    if (io) {
-      io.emit('demo:status_updated', { id, status });
+    // 1. Locate existing inquiry in MongoDB or in-memory liveState
+    let inqDoc = null;
+    try {
+      inqDoc = await Inquiry.findOne(getInquiryQuery(id));
+    } catch (e) {
+      console.warn('[Inquiry] findOne DB lookup notice:', e.message);
     }
 
-    // Optionally notify customer via SMTP if requested or if status changed to contacted/qualified
-    if (notifyCustomer) {
-      const recipientEmail = updated?.email || liveState.modulesData.demoRequests.find(i => i.id === id)?.email;
-      const recipientName = updated?.name || liveState.modulesData.demoRequests.find(i => i.id === id)?.name;
-      const moduleName = updated?.module || liveState.modulesData.demoRequests.find(i => i.id === id)?.module;
+    const memInq = liveState.modulesData.demoRequests.find(
+      (inq) => inq.id === id || inq._id?.toString() === id
+    );
 
-      if (recipientEmail) {
-        sendInquiryStatusEmail({
-          to: recipientEmail,
-          customerName: recipientName,
-          newStatus: status,
-          inquiryModule: moduleName,
-          note: note || '',
-        }).catch((mailErr) => console.warn('[Inquiry] Status update email error:', mailErr.message));
+    if (!inqDoc && !memInq) {
+      return res.status(404).json({
+        success: false,
+        message: 'Inquiry record not found.',
+      });
+    }
+
+    const currentStatus = inqDoc?.status || memInq?.status || 'new';
+    const currentIndex = STATUS_FLOW.indexOf(currentStatus);
+    const targetIndex = STATUS_FLOW.indexOf(status);
+
+    if (targetIndex === -1) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid target status "${status}". Allowed values: ${STATUS_FLOW.join(', ')}`,
+      });
+    }
+
+    // Forward-only enforcement: past stages cannot be re-selected / moved backwards
+    if (currentIndex !== -1 && targetIndex < currentIndex) {
+      return res.status(400).json({
+        success: false,
+        message: `Status cannot be moved backwards from "${currentStatus}" to "${status}". Stages are strictly forward-only.`,
+      });
+    }
+
+    // Already at target status
+    if (targetIndex === currentIndex) {
+      return res.json({
+        success: true,
+        data: inqDoc || memInq,
+        message: `Status is already "${currentStatus}".`,
+      });
+    }
+
+    // Determine all steps to execute sequentially from currentIndex + 1 up to targetIndex
+    const startIdx = currentIndex === -1 ? 0 : currentIndex;
+    const stepsToExecute = STATUS_FLOW.slice(startIdx + 1, targetIndex + 1);
+
+    const recipientEmail = inqDoc?.email || memInq?.email;
+    const recipientName = inqDoc?.name || memInq?.name;
+    const moduleName = inqDoc?.module || memInq?.module;
+    const io = getIO();
+
+    let lastUpdatedDoc = inqDoc;
+
+    console.log(
+      `[Inquiry] Advancing inquiry ${id} (${recipientName || recipientEmail}) from "${currentStatus}" to "${status}". Steps to execute: [${stepsToExecute.join(', ')}]`
+    );
+
+    // Execute each step in sequence (including all skipped intermediate steps and final target step)
+    for (let i = 0; i < stepsToExecute.length; i++) {
+      const step = stepsToExecute[i];
+      const isTargetStep = i === stepsToExecute.length - 1;
+
+      // 1. Update Database
+      try {
+        const updated = await Inquiry.findOneAndUpdate(
+          getInquiryQuery(id),
+          { status: step },
+          { new: true }
+        );
+        if (updated) lastUpdatedDoc = updated;
+      } catch (dbErr) {
+        console.warn(`[Inquiry] DB status update warning for step "${step}":`, dbErr.message);
+      }
+
+      // 2. Update liveState in-memory
+      liveState.modulesData.demoRequests = liveState.modulesData.demoRequests.map((inq) =>
+        inq.id === id || inq._id?.toString() === id ? { ...inq, status: step } : inq
+      );
+
+      // 3. Emit real-time WebSocket update for this step
+      if (io) {
+        io.emit('demo:status_updated', { id, status: step });
+      }
+
+      // 4. Send status notification email via SMTP for this step
+      if (notifyCustomer && recipientEmail) {
+        try {
+          const stepNote = isTargetStep ? (note || '') : '';
+          await sendInquiryStatusEmail({
+            to: recipientEmail,
+            customerName: recipientName,
+            customerPhone: inqDoc?.phone || memInq?.phone,
+            company: inqDoc?.company || memInq?.company,
+            newStatus: step,
+            inquiryModule: moduleName,
+            note: stepNote,
+          });
+          console.log(`✉️ [Inquiry] Notification email sent to ${recipientEmail} for stage: "${step}"`);
+        } catch (mailErr) {
+          console.warn(`⚠️ [Inquiry] Error sending status email for step "${step}":`, mailErr.message);
+        }
+
+        // Delay 500ms between emails when executing multiple steps to preserve SMTP delivery sequence
+        if (!isTargetStep && stepsToExecute.length > 1) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
       }
     }
 
-    res.json({ success: true, data: updated || { id, status } });
+    res.json({
+      success: true,
+      data: lastUpdatedDoc || { id, status },
+      executedSteps: stepsToExecute,
+      message:
+        stepsToExecute.length > 1
+          ? `Automatically completed ${stepsToExecute.length} stages (${stepsToExecute.join(' ➔ ')}) and dispatched notification emails.`
+          : `Status updated to ${status} and notification email dispatched.`,
+    });
   } catch (err) {
+    console.error('Status update error:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -246,6 +339,8 @@ router.post('/:id/reply', async (req, res) => {
     const info = await sendInquiryReplyEmail({
       to: inq.email,
       customerName: inq.name,
+      customerPhone: inq.phone,
+      company: inq.company,
       subject: subject?.trim(),
       replyMessage: replyMessage.trim(),
       inquiryModule: inq.module,
