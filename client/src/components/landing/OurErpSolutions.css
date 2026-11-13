@@ -234,8 +234,8 @@
   border: 1px solid #e2e8f0;
   border-radius: 14px;
   padding: 0;
-  gap: 10px;
-  height: 130px;
+  gap: 12px;
+  height: 128px;
   box-sizing: border-box;
   cursor: pointer;
   position: relative;
@@ -254,13 +254,11 @@
   box-shadow: 0 8px 18px -4px rgba(15, 23, 42, 0.08);
 }
 
-/* Left Image Container (~42% width, flush to top, bottom, and left of card) */
+/* Left Image Container (exact 1024x882 aspect ratio, flush to top, bottom, and left of card) */
 .our-erp-img-banner {
-  flex: 0 0 42%;
-  width: 42%;
-  min-width: 95px;
-  max-width: 126px;
+  flex: 0 0 auto;
   height: 100%;
+  aspect-ratio: 1024 / 882;
   border-radius: 13px 0 0 13px;
   overflow: hidden;
   background-color: #f1f5f9;
@@ -269,6 +267,7 @@
   justify-content: center;
   position: relative;
   border: none;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 
@@ -297,7 +296,7 @@
   color: #059669;
 }
 
-/* Right Card Body (~58% width) */
+/* Right Card Body */
 .our-erp-card-body {
   flex: 1;
   min-width: 0;
@@ -307,7 +306,7 @@
   align-items: flex-start;
   text-align: left;
   height: 100%;
-  padding: 8px 10px 8px 0;
+  padding: 8px 12px 8px 0;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -525,14 +524,13 @@
   }
 
   .our-erp-card-body {
-    padding: 7px 8px 7px 0;
+    padding: 7px 10px 7px 0;
   }
 
   .our-erp-img-banner {
-    flex: 0 0 38%;
-    width: 38%;
-    min-width: 95px;
-    max-width: 120px;
+    flex: 0 0 auto;
+    height: 100%;
+    aspect-ratio: 1024 / 882;
   }
 
   .our-erp-title {
@@ -542,7 +540,7 @@
 
 @media (max-width: 380px) {
   .our-erp-card {
-    height: 120px;
+    height: 118px;
     padding: 0;
     gap: 8px;
   }
@@ -552,10 +550,9 @@
   }
 
   .our-erp-img-banner {
-    flex: 0 0 36%;
-    width: 36%;
-    min-width: 85px;
-    max-width: 110px;
+    flex: 0 0 auto;
+    height: 100%;
+    aspect-ratio: 1024 / 882;
   }
 
   .our-erp-card-title {
