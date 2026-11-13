@@ -2471,8 +2471,8 @@ button {
   margin: 0 auto;
   padding: 0 40px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1fr 1.08fr;
+  gap: 40px;
   align-items: center;
   box-sizing: border-box;
 }
@@ -2560,13 +2560,11 @@ button {
   padding: 0;
   overflow: hidden;
   text-align: center;
-  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   width: 100%;
-  max-width: 480px;
-  height: calc(100vh - 140px);
-  max-height: 620px;
-  min-height: 440px;
+  max-width: 580px;
+  height: auto;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -2580,7 +2578,8 @@ button {
 .preview-hero-media {
   position: relative;
   width: 100%;
-  flex: 1 1 auto;
+  height: 290px;
+  max-height: 290px;
   min-height: 0;
   margin: 0;
   padding: 0;
@@ -2741,16 +2740,16 @@ button {
 
   .product-hero-card-preview {
     width: 100%;
-    max-width: 440px;
+    max-width: 520px;
     height: auto;
     max-height: none;
     min-height: 0;
     margin: 0 auto;
   }
 
-  .product-hero-custom-img {
-    height: auto;
-    max-height: 300px;
+  .preview-hero-media {
+    height: 260px;
+    max-height: 260px;
   }
 
   .product-detail-h1 {
@@ -2805,7 +2804,7 @@ button {
     padding: 0;
     border-radius: 16px;
     width: 100%;
-    max-width: 380px;
+    max-width: 460px;
     height: auto;
     max-height: none;
     min-height: 0;
@@ -2813,9 +2812,9 @@ button {
     overflow: hidden;
   }
 
-  .product-hero-custom-img {
-    height: auto;
-    max-height: 250px;
+  .preview-hero-media {
+    height: 230px;
+    max-height: 230px;
   }
 
   .preview-card-info-content {
@@ -2938,7 +2937,7 @@ button {
     padding: 0;
     border-radius: 14px;
     width: 100%;
-    max-width: 330px;
+    max-width: 100%;
     height: auto;
     max-height: none;
     min-height: 0;
@@ -2956,8 +2955,8 @@ button {
     padding: 3px 10px;
   }
 
-  .product-hero-custom-img {
-    height: auto;
+  .preview-hero-media {
+    height: 200px;
     max-height: 200px;
   }
 
