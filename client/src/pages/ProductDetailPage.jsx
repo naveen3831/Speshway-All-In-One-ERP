@@ -359,10 +359,6 @@ export const ProductDetailPage = () => {
 
             <div className="detail-hero-right">
               <div className="product-hero-card-preview">
-                <div className="preview-top-badge">
-                  <Sparkles size={16} className="text-icon-green" />
-                  <span>Enterprise Edition</span>
-                </div>
                 <div className="preview-icon-giant">
                   {(() => {
                     const rawImg = product.imageUrl && typeof product.imageUrl === 'string' ? product.imageUrl.trim() : '';
