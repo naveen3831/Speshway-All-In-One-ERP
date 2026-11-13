@@ -8,90 +8,83 @@ import {
   Cloud,
   Database,
   Shield,
-  ArrowRight,
   Sparkles,
 } from 'lucide-react';
 import './PlatformSolutions.css';
 
-// Exact 6 platform cards with distinct light pastel themes
+// The 6 exact platform solutions requested by the user
 const PLATFORM_SOLUTIONS_DATA = [
   {
     id: 'software-development',
     title: 'Software Development',
     description:
       'Custom enterprise software solutions tailored to your unique business needs, scaling legacy workflows seamlessly.',
-    tags: [
-      'CUSTOM CRM/ERP SYSTEMS',
-      'LEGACY DATABASE MIGRATION',
-      'RESTFUL API INTEGRATION',
+    features: [
+      'Custom CRM/ERP Systems',
+      'Legacy Database Migration',
+      'RESTful API Integration',
     ],
     icon: Code2,
-    themeClass: 'theme-emerald',
   },
   {
     id: 'mobile-app-development',
     title: 'Mobile App Development',
     description:
       'High-performance iOS and Android applications built with modern frameworks to engage users globally.',
-    tags: [
-      'REACT NATIVE CROSS-PLATFORM',
-      'FLUTTER NATIVE INTERFACES',
-      'APP STORE & PLAY STORE HANDOVER',
+    features: [
+      'React Native Cross-Platform',
+      'Flutter Native Interfaces',
+      'App Store & Play Store Handover',
     ],
     icon: Smartphone,
-    themeClass: 'theme-violet',
   },
   {
     id: 'web-development',
     title: 'Web Development',
     description:
       'Responsive and SEO-friendly corporate websites and web apps that drive conversions and scale indefinitely.',
-    tags: [
-      'E-COMMERCE & PAYMENTS',
-      'CORPORATE SAAS PLATFORMS',
-      'FAST STATIC SITES & HEADLESS CMS',
+    features: [
+      'E-Commerce & Payments',
+      'Corporate SaaS Platforms',
+      'Fast Static Sites & Headless CMS',
     ],
     icon: Globe,
-    themeClass: 'theme-blue',
   },
   {
     id: 'cloud-solutions-devops',
     title: 'Cloud Solutions & DevOps',
     description:
       'Scalable cloud infrastructures, automated deployments, and continuous integration models to optimize stability.',
-    tags: [
-      'AWS, AZURE & GCP ARCHITECTING',
-      'SECURE CLOUD MIGRATIONS',
-      'CI/CD DEPLOYMENT AUTOMATION',
+    features: [
+      'AWS, Azure & GCP Architecting',
+      'Secure Cloud Migrations',
+      'CI/CD Deployment Automation',
     ],
     icon: Cloud,
-    themeClass: 'theme-amber',
   },
   {
     id: 'data-analytics-bi',
     title: 'Data Analytics & BI',
     description:
       'Transform raw scattered database states into sleek dashboard visualizations and actionable forecasts.',
-    tags: [
-      'POWERBI & TABLEAU BOARDS',
-      'SECURE DATA WAREHOUSING',
-      'AUTOMATED BUSINESS REPORTS',
+    features: [
+      'PowerBI & Tableau Boards',
+      'Secure Data Warehousing',
+      'Automated Business Reports',
     ],
     icon: Database,
-    themeClass: 'theme-rose',
   },
   {
     id: 'cyber-security-audits',
     title: 'Cyber Security & Audits',
     description:
       'Comprehensive security shielding, threat modeling, and compliance evaluations to secure modern businesses.',
-    tags: [
-      'VULNERABILITY AUDITS',
-      'PENETRATION ASSESSMENTS',
-      'REGULATORY COMPLIANCE GUARDRAILS',
+    features: [
+      'Vulnerability Audits',
+      'Penetration Assessments',
+      'Regulatory Compliance Guardrails',
     ],
     icon: Shield,
-    themeClass: 'theme-teal',
   },
 ];
 
@@ -110,11 +103,11 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Continuous auto-rotation: rotates card-to-card steadily whether mouse is on card or not
+  // Continuous uninterrupted auto-scrolling
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % total);
-    }, 1200); // Steady 1.2s cycle for smooth professional carousel transitions
+    }, 2200);
     return () => clearInterval(interval);
   }, [total]);
 
@@ -169,9 +162,9 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
           </p>
         </div>
 
-        {/* 3D Coverflow Carousel Stage with outer navigation */}
+        {/* Carousel Stage with Side Navigation Arrows */}
         <div className="coverflow-wrapper">
-          {/* Borderless Left Chevron Arrow - Positioned completely outside the cards */}
+          {/* Circular Left Arrow */}
           <button
             type="button"
             className="coverflow-nav-btn prev"
@@ -179,10 +172,10 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               e.stopPropagation();
               prevSlide();
             }}
-            aria-label="Previous service card"
+            aria-label="Previous platform solution"
             title="Previous"
           >
-            <ChevronLeft size={32} strokeWidth={2.4} />
+            <ChevronLeft size={22} strokeWidth={2.4} />
           </button>
 
           <div
@@ -206,7 +199,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                 const isVisible = isActive || isLeft || isRight;
                 if (!isVisible) return null;
 
-                let cardClass = `coverflow-card ${item.themeClass}`;
+                let cardClass = 'coverflow-card';
                 if (isActive) cardClass += ' is-active';
                 else if (isLeft) cardClass += ' is-left';
                 else if (isRight) cardClass += ' is-right';
@@ -219,7 +212,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                     className={cardClass}
                     onClick={() => {
                       if (!isActive) {
-                        // Clicking side card brings it to front!
+                        // Clicking side card brings it to front
                         setActiveIndex(index);
                       } else {
                         // Clicking front active card opens contact popup
@@ -242,7 +235,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                     <div className="coverflow-card-inner">
                       {/* Top Icon Box */}
                       <div className="card-icon-box">
-                        <IconComponent size={24} className="card-icon-svg" />
+                        <IconComponent size={22} className="card-icon-svg" />
                       </div>
 
                       {/* Card Title */}
@@ -251,24 +244,24 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                       {/* Card Description */}
                       <p className="card-platform-desc">{item.description}</p>
 
-                      {/* Pill Tags */}
-                      <div className="card-tags-list">
-                        {item.tags.map((tag, tIdx) => (
-                          <div key={tIdx} className="card-tag-pill">
-                            {tag}
-                          </div>
+                      {/* Feature Checklist with Checkmark Icons */}
+                      <ul className="card-features-list">
+                        {item.features.map((feat, fIdx) => (
+                          <li key={fIdx} className="card-feature-item">
+                            <span className="card-feature-check">✓</span>
+                            <span className="card-feature-text">{feat}</span>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
 
-                      {/* Book Consultation Button */}
+                      {/* Book Free Consultation Button */}
                       <div className="card-action-row">
                         <button
                           type="button"
                           className="card-book-consultation-btn"
                           onClick={(e) => handleOpenContactPopup(e, item)}
                         >
-                          <span>Book Consultation</span>
-                          <ArrowRight size={16} className="btn-arrow-icon" />
+                          BOOK FREE CONSULTATION
                         </button>
                       </div>
                     </div>
@@ -278,7 +271,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
             </div>
           </div>
 
-          {/* Borderless Right Chevron Arrow - Positioned completely outside the cards */}
+          {/* Circular Right Arrow */}
           <button
             type="button"
             className="coverflow-nav-btn next"
@@ -286,10 +279,10 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
               e.stopPropagation();
               nextSlide();
             }}
-            aria-label="Next service card"
+            aria-label="Next platform solution"
             title="Next"
           >
-            <ChevronRight size={32} strokeWidth={2.4} />
+            <ChevronRight size={22} strokeWidth={2.4} />
           </button>
         </div>
       </div>
