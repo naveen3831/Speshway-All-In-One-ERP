@@ -281,14 +281,15 @@ export const OurErpSolutions = () => {
                     </div>
 
                     <div className="our-erp-card-body">
-                      <div className="our-erp-category-tag">
-                        <Icon size={11} className="our-erp-tag-icon" />
-                        <span>{displayCategory}</span>
+                      <div className="our-erp-card-info">
+                        <h3 className="our-erp-card-title">{displayTitle}</h3>
+                        <div className="our-erp-category-tag">
+                          <Icon size={11} className="our-erp-tag-icon" />
+                          <span>{displayCategory}</span>
+                        </div>
                       </div>
 
-                      <h3 className="our-erp-card-title">{displayTitle}</h3>
-
-                    <div className="our-erp-card-actions">
+                      <div className="our-erp-card-actions">
                       <button
                         type="button"
                         className="our-erp-btn-action our-erp-btn-website"
