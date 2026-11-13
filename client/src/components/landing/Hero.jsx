@@ -4,8 +4,6 @@ import { ArrowRight } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import {
   filterAdminProjects,
-  getDashboardRoute,
-  getWebsiteUrl,
   getProjectIcon,
   getProjectColor,
 } from '../../utils/adminProjects';
@@ -28,13 +26,9 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
   }, [products]);
 
   const handleCardClick = (prod) => {
-    const websiteUrl = getWebsiteUrl(prod);
-    if (websiteUrl) {
-      if (/^https?:\/\//i.test(websiteUrl)) {
-        window.open(websiteUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        navigate(websiteUrl);
-      }
+    const targetSlug = prod.slug || prod.id || (prod.name ? prod.name.toLowerCase().replace(/\s+/g, '-') : '');
+    if (targetSlug) {
+      navigate(`/product/${targetSlug}`);
     }
   };
 
@@ -130,8 +124,8 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
                               handleCardClick(prod);
                             }
                           }}
-                          title={`Open ${prod.name} Website`}
-                          aria-label={`Open ${prod.name} website`}
+                          title={`View ${prod.name} Details`}
+                          aria-label={`View ${prod.name} details`}
                         >
                           <div className={`laptop-tile-icon-box bg-tile-${color}`}>
                             {prod.imageUrl ? (

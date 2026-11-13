@@ -216,6 +216,8 @@ export default function App() {
             {/* Catch-all dynamic product dashboard router */}
             <Route path="/product/:id/dashboard" element={<DynamicProductDashboard />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/project/:id" element={<ProductDetailPage />} />
+            <Route path="/projects/:id" element={<ProductDetailPage />} />
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/why-us" element={<WhyUsPage />} />
             <Route path="/about" element={<WhyUsPage />} />
