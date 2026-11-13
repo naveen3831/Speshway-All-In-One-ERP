@@ -2,90 +2,95 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
+  Code2,
+  Smartphone,
+  Globe,
+  Cloud,
+  Database,
+  Shield,
   Sparkles,
 } from 'lucide-react';
 import './PlatformSolutions.css';
 
-// Ready-made platform solutions matching reference design (Masterstap)
+// The 6 exact platform solutions requested by the user
 const PLATFORM_SOLUTIONS_DATA = [
   {
-    id: 'food-delivery',
-    title: 'Food Delivery Platform',
+    id: 'software-development',
+    title: 'Software Development',
     description:
-      'Build a restaurant network platform like Swiggy and Zomato with seamless ordering.',
+      'Custom enterprise software solutions tailored to your unique business needs, scaling legacy workflows seamlessly.',
     features: [
-      'Restaurant Management',
-      'Real-time Order Tracking',
-      'Delivery Boy Apps',
-      'Rating & Review System',
+      'Custom CRM/ERP Systems',
+      'Legacy Database Migration',
+      'RESTful API Integration',
     ],
+    icon: Code2,
   },
   {
-    id: 'ride-sharing',
-    title: 'Ride Sharing Platform',
+    id: 'mobile-app-development',
+    title: 'Mobile App Development',
     description:
-      'Create a cab network platform like OLA & Uber with advanced booking features.',
+      'High-performance iOS and Android applications built with modern frameworks to engage users globally.',
     features: [
-      'GPS Navigation Integration',
-      'Driver Management System',
-      'Dynamic Pricing',
-      'Multi-payment Options',
+      'React Native Cross-Platform',
+      'Flutter Native Interfaces',
+      'App Store & Play Store Handover',
     ],
+    icon: Smartphone,
   },
   {
-    id: 'grocery-platform',
-    title: 'Grocery Platform',
+    id: 'web-development',
+    title: 'Web Development',
     description:
-      'Build a comprehensive grocery platform like Grofers with fresh delivery features.',
+      'Responsive and SEO-friendly corporate websites and web apps that drive conversions and scale indefinitely.',
     features: [
-      'Fresh Product Management',
-      'Scheduled Delivery',
-      'Subscription Services',
-      'Quality Assurance',
+      'E-Commerce & Payments',
+      'Corporate SaaS Platforms',
+      'Fast Static Sites & Headless CMS',
     ],
+    icon: Globe,
   },
   {
-    id: 'ecommerce-retail',
-    title: 'E-Commerce Retail Platform',
+    id: 'cloud-solutions-devops',
+    title: 'Cloud Solutions & DevOps',
     description:
-      'End-to-end multi-vendor shopping platform like Amazon with real-time tracking.',
+      'Scalable cloud infrastructures, automated deployments, and continuous integration models to optimize stability.',
     features: [
-      'Multi-vendor Storefronts',
-      'Secure Payment Gateways',
-      'Real-Time Inventory Sync',
-      'Advanced Sales Analytics',
+      'AWS, Azure & GCP Architecting',
+      'Secure Cloud Migrations',
+      'CI/CD Deployment Automation',
     ],
+    icon: Cloud,
   },
   {
-    id: 'healthcare-telemedicine',
-    title: 'Healthcare & Hospital Platform',
+    id: 'data-analytics-bi',
+    title: 'Data Analytics & BI',
     description:
-      'Comprehensive hospital management and telemedicine platform for modern clinics.',
+      'Transform raw scattered database states into sleek dashboard visualizations and actionable forecasts.',
     features: [
-      'Doctor Appointment Booking',
-      'Video Teleconsultation',
-      'Digital Prescriptions & EHR',
-      'Lab & Diagnostic Reports',
+      'PowerBI & Tableau Boards',
+      'Secure Data Warehousing',
+      'Automated Business Reports',
     ],
+    icon: Database,
   },
   {
-    id: 'logistics-fleet',
-    title: 'Fleet & Logistics Platform',
+    id: 'cyber-security-audits',
+    title: 'Cyber Security & Audits',
     description:
-      'Vehicle, ride, and fleet management platform with real-time telematics and dispatch.',
+      'Comprehensive security shielding, threat modeling, and compliance evaluations to secure modern businesses.',
     features: [
-      'Live GPS Fleet Tracking',
-      'Automated Route Dispatch',
-      'Driver & Trip Logging',
-      'Digital Proof of Delivery',
+      'Vulnerability Audits',
+      'Penetration Assessments',
+      'Regulatory Compliance Guardrails',
     ],
+    icon: Shield,
   },
 ];
 
 export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
   const cards = PLATFORM_SOLUTIONS_DATA;
-  // Start with activeIndex 1 (Ride Sharing Platform) matching reference layout
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const total = cards.length;
@@ -98,11 +103,11 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Continuous auto-scrolling: rotates card-to-card steadily and uninterrupted
+  // Continuous uninterrupted auto-scrolling
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % total);
-    }, 1800);
+    }, 2200);
     return () => clearInterval(interval);
   }, [total]);
 
@@ -199,6 +204,8 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                 else if (isLeft) cardClass += ' is-left';
                 else if (isRight) cardClass += ' is-right';
 
+                const IconComponent = item.icon;
+
                 return (
                   <div
                     key={item.id}
@@ -226,6 +233,11 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
                     }}
                   >
                     <div className="coverflow-card-inner">
+                      {/* Top Icon Box */}
+                      <div className="card-icon-box">
+                        <IconComponent size={22} className="card-icon-svg" />
+                      </div>
+
                       {/* Card Title */}
                       <h3 className="card-platform-title">{item.title}</h3>
 

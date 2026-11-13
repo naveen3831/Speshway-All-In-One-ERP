@@ -1,9 +1,9 @@
 /* ==========================================================================
    OUR PLATFORM SOLUTIONS - CLEAN MULTI-CARD CAROUSEL
-   Exact Match to Reference Design (Masterstap):
+   - 6 Platform Solutions: Software Dev, Mobile App, Web, Cloud & DevOps, Data & BI, Cyber Security
    - Center Active Card: Mint Green Pastel, Dark Title, Checkmarks, Solid Black Pill Button
    - Inactive Side Cards: Crisp White, Muted Faded Text & Ghost Buttons
-   - Circular Navigation Arrows
+   - Circular Navigation Arrows & Continuous Auto-scroll
    ========================================================================== */
 
 .platform-solutions-section {
@@ -127,7 +127,7 @@
   position: relative;
   width: 100%;
   max-width: 1160px;
-  height: 480px;
+  height: 500px;
   margin: 0 auto;
   perspective: 1200px;
   user-select: none;
@@ -151,9 +151,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 370px;
+  width: 375px;
   max-width: 86vw;
-  height: 440px;
+  height: 460px;
   border-radius: 26px;
   transform-style: preserve-3d;
   transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
@@ -169,7 +169,7 @@
   width: 100%;
   height: 100%;
   border-radius: 26px;
-  padding: 34px 30px 28px 30px;
+  padding: 30px 28px 24px 28px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -179,20 +179,36 @@
   overflow: hidden;
 }
 
+/* Top Icon Box */
+.card-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.card-icon-svg {
+  stroke-width: 2.2;
+}
+
 /* Card Typography */
 .card-platform-title {
-  font-size: 1.62rem;
+  font-size: 1.55rem;
   font-weight: 800;
   line-height: 1.25;
   letter-spacing: -0.02em;
-  margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
 }
 
 .card-platform-desc {
-  font-size: 0.94rem;
+  font-size: 0.92rem;
   line-height: 1.5;
-  margin: 0 0 24px 0;
-  min-height: 46px;
+  margin: 0 0 20px 0;
+  min-height: 44px;
 }
 
 /* Features Checklist */
@@ -202,14 +218,14 @@
   margin: 0 0 auto 0;
   display: flex;
   flex-direction: column;
-  gap: 13px;
+  gap: 12px;
 }
 
 .card-feature-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.93rem;
+  font-size: 0.91rem;
   font-weight: 500;
   line-height: 1.35;
 }
@@ -232,7 +248,7 @@
 
 /* Button Row */
 .card-action-row {
-  margin-top: 24px;
+  margin-top: 20px;
   width: 100%;
 }
 
@@ -265,9 +281,15 @@
 
 .coverflow-card.is-active .coverflow-card-inner {
   background-color: #d4f7e9;
-  border: 1px solid #a7f3d0;
+  border: 1.5px solid #a7f3d0;
   box-shadow: 0 20px 42px -10px rgba(16, 185, 129, 0.16),
               0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.coverflow-card.is-active .card-icon-box {
+  background-color: #c6f6e5;
+  border: 1px solid #a7f3d0;
+  color: #047857;
 }
 
 .coverflow-card.is-active .card-platform-title {
@@ -311,6 +333,13 @@
   background-color: #ffffff;
   border: 1px solid #f1f5f9;
   box-shadow: 0 6px 20px -4px rgba(15, 23, 42, 0.04);
+}
+
+.coverflow-card.is-left .card-icon-box,
+.coverflow-card.is-right .card-icon-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #94a3b8;
 }
 
 .coverflow-card.is-left .card-platform-title,
@@ -362,17 +391,17 @@
 @media (max-width: 1140px) {
   .coverflow-stage {
     max-width: 1000px;
-    height: 460px;
+    height: 480px;
   }
   .coverflow-card {
     width: 340px;
-    height: 430px;
+    height: 450px;
   }
   .coverflow-card-inner {
-    padding: 28px 24px 24px 24px;
+    padding: 26px 24px 22px 24px;
   }
   .card-platform-title {
-    font-size: 1.45rem;
+    font-size: 1.40rem;
   }
   .coverflow-card.is-left {
     transform: translate3d(calc(-50% - 280px), -50%, 0) scale(0.88);
@@ -387,21 +416,21 @@
     padding: 0 10px;
   }
   .coverflow-stage {
-    height: 450px;
+    height: 460px;
   }
   .coverflow-card {
     width: 310px;
-    height: 420px;
+    height: 430px;
   }
   .coverflow-card-inner {
-    padding: 24px 20px 20px 20px;
+    padding: 22px 18px 18px 18px;
   }
   .card-platform-title {
-    font-size: 1.35rem;
+    font-size: 1.30rem;
   }
   .card-platform-desc {
     font-size: 0.88rem;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     min-height: auto;
   }
   .card-features-list {
@@ -431,26 +460,31 @@
     padding: 0;
   }
   .coverflow-stage {
-    height: 430px;
+    height: 440px;
   }
   .coverflow-card {
     width: min(300px, calc(100vw - 64px));
-    height: 410px;
+    height: 420px;
   }
   .coverflow-card-inner {
-    padding: 22px 18px 18px 18px;
+    padding: 20px 16px 16px 16px;
     border-radius: 20px;
   }
+  .card-icon-box {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 10px;
+  }
   .card-platform-title {
-    font-size: 1.25rem;
+    font-size: 1.20rem;
     margin-bottom: 8px;
   }
   .card-platform-desc {
-    font-size: 0.84rem;
-    margin-bottom: 16px;
+    font-size: 0.82rem;
+    margin-bottom: 14px;
   }
   .card-feature-item {
-    font-size: 0.82rem;
+    font-size: 0.80rem;
   }
   .card-book-consultation-btn {
     padding: 11px 16px;
