@@ -86,7 +86,6 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
   const cards = PLATFORM_SOLUTIONS_DATA;
   // Start with activeIndex 1 (Ride Sharing Platform) matching reference layout
   const [activeIndex, setActiveIndex] = useState(1);
-  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const total = cards.length;
@@ -99,14 +98,13 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Steady auto-rotation with hover pause
+  // Continuous auto-scrolling: rotates card-to-card steadily and uninterrupted
   useEffect(() => {
-    if (isPaused) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % total);
-    }, 4000);
+    }, 1800);
     return () => clearInterval(interval);
-  }, [total, isPaused]);
+  }, [total]);
 
   // Trigger the built-in contact details popup
   const handleOpenContactPopup = (e, item) => {
@@ -160,11 +158,7 @@ export const PlatformSolutions = ({ onOpenDemo, onOpenContact }) => {
         </div>
 
         {/* Carousel Stage with Side Navigation Arrows */}
-        <div
-          className="coverflow-wrapper"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
+        <div className="coverflow-wrapper">
           {/* Circular Left Arrow */}
           <button
             type="button"
