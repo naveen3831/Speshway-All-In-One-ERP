@@ -2480,6 +2480,8 @@ button {
 .detail-hero-right {
   min-width: 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .btn-back-link {
@@ -2547,13 +2549,15 @@ button {
 .product-hero-card-preview {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 0;
   overflow: hidden;
   text-align: center;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
-  max-width: 100%;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
 }
 
 .preview-hero-media {
@@ -2570,26 +2574,26 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: 40px 20px;
 }
 
 .preview-card-info-content {
-  padding: 22px 28px 28px 28px;
+  padding: 16px 20px 20px 20px;
   text-align: center;
 }
 
 .preview-card-prod-name {
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
   word-break: break-word;
 }
 
 .preview-card-prod-sub {
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   color: #64748b;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 /* Full Page Body Content Container */
@@ -2632,21 +2636,21 @@ button {
 .preview-stats-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 18px;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
   border-top: 1px solid var(--border-subtle);
 }
 
 .p-num {
   display: block;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--text-dark);
 }
 
 .p-lbl {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
 }
 
@@ -2706,7 +2710,7 @@ button {
 
   .product-hero-card-preview {
     width: 100%;
-    max-width: 540px;
+    max-width: 380px;
     margin: 0 auto;
   }
 
@@ -2761,12 +2765,14 @@ button {
   .product-hero-card-preview {
     padding: 0;
     border-radius: 16px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
     overflow: hidden;
   }
 
   .preview-card-info-content {
-    padding: 18px 20px 22px 20px;
+    padding: 14px 16px 18px 16px;
   }
 
   .preview-card-prod-name {
@@ -2884,11 +2890,14 @@ button {
   .product-hero-card-preview {
     padding: 0;
     border-radius: 14px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
     overflow: hidden;
   }
 
   .preview-card-info-content {
-    padding: 14px 14px 18px 14px;
+    padding: 12px 12px 16px 12px;
   }
 
   .preview-top-badge {
@@ -2898,7 +2907,7 @@ button {
   }
 
   .product-hero-custom-img {
-    max-height: 240px;
+    max-height: 200px;
   }
 
   .preview-card-prod-name {
@@ -7585,7 +7594,7 @@ a.admin-kpi-card:hover {
 .product-hero-custom-img {
   width: 100%;
   height: auto;
-  max-height: 420px;
+  max-height: 310px;
   object-fit: cover;
   object-position: top center;
   border-radius: 0;
