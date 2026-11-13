@@ -317,7 +317,8 @@ export const OurErpSolutions = () => {
                       </button>
                     </div>
                   </div>
-                );
+                </div>
+              );
               })}
             </div>
 
