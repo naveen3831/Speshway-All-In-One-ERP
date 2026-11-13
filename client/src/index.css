@@ -2460,7 +2460,7 @@ button {
   align-items: center;
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 50%, #e6f7ef 100%);
   border-bottom: 1px solid #e2e8f0;
-  padding: 24px 0;
+  padding: 16px 0;
   box-sizing: border-box;
 }
 
@@ -2556,14 +2556,14 @@ button {
 .product-hero-card-preview {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 0;
   overflow: hidden;
   text-align: center;
-  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   width: 100%;
-  max-width: 480px;
+  max-width: 375px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -2572,7 +2572,7 @@ button {
 }
 
 .product-hero-card-preview:hover {
-  box-shadow: 0 24px 50px -12px rgba(0, 135, 90, 0.12), 0 0 1px 1px rgba(0, 135, 90, 0.1);
+  box-shadow: 0 20px 45px -12px rgba(0, 135, 90, 0.12), 0 0 1px 1px rgba(0, 135, 90, 0.08);
 }
 
 .preview-hero-media {
@@ -2595,29 +2595,29 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 36px 20px;
   flex: 1;
 }
 
 .preview-card-info-content {
   flex: 0 0 auto;
-  padding: 16px 24px 20px 24px;
+  padding: 12px 18px 16px 18px;
   text-align: center;
   background-color: #ffffff;
 }
 
 .preview-card-prod-name {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
   word-break: break-word;
 }
 
 .preview-card-prod-sub {
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   color: #64748b;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 /* Full Page Body Content Container */
@@ -2661,8 +2661,8 @@ button {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px solid var(--border-subtle);
 }
 
@@ -2739,7 +2739,7 @@ button {
 
   .product-hero-card-preview {
     width: 100%;
-    max-width: 460px;
+    max-width: 375px;
     height: auto;
     max-height: none;
     min-height: 0;
@@ -2803,7 +2803,7 @@ button {
     padding: 0;
     border-radius: 16px;
     width: 100%;
-    max-width: 400px;
+    max-width: 350px;
     height: auto;
     max-height: none;
     min-height: 0;
