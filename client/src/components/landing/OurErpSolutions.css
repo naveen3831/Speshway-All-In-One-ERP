@@ -233,7 +233,7 @@
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 8px;
+  padding: 0;
   gap: 10px;
   height: 130px;
   box-sizing: border-box;
@@ -254,22 +254,21 @@
   box-shadow: 0 8px 18px -4px rgba(15, 23, 42, 0.08);
 }
 
-/* Left Image Container (~42% width, exact 1.16:1 ratio) */
+/* Left Image Container (~42% width, flush to top, bottom, and left of card) */
 .our-erp-img-banner {
   flex: 0 0 42%;
   width: 42%;
   min-width: 95px;
   max-width: 126px;
   height: 100%;
-  aspect-ratio: 1.16 / 1;
-  border-radius: 10px;
+  border-radius: 13px 0 0 13px;
   overflow: hidden;
   background-color: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: none;
   box-sizing: border-box;
 }
 
@@ -279,7 +278,7 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  border-radius: 9px;
+  border-radius: 13px 0 0 13px;
   transition: transform 0.25s ease;
 }
 
@@ -293,7 +292,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9px;
+  border-radius: 13px 0 0 13px;
   background-color: #ecfdf5;
   color: #059669;
 }
@@ -308,7 +307,7 @@
   align-items: flex-start;
   text-align: left;
   height: 100%;
-  padding: 0;
+  padding: 8px 10px 8px 0;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -521,8 +520,12 @@
 
   .our-erp-card {
     height: 124px;
-    padding: 7px;
+    padding: 0;
     gap: 10px;
+  }
+
+  .our-erp-card-body {
+    padding: 7px 8px 7px 0;
   }
 
   .our-erp-img-banner {
@@ -540,8 +543,12 @@
 @media (max-width: 380px) {
   .our-erp-card {
     height: 120px;
-    padding: 6px;
+    padding: 0;
     gap: 8px;
+  }
+
+  .our-erp-card-body {
+    padding: 6px 8px 6px 0;
   }
 
   .our-erp-img-banner {
