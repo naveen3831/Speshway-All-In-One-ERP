@@ -432,6 +432,10 @@
   box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
 }
 
+.our-erp-shield-icon {
+  display: none;
+}
+
 .our-erp-btn-arrow {
   font-size: 0.72rem;
   font-weight: 700;
@@ -439,9 +443,59 @@
   margin-left: 1px;
 }
 
+/* Show More Option (Mobile Only - Hidden on Desktop) */
+.our-erp-show-more-wrap {
+  display: none;
+}
+
+.our-erp-show-more-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background-color: #ffffff;
+  color: #059669;
+  border: 1.5px solid #059669;
+  padding: 9px 24px;
+  border-radius: 9999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.08);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  font-family: inherit;
+}
+
+.our-erp-show-more-btn:hover {
+  background-color: #059669;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.22);
+  transform: translateY(-1px);
+}
+
+.our-erp-show-more-btn:active {
+  transform: translateY(0);
+}
+
+.our-erp-show-more-icon {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.our-erp-show-more-btn:hover .our-erp-show-more-icon {
+  transform: translateY(2px);
+}
+
 /* ==========================================================================
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
+@media (min-width: 769px) {
+  .our-erp-show-more-wrap {
+    display: none !important;
+  }
+}
+
 @media (max-width: 1200px) {
   .our-erp-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -457,6 +511,196 @@
 }
 
 @media (max-width: 768px) {
+  .our-erp-section {
+    padding: 34px 16px 44px 16px;
+  }
+
+  /* Mobile Grid: Single Column Centered */
+  .our-erp-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 440px !important;
+    margin: 0 auto !important;
+    gap: 16px !important;
+  }
+
+  /* Vertical Solution Card Matching Reference Image 1 */
+  .our-erp-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    border-radius: 16px !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+    overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  /* Full-Width Image Banner at Top (Flush from card top, brand title fully visible) */
+  .our-erp-img-banner {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 8 !important;
+    border-radius: 15px 15px 0 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background-color: #f1f5f9 !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .our-erp-banner-img {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16 / 8 !important;
+    object-fit: cover !important;
+    object-position: top center !important;
+    border-radius: 15px 15px 0 0 !important;
+    display: block !important;
+  }
+
+  /* Card Body Below Image */
+  .our-erp-card-body {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    text-align: center !important;
+    padding: 12px 14px 14px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Category Tag Pill Centered */
+  .our-erp-category-tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    margin: 0 auto 3px auto !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    color: #00875a !important;
+    background-color: #dcfce7 !important;
+    border: 1px solid #bbf7d0 !important;
+    padding: 2.5px 11px !important;
+    border-radius: 9999px !important;
+    max-width: 90% !important;
+    line-height: 1.2 !important;
+  }
+
+  .our-erp-tag-icon {
+    width: 11px !important;
+    height: 11px !important;
+    color: #00875a !important;
+  }
+
+  /* Product Title Centered */
+  .our-erp-card-title {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    margin: 3px 0 8px 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+    letter-spacing: -0.015em !important;
+  }
+
+  /* Hide Description on Mobile to Match Clean Reference Style */
+  .our-erp-card-desc {
+    display: none !important;
+  }
+
+  /* 2-Column Action Buttons at Bottom */
+  .our-erp-card-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .our-erp-btn-action {
+    width: 100% !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    padding: 7px 4px !important;
+    border-radius: 9999px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05) !important;
+  }
+
+  .our-erp-btn-action svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  /* Website Button: Clean White Pill with Thin Slate Border */
+  .our-erp-btn-website {
+    background-color: #ffffff !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .our-erp-btn-website:hover {
+    background-color: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+  }
+
+  /* View ERP Button: Soft Green Pill Matching Reference Image 1 */
+  .our-erp-btn-erp {
+    background-color: #dcfce7 !important;
+    color: #00875a !important;
+    border: 1px solid #bbf7d0 !important;
+  }
+
+  .our-erp-btn-erp:hover {
+    background-color: #00875a !important;
+    color: #ffffff !important;
+    border-color: #00875a !important;
+  }
+
+  .our-erp-shield-icon {
+    display: inline-block !important;
+    color: #00875a !important;
+  }
+
+  .our-erp-btn-erp:hover .our-erp-shield-icon {
+    color: #ffffff !important;
+  }
+
+  .our-erp-btn-arrow {
+    display: none !important;
+  }
+
+  /* Show More Button Centered on Mobile */
+  .our-erp-show-more-wrap {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 18px auto 6px auto !important;
+    max-width: 440px !important;
+  }
+
   .our-erp-search-filter-wrapper {
     display: flex !important;
     align-items: center !important;
@@ -500,23 +744,7 @@
 
 @media (max-width: 600px) {
   .our-erp-section {
-    padding: 32px 14px 44px 14px;
-  }
-
-  .our-erp-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .our-erp-card {
-    height: 124px;
-    padding: 7px;
-    gap: 10px;
-  }
-
-  .our-erp-img-banner {
-    width: 38%;
-    min-width: 100px;
+    padding: 30px 14px 40px 14px;
   }
 
   .our-erp-title {
@@ -524,24 +752,49 @@
   }
 }
 
-@media (max-width: 380px) {
-  .our-erp-card {
-    height: 120px;
-    padding: 6px;
-    gap: 8px;
+@media (max-width: 480px) {
+  .our-erp-section {
+    padding: 26px 12px 36px 12px;
   }
 
-  .our-erp-img-banner {
-    width: 36%;
-    min-width: 90px;
+  .our-erp-grid {
+    gap: 14px !important;
+  }
+
+  .our-erp-card-body {
+    padding: 10px 12px 13px 12px !important;
   }
 
   .our-erp-card-title {
-    font-size: 0.85rem;
+    font-size: 1rem !important;
   }
 
   .our-erp-btn-action {
-    font-size: 0.64rem;
-    padding: 4px 6px;
+    font-size: 0.76rem !important;
+    padding: 6.5px 4px !important;
+  }
+
+  .our-erp-show-more-btn {
+    padding: 8px 22px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .our-erp-grid {
+    gap: 12px !important;
+  }
+
+  .our-erp-card-body {
+    padding: 9px 10px 12px 10px !important;
+  }
+
+  .our-erp-card-title {
+    font-size: 0.94rem !important;
+  }
+
+  .our-erp-btn-action {
+    font-size: 0.72rem !important;
+    padding: 6px 3px !important;
   }
 }
