@@ -254,17 +254,17 @@
   box-shadow: 0 8px 18px -4px rgba(15, 23, 42, 0.08);
 }
 
-/* Left Image Container (~44% width, exact 1.16:1 ratio) */
+/* Left Image Container (~42% width, exact 1.16:1 ratio) */
 .our-erp-img-banner {
-  width: 44%;
-  min-width: 105px;
-  max-width: 138px;
+  flex: 0 0 42%;
+  width: 42%;
+  min-width: 95px;
+  max-width: 126px;
   height: 100%;
   aspect-ratio: 1.16 / 1;
   border-radius: 10px;
   overflow: hidden;
   background-color: #f1f5f9;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -298,7 +298,7 @@
   color: #059669;
 }
 
-/* Right Card Body (~56% width) */
+/* Right Card Body (~58% width) */
 .our-erp-card-body {
   flex: 1;
   min-width: 0;
@@ -308,7 +308,7 @@
   align-items: flex-start;
   text-align: left;
   height: 100%;
-  padding: 1px 0 1px 2px;
+  padding: 0;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -336,8 +336,8 @@
 
 .our-erp-tag-icon {
   flex-shrink: 0;
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   color: #059669;
 }
 
@@ -373,7 +373,7 @@
 .our-erp-card-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   width: 100%;
   margin-top: auto;
   padding-top: 3px;
@@ -381,14 +381,16 @@
 }
 
 .our-erp-btn-action {
+  flex: 1 1 0;
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 600;
   line-height: 1;
-  padding: 4.5px 8px;
+  padding: 4.5px 5px;
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -398,10 +400,18 @@
   text-decoration: none;
 }
 
-.our-erp-btn-action svg {
+.our-erp-btn-action svg,
+.our-erp-btn-icon {
   flex-shrink: 0;
   width: 11px;
   height: 11px;
+}
+
+.our-erp-btn-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
 }
 
 /* Website Pill Button */
@@ -433,7 +443,8 @@
 }
 
 .our-erp-btn-arrow {
-  font-size: 0.72rem;
+  flex-shrink: 0;
+  font-size: 0.70rem;
   font-weight: 700;
   line-height: 1;
   margin-left: 1px;
@@ -442,7 +453,7 @@
 /* ==========================================================================
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
-@media (max-width: 1200px) {
+@media (max-width: 1240px) {
   .our-erp-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
@@ -515,8 +526,10 @@
   }
 
   .our-erp-img-banner {
+    flex: 0 0 38%;
     width: 38%;
-    min-width: 100px;
+    min-width: 95px;
+    max-width: 120px;
   }
 
   .our-erp-title {
@@ -532,8 +545,10 @@
   }
 
   .our-erp-img-banner {
+    flex: 0 0 36%;
     width: 36%;
-    min-width: 90px;
+    min-width: 85px;
+    max-width: 110px;
   }
 
   .our-erp-card-title {
@@ -541,7 +556,7 @@
   }
 
   .our-erp-btn-action {
-    font-size: 0.64rem;
-    padding: 4px 6px;
+    font-size: 0.62rem;
+    padding: 4px 4px;
   }
 }
