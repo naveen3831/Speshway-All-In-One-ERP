@@ -277,9 +277,9 @@ export const OurErpSolutions = () => {
                           e.stopPropagation();
                           navigate(dashboardRoute);
                         }}
-                        title={`Open live in-site ${displayTitle} Dashboard`}
+                        title={`Open live in-site ${displayTitle} ERP Dashboard`}
                       >
-                        <span className="our-erp-btn-text">View ERP</span>
+                        <span className="our-erp-btn-text">ERP</span>
                         <span className="our-erp-btn-arrow">↗</span>
                       </button>
                     </div>
