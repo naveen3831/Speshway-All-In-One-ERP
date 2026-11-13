@@ -266,8 +266,8 @@ export const OurErpSolutions = () => {
                         }}
                         title={`Open live ${displayTitle} Website`}
                       >
-                        <Globe size={11} />
-                        <span>Website</span>
+                        <Globe size={11} className="our-erp-btn-icon" />
+                        <span className="our-erp-btn-text">Website</span>
                       </button>
 
                       <button
@@ -277,9 +277,9 @@ export const OurErpSolutions = () => {
                           e.stopPropagation();
                           navigate(dashboardRoute);
                         }}
-                        title={`Open live in-site ${displayTitle} Dashboard`}
+                        title={`Open live in-site ${displayTitle} ERP Dashboard`}
                       >
-                        <span>View ERP</span>
+                        <span className="our-erp-btn-text">ERP</span>
                         <span className="our-erp-btn-arrow">↗</span>
                       </button>
                     </div>
