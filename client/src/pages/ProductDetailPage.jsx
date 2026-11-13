@@ -24,33 +24,13 @@ import {
   Activity,
   ArrowRight,
   ArrowLeft,
-  Maximize2,
-  X,
 } from 'lucide-react';
 
 export const ProductDetailPage = () => {
   const { id } = useParams();
   const { products } = useSocket();
   const [modalMode, setModalMode] = useState(null);
-  const [isFullscreenCard, setIsFullscreenCard] = useState(false);
   const navigate = useNavigate();
-
-  // Handle ESC key and scroll lock when fullscreen card modal is open
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsFullscreenCard(false);
-    };
-    if (isFullscreenCard) {
-      window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [isFullscreenCard]);
 
   // Scroll to top whenever the product detail page opens or ID changes
   useEffect(() => {
@@ -379,49 +359,24 @@ export const ProductDetailPage = () => {
 
             <div className="detail-hero-right">
               <div className="product-hero-card-preview">
-                <div
-                  className="preview-hero-media"
-                  onClick={() => setIsFullscreenCard(true)}
-                  title="Click to view full screen"
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      setIsFullscreenCard(true);
-                    }
-                  }}
-                >
+                <div className="preview-hero-media">
                   {(() => {
                     const rawImg = product.imageUrl && typeof product.imageUrl === 'string' ? product.imageUrl.trim() : '';
                     const heroImg = rawImg || getProductFallbackImage(product.slug || product.id || product.name) || '';
                     return heroImg ? (
-                      <>
-                        <img
-                          src={heroImg}
-                          alt={product.name}
-                          className="product-hero-custom-img"
-                          onError={(e) => {
-                            const fallback = getProductFallbackImage(product.slug || product.id);
-                            if (fallback && e.target.src !== fallback) {
-                              e.target.src = fallback;
-                            } else {
-                              e.target.style.display = 'none';
-                            }
-                          }}
-                        />
-                        <button
-                          type="button"
-                          className="btn-card-expand"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setIsFullscreenCard(true);
-                          }}
-                          title="View Fullscreen"
-                          aria-label="View Fullscreen"
-                        >
-                          <Maximize2 size={16} />
-                        </button>
-                      </>
+                      <img
+                        src={heroImg}
+                        alt={product.name}
+                        className="product-hero-custom-img"
+                        onError={(e) => {
+                          const fallback = getProductFallbackImage(product.slug || product.id);
+                          if (fallback && e.target.src !== fallback) {
+                            e.target.src = fallback;
+                          } else {
+                            e.target.style.display = 'none';
+                          }
+                        }}
+                      />
                     ) : (
                       <div className="preview-fallback-icon">
                         <Layers size={64} className="text-icon-green" />
@@ -525,68 +480,6 @@ export const ProductDetailPage = () => {
         onOpenGetStarted={() => navigate('/get-started')}
         onOpenDemo={() => setModalMode('demo')}
       />
-
-      {/* Fullscreen Card Modal Overlay */}
-      {isFullscreenCard && (
-        <div
-          className="card-fullscreen-backdrop"
-          onClick={() => setIsFullscreenCard(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Fullscreen Card View"
-        >
-          <div className="card-fullscreen-dialog" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              className="card-fullscreen-close-btn"
-              onClick={() => setIsFullscreenCard(false)}
-              title="Close Fullscreen (Esc)"
-              aria-label="Close Fullscreen"
-            >
-              <X size={22} />
-            </button>
-            <div className="card-fullscreen-card-wrapper">
-              <div className="product-hero-card-preview is-modal-fullscreen">
-                <div className="preview-hero-media">
-                  {(() => {
-                    const rawImg = product.imageUrl && typeof product.imageUrl === 'string' ? product.imageUrl.trim() : '';
-                    const heroImg = rawImg || getProductFallbackImage(product.slug || product.id || product.name) || '';
-                    return heroImg ? (
-                      <img
-                        src={heroImg}
-                        alt={product.name}
-                        className="product-hero-custom-img"
-                      />
-                    ) : (
-                      <div className="preview-fallback-icon">
-                        <Layers size={64} className="text-icon-green" />
-                      </div>
-                    );
-                  })()}
-                </div>
-                <div className="preview-card-info-content">
-                  <h3 className="preview-card-prod-name">{product.name}</h3>
-                  <p className="preview-card-prod-sub">Real-Time Synchronized &bull; Role-Based Access</p>
-                  <div className="preview-stats-bar">
-                    <div>
-                      <span className="p-num">99.9%</span>
-                      <span className="p-lbl">Uptime SLA</span>
-                    </div>
-                    <div>
-                      <span className="p-num">256-bit</span>
-                      <span className="p-lbl">AES Encryption</span>
-                    </div>
-                    <div>
-                      <span className="p-num">&lt;50ms</span>
-                      <span className="p-lbl">API Latency</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {modalMode && (
         <DemoModal mode={modalMode} onClose={() => setModalMode(null)} />
