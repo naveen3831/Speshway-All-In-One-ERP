@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Shield, ExternalLink, Search, X, SlidersHorizontal, Check } from 'lucide-react';
+import { Globe, Shield, ExternalLink, Search, X, SlidersHorizontal, Check, ChevronDown } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import {
   filterAdminProjects,
@@ -25,6 +25,33 @@ export const OurErpSolutions = () => {
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const mobileFilterRef = useRef(null);
   const sectionTitle = homeContent?.solutions?.title || 'Our ERP Solutions';
+
+  // Mobile detection for mobile-only card pagination (<= 768px)
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
+  const [visibleMobileCount, setVisibleMobileCount] = useState(5);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Reset pagination to 5 cards whenever category or search filter changes
+  useEffect(() => {
+    setVisibleMobileCount(5);
+  }, [searchTerm, activeCategory]);
+
+  const handleShowMore = () => {
+    setVisibleMobileCount((prev) => prev + 5);
+  };
 
   // Close mobile filter dropdown when clicking outside
   useEffect(() => {
@@ -68,6 +95,15 @@ export const OurErpSolutions = () => {
       return matchesSearch && matchesCat;
     });
   }, [adminProjects, searchTerm, activeCategory]);
+
+  // For mobile response: initially show 5 cards, with "Show More" revealing +5 cards at a time.
+  // For desktop (> 768px): always display all filtered cards without pagination.
+  const displayedProjects = useMemo(() => {
+    if (isMobile) {
+      return filteredProjects.slice(0, visibleMobileCount);
+    }
+    return filteredProjects;
+  }, [filteredProjects, isMobile, visibleMobileCount]);
 
   return (
     <section id="solutions" className="our-erp-section">
@@ -195,65 +231,62 @@ export const OurErpSolutions = () => {
             </button>
           </div>
         ) : (
-          <div id="erp-cards" className="our-erp-grid">
-            {filteredProjects.map((prod) => {
-              const Icon = getProjectIcon(prod);
-              const color = getProjectColor(prod);
-              const rawImg = prod.imageUrl && typeof prod.imageUrl === 'string' ? prod.imageUrl.trim() : '';
-              const imgUrl = rawImg || getProductFallbackImage(prod.slug || prod.id || prod.name) || '';
-              const detailRoute = `/product/${prod.slug || prod.id}`;
-              const dashboardRoute = getDashboardRoute(prod);
-              const displayTitle = formatProjectTitle(prod);
-              const displayCategory = getProjectCategory(prod);
-              const displayDesc = getProjectShortDescription(prod);
+          <>
+            <div id="erp-cards" className="our-erp-grid">
+              {displayedProjects.map((prod) => {
+                const Icon = getProjectIcon(prod);
+                const color = getProjectColor(prod);
+                const rawImg = prod.imageUrl && typeof prod.imageUrl === 'string' ? prod.imageUrl.trim() : '';
+                const imgUrl = rawImg || getProductFallbackImage(prod.slug || prod.id || prod.name) || '';
+                const detailRoute = `/product/${prod.slug || prod.id}`;
+                const dashboardRoute = getDashboardRoute(prod);
+                const displayTitle = formatProjectTitle(prod);
+                const displayCategory = getProjectCategory(prod);
+                const displayDesc = getProjectShortDescription(prod);
 
-              return (
-                <div
-                  key={prod.id || prod.slug}
-                  className="our-erp-card"
-                  onClick={() => navigate(detailRoute)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      navigate(detailRoute);
-                    }
-                  }}
-                  title={`View ${displayTitle} Details`}
-                >
-                  <div className="our-erp-img-banner">
-                    {imgUrl ? (
-                      <img
-                        src={imgUrl}
-                        alt={displayTitle}
-                        className="our-erp-banner-img"
-                        loading="lazy"
-                        onError={(e) => {
-                          const fallback = getProductFallbackImage(prod.slug || prod.id || prod.name);
-                          if (fallback && e.target.src !== fallback) {
-                            e.target.src = fallback;
-                          }
-                        }}
-                      />
-                    ) : (
-                      <div className={`our-erp-icon-wrap icon-box-${color}`}>
-                        <Icon size={24} />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="our-erp-card-body">
-                    <div className="our-erp-category-tag">
-                      <Icon size={11} className="our-erp-tag-icon" />
-                      <span>{displayCategory}</span>
+                return (
+                  <div
+                    key={prod.id || prod.slug}
+                    className="our-erp-card"
+                    onClick={() => navigate(detailRoute)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigate(detailRoute);
+                      }
+                    }}
+                    title={`View ${displayTitle} Details`}
+                  >
+                    <div className="our-erp-img-banner">
+                      {imgUrl ? (
+                        <img
+                          src={imgUrl}
+                          alt={displayTitle}
+                          className="our-erp-banner-img"
+                          loading="lazy"
+                          onError={(e) => {
+                            const fallback = getProductFallbackImage(prod.slug || prod.id || prod.name);
+                            if (fallback && e.target.src !== fallback) {
+                              e.target.src = fallback;
+                            }
+                          }}
+                        />
+                      ) : (
+                        <div className={`our-erp-icon-wrap icon-box-${color}`}>
+                          <Icon size={24} />
+                        </div>
+                      )}
                     </div>
 
-                    <h3 className="our-erp-card-title">{displayTitle}</h3>
+                    <div className="our-erp-card-body">
+                      <div className="our-erp-category-tag">
+                        <Icon size={11} className="our-erp-tag-icon" />
+                        <span>{displayCategory}</span>
+                      </div>
 
-                    <p className="our-erp-card-desc" title={displayDesc}>
-                      {displayDesc}
-                    </p>
+                      <h3 className="our-erp-card-title">{displayTitle}</h3>
 
                     <div className="our-erp-card-actions">
                       <button
@@ -284,10 +317,25 @@ export const OurErpSolutions = () => {
                       </button>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile Response Only: "Show More" option (5 cards initially, +5 on click) */}
+            {isMobile && visibleMobileCount < filteredProjects.length && (
+              <div className="our-erp-show-more-wrap">
+                <button
+                  type="button"
+                  className="our-erp-show-more-btn"
+                  onClick={handleShowMore}
+                  aria-label="Show more solutions"
+                >
+                  <span>Show More</span>
+                  <ChevronDown size={16} className="our-erp-show-more-icon" />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
