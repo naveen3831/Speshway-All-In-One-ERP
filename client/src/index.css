@@ -2563,7 +2563,7 @@ button {
   box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   width: 100%;
-  max-width: 375px;
+  max-width: 480px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -2578,11 +2578,12 @@ button {
 .preview-hero-media {
   position: relative;
   width: 100%;
+  aspect-ratio: 16 / 6;
   height: auto;
   min-height: 0;
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #f8fafc;
   line-height: 0;
   overflow: hidden;
   border-bottom: 1px solid #f1f5f9;
@@ -2739,7 +2740,7 @@ button {
 
   .product-hero-card-preview {
     width: 100%;
-    max-width: 375px;
+    max-width: 480px;
     height: auto;
     max-height: none;
     min-height: 0;
@@ -2747,6 +2748,8 @@ button {
   }
 
   .preview-hero-media {
+    width: 100%;
+    aspect-ratio: 16 / 6;
     height: auto;
     max-height: none;
   }
@@ -2803,7 +2806,7 @@ button {
     padding: 0;
     border-radius: 16px;
     width: 100%;
-    max-width: 350px;
+    max-width: 420px;
     height: auto;
     max-height: none;
     min-height: 0;
@@ -2812,6 +2815,8 @@ button {
   }
 
   .preview-hero-media {
+    width: 100%;
+    aspect-ratio: 16 / 6;
     height: auto;
     max-height: none;
   }
@@ -2955,6 +2960,8 @@ button {
   }
 
   .preview-hero-media {
+    width: 100%;
+    aspect-ratio: 16 / 6;
     height: auto;
     max-height: none;
   }
@@ -7639,12 +7646,12 @@ a.admin-kpi-card:hover {
   border-color: #00875a;
 }
 
-/* Product Detail Hero Custom Image */
+/* Product Detail Hero Custom Image - 16:6 aspect ratio matching platform catalog cards */
 .product-hero-custom-img {
   width: 100%;
-  height: auto;
-  aspect-ratio: 1024 / 882;
-  object-fit: contain;
+  height: 100%;
+  aspect-ratio: 16 / 6;
+  object-fit: cover;
   object-position: center;
   border-radius: 0;
   box-shadow: none;
