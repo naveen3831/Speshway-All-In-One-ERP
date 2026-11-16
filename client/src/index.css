@@ -4507,10 +4507,9 @@ a.admin-kpi-card:hover {
     justify-content: space-between !important;
     margin: 0 !important;
     padding: 0 16px !important;
-    padding-top: env(safe-area-inset-top, 0px) !important;
     padding-left: max(env(safe-area-inset-left, 0px), 16px) !important;
     padding-right: max(env(safe-area-inset-right, 0px), 16px) !important;
-    height: calc(56px + env(safe-area-inset-top, 0px)) !important;
+    height: 56px !important;
     min-height: 56px !important;
     box-sizing: border-box !important;
     position: sticky !important;
