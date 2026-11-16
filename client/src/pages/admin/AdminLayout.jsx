@@ -73,7 +73,8 @@ export const AdminLayout = () => {
     if (path.startsWith('/admin/settings')) return 'Settings';
     if (path.startsWith('/admin/home')) return 'Home Page';
     if (path.startsWith('/admin/users')) return 'Users';
-    return `${brandTitle} Dashboard`;
+    if (path.startsWith('/admin/urls')) return 'URLs';
+    return 'Dashboard';
   };
 
   const getMobilePageIcon = () => {
@@ -101,14 +102,16 @@ export const AdminLayout = () => {
 
   const getDesktopTopbarTitle = () => {
     const path = location.pathname;
-    if (path.includes('/new')) return `${brandTitle} Add New Project`;
-    if (path.includes('/edit')) return `${brandTitle} Edit Project`;
-    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return `${brandTitle} Projects Management`;
-    if (path.startsWith('/admin/pricing')) return `${brandTitle} Pricing Plans`;
-    if (path.startsWith('/admin/inquiries')) return `${brandTitle} Enquiries`;
-    if (path.startsWith('/admin/settings')) return `${brandTitle} System Settings`;
-    if (path.startsWith('/admin/users')) return `${brandTitle} User Management`;
-    return `${brandTitle} Administrative Dashboard`;
+    if (path.includes('/new')) return 'Add New Project';
+    if (path.includes('/edit')) return 'Edit Project';
+    if (path.startsWith('/admin/products') || path.startsWith('/admin/projects')) return 'Project Management';
+    if (path.startsWith('/admin/pricing')) return 'Pricing & Plans Management';
+    if (path.startsWith('/admin/inquiries')) return 'Customer Inquiries & Leads';
+    if (path.startsWith('/admin/settings')) return 'System Settings';
+    if (path.startsWith('/admin/urls')) return 'Website & Admin Dashboard URL Directory';
+    if (path.startsWith('/admin/users')) return 'Users & Personnel Directory';
+    if (path.startsWith('/admin/home')) return 'Home Page Options';
+    return 'Executive Dashboard Overview';
   };
 
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -330,10 +333,11 @@ export const AdminLayout = () => {
 
         <nav className="admin-sidebar-menu">
           <NavLink
-            to="/admin/overview"
+            to="/admin"
+            end
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) =>
-              isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard'
+              isActive || location.pathname === '/admin' || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard'
                 ? 'admin-nav-item active'
                 : 'admin-nav-item'
             }
@@ -460,7 +464,8 @@ export const AdminLayout = () => {
               {getMobilePageIcon()}
             </span>
             <span className="topbar-title">
-              {getMobileTopbarTitle()}
+              <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
+              <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>
             </span>
           </div>
 
@@ -538,13 +543,14 @@ export const AdminLayout = () => {
       {/* Mobile Bottom Navigation Bar (Mobile Responsive Only) */}
       <nav className="admin-mobile-bottom-bar" aria-label="Admin Mobile Navigation">
         <NavLink
-          to="/admin/overview"
+          to="/admin"
+          end
           onClick={() => {
             setShowMobileProfile(false);
           }}
           className={({ isActive }) =>
             `admin-bottom-nav-item ${
-              (isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') &&
+              (isActive || location.pathname === '/admin' || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') &&
               !showMobileProfile
                 ? 'active'
                 : ''

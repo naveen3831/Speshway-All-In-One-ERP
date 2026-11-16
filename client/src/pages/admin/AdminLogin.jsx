@@ -34,6 +34,12 @@ export const AdminLogin = () => {
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
 
+  React.useEffect(() => {
+    if (user && (user.role === 'admin' || !user.role)) {
+      navigate('/admin', { replace: true });
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -45,7 +51,7 @@ export const AdminLogin = () => {
       const res = await login({ email: cleanEmail, password: cleanPassword });
       dismissSessionExpired();
       if (res?.data?.role === 'admin' || !res?.data?.role) {
-        navigate('/admin/overview', { replace: true });
+        navigate('/admin', { replace: true });
       } else {
         navigate('/dashboard', { replace: true });
       }
