@@ -3317,8 +3317,8 @@ button {
 
 /* Admin Sidebar */
 .admin-sidebar {
-  width: 260px;
-  min-width: 260px;
+  width: 215px;
+  min-width: 215px;
   background-color: #0f172a;
   color: #f8fafc;
   display: flex;
@@ -3334,7 +3334,7 @@ button {
 }
 
 .admin-sidebar-brand {
-  padding: 20px 20px;
+  padding: 18px 14px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -3401,7 +3401,7 @@ button {
 }
 
 .admin-sidebar-menu {
-  padding: 12px 10px;
+  padding: 12px 8px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -3413,13 +3413,14 @@ button {
 .admin-nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 7px 12px;
+  gap: 10px;
+  padding: 7px 10px;
   border-radius: 8px;
   color: #94a3b8;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .admin-nav-item:hover {
@@ -3434,7 +3435,7 @@ button {
 }
 
 .admin-sidebar-footer {
-  padding: 16px;
+  padding: 12px 10px;
   border-top: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
@@ -7757,7 +7758,7 @@ a.admin-kpi-card:hover {
 .form-sticky-action-bar {
   position: fixed;
   bottom: 0;
-  left: 260px;
+  left: 215px;
   right: 0;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
