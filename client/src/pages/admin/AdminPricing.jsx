@@ -373,9 +373,6 @@ export const AdminPricing = () => {
         <div className="admin-header-top-row">
           <div className="admin-header-title-wrap">
             <h1 className="admin-heading">
-              <span className="admin-heading-icon-badge">
-                <CreditCard size={18} />
-              </span>
               <span className="admin-heading-desktop">Pricing &amp; Plans Management</span>
               <span className="admin-heading-mobile">Pricing</span>
             </h1>
