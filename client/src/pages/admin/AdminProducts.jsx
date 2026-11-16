@@ -344,10 +344,6 @@ export const AdminProducts = () => {
       {/* Header Row - Matching Pricing Page Layout Exactly with Toggle at Top Right Corner */}
       <div className="admin-page-header-row">
         <div className="admin-header-top-row">
-          <div className="admin-header-title-wrap">
-            <h1 className="admin-heading">Projects</h1>
-          </div>
-
           <div className="admin-header-actions-group">
             <button
               type="button"
