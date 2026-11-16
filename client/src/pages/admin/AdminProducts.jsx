@@ -345,58 +345,74 @@ export const AdminProducts = () => {
       <div className="admin-page-header-row">
         <div className="admin-header-top-row">
           <div className="admin-header-title-wrap">
-            <h1 className="admin-heading">Projects</h1>
+            <h1 className="admin-heading">
+              <span className="admin-heading-icon-badge">
+                <Package size={18} />
+              </span>
+              <span>Projects</span>
+            </h1>
           </div>
 
-          {/* Top Right Corner Toggle Button */}
-          <div className="admin-header-toggle-wrap">
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={handleToggleProductsOption}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleToggleProductsOption();
-                }
-              }}
-              className={`admin-navbar-toggle-btn ${isProductsActive ? 'is-active' : 'is-inactive'}`}
-              title={
-                isProductsActive
-                  ? 'Click to turn OFF: hide Projects option and /projects page'
-                  : 'Click to turn ON: show Projects option and /projects page'
-              }
+          <div className="admin-header-actions-group">
+            <button
+              type="button"
+              onClick={handleAddNewProduct}
+              className="btn-hero-primary admin-header-add-btn"
             >
-              <div className="admin-toggle-btn-left">
-                <div className="admin-toggle-icon-wrap">
-                  {isProductsActive ? <Eye size={15} /> : <EyeOff size={15} />}
-                </div>
-                <span className="admin-toggle-label">
-                  Projects: {isProductsActive ? 'ON' : 'OFF'}
-                </span>
-              </div>
+              <Plus size={15} /> <span>Add Project</span>
+            </button>
 
-              {/* Switch Slider */}
-              <div className="admin-toggle-switch-track">
-                <div
-                  className="admin-toggle-switch-thumb"
-                  style={{
-                    transform: isProductsActive ? 'translateX(16px)' : 'translateX(0px)',
-                  }}
-                />
-              </div>
-            </div>
-
-            {toggleNotice && (
-              <span
-                className="admin-toggle-notice"
-                style={{
-                  color: isProductsActive ? '#059669' : '#dc2626',
+            {/* Top Right Corner Toggle Button */}
+            <div className="admin-header-toggle-wrap">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={handleToggleProductsOption}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleToggleProductsOption();
+                  }
                 }}
+                className={`admin-navbar-toggle-btn ${isProductsActive ? 'is-active' : 'is-inactive'}`}
+                title={
+                  isProductsActive
+                    ? 'Click to turn OFF: hide Projects option and /projects page'
+                    : 'Click to turn ON: show Projects option and /projects page'
+                }
               >
-                ✓ {toggleNotice}
-              </span>
-            )}
+                <div className="admin-toggle-btn-left">
+                  <div className="admin-toggle-icon-wrap">
+                    {isProductsActive ? <Eye size={14} /> : <EyeOff size={14} />}
+                  </div>
+                  <span className="admin-toggle-label">
+                    <span className="admin-toggle-label-prefix">Projects: </span>
+                    {isProductsActive ? 'ON' : 'OFF'}
+                  </span>
+                </div>
+
+                {/* Switch Slider */}
+                <div className="admin-toggle-switch-track">
+                  <div
+                    className="admin-toggle-switch-thumb"
+                    style={{
+                      transform: isProductsActive ? 'translateX(16px)' : 'translateX(0px)',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {toggleNotice && (
+                <span
+                  className="admin-toggle-notice"
+                  style={{
+                    color: isProductsActive ? '#059669' : '#dc2626',
+                  }}
+                >
+                  ✓ {toggleNotice}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -436,31 +452,23 @@ export const AdminProducts = () => {
             )}
           </div>
 
-          <div className="admin-controls-actions-row">
+          <div className="view-toggle-wrap">
             <button
-              onClick={handleAddNewProduct}
-              className="btn-hero-primary admin-add-project-btn"
+              type="button"
+              onClick={() => setViewMode('cards')}
+              className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
+              title="Project Cards View"
             >
-              <Plus size={16} /> Add New Project
+              <SafeLayoutGrid size={16} />
             </button>
-            <div className="view-toggle-wrap">
-              <button
-                type="button"
-                onClick={() => setViewMode('cards')}
-                className={`view-mode-btn ${viewMode === 'cards' ? 'active' : ''}`}
-                title="Project Cards View"
-              >
-                <SafeLayoutGrid size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('table')}
-                className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
-                title="Table View"
-              >
-                <List size={16} />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setViewMode('table')}
+              className={`view-mode-btn ${viewMode === 'table' ? 'active' : ''}`}
+              title="Table View"
+            >
+              <List size={16} />
+            </button>
           </div>
         </div>
 

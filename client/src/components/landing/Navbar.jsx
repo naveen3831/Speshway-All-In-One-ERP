@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, Lock } from 'lucide-react';
 import { WhatsAppIcon, getWhatsAppUrl } from '../common/WhatsAppIcon';
 import { ContactCard } from './ContactCard';
 import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
@@ -278,6 +278,33 @@ export const Navbar = ({ onOpenGetStarted, onOpenDemo }) => {
               >
                 Get Started <ArrowRight size={16} />
               </button>
+
+              <Link
+                to="/admin/login"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
+                className="mobile-drawer-admin-btn"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  marginTop: '12px',
+                  padding: '10px 16px',
+                  fontSize: '0.84rem',
+                  fontWeight: 600,
+                  color: '#475569',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '10px',
+                  textDecoration: 'none',
+                }}
+              >
+                <Lock size={14} style={{ color: '#00875a' }} />
+                <span>Admin Login Portal</span>
+              </Link>
             </div>
           </div>
         )}

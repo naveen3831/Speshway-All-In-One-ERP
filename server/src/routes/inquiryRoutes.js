@@ -18,12 +18,44 @@ const getInquiryQuery = (id) => {
   return { _id: new mongoose.Types.ObjectId() };
 };
 
-// @desc    Get all inquiries / demo requests from MongoDB
+// Initialize in-memory cache for inquiries on server startup
+export const initInquiriesCache = async () => {
+  try {
+    const inquiries = await Inquiry.find().sort({ createdAt: -1 }).lean();
+    if (inquiries && inquiries.length > 0) {
+      liveState.modulesData.demoRequests = inquiries.map((inq) => ({
+        id: inq._id.toString(),
+        name: inq.name,
+        email: inq.email,
+        company: inq.company,
+        phone: inq.phone,
+        module: inq.module,
+        teamSize: inq.teamSize,
+        message: inq.message,
+        source: inq.source,
+        status: inq.status,
+        date: inq.createdAt ? inq.createdAt.toISOString() : new Date().toISOString(),
+      }));
+      console.log(`⚡ Cached ${inquiries.length} inquiries in memory for instant responses.`);
+    }
+  } catch (err) {
+    console.warn('Could not initialize inquiries in memory:', err.message);
+  }
+};
+
+// @desc    Get all inquiries / demo requests (served from high-speed memory cache)
 // @route   GET /api/inquiries
 // @access  Public
 router.get('/', async (req, res) => {
+  if (liveState.modulesData.demoRequests && liveState.modulesData.demoRequests.length > 0) {
+    return res.json({
+      success: true,
+      count: liveState.modulesData.demoRequests.length,
+      data: liveState.modulesData.demoRequests,
+    });
+  }
   try {
-    const inquiries = await Inquiry.find().sort({ createdAt: -1 });
+    const inquiries = await Inquiry.find().sort({ createdAt: -1 }).lean();
     if (inquiries && inquiries.length > 0) {
       // Keep liveState synced with DB
       liveState.modulesData.demoRequests = inquiries.map((inq) => ({
@@ -39,10 +71,9 @@ router.get('/', async (req, res) => {
         status: inq.status,
         date: inq.createdAt ? inq.createdAt.toISOString() : new Date().toISOString(),
       }));
-      return res.json({ success: true, count: inquiries.length, data: inquiries });
+      return res.json({ success: true, count: inquiries.length, data: liveState.modulesData.demoRequests });
     }
 
-    // Fallback to in-memory if DB is empty
     return res.json({
       success: true,
       count: liveState.modulesData.demoRequests.length,
