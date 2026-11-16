@@ -332,32 +332,19 @@ export const OurErpSolutions = () => {
               })}
             </div>
 
-            {/* Mobile Response Only: "Show More" & "Show Less" option */}
+            {/* Mobile Response Only: "Show More" until end, then "Show Less" on last card */}
             {isMobile && filteredProjects.length > 5 && (
               <div className="our-erp-show-more-wrap">
                 {visibleMobileCount < filteredProjects.length ? (
-                  <>
-                    <button
-                      type="button"
-                      className="our-erp-show-more-btn"
-                      onClick={handleShowMore}
-                      aria-label="Show more solutions"
-                    >
-                      <span>Show More</span>
-                      <ChevronDown size={16} className="our-erp-show-more-icon" />
-                    </button>
-                    {visibleMobileCount > 5 && (
-                      <button
-                        type="button"
-                        className="our-erp-show-more-btn our-erp-show-less-btn our-erp-show-less-secondary"
-                        onClick={handleShowLess}
-                        aria-label="Show less solutions"
-                      >
-                        <span>Show Less</span>
-                        <ChevronUp size={16} className="our-erp-show-less-icon" />
-                      </button>
-                    )}
-                  </>
+                  <button
+                    type="button"
+                    className="our-erp-show-more-btn"
+                    onClick={handleShowMore}
+                    aria-label="Show more solutions"
+                  >
+                    <span>Show More</span>
+                    <ChevronDown size={16} className="our-erp-show-more-icon" />
+                  </button>
                 ) : (
                   <button
                     type="button"
