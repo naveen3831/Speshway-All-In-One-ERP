@@ -19,6 +19,7 @@ import { seedEmployeesDatabase } from './services/employeeDatabaseService.js';
 import { seedPricingDatabase } from './services/pricingStore.js';
 import { seedHomeDatabase } from './services/homeStore.js';
 import { verifySmtpConnection } from './services/emailService.js';
+import { initInquiriesCache } from './routes/inquiryRoutes.js';
 
 // Connect to MongoDB
 connectDB().then(async (connected) => {
@@ -27,11 +28,14 @@ connectDB().then(async (connected) => {
     return;
   }
 
-  await seedAdminUser();
-  await seedProductsDatabase();
-  await seedEmployeesDatabase();
-  await seedPricingDatabase();
-  await seedHomeDatabase();
+  await Promise.allSettled([
+    seedAdminUser(),
+    seedProductsDatabase(),
+    seedEmployeesDatabase(),
+    seedPricingDatabase(),
+    seedHomeDatabase(),
+    initInquiriesCache(),
+  ]);
 });
 
 const PORT = process.env.PORT || 5000;

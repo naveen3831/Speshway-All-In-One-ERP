@@ -232,23 +232,23 @@ export default function App() {
             <Route path="/login" element={<Login />} />
 
             {/* 3. ADMIN AUTHENTICATION & DASHBOARD */}
+            <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="/admin/overview" replace />} />
-              <Route path="overview" element={<AdminOverview />} />
-              <Route path="dashboard" element={<AdminOverview />} />
-              <Route path="products" element={<AdminProducts />} />
-              <Route path="projects" element={<AdminProducts />} />
-              <Route path="projects/new" element={<AdminProductForm />} />
-              <Route path="projects/edit/:id" element={<AdminProductForm />} />
-              <Route path="products/new" element={<AdminProductForm />} />
-              <Route path="products/edit/:id" element={<AdminProductForm />} />
-              <Route path="urls" element={<AdminProducts />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="inquiries" element={<AdminInquiries />} />
-              <Route path="pricing" element={<AdminPricing />} />
-              <Route path="home" element={<AdminHomeSettings />} />
-              <Route path="settings" element={<AdminSettings />} />
+            <Route element={<AdminLayout />}>
+              <Route path="/admin/overview" element={<AdminOverview />} />
+              <Route path="/admin/dashboard" element={<AdminOverview />} />
+              <Route path="/admin/products" element={<AdminProducts />} />
+              <Route path="/admin/projects" element={<AdminProducts />} />
+              <Route path="/admin/projects/new" element={<AdminProductForm />} />
+              <Route path="/admin/projects/edit/:id" element={<AdminProductForm />} />
+              <Route path="/admin/products/new" element={<AdminProductForm />} />
+              <Route path="/admin/products/edit/:id" element={<AdminProductForm />} />
+              <Route path="/admin/urls" element={<AdminProducts />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/inquiries" element={<AdminInquiries />} />
+              <Route path="/admin/pricing" element={<AdminPricing />} />
+              <Route path="/admin/home" element={<AdminHomeSettings />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
             </Route>
 
             {/* 4. INTERNAL ERP DASHBOARD */}

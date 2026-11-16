@@ -18,7 +18,6 @@ import {
   EyeOff,
   ArrowRight,
   ShieldCheck,
-  ArrowLeft,
   Bell,
   Sparkles,
   CheckCircle,
@@ -52,12 +51,10 @@ export const AdminLayout = () => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showMobileProfile, setShowMobileProfile] = useState(false);
-  const [showMobileSupport, setShowMobileSupport] = useState(false);
 
   // Close mobile sidebar and sheets when route changes
   useEffect(() => {
     setShowMobileProfile(false);
-    setShowMobileSupport(false);
     setSidebarOpen(false);
   }, [location.pathname]);
 
@@ -486,6 +483,17 @@ export const AdminLayout = () => {
             </Link>
           </div>
 
+          {/* Desktop Topbar Page Title Area (Hidden on mobile) */}
+          <div className="topbar-left admin-topbar-desktop-title-area">
+            <span className="topbar-page-icon-mobile" aria-hidden="true">
+              {getMobilePageIcon()}
+            </span>
+            <span className="topbar-title">
+              <span className="topbar-title-desktop">{getDesktopTopbarTitle()}</span>
+              <span className="topbar-title-mobile">{getMobileTopbarTitle()}</span>
+            </span>
+          </div>
+
           {/* Right-side controls: Notification Bell Icon & Dropdown */}
           <div className="topbar-right admin-topbar-right-controls">
             <div className="admin-notif-wrapper" ref={notifRef}>
@@ -564,10 +572,14 @@ export const AdminLayout = () => {
           to="/admin/overview"
           onClick={() => {
             setShowMobileProfile(false);
-            setShowMobileSupport(false);
           }}
           className={({ isActive }) =>
-            `admin-bottom-nav-item ${(isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+            `admin-bottom-nav-item ${
+              (isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') &&
+              !showMobileProfile
+                ? 'active'
+                : ''
+            }`
           }
         >
           <LayoutDashboard size={20} />
@@ -578,10 +590,9 @@ export const AdminLayout = () => {
           to="/admin/products"
           onClick={() => {
             setShowMobileProfile(false);
-            setShowMobileSupport(false);
           }}
           className={({ isActive }) =>
-            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+            `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`
           }
         >
           <Package size={20} />
@@ -592,37 +603,45 @@ export const AdminLayout = () => {
           to="/admin/pricing"
           onClick={() => {
             setShowMobileProfile(false);
-            setShowMobileSupport(false);
           }}
           className={({ isActive }) =>
-            `admin-bottom-nav-item ${isActive && !showMobileProfile && !showMobileSupport ? 'active' : ''}`
+            `admin-bottom-nav-item ${isActive && !showMobileProfile ? 'active' : ''}`
           }
         >
           <CreditCard size={20} />
           <span>Pricing</span>
         </NavLink>
 
-        <button
-          type="button"
+        <NavLink
+          to="/admin/inquiries"
           onClick={() => {
             setShowMobileProfile(false);
-            setShowMobileSupport((prev) => !prev);
           }}
-          className={`admin-bottom-nav-item ${showMobileSupport ? 'active' : ''}`}
-          aria-label="Admin 24/7 Support"
+          className={({ isActive }) =>
+            `admin-bottom-nav-item ${
+              (isActive || location.pathname.startsWith('/admin/inquiries')) && !showMobileProfile
+                ? 'active'
+                : ''
+            }`
+          }
+          aria-label="Support & Inquiries"
         >
-          <Headphones size={20} />
+          <div className="admin-bottom-avatar-icon">
+            <Headphones size={20} />
+            {unreadCount > 0 && <span className="admin-bottom-dot" />}
+          </div>
           <span>Support</span>
-        </button>
+        </NavLink>
 
         <button
           type="button"
           onClick={() => {
-            setShowMobileSupport(false);
             setShowMobileProfile((prev) => !prev);
           }}
           className={`admin-bottom-nav-item ${
-            (isProfileActive && !showMobileSupport) || showMobileProfile ? 'active' : ''
+            (isProfileActive && !location.pathname.startsWith('/admin/inquiries')) || showMobileProfile
+              ? 'active'
+              : ''
           }`}
           aria-label="Admin Profile & More Menu"
         >
@@ -739,39 +758,26 @@ export const AdminLayout = () => {
                 <ArrowRight size={15} className="profile-sheet-item-arrow" />
               </NavLink>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setShowMobileProfile(false);
-                  setShowMobileSupport(true);
-                }}
-                className="profile-sheet-item"
-                style={{ width: '100%', textAlign: 'left', background: '#ffffff', cursor: 'pointer', fontFamily: 'inherit' }}
+              <NavLink
+                to="/admin/inquiries"
+                onClick={() => setShowMobileProfile(false)}
+                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
               >
                 <div className="profile-sheet-item-icon teal">
                   <Headphones size={18} />
                 </div>
                 <div className="profile-sheet-item-text">
-                  <span className="profile-sheet-item-title">24/7 Enterprise Support</span>
-                  <span className="profile-sheet-item-sub">Hotline, email helpdesk &amp; documentation</span>
+                  <span className="profile-sheet-item-title">Support &amp; Inquiries</span>
+                  <span className="profile-sheet-item-sub">Client leads, demo bookings &amp; contact tickets</span>
                 </div>
                 <ArrowRight size={15} className="profile-sheet-item-arrow" />
-              </button>
+              </NavLink>
             </div>
 
             <div className="profile-sheet-divider" />
 
-            {/* Live Website Link & Sign Out */}
+            {/* Sign Out */}
             <div className="profile-sheet-actions-group">
-              <Link
-                to="/"
-                onClick={() => setShowMobileProfile(false)}
-                className="profile-sheet-action-link"
-              >
-                <ArrowLeft size={16} />
-                <span>Return to Live Website</span>
-              </Link>
-
               <button
                 type="button"
                 onClick={() => {
@@ -783,154 +789,6 @@ export const AdminLayout = () => {
                 <LogOut size={16} />
                 <span>Sign Out of Admin Console</span>
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Mobile Support Full Screen View */}
-      {showMobileSupport && (
-        <div className="admin-support-fullscreen-view" role="dialog" aria-modal="true" aria-label="24/7 Enterprise Support">
-          {/* Top Fullscreen Sticky Header */}
-          <div className="admin-support-fullscreen-header">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-              <div
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '10px',
-                  backgroundColor: '#e6f7f0',
-                  color: '#00875a',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <Headphones size={19} />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <h3 className="admin-support-fullscreen-title">
-                  24/7 Enterprise Support
-                </h3>
-                <span className="admin-support-fullscreen-sub">
-                  Speshway Admin Help Desk &amp; Monitoring
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Fullscreen Scrollable Body */}
-          <div className="admin-support-fullscreen-body">
-            {/* Live Uptime Status Card */}
-            <div className="admin-support-status-card">
-              <div className="admin-support-status-dot" />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#065f46' }}>
-                  All Systems Operational &bull; 99.9% Uptime
-                </div>
-                <div style={{ fontSize: '0.73rem', color: '#047857' }}>
-                  Dedicated 24/7 SLA Priority Help Desk Active
-                </div>
-              </div>
-              <span className="admin-support-live-badge">Live SLA</span>
-            </div>
-
-            <div className="profile-sheet-section-label">INSTANT ASSISTANCE CHANNELS</div>
-
-            <div className="profile-sheet-menu-list">
-              {/* Phone Hotline */}
-              <a
-                href="tel:+919100006020"
-                className="profile-sheet-item"
-              >
-                <div className="profile-sheet-item-icon emerald">
-                  <Phone size={18} />
-                </div>
-                <div className="profile-sheet-item-text">
-                  <span className="profile-sheet-item-title">+91 9100006020</span>
-                  <span className="profile-sheet-item-sub">24/7 Direct Telephone Support</span>
-                </div>
-                <span className="support-sheet-action-pill">Call Now</span>
-              </a>
-
-              {/* Email Support */}
-              <a
-                href="mailto:support@speshway.com?subject=Speshway%20Admin%20Dashboard%20Support"
-                className="profile-sheet-item"
-              >
-                <div className="profile-sheet-item-icon blue">
-                  <Mail size={18} />
-                </div>
-                <div className="profile-sheet-item-text">
-                  <span className="profile-sheet-item-title">support@speshway.com</span>
-                  <span className="profile-sheet-item-sub">Email response within 15 minutes</span>
-                </div>
-                <span className="support-sheet-action-pill email">
-                  Email
-                </span>
-              </a>
-
-              {/* Demo Inquiries & Tickets */}
-              <NavLink
-                to="/admin/inquiries"
-                onClick={() => setShowMobileSupport(false)}
-                className={({ isActive }) => `profile-sheet-item ${isActive ? 'active' : ''}`}
-              >
-                <div className="profile-sheet-item-icon purple">
-                  <Inbox size={18} />
-                </div>
-                <div className="profile-sheet-item-text">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="profile-sheet-item-title">Inbound Inquiries &amp; Leads</span>
-                    {unreadCount > 0 && <span className="profile-sheet-count-pill">{unreadCount} New</span>}
-                  </div>
-                  <span className="profile-sheet-item-sub">Review user demo requests &amp; inquiries</span>
-                </div>
-                <ArrowRight size={15} className="profile-sheet-item-arrow" />
-              </NavLink>
-
-              {/* Help Center & FAQs */}
-              <Link
-                to="/faq"
-                onClick={() => setShowMobileSupport(false)}
-                className="profile-sheet-item"
-              >
-                <div className="profile-sheet-item-icon amber">
-                  <HelpCircle size={18} />
-                </div>
-                <div className="profile-sheet-item-text">
-                  <span className="profile-sheet-item-title">Help Center &amp; FAQs</span>
-                  <span className="profile-sheet-item-sub">Documentation &amp; troubleshooting guides</span>
-                </div>
-                <ArrowRight size={15} className="profile-sheet-item-arrow" />
-              </Link>
-            </div>
-
-            <div className="profile-sheet-divider" />
-
-            {/* Quick Summary Cards */}
-            <div className="admin-support-info-box">
-              <div className="admin-support-info-row">
-                <span className="admin-support-info-label">Enterprise Headquarters</span>
-                <span className="admin-support-info-val">T-Hub, Knowledge City Rd, Raidurgam, Hyderabad, Telangana 500032</span>
-              </div>
-              <div className="admin-support-info-row">
-                <span className="admin-support-info-label">Availability &amp; Coverage</span>
-                <span className="admin-support-info-val">24/7 Continuous Infrastructure Monitoring &amp; Engineering SLA</span>
-              </div>
-            </div>
-
-            {/* Contact Page Link */}
-            <div className="profile-sheet-actions-group" style={{ marginTop: '16px' }}>
-              <Link
-                to="/contact"
-                onClick={() => setShowMobileSupport(false)}
-                className="profile-sheet-action-link"
-              >
-                <LifeBuoy size={16} />
-                <span>Open Full Help &amp; Contact Page</span>
-              </Link>
             </div>
           </div>
         </div>

@@ -68,6 +68,10 @@ const sanitizeContact = (contact) => {
 let memoryHomeContent = { ...DEFAULT_HOME_CONTENT };
 
 export const getHomeContent = async () => {
+  // Return high-speed in-memory store immediately with 0ms latency
+  if (memoryHomeContent && memoryHomeContent.hero) {
+    return memoryHomeContent;
+  }
   try {
     const dbContent = await HomeContent.findOne({ key: 'main_home' }).lean();
     if (dbContent) {
@@ -110,7 +114,7 @@ export const updateHomeContent = async (newData) => {
       : (memoryHomeContent.navbar?.showProducts !== undefined ? Boolean(memoryHomeContent.navbar.showProducts) : true),
   };
 
-  // Merge with memory
+  // 1. Instantly merge with in-memory store for 0ms response
   memoryHomeContent = {
     ...memoryHomeContent,
     ...updatePayload,
@@ -123,24 +127,22 @@ export const updateHomeContent = async (newData) => {
     contact: sanitizeContact(updatePayload.contact || memoryHomeContent.contact),
   };
 
-  // Persist to MongoDB
+  // 2. Persist to MongoDB in background without blocking response
   const sanitized = { ...memoryHomeContent };
   delete sanitized._id;
   delete sanitized.__v;
   delete sanitized.createdAt;
   delete sanitized.updatedAt;
 
-  try {
-    const updated = await HomeContent.findOneAndUpdate(
-      { key: 'main_home' },
-      { $set: sanitized },
-      { new: true, upsert: true, setDefaultsOnInsert: true, lean: true }
-    );
-    return updated || memoryHomeContent;
-  } catch (err) {
-    console.warn('[HomeStore] MongoDB update fallback to memory:', err.message);
-    return memoryHomeContent;
-  }
+  HomeContent.findOneAndUpdate(
+    { key: 'main_home' },
+    { $set: sanitized },
+    { new: true, upsert: true, setDefaultsOnInsert: true, lean: true }
+  ).catch((err) => {
+    console.warn('[HomeStore] MongoDB background update notice:', err.message);
+  });
+
+  return memoryHomeContent;
 };
 
 export const seedHomeDatabase = async () => {

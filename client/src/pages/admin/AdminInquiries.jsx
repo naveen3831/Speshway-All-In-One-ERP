@@ -369,14 +369,7 @@ export const AdminInquiries = () => {
       )}
 
       {/* Metric Cards (4 cards covering All, Free Trials, Demos, Contact) */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
-          gap: '16px',
-          marginBottom: '20px',
-        }}
-      >
+      <div className="inquiries-kpi-grid">
         <div
           className="admin-kpi-card"
           onClick={() => setFilterType('all')}
@@ -497,8 +490,9 @@ export const AdminInquiries = () => {
             </p>
           </div>
         ) : (
-          <div className="table-responsive">
-            <table className="admin-data-table">
+          <>
+            <div className="table-responsive inquiries-desktop-table">
+              <table className="admin-data-table">
               <thead>
                 <tr>
                   <th style={{ minWidth: '150px' }}>Lead / Type</th>
@@ -792,7 +786,120 @@ export const AdminInquiries = () => {
               </tbody>
             </table>
           </div>
-        )}
+
+          {/* Mobile Responsive Cards View */}
+          <div className="inquiries-mobile-cards">
+            {filteredInquiries.map((inq) => {
+              const inquiryId = inq._id || inq.id;
+              const type = getInquiryType(inq);
+              const isFreeTrial = type === 'get-started';
+              const isDemo = type === 'demo';
+              const dateStr = inq.createdAt || inq.date;
+              const { date, time } = formatDateAndTime(dateStr);
+              const currentStatus = inq.status || 'new';
+              const currentIndex = STATUS_FLOW.indexOf(currentStatus);
+              const isUpdating = updatingStatusId === inquiryId;
+
+              return (
+                <div key={inquiryId} className="inquiry-mobile-card">
+                  {/* Top Row: Name + Type Badge + Date */}
+                  <div className="inquiry-card-header">
+                    <div className="inquiry-card-lead-meta">
+                      <span className="inquiry-card-name">{formatCustomerName(inq.name)}</span>
+                      <span
+                        className={`inquiry-badge ${
+                          isFreeTrial ? 'free-trial' : isDemo ? 'demo' : 'contact'
+                        }`}
+                      >
+                        {isFreeTrial ? '★ Free Trial' : isDemo ? '● Demo Booking' : '✉ Contact Msg'}
+                      </span>
+                    </div>
+                    <div className="inquiry-card-time-col">
+                      <span className="inquiry-card-date">{date}</span>
+                      {time && <span className="inquiry-card-time">{time}</span>}
+                    </div>
+                  </div>
+
+                  {/* Contacts info */}
+                  <div className="inquiry-card-contacts">
+                    <a href={`mailto:${inq.email}`} className="inquiry-card-link">
+                      <Mail size={13} /> {inq.email}
+                    </a>
+                    {inq.phone && (
+                      <a href={`tel:${inq.phone}`} className="inquiry-card-link tel">
+                        <Phone size={13} /> {inq.phone}
+                      </a>
+                    )}
+                    <div className="inquiry-card-org">
+                      <Building size={13} />
+                      <span>{inq.company || 'Enterprise Client'}</span>
+                      {inq.teamSize && <span className="inquiry-team-pill">Team: {inq.teamSize}</span>}
+                    </div>
+                  </div>
+
+                  {/* Module & Message */}
+                  <div className="inquiry-card-module-sec">
+                    <span className="inquiry-module-badge">
+                      {inq.module || 'All-In-One Complete Suite'}
+                    </span>
+                    {inq.message && (
+                      <p className="inquiry-card-msg">
+                        "{inq.message.length > 95 ? `${inq.message.slice(0, 95)}...` : inq.message}"
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Status & Actions Footer */}
+                  <div className="inquiry-card-footer">
+                    <div className="inquiry-status-selector-wrap">
+                      <select
+                        value={currentStatus}
+                        disabled={isUpdating}
+                        onChange={(e) => handleStatusChange(inquiryId, e.target.value, currentStatus)}
+                        className={`inquiry-status-select ${currentStatus}`}
+                        title="Inquiry lifecycle stage"
+                      >
+                        <option value="new" disabled={currentIndex > 0}>
+                          {currentIndex > 0 ? '✓ New (Done)' : '● New'}
+                        </option>
+                        <option value="contacted" disabled={currentIndex > 1}>
+                          {currentIndex > 1 ? '✓ Contacted (Done)' : '● Contacted'}
+                        </option>
+                        <option value="qualified" disabled={currentIndex > 2}>
+                          {currentIndex > 2 ? '✓ Qualified (Done)' : '✔ Qualified'}
+                        </option>
+                        <option value="closed" disabled={currentIndex > 3}>
+                          ✕ Closed
+                        </option>
+                      </select>
+                      {isUpdating && <RefreshCw size={13} className="animate-spin text-emerald" />}
+                    </div>
+
+                    <div className="inquiry-card-btns">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenReplyModal(inq)}
+                        className="inquiry-reply-btn"
+                        title={`Send Email Reply to ${inq.email}`}
+                      >
+                        <Send size={13} /> Reply
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(inquiryId)}
+                        className="inquiry-del-btn"
+                        title="Delete Lead"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
       </div>
 
       {/* Customer Email Reply Modal */}
