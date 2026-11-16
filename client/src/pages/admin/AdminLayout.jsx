@@ -46,6 +46,7 @@ export const AdminLayout = () => {
   const { activities, modulesData, branding, homeContent } = useSocket();
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
   const navigate = useNavigate();
   const location = useLocation();
@@ -458,12 +459,12 @@ export const AdminLayout = () => {
       {/* Main Admin Content Screen */}
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
-          {/* Brand Logo & Name Area (Mobile Response - Full name visible) */}
+          {/* Brand Logo & Tagline Lockup (Mobile Response: Logo | SPESHWAY — ALL IN ONE ERP —) */}
           <div className="admin-topbar-logo-area">
             <Link
               to="/admin/overview"
               className="admin-topbar-brand-link"
-              title={`${brandTitle} Admin Dashboard`}
+              title={`${brandTitle} - ${brandSubtitle}`}
               aria-label={`${brandTitle} Dashboard`}
             >
               <div className="admin-topbar-logo-badge">
@@ -473,7 +474,15 @@ export const AdminLayout = () => {
                   className="admin-topbar-brand-logo"
                 />
               </div>
-              <span className="admin-topbar-brand-name">{brandTitle}</span>
+              <div className="admin-topbar-divider" />
+              <div className="admin-topbar-brand-text">
+                <span className="admin-topbar-brand-title">{brandTitle}</span>
+                <div className="admin-topbar-subtitle-row">
+                  <span className="admin-topbar-dash">—</span>
+                  <span className="admin-topbar-subtitle">{brandSubtitle}</span>
+                  <span className="admin-topbar-dash">—</span>
+                </div>
+              </div>
             </Link>
           </div>
 
