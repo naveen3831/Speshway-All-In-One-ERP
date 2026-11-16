@@ -32,15 +32,6 @@ export const AdminUrls = () => {
 
   return (
     <div className="admin-page-view">
-      <div className="admin-page-header">
-        <div>
-          <h1 className="admin-heading">Website &amp; Admin Dashboard URL Directory</h1>
-          <p className="admin-subtext">
-            Configure external website URLs, landing pages, and administration routes for each ERP application.
-          </p>
-        </div>
-      </div>
-
       {saveStatus && (
         <div className="modal-alert-success">
           <CheckCircle size={16} />

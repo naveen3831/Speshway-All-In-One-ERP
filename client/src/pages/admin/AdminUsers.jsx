@@ -186,14 +186,8 @@ export const AdminUsers = () => {
 
   return (
     <div className="admin-page-view users-page-view">
-      {/* Page Header */}
-      <div className="admin-page-header">
-        <div>
-          <h1 className="admin-heading">Users &amp; Personnel Directory</h1>
-          <p className="admin-subtext">
-            Manage enterprise staff directory, organizational roles, department access, and employment status.
-          </p>
-        </div>
+      {/* Page Header Actions */}
+      <div className="admin-page-header" style={{ justifyContent: 'flex-end', marginBottom: '16px' }}>
         <div className="admin-header-actions">
           <button onClick={handleOpenModal} className="btn-hero-primary" style={{ padding: '10px 20px' }}>
             <UserPlus size={16} /> Add Team Member

@@ -371,16 +371,6 @@ export const AdminPricing = () => {
       {/* Header Row */}
       <div className="admin-page-header-row">
         <div className="admin-header-top-row">
-          <div className="admin-header-title-wrap">
-            <h1 className="admin-heading">
-              <span className="admin-heading-icon-badge">
-                <CreditCard size={18} />
-              </span>
-              <span className="admin-heading-desktop">Pricing &amp; Plans Management</span>
-              <span className="admin-heading-mobile">Pricing</span>
-            </h1>
-          </div>
-
           <div className="admin-header-actions-group">
             <button
               type="button"
@@ -443,10 +433,6 @@ export const AdminPricing = () => {
             </div>
           </div>
         </div>
-
-        <p className="admin-subtext">
-          Click on any card to view its full details, edit pricing and features, or delete the plan.
-        </p>
       </div>
 
       {/* Grid of Pricing Tiers (Exact Match to Landing Page Design with Edit & Delete Options) */}

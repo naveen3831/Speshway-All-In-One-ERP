@@ -344,15 +344,6 @@ export const AdminProducts = () => {
       {/* Header Row - Matching Pricing Page Layout Exactly with Toggle at Top Right Corner */}
       <div className="admin-page-header-row">
         <div className="admin-header-top-row">
-          <div className="admin-header-title-wrap">
-            <h1 className="admin-heading">
-              <span className="admin-heading-icon-badge">
-                <Package size={18} />
-              </span>
-              <span>Projects</span>
-            </h1>
-          </div>
-
           <div className="admin-header-actions-group">
             <button
               type="button"
@@ -415,10 +406,6 @@ export const AdminProducts = () => {
             </div>
           </div>
         </div>
-
-        <p className="admin-subtext">
-          Manage ERP projects, categories, edit technologies &amp; URLs, and control modules in real-time.
-        </p>
       </div>
 
       {statusMsg && (

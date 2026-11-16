@@ -178,29 +178,6 @@ export const AdminHomeSettings = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Header Row */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '16px',
-          marginBottom: '24px',
-          paddingBottom: '16px',
-          borderBottom: '1px solid #e2e8f0',
-        }}
-      >
-        <div style={{ flex: '1 1 300px' }}>
-          <h1 className="admin-heading" style={{ margin: '0 0 6px 0' }}>
-            Home Page Options
-          </h1>
-          <p className="admin-subtext" style={{ margin: 0 }}>
-            Customize the hero banner, live stats counter, and solution titles displayed on the public landing page.
-          </p>
-        </div>
-      </div>
-
       <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
         {/* CARD 1: HERO SECTION */}
         <div
