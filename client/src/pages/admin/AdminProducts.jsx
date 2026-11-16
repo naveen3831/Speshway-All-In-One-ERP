@@ -415,10 +415,6 @@ export const AdminProducts = () => {
             </div>
           </div>
         </div>
-
-        <p className="admin-subtext">
-          Manage ERP projects, categories, edit technologies &amp; URLs, and control modules in real-time.
-        </p>
       </div>
 
       {statusMsg && (
