@@ -320,7 +320,9 @@ export const AdminLayout = () => {
       {/* Dedicated Admin Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`} ref={sidebarRef}>
         <div className="admin-sidebar-brand">
-          <img src={logoUrl} alt={`${brandTitle} Admin Logo`} className="admin-sidebar-logo-img" />
+          <div className="admin-sidebar-logo-badge">
+            <img src={logoUrl} alt={`${brandTitle} Admin Logo`} className="admin-sidebar-logo-img" />
+          </div>
           <div className="brand-text">
             <span className="brand-title">{brandTitle}</span>
             <span className="brand-subtitle">ADMIN CONSOLE</span>
