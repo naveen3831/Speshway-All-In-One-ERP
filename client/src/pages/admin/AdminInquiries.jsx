@@ -489,13 +489,13 @@ export const AdminInquiries = () => {
               <table className="admin-data-table">
               <thead>
                 <tr>
-                  <th style={{ minWidth: '150px' }}>Lead / Type</th>
-                  <th>Contact Info</th>
-                  <th>Organization &amp; Team</th>
-                  <th>Module Focus &amp; Message</th>
-                  <th>Status</th>
-                  <th style={{ minWidth: '110px' }}>Received</th>
-                  <th style={{ textAlign: 'right' }}>Actions</th>
+                  <th style={{ minWidth: '160px', whiteSpace: 'nowrap' }}>Lead / Type</th>
+                  <th style={{ minWidth: '220px', whiteSpace: 'nowrap' }}>Contact Info</th>
+                  <th style={{ minWidth: '190px', whiteSpace: 'nowrap' }}>Organization &amp; Team</th>
+                  <th style={{ minWidth: '240px', whiteSpace: 'nowrap' }}>Module Focus &amp; Message</th>
+                  <th style={{ minWidth: '140px', whiteSpace: 'nowrap' }}>Status</th>
+                  <th style={{ minWidth: '130px', whiteSpace: 'nowrap' }}>Received</th>
+                  <th style={{ minWidth: '130px', textAlign: 'right', whiteSpace: 'nowrap' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -509,7 +509,7 @@ export const AdminInquiries = () => {
 
                   return (
                     <tr key={inquiryId}>
-                      <td style={{ minWidth: '150px', whiteSpace: 'nowrap' }}>
+                      <td style={{ minWidth: '160px', whiteSpace: 'nowrap' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                           <span
                             style={{
@@ -548,7 +548,7 @@ export const AdminInquiries = () => {
                                 : '#0284c7',
                               border: `1px solid ${
                                 isFreeTrial
-                                  ? '#a7f3d0'
+                                   ? '#a7f3d0'
                                   : isDemo
                                   ? '#ddd6fe'
                                   : '#bae6fd'
@@ -564,7 +564,7 @@ export const AdminInquiries = () => {
                         </div>
                       </td>
 
-                      <td>
+                      <td style={{ minWidth: '220px', whiteSpace: 'nowrap' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                           <a
                             href={`mailto:${inq.email}`}
@@ -576,41 +576,46 @@ export const AdminInquiries = () => {
                               display: 'inline-flex',
                               alignItems: 'center',
                               gap: '4px',
+                              whiteSpace: 'nowrap',
                             }}
                           >
                             <Mail size={13} /> {inq.email}
                           </a>
                           {inq.phone && (
-                            <span style={{ fontSize: '0.8rem', color: '#64748b', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <span style={{ fontSize: '0.8rem', color: '#64748b', display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
                               <Phone size={12} /> {inq.phone}
                             </span>
                           )}
                         </div>
                       </td>
 
-                      <td>
+                      <td style={{ minWidth: '190px' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                          <span style={{ fontWeight: 600, color: '#334155', fontSize: '0.88rem' }}>
+                          <span style={{ fontWeight: 600, color: '#334155', fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
                             {inq.company || 'Enterprise Client'}
                           </span>
                           {inq.teamSize && (
-                            <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                            <span style={{ fontSize: '0.78rem', color: '#64748b', whiteSpace: 'nowrap' }}>
                               Team: {inq.teamSize} members
                             </span>
                           )}
                         </div>
                       </td>
 
-                      <td>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <td style={{ minWidth: '240px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-start' }}>
                           <span
-                            className="badge-active"
                             style={{
                               backgroundColor: '#f0fdf4',
                               color: '#15803d',
-                              borderColor: '#bbf7d0',
+                              border: '1px solid #bbf7d0',
+                              borderRadius: '6px',
+                              padding: '4px 10px',
                               fontWeight: 600,
                               fontSize: '0.8rem',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              whiteSpace: 'nowrap',
                               width: 'fit-content',
                             }}
                           >
@@ -625,8 +630,9 @@ export const AdminInquiries = () => {
                                 padding: '4px 8px',
                                 borderRadius: '6px',
                                 border: '1px solid #e2e8f0',
-                                maxWidth: '300px',
+                                maxWidth: '280px',
                                 wordBreak: 'break-word',
+                                lineHeight: 1.35,
                               }}
                               title={inq.message}
                             >
@@ -636,7 +642,7 @@ export const AdminInquiries = () => {
                         </div>
                       </td>
 
-                      <td>
+                      <td style={{ minWidth: '140px', whiteSpace: 'nowrap' }}>
                         {(() => {
                           const currentStatus = inq.status || 'new';
                           const currentIndex = STATUS_FLOW.indexOf(currentStatus);
@@ -717,7 +723,7 @@ export const AdminInquiries = () => {
                         })()}
                       </td>
 
-                      <td style={{ whiteSpace: 'nowrap', minWidth: '110px' }}>
+                      <td style={{ whiteSpace: 'nowrap', minWidth: '130px' }}>
                         {(() => {
                           const { date, time } = formatDateAndTime(dateStr);
                           return (
@@ -735,7 +741,7 @@ export const AdminInquiries = () => {
                         })()}
                       </td>
 
-                      <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <td style={{ textAlign: 'right', whiteSpace: 'nowrap', minWidth: '130px' }}>
                         <button
                           type="button"
                           onClick={() => handleOpenReplyModal(inq)}
