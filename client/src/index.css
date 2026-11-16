@@ -4795,6 +4795,15 @@ a.admin-kpi-card:hover {
     padding: 14px 14px 84px 14px !important;
   }
 
+  /* Safe-area padding when navbar is hidden on non-dashboard pages (starts immediately after camera/status bar) */
+  .admin-content-inner.no-admin-topbar {
+    padding-top: calc(var(--mobile-status-bar-height) + 14px) !important;
+    padding-left: max(env(safe-area-inset-left, 0px), 14px) !important;
+    padding-right: max(env(safe-area-inset-right, 0px), 14px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px) !important;
+    box-sizing: border-box !important;
+  }
+
   .admin-mobile-bottom-bar {
     display: flex !important;
     position: fixed !important;
