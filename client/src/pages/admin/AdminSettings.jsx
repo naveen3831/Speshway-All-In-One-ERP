@@ -618,16 +618,6 @@ export const AdminSettings = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Header */}
-      <div className="admin-page-header" style={{ marginBottom: '24px' }}>
-        <div>
-          <h1 className="admin-heading">System &amp; Application Settings</h1>
-          <p className="admin-subtext">
-            Customize the application brand name, logo, and administrator credentials.
-          </p>
-        </div>
-      </div>
-
       {/* 1. BRANDING & LOGO IDENTITY CARD */}
       <div
         className="admin-card admin-settings-card"
