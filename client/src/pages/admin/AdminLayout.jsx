@@ -458,20 +458,7 @@ export const AdminLayout = () => {
       {/* Main Admin Content Screen */}
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
-          {/* Left-side controls: Mobile Drawer Menu Toggle (Hidden on desktop) */}
-          <div className="admin-topbar-left-controls">
-            <button
-              type="button"
-              className="admin-mobile-menu-toggle-btn"
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Open navigation menu"
-              title="Open menu"
-            >
-              <Menu size={20} />
-            </button>
-          </div>
-
-          {/* Flexible logo area: safe available space between left and right controls (Hidden on desktop) */}
+          {/* Brand Logo & Name Area (Mobile Response - Full name visible) */}
           <div className="admin-topbar-logo-area">
             <Link
               to="/admin/overview"

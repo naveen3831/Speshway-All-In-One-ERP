@@ -4508,7 +4508,7 @@ a.admin-kpi-card:hover {
   .admin-topbar {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
+    justify-content: flex-end !important;
     padding: 0 14px !important;
     padding-left: max(env(safe-area-inset-left, 0px), 14px) !important;
     padding-right: max(env(safe-area-inset-right, 0px), 14px) !important;
@@ -4516,44 +4516,17 @@ a.admin-kpi-card:hover {
     min-height: 52px !important;
     box-sizing: border-box !important;
     position: sticky !important;
+    position: -webkit-sticky !important;
     top: 0 !important;
     z-index: 40 !important;
     background-color: #ffffff !important;
     border-bottom: 1px solid var(--border-subtle) !important;
   }
 
-  /* Left-side controls (e.g. mobile drawer menu toggle) */
-  .admin-topbar-left-controls {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    flex: 0 0 40px !important;
-    width: 40px !important;
-    min-width: 40px !important;
-    z-index: 2 !important;
-  }
-
+  /* Left-side controls: hamburger completely removed on mobile */
+  .admin-topbar-left-controls,
   .admin-mobile-menu-toggle-btn {
-    width: 38px !important;
-    height: 38px !important;
-    border-radius: 10px !important;
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    color: #475569 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    padding: 0 !important;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
-  }
-
-  .admin-mobile-menu-toggle-btn:hover,
-  .admin-mobile-menu-toggle-btn:active {
-    background-color: #f8fafc !important;
-    color: #00875a !important;
-    border-color: #cbd5e1 !important;
+    display: none !important;
   }
 
   /* Right-side controls (Notification Bell) */
@@ -4565,18 +4538,21 @@ a.admin-kpi-card:hover {
     width: 40px !important;
     min-width: 40px !important;
     z-index: 2 !important;
+    margin-left: auto !important;
   }
 
-  /* Flexible logo area: cleanly centered below the camera notch */
+  /* Centered logo area: strictly centralized horizontally & vertically on mobile */
   .admin-topbar-logo-area {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
     height: 100% !important;
-    position: relative !important;
     z-index: 1 !important;
+    pointer-events: auto !important;
   }
 
   /* Brand Link inside flexible logo area */
@@ -4584,13 +4560,13 @@ a.admin-kpi-card:hover {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 7px !important;
+    gap: 8px !important;
     text-decoration: none !important;
     color: inherit !important;
     min-width: 0 !important;
     user-select: none !important;
-    overflow: hidden !important;
-    max-width: 100% !important;
+    max-width: none !important;
+    white-space: nowrap !important;
   }
 
   .admin-topbar-logo-badge {
@@ -4606,16 +4582,19 @@ a.admin-kpi-card:hover {
     max-width: 32px !important;
     object-fit: contain !important;
     display: block !important;
+    flex-shrink: 0 !important;
   }
 
   .admin-topbar-brand-name {
-    font-size: 0.95rem !important;
+    font-size: 1.05rem !important;
     font-weight: 800 !important;
     letter-spacing: 0.02em !important;
     color: #0f172a !important;
     white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+    display: inline-block !important;
     line-height: 1 !important;
   }
 
@@ -4624,28 +4603,30 @@ a.admin-kpi-card:hover {
     max-width: calc(100vw - 24px) !important;
   }
 
-  /* Breakpoint refinements: 375px, 360px, 320px */
+  /* Breakpoint refinements: 375px, 360px, 320px - Name stays full and visible */
   @media (max-width: 380px) {
+    .admin-topbar-brand-logo {
+      height: 26px !important;
+      max-width: 28px !important;
+    }
     .admin-topbar-brand-name {
-      font-size: 0.82rem !important;
-      max-width: 75px !important;
+      font-size: 0.95rem !important;
+      max-width: none !important;
+      overflow: visible !important;
+      display: inline-block !important;
+      white-space: nowrap !important;
     }
   }
 
   @media (max-width: 340px) {
     .admin-topbar {
-      padding-left: 8px !important;
-      padding-right: 8px !important;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
     }
-    .admin-topbar-left-controls,
     .admin-topbar-right-controls {
       flex: 0 0 36px !important;
       width: 36px !important;
       min-width: 36px !important;
-    }
-    .admin-mobile-menu-toggle-btn {
-      width: 34px !important;
-      height: 34px !important;
     }
     .admin-bell-btn {
       width: 34px !important;
@@ -4656,7 +4637,11 @@ a.admin-kpi-card:hover {
       max-width: 26px !important;
     }
     .admin-topbar-brand-name {
-      display: none !important;
+      font-size: 0.88rem !important;
+      max-width: none !important;
+      display: inline-block !important;
+      overflow: visible !important;
+      white-space: nowrap !important;
     }
   }
 
