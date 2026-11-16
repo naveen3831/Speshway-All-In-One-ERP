@@ -5157,10 +5157,13 @@ a.admin-kpi-card:hover {
     align-items: center !important;
     justify-content: flex-start !important;
     padding: 14px 16px !important;
-    padding-top: max(14px, env(safe-area-inset-top, 14px)) !important;
+    padding-top: calc(var(--mobile-status-bar-height) + 14px) !important;
+    padding-left: max(env(safe-area-inset-left, 0px), 16px) !important;
+    padding-right: max(env(safe-area-inset-right, 0px), 16px) !important;
     border-bottom: 1px solid #e2e8f0 !important;
     background-color: #ffffff !important;
     flex-shrink: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .admin-support-fullscreen-title {
