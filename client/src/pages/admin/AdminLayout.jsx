@@ -674,19 +674,33 @@ export const AdminLayout = () => {
           <div className="admin-support-fullscreen-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
               <div
+                className="admin-support-fullscreen-logo-badge"
                 style={{
-                  width: '36px',
-                  height: '36px',
+                  width: '38px',
+                  height: '38px',
                   borderRadius: '10px',
-                  backgroundColor: '#e6f7f0',
-                  color: '#00875a',
+                  backgroundColor: '#ffffff',
+                  border: '1.5px solid #e2e8f0',
+                  boxShadow: '0 1px 4px rgba(15, 23, 42, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
+                  padding: '3px',
+                  boxSizing: 'border-box',
+                  overflow: 'hidden',
                 }}
               >
-                <User size={19} />
+                <img
+                  src={logoUrl}
+                  alt={`${brandTitle} Logo`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    display: 'block',
+                  }}
+                />
               </div>
               <div style={{ minWidth: 0 }}>
                 <h3 className="admin-support-fullscreen-title">
@@ -704,12 +718,11 @@ export const AdminLayout = () => {
             {/* Admin User Profile Card */}
             <div className="profile-sheet-user-card">
               <div className="profile-sheet-avatar">
-                {(() => {
-                  if (!user?.name) return 'AD';
-                  const parts = user.name.trim().split(/\s+/);
-                  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-                  return user.name.substring(0, 2).toUpperCase();
-                })()}
+                <img
+                  src={logoUrl}
+                  alt={`${brandTitle} Logo`}
+                  className="profile-sheet-avatar-logo"
+                />
               </div>
               <div className="profile-sheet-user-info">
                 <div className="profile-sheet-name-row">

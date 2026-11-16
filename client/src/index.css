@@ -4639,6 +4639,8 @@ a.admin-kpi-card:hover {
     align-items: center !important;
     justify-content: center !important;
     flex-shrink: 0 !important;
+    background-color: #ffffff !important;
+    border-radius: 8px !important;
   }
 
   .admin-topbar-brand-logo {
@@ -4961,18 +4963,26 @@ a.admin-kpi-card:hover {
   }
 
   .profile-sheet-avatar {
-    width: 46px !important;
-    height: 46px !important;
+    width: 48px !important;
+    height: 48px !important;
     border-radius: 50% !important;
-    background-color: #00875a !important;
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    font-size: 1.05rem !important;
+    background-color: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     flex-shrink: 0 !important;
-    box-shadow: 0 3px 8px rgba(0, 135, 90, 0.25) !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .profile-sheet-avatar-logo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
   }
 
   .profile-sheet-user-info {
