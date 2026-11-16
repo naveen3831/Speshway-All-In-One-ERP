@@ -5530,6 +5530,20 @@ a.admin-kpi-card:hover {
 
 .inquiries-desktop-table {
   display: block;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.inquiries-compact-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
+}
+
+.inquiries-compact-table th,
+.inquiries-compact-table td {
+  padding: 10px 8px !important;
+  box-sizing: border-box;
 }
 
 .inquiries-mobile-cards {
