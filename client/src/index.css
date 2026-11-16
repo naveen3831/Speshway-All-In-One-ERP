@@ -143,6 +143,10 @@ button {
   width: 36px;
   height: 36px;
   object-fit: contain;
+  background-color: #ffffff;
+  border-radius: 9px;
+  padding: 3px;
+  box-sizing: border-box;
 }
 
 .admin-logo-img {
@@ -3337,8 +3341,37 @@ button {
   padding: 18px 14px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   border-bottom: 1px solid #1e293b;
+}
+
+.admin-sidebar-logo-badge {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
+  background-color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.admin-sidebar-logo-badge .admin-sidebar-logo-img {
+  width: 100%;
+  height: 100%;
+  max-width: 34px;
+  max-height: 34px;
+  object-fit: contain;
+  display: block;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 .admin-back-btn {
@@ -3582,10 +3615,24 @@ button {
   display: none;
 }
 
+.topbar-title-desktop {
+  display: inline;
+}
+
+.topbar-title-mobile {
+  display: none;
+}
+
 .topbar-right {
   display: flex;
   align-items: center;
   gap: 18px;
+}
+
+/* Responsive Mobile Header Elements (Hidden on Desktop to strictly keep desktop header unchanged) */
+.admin-topbar-left-controls,
+.admin-topbar-logo-area {
+  display: none;
 }
 
 /* Admin Header Notification Bell & Quick Actions */
@@ -4565,60 +4612,242 @@ a.admin-kpi-card:hover {
     overflow-y: auto !important;
   }
 
+  :root {
+    --mobile-status-bar-height: max(env(safe-area-inset-top, 0px), 32px);
+  }
+
+  .admin-main-wrap {
+    margin-top: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
   .admin-topbar {
-    padding: 0 16px !important;
-    height: 52px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    padding-top: var(--mobile-status-bar-height) !important;
+    padding-left: max(env(safe-area-inset-left, 0px), 16px) !important;
+    padding-right: max(env(safe-area-inset-right, 0px), 16px) !important;
+    height: calc(56px + var(--mobile-status-bar-height)) !important;
+    min-height: calc(56px + var(--mobile-status-bar-height)) !important;
+    box-sizing: border-box !important;
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 0 !important;
+    z-index: 40 !important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
   }
 
-  .topbar-left {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-  }
-
-  .topbar-page-icon-mobile {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 28px !important;
-    height: 28px !important;
-    border-radius: 7px !important;
-    background-color: #ecfdf5 !important;
-    color: #059669 !important;
-    border: 1px solid #a7f3d0 !important;
-    flex-shrink: 0 !important;
-  }
-
-  .topbar-page-icon-mobile svg {
-    width: 15px !important;
-    height: 15px !important;
-  }
-
-  .topbar-title {
-    font-size: 1.05rem !important;
-    font-weight: 800 !important;
-    color: #0f172a !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  .topbar-title-desktop {
+  /* Left-side controls: hamburger completely removed on mobile */
+  .admin-topbar-left-controls,
+  .admin-mobile-menu-toggle-btn {
     display: none !important;
   }
 
-  .topbar-title-mobile {
-    display: inline !important;
-    font-size: 1.05rem !important;
+  /* Brand Logo & Tagline Area: Left-aligned lockup from left to right */
+  .admin-topbar-logo-area {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    z-index: 1 !important;
+  }
+
+  /* Brand Link inside flexible logo area */
+  .admin-topbar-brand-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    min-width: 0 !important;
+    user-select: none !important;
+    padding: 2px 0 !important;
+    transition: opacity 0.2s ease !important;
+  }
+
+  .admin-topbar-brand-link:hover,
+  .admin-topbar-brand-link:active {
+    opacity: 0.9 !important;
+    text-decoration: none !important;
+  }
+
+  .admin-topbar-logo-badge {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    background-color: #ffffff !important;
+    border-radius: 8px !important;
+  }
+
+  .admin-topbar-brand-logo {
+    height: 38px !important;
+    width: auto !important;
+    max-width: 48px !important;
+    object-fit: contain !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Vertical divider matching landing page */
+  .admin-topbar-divider {
+    width: 1.5px !important;
+    height: 28px !important;
+    background-color: #cbd5e1 !important;
+    margin: 0 10px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Brand Text Column (Title + Subtitle Row) */
+  .admin-topbar-brand-text {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .admin-topbar-brand-title {
+    font-size: 1.12rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.04em !important;
+    color: #0f172a !important;
+    text-transform: uppercase !important;
+    line-height: 1.1 !important;
+    display: block !important;
+    margin: 0 !important;
+    font-family: inherit !important;
+    white-space: nowrap !important;
+  }
+
+  .admin-topbar-subtitle-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    margin-top: 2px !important;
+    line-height: 1 !important;
+  }
+
+  .admin-topbar-dash {
+    color: #00875a !important;
+    font-weight: 800 !important;
+    font-size: 0.85rem !important;
+    line-height: 1 !important;
+    user-select: none !important;
+  }
+
+  .admin-topbar-subtitle {
+    font-size: 0.58rem !important;
     font-weight: 700 !important;
     color: #0f172a !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    font-family: inherit !important;
+    white-space: nowrap !important;
+  }
+
+  /* Right-side controls (Notification Bell) */
+  .admin-topbar-right-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    z-index: 2 !important;
+    margin-left: auto !important;
+  }
+
+  /* Notification dropdown on mobile */
+  .admin-notif-dropdown {
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  /* Breakpoint refinements: 375px, 360px, 320px - Name stays full and visible */
+  @media (max-width: 380px) {
+    .admin-topbar {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      height: calc(54px + var(--mobile-status-bar-height)) !important;
+      min-height: calc(54px + var(--mobile-status-bar-height)) !important;
+    }
+    .admin-topbar-brand-logo {
+      height: 32px !important;
+      max-width: 40px !important;
+    }
+    .admin-topbar-divider {
+      height: 24px !important;
+      margin: 0 8px !important;
+    }
+    .admin-topbar-brand-title {
+      font-size: 1.02rem !important;
+    }
+    .admin-topbar-subtitle {
+      font-size: 0.52rem !important;
+      letter-spacing: 0.10em !important;
+    }
+  }
+
+  @media (max-width: 340px) {
+    .admin-topbar {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+      height: calc(52px + var(--mobile-status-bar-height)) !important;
+      min-height: calc(52px + var(--mobile-status-bar-height)) !important;
+    }
+    .admin-topbar-right-controls {
+      flex: 0 0 36px !important;
+      width: 36px !important;
+      min-width: 36px !important;
+    }
+    .admin-bell-btn {
+      width: 34px !important;
+      height: 34px !important;
+    }
+    .admin-topbar-brand-logo {
+      height: 28px !important;
+      max-width: 34px !important;
+    }
+    .admin-topbar-divider {
+      height: 22px !important;
+      margin: 0 6px !important;
+    }
+    .admin-topbar-brand-title {
+      font-size: 0.92rem !important;
+    }
+    .admin-topbar-subtitle {
+      font-size: 0.48rem !important;
+      letter-spacing: 0.08em !important;
+    }
+  }
+
+  /* Desktop topbar title elements are hidden on mobile header since brand lockup is active */
+  .topbar-left {
+    display: none !important;
   }
 
   .admin-content-inner {
     padding: 14px 14px 84px 14px !important;
+  }
+
+  /* Safe-area padding when navbar is hidden on non-dashboard pages (starts immediately after camera/status bar) */
+  .admin-content-inner.no-admin-topbar {
+    padding-top: calc(var(--mobile-status-bar-height) + 14px) !important;
+    padding-left: max(env(safe-area-inset-left, 0px), 14px) !important;
+    padding-right: max(env(safe-area-inset-right, 0px), 14px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px) !important;
+    box-sizing: border-box !important;
   }
 
   .admin-mobile-bottom-bar {
@@ -4778,18 +5007,26 @@ a.admin-kpi-card:hover {
   }
 
   .profile-sheet-avatar {
-    width: 46px !important;
-    height: 46px !important;
+    width: 48px !important;
+    height: 48px !important;
     border-radius: 50% !important;
-    background-color: #00875a !important;
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    font-size: 1.05rem !important;
+    background-color: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     flex-shrink: 0 !important;
-    box-shadow: 0 3px 8px rgba(0, 135, 90, 0.25) !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .profile-sheet-avatar-logo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
   }
 
   .profile-sheet-user-info {
@@ -4974,10 +5211,13 @@ a.admin-kpi-card:hover {
     align-items: center !important;
     justify-content: flex-start !important;
     padding: 14px 16px !important;
-    padding-top: max(14px, env(safe-area-inset-top, 14px)) !important;
+    padding-top: calc(var(--mobile-status-bar-height) + 14px) !important;
+    padding-left: max(env(safe-area-inset-left, 0px), 16px) !important;
+    padding-right: max(env(safe-area-inset-right, 0px), 16px) !important;
     border-bottom: 1px solid #e2e8f0 !important;
     background-color: #ffffff !important;
     flex-shrink: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .admin-support-fullscreen-title {

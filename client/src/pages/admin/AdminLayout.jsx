@@ -45,6 +45,7 @@ export const AdminLayout = () => {
   const { activities, modulesData, branding, homeContent } = useSocket();
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
+  const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,6 +63,12 @@ export const AdminLayout = () => {
     location.pathname === '/admin/inquiries' ||
     location.pathname === '/admin/settings' ||
     location.pathname === '/admin/users';
+
+  const normalizedPath = (location.pathname || '').replace(/\/+$/, '') || '/';
+  const isDashboardPage =
+    normalizedPath === '/admin/overview' ||
+    normalizedPath === '/admin/dashboard' ||
+    normalizedPath === '/admin';
 
   const getMobileTopbarTitle = () => {
     const path = location.pathname;
@@ -316,7 +323,9 @@ export const AdminLayout = () => {
       {/* Dedicated Admin Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`} ref={sidebarRef}>
         <div className="admin-sidebar-brand">
-          <img src={logoUrl} alt={`${brandTitle} Admin Logo`} className="admin-sidebar-logo-img" />
+          <div className="admin-sidebar-logo-badge">
+            <img src={logoUrl} alt={`${brandTitle} Admin Logo`} className="admin-sidebar-logo-img" />
+          </div>
           <div className="brand-text">
             <span className="brand-title">{brandTitle}</span>
             <span className="brand-subtitle">ADMIN CONSOLE</span>
@@ -457,9 +466,42 @@ export const AdminLayout = () => {
       </aside>
 
       {/* Main Admin Content Screen */}
-      <div className="admin-main-wrap" ref={mainWrapRef}>
-        <header className="admin-topbar">
-          <div className="topbar-left">
+      <div
+        className={`admin-main-wrap ${isDashboardPage ? 'has-admin-topbar' : 'no-admin-topbar'}`}
+        ref={mainWrapRef}
+      >
+        {/* Navbar: Rendered strictly on the Admin Dashboard page */}
+        {isDashboardPage && (
+          <header className="admin-topbar">
+          {/* Brand Logo & Tagline Lockup (Mobile Response: Logo | SPESHWAY — ALL IN ONE ERP —) */}
+          <div className="admin-topbar-logo-area">
+            <Link
+              to="/admin/overview"
+              className="admin-topbar-brand-link"
+              title={`${brandTitle} - ${brandSubtitle}`}
+              aria-label={`${brandTitle} Dashboard`}
+            >
+              <div className="admin-topbar-logo-badge">
+                <img
+                  src={logoUrl}
+                  alt={`${brandTitle} Logo`}
+                  className="admin-topbar-brand-logo"
+                />
+              </div>
+              <div className="admin-topbar-divider" />
+              <div className="admin-topbar-brand-text">
+                <span className="admin-topbar-brand-title">{brandTitle}</span>
+                <div className="admin-topbar-subtitle-row">
+                  <span className="admin-topbar-dash">—</span>
+                  <span className="admin-topbar-subtitle">{brandSubtitle}</span>
+                  <span className="admin-topbar-dash">—</span>
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* Desktop Topbar Page Title Area (Hidden on mobile) */}
+          <div className="topbar-left admin-topbar-desktop-title-area">
             <span className="topbar-page-icon-mobile" aria-hidden="true">
               {getMobilePageIcon()}
             </span>
@@ -469,7 +511,8 @@ export const AdminLayout = () => {
             </span>
           </div>
 
-          <div className="topbar-right">
+          {/* Right-side controls: Notification Bell Icon & Dropdown */}
+          <div className="topbar-right admin-topbar-right-controls">
             <div className="admin-notif-wrapper" ref={notifRef}>
               <button
                 type="button"
@@ -532,8 +575,11 @@ export const AdminLayout = () => {
             </div>
           </div>
         </header>
+        )}
 
-        <div className="admin-content-inner">
+        <div
+          className={`admin-content-inner ${isDashboardPage ? 'has-admin-topbar' : 'no-admin-topbar'}`}
+        >
           <ErrorBoundary>
             <Outlet />
           </ErrorBoundary>
@@ -635,19 +681,33 @@ export const AdminLayout = () => {
           <div className="admin-support-fullscreen-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
               <div
+                className="admin-support-fullscreen-logo-badge"
                 style={{
-                  width: '36px',
-                  height: '36px',
+                  width: '38px',
+                  height: '38px',
                   borderRadius: '10px',
-                  backgroundColor: '#e6f7f0',
-                  color: '#00875a',
+                  backgroundColor: '#ffffff',
+                  border: '1.5px solid #e2e8f0',
+                  boxShadow: '0 1px 4px rgba(15, 23, 42, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
+                  padding: '3px',
+                  boxSizing: 'border-box',
+                  overflow: 'hidden',
                 }}
               >
-                <User size={19} />
+                <img
+                  src={logoUrl}
+                  alt={`${brandTitle} Logo`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    display: 'block',
+                  }}
+                />
               </div>
               <div style={{ minWidth: 0 }}>
                 <h3 className="admin-support-fullscreen-title">
@@ -665,12 +725,11 @@ export const AdminLayout = () => {
             {/* Admin User Profile Card */}
             <div className="profile-sheet-user-card">
               <div className="profile-sheet-avatar">
-                {(() => {
-                  if (!user?.name) return 'AD';
-                  const parts = user.name.trim().split(/\s+/);
-                  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-                  return user.name.substring(0, 2).toUpperCase();
-                })()}
+                <img
+                  src={logoUrl}
+                  alt={`${brandTitle} Logo`}
+                  className="profile-sheet-avatar-logo"
+                />
               </div>
               <div className="profile-sheet-user-info">
                 <div className="profile-sheet-name-row">
