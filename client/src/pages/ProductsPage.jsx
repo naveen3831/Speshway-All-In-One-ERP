@@ -370,6 +370,8 @@ export const ProductsPage = () => {
                         <img
                           src={imgUrl}
                           alt={prod.name}
+                          loading="lazy"
+                          decoding="async"
                           className="catalog-card-preview-img"
                           onError={(e) => {
                             const fallback = getProductFallbackImage(prod.slug || prod.id || prod.name);

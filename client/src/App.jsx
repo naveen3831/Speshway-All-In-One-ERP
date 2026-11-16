@@ -1,66 +1,92 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
-
-// Public Website Pages
-import { LandingPage } from './pages/LandingPage';
-import { ProductsPage } from './pages/ProductsPage';
-import { ProductDetailPage } from './pages/ProductDetailPage';
-import { FeaturesPage } from './pages/FeaturesPage';
-import { WhyUsPage } from './pages/WhyUsPage';
-import { PricingPage } from './pages/PricingPage';
-import { ContactPage } from './pages/ContactPage';
-import { FaqPage } from './pages/FaqPage';
-import { GetStartedPage } from './pages/GetStartedPage';
-
-// Admin Portal Pages
-import { AdminLogin } from './pages/admin/AdminLogin';
-import { AdminLayout } from './pages/admin/AdminLayout';
-import { AdminOverview } from './pages/admin/AdminOverview';
-import { AdminProducts } from './pages/admin/AdminProducts';
-import { AdminProductForm } from './pages/admin/AdminProductForm';
-import { AdminUsers } from './pages/admin/AdminUsers';
-import { AdminInquiries } from './pages/admin/AdminInquiries';
-import { AdminSettings } from './pages/admin/AdminSettings';
-import { AdminPricing } from './pages/admin/AdminPricing';
-import { AdminHomeSettings } from './pages/admin/AdminHomeSettings';
-
-// Dedicated Industry ERP Dashboards
-import { TravelAgencyDashboard } from './pages/travel/TravelAgencyDashboard';
-import BusTravelDashboard from './pages/travel/BusTravelDashboard';
-import { HospitalDashboard } from './pages/hospital/HospitalDashboard';
-import { VexaDashboard } from './pages/vexa/VexaDashboard';
-import { DairyDashboard } from './pages/dairy/DairyDashboard';
-import { AneeraDashboard } from './pages/aneera/AneeraDashboard';
-import { NexoraDashboard } from './pages/ecommerce/NexoraDashboard';
-import { SalonDashboard } from './pages/salon/SalonDashboard';
-import { ServiceCenterDashboard } from './pages/service/ServiceCenterDashboard';
-import { RealEstateDashboard } from './pages/realestate/RealEstateDashboard';
-import { SchoolDashboard } from './pages/school/SchoolDashboard';
-import { HotelDashboard } from './pages/hotel/HotelDashboard';
-import { JoyEventsDashboard } from './pages/events/JoyEventsDashboard';
-import { HrmsDashboard } from './pages/hrms/HrmsDashboard';
-import { FleetDashboard } from './pages/fleet/FleetDashboard';
-import { GymDashboard } from './pages/gym/GymDashboard';
-import { FlavoraKitchenDashboard } from './pages/restaurant/FlavoraKitchenDashboard';
-import { RideFlowDashboard } from './pages/bikes/RideFlowDashboard';
-import SavitriSareesDashboard from './pages/savitri/SavitriSareesDashboard';
-import SanaStayzDashboard from './pages/hotel/SanaStayzDashboard';
-import LearnhubDashboard from './pages/lms/LearnhubDashboard';
-import FoodwayDashboard from './pages/foodway/FoodwayDashboard';
-
-// Internal Dashboard & Auth
-import { DashboardLayout } from './components/layout/DashboardLayout';
-import { Dashboard } from './pages/Dashboard';
-import { Login } from './pages/Login';
-import { NotFound } from './pages/NotFound';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { ScrollToTop } from './components/common/ScrollToTop';
 import { SessionTimeoutModal } from './components/common/SessionTimeoutModal';
 
+// Public Website - Eagerly loaded for instant landing page paint
+import { LandingPage } from './pages/LandingPage';
 
-import { useParams } from 'react-router-dom';
+// Lazy Loaded Secondary Public Pages
+const ProductsPage = lazy(() => import('./pages/ProductsPage').then(m => ({ default: m.ProductsPage })));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage').then(m => ({ default: m.ProductDetailPage })));
+const FeaturesPage = lazy(() => import('./pages/FeaturesPage').then(m => ({ default: m.FeaturesPage })));
+const WhyUsPage = lazy(() => import('./pages/WhyUsPage').then(m => ({ default: m.WhyUsPage })));
+const PricingPage = lazy(() => import('./pages/PricingPage').then(m => ({ default: m.PricingPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const FaqPage = lazy(() => import('./pages/FaqPage').then(m => ({ default: m.FaqPage })));
+const GetStartedPage = lazy(() => import('./pages/GetStartedPage').then(m => ({ default: m.GetStartedPage })));
+
+// Admin Portal - Lazy Loaded
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin').then(m => ({ default: m.AdminLogin })));
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout').then(m => ({ default: m.AdminLayout })));
+const AdminOverview = lazy(() => import('./pages/admin/AdminOverview').then(m => ({ default: m.AdminOverview })));
+const AdminProducts = lazy(() => import('./pages/admin/AdminProducts').then(m => ({ default: m.AdminProducts })));
+const AdminProductForm = lazy(() => import('./pages/admin/AdminProductForm').then(m => ({ default: m.AdminProductForm })));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers').then(m => ({ default: m.AdminUsers })));
+const AdminInquiries = lazy(() => import('./pages/admin/AdminInquiries').then(m => ({ default: m.AdminInquiries })));
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings').then(m => ({ default: m.AdminSettings })));
+const AdminPricing = lazy(() => import('./pages/admin/AdminPricing').then(m => ({ default: m.AdminPricing })));
+const AdminHomeSettings = lazy(() => import('./pages/admin/AdminHomeSettings').then(m => ({ default: m.AdminHomeSettings })));
+
+// Dedicated Industry ERP Dashboards - Lazy Loaded
+const TravelAgencyDashboard = lazy(() => import('./pages/travel/TravelAgencyDashboard').then(m => ({ default: m.TravelAgencyDashboard })));
+const BusTravelDashboard = lazy(() => import('./pages/travel/BusTravelDashboard'));
+const HospitalDashboard = lazy(() => import('./pages/hospital/HospitalDashboard').then(m => ({ default: m.HospitalDashboard })));
+const VexaDashboard = lazy(() => import('./pages/vexa/VexaDashboard').then(m => ({ default: m.VexaDashboard })));
+const DairyDashboard = lazy(() => import('./pages/dairy/DairyDashboard').then(m => ({ default: m.DairyDashboard })));
+const AneeraDashboard = lazy(() => import('./pages/aneera/AneeraDashboard').then(m => ({ default: m.AneeraDashboard })));
+const NexoraDashboard = lazy(() => import('./pages/ecommerce/NexoraDashboard').then(m => ({ default: m.NexoraDashboard })));
+const SalonDashboard = lazy(() => import('./pages/salon/SalonDashboard').then(m => ({ default: m.SalonDashboard })));
+const ServiceCenterDashboard = lazy(() => import('./pages/service/ServiceCenterDashboard').then(m => ({ default: m.ServiceCenterDashboard })));
+const RealEstateDashboard = lazy(() => import('./pages/realestate/RealEstateDashboard').then(m => ({ default: m.RealEstateDashboard })));
+const SchoolDashboard = lazy(() => import('./pages/school/SchoolDashboard').then(m => ({ default: m.SchoolDashboard })));
+const HotelDashboard = lazy(() => import('./pages/hotel/HotelDashboard').then(m => ({ default: m.HotelDashboard })));
+const JoyEventsDashboard = lazy(() => import('./pages/events/JoyEventsDashboard').then(m => ({ default: m.JoyEventsDashboard })));
+const HrmsDashboard = lazy(() => import('./pages/hrms/HrmsDashboard').then(m => ({ default: m.HrmsDashboard })));
+const FleetDashboard = lazy(() => import('./pages/fleet/FleetDashboard').then(m => ({ default: m.FleetDashboard })));
+const GymDashboard = lazy(() => import('./pages/gym/GymDashboard').then(m => ({ default: m.GymDashboard })));
+const FlavoraKitchenDashboard = lazy(() => import('./pages/restaurant/FlavoraKitchenDashboard').then(m => ({ default: m.FlavoraKitchenDashboard })));
+const RideFlowDashboard = lazy(() => import('./pages/bikes/RideFlowDashboard').then(m => ({ default: m.RideFlowDashboard })));
+const SavitriSareesDashboard = lazy(() => import('./pages/savitri/SavitriSareesDashboard'));
+const SanaStayzDashboard = lazy(() => import('./pages/hotel/SanaStayzDashboard'));
+const LearnhubDashboard = lazy(() => import('./pages/lms/LearnhubDashboard'));
+const FoodwayDashboard = lazy(() => import('./pages/foodway/FoodwayDashboard'));
+
+// Internal Dashboard & Auth - Lazy Loaded
+const DashboardLayout = lazy(() => import('./components/layout/DashboardLayout').then(m => ({ default: m.DashboardLayout })));
+const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
+const Login = lazy(() => import('./pages/Login').then(m => ({ default: m.Login })));
+const NotFound = lazy(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
+
+// Sleek fallback loader for lazy loaded pages
+const PageLoader = () => (
+  <div
+    style={{
+      minHeight: '60vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '14px',
+      color: '#00875a',
+    }}
+  >
+    <div
+      style={{
+        width: '36px',
+        height: '36px',
+        border: '3px solid #ecfdf5',
+        borderTop: '3px solid #00875a',
+        borderRadius: '50%',
+        animation: 'spin 0.8s linear infinite',
+      }}
+    />
+    <span style={{ fontSize: '0.84rem', color: '#64748b', fontWeight: 600 }}>Loading...</span>
+  </div>
+);
 
 const DynamicProductDashboard = () => {
   const { id } = useParams();
@@ -100,7 +126,8 @@ export default function App() {
           <BrowserRouter>
             <ScrollToTop />
             <ErrorBoundary>
-              <Routes>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
             {/* 1. SEPARATE PUBLIC WEBSITE PAGES */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/products" element={<ProductsPage />} />
@@ -265,6 +292,7 @@ export default function App() {
             {/* 5. 404 CATCH-ALL */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
           </ErrorBoundary>
         </BrowserRouter>
       </SocketProvider>

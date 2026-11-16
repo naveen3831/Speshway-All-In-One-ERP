@@ -82,7 +82,7 @@ export const ApplicationsGrid = ({ onSelectProduct }) => {
                 <div className="app-card-left">
                   <div className={`app-icon-box bg-icon-${prod.color || 'green'}`}>
                     {prod.imageUrl ? (
-                      <img src={prod.imageUrl} alt={prod.name} className="app-icon-custom-img" />
+                      <img src={prod.imageUrl} alt={prod.name} className="app-icon-custom-img" loading="lazy" decoding="async" />
                     ) : (
                       <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={22} />
                     )}
