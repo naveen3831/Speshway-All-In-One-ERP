@@ -289,6 +289,9 @@ export const AdminLayout = () => {
   }, [notificationItems]);
 
   const handleLogout = () => {
+    try {
+      sessionStorage.removeItem('speshway_admin_authenticated');
+    } catch (e) {}
     logout();
     navigate('/admin');
   };
@@ -303,8 +306,13 @@ export const AdminLayout = () => {
     );
   }
 
-  // 1. If not authenticated or not an admin, show the dedicated Admin Login Portal
-  if (!user || user.role !== 'admin') {
+  // 1. If not authenticated or not an admin in this session, show the dedicated Admin Login Portal
+  const isAdminAuthenticated =
+    user &&
+    user.role === 'admin' &&
+    sessionStorage.getItem('speshway_admin_authenticated') === 'true';
+
+  if (!isAdminAuthenticated) {
     return <AdminLogin />;
   }
 

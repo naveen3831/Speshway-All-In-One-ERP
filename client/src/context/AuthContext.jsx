@@ -51,6 +51,9 @@ export const AuthProvider = ({ children }) => {
     // Immediately clear local state synchronously for instant UI transition
     setUser(null);
     setCountdownSeconds(null);
+    try {
+      sessionStorage.removeItem('speshway_admin_authenticated');
+    } catch (e) {}
     localStorage.removeItem('user');
     localStorage.removeItem(STORAGE_LAST_ACTIVITY_KEY);
 
@@ -95,6 +98,11 @@ export const AuthProvider = ({ children }) => {
       ...credentials,
       timeoutMinutes,
     });
+    if (data?.data?.role === 'admin') {
+      try {
+        sessionStorage.setItem('speshway_admin_authenticated', 'true');
+      } catch (e) {}
+    }
     setUser(data.data);
     setSessionExpired(false);
     setSessionExpiredReason('');

@@ -28,14 +28,18 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('user');
-      // Notify application of session expiration
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(
-          new CustomEvent('speshway:session-expired', {
-            detail: error.response.data || { sessionExpired: true },
-          })
-        );
+      // Don't fire session expiration if the error was from an intentional login attempt failure
+      if (!error.config?.url?.includes('/auth/login')) {
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('speshway_admin_authenticated');
+        // Notify application of session expiration
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(
+            new CustomEvent('speshway:session-expired', {
+              detail: error.response.data || { sessionExpired: true },
+            })
+          );
+        }
       }
     }
     return Promise.reject(error);

@@ -34,9 +34,13 @@ export const AdminLogin = () => {
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
 
-  // If already authenticated as admin, seamlessly navigate to the admin dashboard
+  // If already authenticated as admin in this session, seamlessly navigate to the admin dashboard
   useEffect(() => {
-    if (user && user.role === 'admin') {
+    if (
+      user &&
+      user.role === 'admin' &&
+      sessionStorage.getItem('speshway_admin_authenticated') === 'true'
+    ) {
       navigate('/admin', { replace: true });
     }
   }, [user, navigate]);
@@ -50,6 +54,7 @@ export const AdminLogin = () => {
       const cleanEmail = email.trim().toLowerCase();
       const cleanPassword = password.trim();
       const res = await login({ email: cleanEmail, password: cleanPassword });
+      sessionStorage.setItem('speshway_admin_authenticated', 'true');
       dismissSessionExpired();
       if (res?.data?.role === 'admin' || !res?.data?.role) {
         navigate('/admin', { replace: true });
