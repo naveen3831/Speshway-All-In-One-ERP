@@ -19,16 +19,6 @@ export const AdminOverview = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Top Banner */}
-      <div className="admin-page-header">
-        <div>
-          <h1 className="admin-heading">Executive Dashboard Overview</h1>
-          <p className="admin-subtext">
-            Monitor real-time system performance, ERP projects catalog, and incoming customer inquiries.
-          </p>
-        </div>
-      </div>
-
       {/* KPI Stats Cards */}
       <div className="admin-kpi-grid">
         <Link
