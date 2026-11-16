@@ -65,10 +65,6 @@ export const AdminLayout = () => {
     location.pathname === '/admin/users';
 
   const normalizedPath = (location.pathname || '').replace(/\/+$/, '') || '/';
-  const isDashboardPage =
-    normalizedPath === '/admin/overview' ||
-    normalizedPath === '/admin/dashboard' ||
-    normalizedPath === '/admin';
 
   const getMobileTopbarTitle = () => {
     const path = location.pathname;
@@ -479,12 +475,11 @@ export const AdminLayout = () => {
 
       {/* Main Admin Content Screen */}
       <div
-        className={`admin-main-wrap ${isDashboardPage ? 'has-admin-topbar' : 'no-admin-topbar'}`}
+        className="admin-main-wrap has-admin-topbar"
         ref={mainWrapRef}
       >
-        {/* Navbar: Rendered strictly on the Admin Dashboard page */}
-        {isDashboardPage && (
-          <header className="admin-topbar">
+        {/* Top Navbar: Rendered across all Admin pages */}
+        <header className="admin-topbar">
           {/* Brand Logo & Tagline Lockup (Mobile Response: Logo | SPESHWAY — ALL IN ONE ERP —) */}
           <div className="admin-topbar-logo-area">
             <Link
@@ -587,11 +582,8 @@ export const AdminLayout = () => {
             </div>
           </div>
         </header>
-        )}
 
-        <div
-          className={`admin-content-inner ${isDashboardPage ? 'has-admin-topbar' : 'no-admin-topbar'}`}
-        >
+        <div className="admin-content-inner has-admin-topbar">
           <ErrorBoundary>
             <Outlet />
           </ErrorBoundary>
