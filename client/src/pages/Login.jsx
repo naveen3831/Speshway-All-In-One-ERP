@@ -27,7 +27,7 @@ export const Login = () => {
       const res = await login({ email, password });
       dismissSessionExpired();
       if (res?.data?.role === 'admin') {
-        navigate('/admin/overview');
+        navigate('/admin');
       } else {
         navigate('/dashboard');
       }

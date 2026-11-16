@@ -342,10 +342,15 @@ export const AdminLayout = () => {
 
         <nav className="admin-sidebar-menu">
           <NavLink
-            to="/admin/overview"
+            to="/admin"
+            end
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) =>
-              isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard'
+              isActive ||
+              location.pathname === '/admin' ||
+              location.pathname === '/admin/' ||
+              location.pathname === '/admin/overview' ||
+              location.pathname === '/admin/dashboard'
                 ? 'admin-nav-item active'
                 : 'admin-nav-item'
             }
@@ -475,7 +480,7 @@ export const AdminLayout = () => {
           {/* Brand Logo & Tagline Lockup (Mobile Response: Logo | SPESHWAY — ALL IN ONE ERP —) */}
           <div className="admin-topbar-logo-area">
             <Link
-              to="/admin/overview"
+              to="/admin"
               className="admin-topbar-brand-link"
               title={`${brandTitle} - ${brandSubtitle}`}
               aria-label={`${brandTitle} Dashboard`}
@@ -588,13 +593,18 @@ export const AdminLayout = () => {
       {/* Mobile Bottom Navigation Bar (Mobile Responsive Only) */}
       <nav className="admin-mobile-bottom-bar" aria-label="Admin Mobile Navigation">
         <NavLink
-          to="/admin/overview"
+          to="/admin"
+          end
           onClick={() => {
             setShowMobileProfile(false);
           }}
           className={({ isActive }) =>
             `admin-bottom-nav-item ${
-              (isActive || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') &&
+              (isActive ||
+                location.pathname === '/admin' ||
+                location.pathname === '/admin/' ||
+                location.pathname === '/admin/overview' ||
+                location.pathname === '/admin/dashboard') &&
               !showMobileProfile
                 ? 'active'
                 : ''

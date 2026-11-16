@@ -259,9 +259,9 @@ export default function App() {
             <Route path="/login" element={<Login />} />
 
             {/* 3. ADMIN AUTHENTICATION & DASHBOARD */}
-            <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route element={<AdminLayout />}>
+              <Route path="/admin" element={<AdminOverview />} />
               <Route path="/admin/overview" element={<AdminOverview />} />
               <Route path="/admin/dashboard" element={<AdminOverview />} />
               <Route path="/admin/products" element={<AdminProducts />} />
