@@ -13,6 +13,7 @@ import {
   X,
   Eye,
   EyeOff,
+  CreditCard,
 } from 'lucide-react';
 
 const DEFAULT_SAAS_PLANS = [
@@ -372,28 +373,19 @@ export const AdminPricing = () => {
         <div className="admin-header-top-row">
           <div className="admin-header-title-wrap">
             <h1 className="admin-heading">
+              <span className="admin-heading-icon-badge">
+                <CreditCard size={18} />
+              </span>
               <span className="admin-heading-desktop">Pricing &amp; Plans Management</span>
-              <span className="admin-heading-mobile">Pricing Plans</span>
+              <span className="admin-heading-mobile">Pricing</span>
             </h1>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto', flexShrink: 0 }}>
+          <div className="admin-header-actions-group">
             <button
               type="button"
               onClick={handleAddNewPlan}
-              className="btn-hero-primary"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '7px 16px',
-                fontSize: '0.84rem',
-                fontWeight: 700,
-                borderRadius: '8px',
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(0, 135, 90, 0.25)',
-                whiteSpace: 'nowrap',
-              }}
+              className="btn-hero-primary admin-header-add-btn"
             >
               <Plus size={15} /> <span>Add Plan</span>
             </button>
@@ -422,7 +414,8 @@ export const AdminPricing = () => {
                     {isPricingActive ? <Eye size={15} /> : <EyeOff size={15} />}
                   </div>
                   <span className="admin-toggle-label">
-                    Pricing: {isPricingActive ? 'ON' : 'OFF'}
+                    <span className="admin-toggle-label-prefix">Pricing: </span>
+                    {isPricingActive ? 'ON' : 'OFF'}
                   </span>
                 </div>
 

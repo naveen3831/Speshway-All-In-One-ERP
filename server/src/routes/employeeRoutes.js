@@ -13,12 +13,15 @@ const getEmployeeQuery = (id) => {
   return { _id: new mongoose.Types.ObjectId() }; // fallback dummy
 };
 
-// @desc    Get all employees/team members from MongoDB database
+// @desc    Get all employees/team members (served from high-speed memory cache)
 // @route   GET /api/employees
 // @access  Public
 router.get('/', async (req, res) => {
+  if (liveState.modulesData.hrms && liveState.modulesData.hrms.length > 0) {
+    return res.json({ success: true, count: liveState.modulesData.hrms.length, data: liveState.modulesData.hrms });
+  }
   try {
-    const employees = await Employee.find().sort({ createdAt: -1 });
+    const employees = await Employee.find().sort({ createdAt: -1 }).lean();
     if (employees && employees.length > 0) {
       // Keep liveState synced
       liveState.modulesData.hrms = employees.map((e) => ({
@@ -29,7 +32,7 @@ router.get('/', async (req, res) => {
         dept: e.dept,
         status: e.status,
       }));
-      return res.json({ success: true, count: employees.length, data: employees });
+      return res.json({ success: true, count: employees.length, data: liveState.modulesData.hrms });
     }
     // Fallback if collection was empty
     res.json({ success: true, count: liveState.modulesData.hrms.length, data: liveState.modulesData.hrms });

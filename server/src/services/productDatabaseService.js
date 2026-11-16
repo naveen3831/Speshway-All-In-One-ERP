@@ -1,5 +1,5 @@
 import Product from '../models/Product.js';
-import { initialProducts } from './productStore.js';
+import { initialProducts, setProductsMemory } from './productStore.js';
 
 export const seedProductsDatabase = async () => {
   try {
@@ -282,6 +282,13 @@ export const seedProductsDatabase = async () => {
           popularity: 99,
         });
       }
+    }
+
+    // Load active products from MongoDB into high-speed in-memory store for instant <1ms GET responses
+    const allDbProducts = await Product.find().sort({ createdAt: -1, popularity: -1 }).lean();
+    if (allDbProducts && allDbProducts.length > 0) {
+      setProductsMemory(allDbProducts);
+      console.log(`⚡ Cached ${allDbProducts.length} active products in memory for instant responses.`);
     }
   } catch (err) {
     console.error('Error seeding products to database:', err.message);

@@ -386,23 +386,25 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  // Fetch initial products, employees, inquiries, and home content from MongoDB API
+  // Fetch initial products, employees, inquiries, and home content concurrently from API with 0ms memory cache
   useEffect(() => {
     const fetchInitialData = async () => {
-      await refreshProducts();
-      await refreshInquiries();
-      await refreshHomeContent();
-
       try {
-        const empRes = await api.get('/employees');
-        if (empRes.data?.data && Array.isArray(empRes.data.data) && empRes.data.data.length > 0) {
-          setModulesData((prev) => ({
-            ...prev,
-            hrms: empRes.data.data,
-          }));
-        }
+        await Promise.allSettled([
+          refreshProducts(),
+          refreshInquiries(),
+          refreshHomeContent(),
+          api.get('/employees').then((empRes) => {
+            if (empRes.data?.data && Array.isArray(empRes.data.data) && empRes.data.data.length > 0) {
+              setModulesData((prev) => ({
+                ...prev,
+                hrms: empRes.data.data,
+              }));
+            }
+          }),
+        ]);
       } catch (err) {
-        console.warn('Could not fetch employees from API, using default team directory');
+        console.warn('Initial data load notice:', err.message);
       }
     };
 

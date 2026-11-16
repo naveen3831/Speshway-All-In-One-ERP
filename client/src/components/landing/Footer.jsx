@@ -213,7 +213,7 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
                 )}
               </li>
               <li>
-                <Link to="/admin" className="footer-link">
+                <Link to="/admin/login" className="footer-link">
                   Admin Console Portal
                 </Link>
               </li>

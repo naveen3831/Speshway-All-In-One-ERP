@@ -64,6 +64,10 @@ export const DEFAULT_PRICING_PLANS = [
 let memoryPricing = [...DEFAULT_PRICING_PLANS];
 
 export const getPricingPlans = async () => {
+  // Return high-speed in-memory store immediately
+  if (memoryPricing && memoryPricing.length > 0) {
+    return memoryPricing;
+  }
   try {
     const dbPlans = await PricingPlan.find({}).sort({ order: 1 }).lean();
     if (dbPlans && dbPlans.length > 0) {

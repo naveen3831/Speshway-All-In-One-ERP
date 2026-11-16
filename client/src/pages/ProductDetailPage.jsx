@@ -359,7 +359,11 @@ export const ProductDetailPage = () => {
 
             <div className="detail-hero-right">
               <div className="product-hero-card-preview">
-                <div className="preview-hero-media">
+                <div className="preview-top-badge">
+                  <Sparkles size={16} className="text-icon-green" />
+                  <span>Enterprise Edition</span>
+                </div>
+                <div className="preview-icon-giant">
                   {(() => {
                     const rawImg = product.imageUrl && typeof product.imageUrl === 'string' ? product.imageUrl.trim() : '';
                     const heroImg = rawImg || getProductFallbackImage(product.slug || product.id || product.name) || '';
@@ -378,28 +382,24 @@ export const ProductDetailPage = () => {
                         }}
                       />
                     ) : (
-                      <div className="preview-fallback-icon">
-                        <Layers size={64} className="text-icon-green" />
-                      </div>
+                      <Layers size={64} className="text-icon-green" />
                     );
                   })()}
                 </div>
-                <div className="preview-card-info-content">
-                  <h3 className="preview-card-prod-name">{product.name}</h3>
-                  <p className="preview-card-prod-sub">Real-Time Synchronized &bull; Role-Based Access</p>
-                  <div className="preview-stats-bar">
-                    <div>
-                      <span className="p-num">99.9%</span>
-                      <span className="p-lbl">Uptime SLA</span>
-                    </div>
-                    <div>
-                      <span className="p-num">256-bit</span>
-                      <span className="p-lbl">AES Encryption</span>
-                    </div>
-                    <div>
-                      <span className="p-num">&lt;50ms</span>
-                      <span className="p-lbl">API Latency</span>
-                    </div>
+                <h3 className="preview-card-prod-name">{product.name}</h3>
+                <p className="preview-card-prod-sub">Real-Time Synchronized &bull; Role-Based Access</p>
+                <div className="preview-stats-bar">
+                  <div>
+                    <span className="p-num">99.9%</span>
+                    <span className="p-lbl">Uptime SLA</span>
+                  </div>
+                  <div>
+                    <span className="p-num">256-bit</span>
+                    <span className="p-lbl">AES Encryption</span>
+                  </div>
+                  <div>
+                    <span className="p-num">&lt;50ms</span>
+                    <span className="p-lbl">API Latency</span>
                   </div>
                 </div>
               </div>

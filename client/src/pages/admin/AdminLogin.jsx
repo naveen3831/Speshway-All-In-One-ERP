@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket, DEFAULT_BRANDING } from '../../context/SocketContext';
 import {
@@ -9,7 +9,6 @@ import {
   EyeOff,
   ArrowRight,
   ShieldCheck,
-  ArrowLeft,
   Clock,
 } from 'lucide-react';
 
@@ -31,12 +30,6 @@ export const AdminLogin = () => {
   const { branding, homeContent } = useSocket();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (user && (user.role === 'admin' || !user.role)) {
-      navigate('/admin/overview', { replace: true });
-    }
-  }, [user, navigate]);
-
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
@@ -52,9 +45,9 @@ export const AdminLogin = () => {
       const res = await login({ email: cleanEmail, password: cleanPassword });
       dismissSessionExpired();
       if (res?.data?.role === 'admin' || !res?.data?.role) {
-        navigate('/admin/overview');
+        navigate('/admin/overview', { replace: true });
       } else {
-        navigate('/dashboard');
+        navigate('/dashboard', { replace: true });
       }
     } catch (err) {
       setError(
@@ -194,13 +187,6 @@ export const AdminLogin = () => {
             <ShieldCheck size={14} />
             <span>256-bit SSL encrypted administrative connection</span>
           </div>
-        </div>
-
-        {/* Back to public link */}
-        <div className="pro-login-footer">
-          <Link to="/" className="pro-back-link">
-            <ArrowLeft size={14} /> Back to Website
-          </Link>
         </div>
       </div>
     </div>

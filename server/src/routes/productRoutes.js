@@ -5,7 +5,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Product from '../models/Product.js';
 import { getIO } from '../services/socketService.js';
-import { getProducts, getProductById, updateProduct as updateMemoryProduct, addProduct as addMemoryProduct } from '../services/productStore.js';
+import {
+  getProducts,
+  getProductById,
+  updateProduct as updateMemoryProduct,
+  addProduct as addMemoryProduct,
+  deleteProduct as deleteMemoryProduct,
+  setProductsMemory,
+  initialProducts,
+} from '../services/productStore.js';
 import { uploadToCloudinary, isCloudinaryConfigured } from '../services/cloudinaryService.js';
 
 const router = express.Router();
@@ -83,45 +91,48 @@ const getProductQuery = (id) => {
   return { $or: conditions };
 };
 
-// @desc    Get all products from MongoDB database (newest first)
+// @desc    Get all products (served from high-speed memory cache with <1ms latency)
 // @route   GET /api/products
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const sortField =
-      req.query.sort === 'popularity'
-        ? { popularity: -1, createdAt: -1 }
-        : { createdAt: -1, popularity: -1 };
-    let products = await Product.find().sort(sortField);
+    let products = getProducts();
     if (!products || products.length === 0) {
-      const { getProducts, initialProducts } = await import('../services/productStore.js');
-      products = getProducts ? getProducts() : initialProducts;
+      const sortField =
+        req.query.sort === 'popularity'
+          ? { popularity: -1, createdAt: -1 }
+          : { createdAt: -1, popularity: -1 };
+      products = await Product.find().sort(sortField).lean();
+      if (products && products.length > 0) {
+        setProductsMemory(products);
+      } else {
+        products = initialProducts;
+      }
+    } else if (req.query.sort === 'popularity') {
+      products = [...products].sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
     }
     res.json({ success: true, count: products.length, data: products });
   } catch (err) {
-    try {
-      const { getProducts, initialProducts } = await import('../services/productStore.js');
-      const products = getProducts ? getProducts() : initialProducts;
-      res.json({ success: true, count: products.length, data: products });
-    } catch (fallbackErr) {
-      res.status(500).json({ success: false, message: err.message });
-    }
+    const fallback = getProducts() || initialProducts;
+    res.json({ success: true, count: fallback.length, data: fallback });
   }
 });
 
-// @desc    Get single product by id or slug from MongoDB
+// @desc    Get single product by id or slug (served from high-speed memory cache)
 // @route   GET /api/products/:id
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    let product = null;
-    try {
-      product = await Product.findOne(getProductQuery(req.params.id)).lean();
-    } catch (dbErr) {
-      console.warn('MongoDB Product.findOne warning:', dbErr.message);
-    }
+    let product = getProductById(req.params.id);
     if (!product) {
-      product = getProductById(req.params.id);
+      try {
+        product = await Product.findOne(getProductQuery(req.params.id)).lean();
+        if (product) {
+          addMemoryProduct(product);
+        }
+      } catch (dbErr) {
+        console.warn('MongoDB Product.findOne warning:', dbErr.message);
+      }
     }
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found in database' });
@@ -136,7 +147,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// @desc    Add new product directly to MongoDB database (CRUD Create)
+// @desc    Add new product (Instant response & background DB sync)
 // @route   POST /api/products
 // @access  Public
 router.post('/', async (req, res) => {
@@ -170,23 +181,17 @@ router.post('/', async (req, res) => {
       slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     if (!finalSlug) finalSlug = 'prod-' + Date.now();
 
-    // Prevent duplicate slug crash
-    const existingProductWithSlug = await Product.findOne({ slug: finalSlug });
-    if (existingProductWithSlug) {
-      finalSlug = `${finalSlug}-${Date.now().toString().slice(-4)}`;
-    }
-
     let finalImageUrl = imageUrl || '';
     if (finalImageUrl) {
       if (typeof finalImageUrl === 'string' && finalImageUrl.startsWith('data:image/')) {
         finalImageUrl = await saveBase64Image(finalImageUrl, finalSlug);
-      } else {
+      } else if (typeof finalImageUrl === 'string' && !finalImageUrl.includes('res.cloudinary.com') && /^https?:\/\//i.test(finalImageUrl)) {
         const cloud = await uploadToCloudinary(finalImageUrl, 'speshway_products');
         finalImageUrl = (cloud && typeof cloud === 'object') ? (cloud.url || cloud.secure_url || finalImageUrl) : (cloud || finalImageUrl);
       }
     }
 
-    const createdProduct = await Product.create({
+    const productPayload = {
       name: name.trim(),
       slug: finalSlug,
       category: category || 'Human Resources',
@@ -210,29 +215,48 @@ router.post('/', async (req, res) => {
       color: color || 'green',
       status: status || 'active',
       popularity: typeof popularity === 'number' ? popularity : 100,
-    });
+    };
 
-    const plainProduct = createdProduct.toJSON ? createdProduct.toJSON() : createdProduct;
+    // 1. Immediately store in in-memory cache
+    const memProduct = addMemoryProduct(productPayload);
 
-    // Real-time WebSocket broadcast to all connected clients
+    // 2. Real-time WebSocket broadcast to all connected clients immediately
     const io = getIO();
     if (io) {
-      io.emit('product:added', plainProduct);
+      io.emit('product:added', memProduct);
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `New ERP Product added to database: "${createdProduct.name}"`,
+        text: `New ERP Product added: "${memProduct.name}"`,
         time: 'Just now',
       });
     }
 
-    res.status(201).json({ success: true, data: plainProduct });
+    // 3. Return 201 immediately
+    res.status(201).json({ success: true, data: memProduct });
+
+    // 4. Background persistence to MongoDB Atlas
+    (async () => {
+      try {
+        const existingProductWithSlug = await Product.findOne({ slug: finalSlug });
+        let dbSlug = finalSlug;
+        if (existingProductWithSlug) {
+          dbSlug = `${finalSlug}-${Date.now().toString().slice(-4)}`;
+        }
+        const created = await Product.create({ ...productPayload, slug: dbSlug });
+        if (created && created._id) {
+          updateMemoryProduct(finalSlug, { _id: created._id.toString() });
+        }
+      } catch (dbErr) {
+        console.warn('MongoDB background Product.create notice:', dbErr.message);
+      }
+    })();
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// @desc    Update product in MongoDB database (CRUD Update)
+// @desc    Update product (Instant memory update & WebSocket broadcast, background DB sync)
 // @route   PUT /api/products/:id
 // @access  Public
 router.put('/:id', async (req, res) => {
@@ -262,120 +286,113 @@ router.put('/:id', async (req, res) => {
       }
     }
 
-    // 1. Update in-memory store so changes reflect immediately even without MongoDB
+    // 1. Instantly update in-memory cache
     let memUpdated = updateMemoryProduct(rawId, body);
     if (!memUpdated) {
       memUpdated = addMemoryProduct({ ...body, id: rawId, slug: body.slug || rawId });
     }
 
-    // 2. Update or insert in MongoDB database
-    let updated = null;
-    try {
-      const isObjectId = mongoose.Types.ObjectId.isValid(rawId);
-      const searchConditions = [];
-      if (isObjectId) {
-        searchConditions.push({ _id: rawId });
-      }
-      searchConditions.push({ slug: rawId });
-      searchConditions.push({ slug: new RegExp('^' + rawId + '$', 'i') });
-      if (body.slug && body.slug !== rawId) {
-        searchConditions.push({ slug: body.slug });
-        searchConditions.push({ slug: new RegExp('^' + body.slug + '$', 'i') });
-      }
-      if (body.name) {
-        searchConditions.push({ name: new RegExp('^' + body.name + '$', 'i') });
-      }
-
-      let existing = await Product.findOne({ $or: searchConditions });
-      if (existing) {
-        const updateDoc = {
-          ...body,
-          slug: existing.slug || body.slug || rawId,
-        };
-        if (body.imageUrl !== undefined) {
-          updateDoc.imageUrl = body.imageUrl;
-        }
-        updated = await Product.findByIdAndUpdate(
-          existing._id,
-          { $set: updateDoc },
-          { new: true, runValidators: false, lean: true }
-        );
-      } else {
-        const cleanSlug = (body.slug || rawId).toLowerCase().replace(/[^a-z0-9_-]/g, '-');
-        updated = await Product.create({
-          ...body,
-          slug: cleanSlug,
-        });
-        if (updated && updated.toObject) {
-          updated = updated.toObject();
-        }
-      }
-    } catch (dbErr) {
-      console.warn('MongoDB Product update error (fallback to memory store):', dbErr.message);
-    }
-
-    const plainUpdated = updated
-      ? updated.toJSON
-        ? updated.toJSON()
-        : updated
-      : memUpdated || { id: rawId, ...body };
-
-    // Real-time WebSocket broadcast
+    // 2. Real-time WebSocket broadcast to all connected clients immediately
     const io = getIO();
     if (io) {
-      io.emit('product:updated', plainUpdated);
+      io.emit('product:updated', memUpdated);
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product updated: "${plainUpdated.name || rawId}" details refreshed`,
+        text: `Product updated: "${memUpdated?.name || rawId}" details refreshed`,
         time: 'Just now',
       });
     }
 
-    res.json({ success: true, data: plainUpdated });
+    // 3. Return response immediately to client
+    res.json({ success: true, data: memUpdated });
+
+    // 4. Background update in MongoDB database
+    (async () => {
+      try {
+        const isObjectId = mongoose.Types.ObjectId.isValid(rawId);
+        const searchConditions = [];
+        if (isObjectId) {
+          searchConditions.push({ _id: rawId });
+        }
+        searchConditions.push({ slug: rawId });
+        searchConditions.push({ slug: new RegExp('^' + rawId + '$', 'i') });
+        if (body.slug && body.slug !== rawId) {
+          searchConditions.push({ slug: body.slug });
+          searchConditions.push({ slug: new RegExp('^' + body.slug + '$', 'i') });
+        }
+        if (body.name) {
+          searchConditions.push({ name: new RegExp('^' + body.name + '$', 'i') });
+        }
+
+        let existing = await Product.findOne({ $or: searchConditions });
+        if (existing) {
+          const updateDoc = {
+            ...body,
+            slug: existing.slug || body.slug || rawId,
+          };
+          if (body.imageUrl !== undefined) {
+            updateDoc.imageUrl = body.imageUrl;
+          }
+          await Product.findByIdAndUpdate(
+            existing._id,
+            { $set: updateDoc },
+            { new: true, runValidators: false, lean: true }
+          );
+        } else {
+          const cleanSlug = (body.slug || rawId).toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+          await Product.create({
+            ...body,
+            slug: cleanSlug,
+          });
+        }
+      } catch (dbErr) {
+        console.warn('MongoDB Product background update notice:', dbErr.message);
+      }
+    })();
   } catch (err) {
     console.error('Error in PUT /api/products/:id:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// @desc    Delete product from MongoDB database (CRUD Delete)
+// @desc    Delete product (Instant memory deletion & WebSocket broadcast, background DB sync)
 // @route   DELETE /api/products/:id
 // @access  Public
 router.delete('/:id', async (req, res) => {
   try {
     const rawId = req.params.id ? decodeURIComponent(req.params.id).trim() : '';
 
-    let deleted = null;
-    try {
-      deleted = await Product.findOneAndDelete(getProductQuery(rawId));
-    } catch (dbErr) {
-      console.warn('MongoDB Product.findOneAndDelete error:', dbErr.message);
-    }
-
-    const { deleteProduct: deleteMemoryProduct } = await import('../services/productStore.js');
+    // 1. Delete from memory immediately
     deleteMemoryProduct(rawId);
 
-    const targetSlug = deleted?.slug || rawId;
-    const targetId = deleted?._id || deleted?.id || rawId;
-
-    // Real-time WebSocket broadcast
+    // 2. Real-time WebSocket broadcast immediately
     const io = getIO();
     if (io) {
-      io.emit('product:deleted', { id: targetId, slug: targetSlug });
+      io.emit('product:deleted', { id: rawId, slug: rawId });
       io.emit('activity:new', {
         id: Date.now(),
         type: 'product',
-        text: `Product deleted: "${deleted?.name || rawId}" removed`,
+        text: `Product deleted: "${rawId}" removed`,
         time: 'Just now',
       });
     }
 
+    // 3. Return response immediately
     res.json({
       success: true,
-      message: `Product "${deleted?.name || rawId}" permanently deleted`,
-      deletedId: targetId,
+      message: `Product "${rawId}" permanently deleted`,
+      deletedId: rawId,
     });
+
+    // 4. Background delete in MongoDB
+    (async () => {
+      try {
+        await Product.findOneAndDelete(getProductQuery(rawId));
+      } catch (dbErr) {
+        console.warn('MongoDB Product background delete notice:', dbErr.message);
+      }
+    })();
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

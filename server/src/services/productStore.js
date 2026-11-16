@@ -357,6 +357,12 @@ let productsMemory = [...initialProducts];
 
 const normalize = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
+export const setProductsMemory = (products) => {
+  if (Array.isArray(products) && products.length > 0) {
+    productsMemory = [...products];
+  }
+};
+
 export const getProducts = () => productsMemory;
 
 export const getProductById = (id) => {
@@ -388,6 +394,19 @@ export const addProduct = (productData) => {
     features: Array.isArray(productData.features) ? productData.features : [],
     ...productData,
   };
+
+  const existingIdx = productsMemory.findIndex(
+    (p) =>
+      p.id === newProduct.id ||
+      p.slug === newProduct.slug ||
+      (p._id && newProduct._id && String(p._id) === String(newProduct._id))
+  );
+
+  if (existingIdx !== -1) {
+    productsMemory[existingIdx] = { ...productsMemory[existingIdx], ...newProduct };
+    return productsMemory[existingIdx];
+  }
+
   productsMemory.unshift(newProduct);
   return newProduct;
 };
@@ -411,7 +430,23 @@ export const updateProduct = (id, updates = {}) => {
       normalize(p.name) === normId ||
       normalize(p.id) === normId
   );
-  if (index === -1) return null;
+
+  if (index === -1) {
+    const fallbackItem = {
+      id: updates.slug || id,
+      slug: updates.slug || id,
+      status: 'active',
+      popularity: 90,
+      technologies: Array.isArray(updates.technologies)
+        ? updates.technologies
+        : ['React', 'Node.js', 'Express', 'MongoDB'],
+      features: Array.isArray(updates.features) ? updates.features : [],
+      ...updates,
+    };
+    productsMemory.unshift(fallbackItem);
+    return fallbackItem;
+  }
+
   productsMemory[index] = {
     ...productsMemory[index],
     ...updates,
