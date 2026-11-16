@@ -458,7 +458,40 @@ export const AdminLayout = () => {
       {/* Main Admin Content Screen */}
       <div className="admin-main-wrap" ref={mainWrapRef}>
         <header className="admin-topbar">
-          <div className="topbar-right">
+          {/* Left-side controls: Mobile Drawer Menu Toggle (Hidden on desktop) */}
+          <div className="admin-topbar-left-controls">
+            <button
+              type="button"
+              className="admin-mobile-menu-toggle-btn"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+              title="Open menu"
+            >
+              <Menu size={20} />
+            </button>
+          </div>
+
+          {/* Flexible logo area: safe available space between left and right controls (Hidden on desktop) */}
+          <div className="admin-topbar-logo-area">
+            <Link
+              to="/admin/overview"
+              className="admin-topbar-brand-link"
+              title={`${brandTitle} Admin Dashboard`}
+              aria-label={`${brandTitle} Dashboard`}
+            >
+              <div className="admin-topbar-logo-badge">
+                <img
+                  src={logoUrl}
+                  alt={`${brandTitle} Logo`}
+                  className="admin-topbar-brand-logo"
+                />
+              </div>
+              <span className="admin-topbar-brand-name">{brandTitle}</span>
+            </Link>
+          </div>
+
+          {/* Right-side controls: Notification Bell Icon & Dropdown */}
+          <div className="topbar-right admin-topbar-right-controls">
             <div className="admin-notif-wrapper" ref={notifRef}>
               <button
                 type="button"

@@ -3565,6 +3565,12 @@ button {
   gap: 18px;
 }
 
+/* Responsive Mobile Header Elements (Hidden on Desktop to strictly keep desktop header unchanged) */
+.admin-topbar-left-controls,
+.admin-topbar-logo-area {
+  display: none;
+}
+
 /* Admin Header Notification Bell */
 .admin-notif-wrapper {
   position: relative;
@@ -4489,10 +4495,169 @@ a.admin-kpi-card:hover {
     overflow-y: auto !important;
   }
 
+  :root {
+    --mobile-camera-offset: max(env(safe-area-inset-top, 0px), 48px);
+  }
+
+  .admin-main-wrap {
+    margin-top: var(--mobile-camera-offset) !important;
+    height: calc(100vh - var(--mobile-camera-offset)) !important;
+    max-height: calc(100vh - var(--mobile-camera-offset)) !important;
+  }
+
   .admin-topbar {
-    padding: 0 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 14px !important;
+    padding-left: max(env(safe-area-inset-left, 0px), 14px) !important;
+    padding-right: max(env(safe-area-inset-right, 0px), 14px) !important;
     height: 52px !important;
+    min-height: 52px !important;
+    box-sizing: border-box !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 40 !important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+  }
+
+  /* Left-side controls (e.g. mobile drawer menu toggle) */
+  .admin-topbar-left-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    z-index: 2 !important;
+  }
+
+  .admin-mobile-menu-toggle-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    padding: 0 !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  .admin-mobile-menu-toggle-btn:hover,
+  .admin-mobile-menu-toggle-btn:active {
+    background-color: #f8fafc !important;
+    color: #00875a !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Right-side controls (Notification Bell) */
+  .admin-topbar-right-controls {
+    display: flex !important;
+    align-items: center !important;
     justify-content: flex-end !important;
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    z-index: 2 !important;
+  }
+
+  /* Flexible logo area: cleanly centered below the camera notch */
+  .admin-topbar-logo-area {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /* Brand Link inside flexible logo area */
+  .admin-topbar-brand-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    min-width: 0 !important;
+    user-select: none !important;
+    overflow: hidden !important;
+    max-width: 100% !important;
+  }
+
+  .admin-topbar-logo-badge {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .admin-topbar-brand-logo {
+    height: 28px !important;
+    width: auto !important;
+    max-width: 32px !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+  .admin-topbar-brand-name {
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    color: #0f172a !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1 !important;
+  }
+
+  /* Notification dropdown on mobile */
+  .admin-notif-dropdown {
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  /* Breakpoint refinements: 375px, 360px, 320px */
+  @media (max-width: 380px) {
+    .admin-topbar-brand-name {
+      font-size: 0.82rem !important;
+      max-width: 75px !important;
+    }
+  }
+
+  @media (max-width: 340px) {
+    .admin-topbar {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+    .admin-topbar-left-controls,
+    .admin-topbar-right-controls {
+      flex: 0 0 36px !important;
+      width: 36px !important;
+      min-width: 36px !important;
+    }
+    .admin-mobile-menu-toggle-btn {
+      width: 34px !important;
+      height: 34px !important;
+    }
+    .admin-bell-btn {
+      width: 34px !important;
+      height: 34px !important;
+    }
+    .admin-topbar-brand-logo {
+      height: 24px !important;
+      max-width: 26px !important;
+    }
+    .admin-topbar-brand-name {
+      display: none !important;
+    }
   }
 
   .topbar-left {
@@ -8648,6 +8813,28 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
   top: 0 !important;
   z-index: 40 !important;
   flex-shrink: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .rf-main,
+  .joy-main,
+  .flavora-main,
+  .hrms-main,
+  .gym-main,
+  .fleet-main,
+  .salon-main,
+  .dairy-main-wrapper,
+  .aneera-main-wrapper,
+  .nexora-main,
+  .hosp-main-wrapper,
+  .tat-main-wrapper,
+  .vexa-main-wrapper,
+  .ind-main-area,
+  .dashboard-main-content {
+    margin-top: var(--mobile-camera-offset, 48px) !important;
+    height: calc(100vh - var(--mobile-camera-offset, 48px)) !important;
+    max-height: calc(100vh - var(--mobile-camera-offset, 48px)) !important;
+  }
 }
 
 /* 5. Complete Card Overflow & Overfloat Suppression */
