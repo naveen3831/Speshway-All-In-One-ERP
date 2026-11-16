@@ -4495,25 +4495,23 @@ a.admin-kpi-card:hover {
     overflow-y: auto !important;
   }
 
-  :root {
-    --mobile-camera-offset: max(env(safe-area-inset-top, 0px), 48px);
-  }
-
   .admin-main-wrap {
-    margin-top: var(--mobile-camera-offset) !important;
-    height: calc(100vh - var(--mobile-camera-offset)) !important;
-    max-height: calc(100vh - var(--mobile-camera-offset)) !important;
+    margin-top: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
   }
 
   .admin-topbar {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+    margin: 0 !important;
     padding: 0 16px !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
     padding-left: max(env(safe-area-inset-left, 0px), 16px) !important;
     padding-right: max(env(safe-area-inset-right, 0px), 16px) !important;
-    height: 58px !important;
-    min-height: 58px !important;
+    height: calc(56px + env(safe-area-inset-top, 0px)) !important;
+    min-height: 56px !important;
     box-sizing: border-box !important;
     position: sticky !important;
     position: -webkit-sticky !important;
@@ -8864,28 +8862,6 @@ body:has(.rf-wrapper)::-webkit-scrollbar {
   top: 0 !important;
   z-index: 40 !important;
   flex-shrink: 0 !important;
-}
-
-@media (max-width: 768px) {
-  .rf-main,
-  .joy-main,
-  .flavora-main,
-  .hrms-main,
-  .gym-main,
-  .fleet-main,
-  .salon-main,
-  .dairy-main-wrapper,
-  .aneera-main-wrapper,
-  .nexora-main,
-  .hosp-main-wrapper,
-  .tat-main-wrapper,
-  .vexa-main-wrapper,
-  .ind-main-area,
-  .dashboard-main-content {
-    margin-top: var(--mobile-camera-offset, 48px) !important;
-    height: calc(100vh - var(--mobile-camera-offset, 48px)) !important;
-    max-height: calc(100vh - var(--mobile-camera-offset, 48px)) !important;
-  }
 }
 
 /* 5. Complete Card Overflow & Overfloat Suppression */
