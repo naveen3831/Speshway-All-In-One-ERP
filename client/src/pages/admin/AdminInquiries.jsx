@@ -286,14 +286,8 @@ export const AdminInquiries = () => {
 
   return (
     <div className="admin-page-view">
-      {/* Top Header */}
-      <div className="admin-page-header">
-        <div>
-          <h1 className="admin-heading" style={{ margin: '0 0 4px 0' }}>Customer Inquiries &amp; Leads</h1>
-          <p className="admin-subtext" style={{ margin: 0 }}>
-            Real-time inbound customer submissions from Demo Bookings, Contact Messages, and Get Started Free Trials.
-          </p>
-        </div>
+      {/* Top Header Actions */}
+      <div className="admin-page-header" style={{ justifyContent: 'flex-end', marginBottom: '16px' }}>
         <div className="admin-header-actions">
           <button
             onClick={handleRefresh}
