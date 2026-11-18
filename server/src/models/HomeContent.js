@@ -124,6 +124,10 @@ const homeContentSchema = new mongoose.Schema(
       },
     },
     contact: {
+      address: {
+        type: String,
+        default: 'T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032',
+      },
       phone: {
         type: String,
         default: '+91 9100006020',

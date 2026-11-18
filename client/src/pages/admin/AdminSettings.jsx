@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSocket, DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS } from '../../context/SocketContext';
+import { useSocket, DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS, DEFAULT_CONTACT_INFO } from '../../context/SocketContext';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import {
@@ -26,6 +26,9 @@ import {
   Youtube,
   Edit3,
   X,
+  MapPin,
+  Phone,
+  MessageCircle,
 } from 'lucide-react';
 
 // Platform detector helper
@@ -199,11 +202,87 @@ const validateSocialUrl = (platformKey, url) => {
 };
 
 export const AdminSettings = () => {
-  const { branding, updateBranding, homeContent, socialLinks, updateSocialLinks } = useSocket();
+  const { branding, updateBranding, homeContent, socialLinks, updateSocialLinks, contactInfo, updateContactInfo } = useSocket();
   const { user, updateUserProfile } = useAuth();
 
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const currentSocial = socialLinks || homeContent?.socialLinks || DEFAULT_SOCIAL_LINKS;
+  const currentContact = contactInfo || homeContent?.contact || DEFAULT_CONTACT_INFO;
+
+  // Contact & Office Address Form State
+  const [contactForm, setContactForm] = useState({
+    address: currentContact.address || DEFAULT_CONTACT_INFO.address,
+    phone: currentContact.phone || DEFAULT_CONTACT_INFO.phone,
+    phoneRaw: currentContact.phoneRaw || DEFAULT_CONTACT_INFO.phoneRaw,
+    whatsapp: currentContact.whatsapp || DEFAULT_CONTACT_INFO.whatsapp,
+    email: currentContact.email || DEFAULT_CONTACT_INFO.email,
+  });
+  const [savingContact, setSavingContact] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState('');
+  const [contactError, setContactError] = useState('');
+  const [isEditingContact, setIsEditingContact] = useState(false);
+
+  useEffect(() => {
+    if (currentContact) {
+      setContactForm({
+        address: currentContact.address || DEFAULT_CONTACT_INFO.address,
+        phone: currentContact.phone || DEFAULT_CONTACT_INFO.phone,
+        phoneRaw: currentContact.phoneRaw || DEFAULT_CONTACT_INFO.phoneRaw,
+        whatsapp: currentContact.whatsapp || DEFAULT_CONTACT_INFO.whatsapp,
+        email: currentContact.email || DEFAULT_CONTACT_INFO.email,
+      });
+    }
+  }, [currentContact?.address, currentContact?.phone, currentContact?.phoneRaw, currentContact?.whatsapp, currentContact?.email]);
+
+  const handleCancelContact = () => {
+    setContactForm({
+      address: currentContact.address || DEFAULT_CONTACT_INFO.address,
+      phone: currentContact.phone || DEFAULT_CONTACT_INFO.phone,
+      phoneRaw: currentContact.phoneRaw || DEFAULT_CONTACT_INFO.phoneRaw,
+      whatsapp: currentContact.whatsapp || DEFAULT_CONTACT_INFO.whatsapp,
+      email: currentContact.email || DEFAULT_CONTACT_INFO.email,
+    });
+    setContactError('');
+    setIsEditingContact(false);
+  };
+
+  const handleSaveContact = async (e) => {
+    e.preventDefault();
+    if (!contactForm.address?.trim()) {
+      setContactError('Please enter a valid office / headquarters address.');
+      return;
+    }
+    if (!contactForm.phone?.trim()) {
+      setContactError('Please enter a valid contact phone number.');
+      return;
+    }
+    if (!contactForm.email?.trim()) {
+      setContactError('Please enter a valid contact email address.');
+      return;
+    }
+
+    setSavingContact(true);
+    setContactError('');
+    try {
+      const cleanPhoneRaw = contactForm.phoneRaw?.trim() || contactForm.phone.replace(/[^\d+]/g, '');
+      const cleanWhatsapp = contactForm.whatsapp?.trim() || cleanPhoneRaw;
+      const payload = {
+        address: contactForm.address.trim(),
+        phone: contactForm.phone.trim(),
+        phoneRaw: cleanPhoneRaw,
+        whatsapp: cleanWhatsapp,
+        email: contactForm.email.trim().toLowerCase(),
+      };
+      await updateContactInfo(payload);
+      setContactSuccess('Company contact details and office address saved successfully!');
+      setIsEditingContact(false);
+      setTimeout(() => setContactSuccess(''), 4500);
+    } catch (err) {
+      setContactError('Failed to save contact information: ' + err.message);
+    } finally {
+      setSavingContact(false);
+    }
+  };
 
   // Brand Identity Form State
   const [brandTitle, setBrandTitle] = useState(currentBranding.brandTitle || 'SPESHWAY');
@@ -2561,6 +2640,552 @@ export const AdminSettings = () => {
           </div>
         </form>
       )}
+      </div>
+
+      {/* 4. COMPANY CONTACT & HEADQUARTERS ADDRESS CARD */}
+      <div
+        className="admin-card admin-settings-card"
+        style={{
+          marginBottom: '28px',
+          borderRadius: '16px',
+          padding: '28px',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
+          backgroundColor: '#ffffff',
+          position: 'relative',
+        }}
+      >
+        <div
+          className="admin-settings-card-header"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '24px',
+            paddingBottom: '16px',
+            borderBottom: '1px solid #f1f5f9',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '10px',
+                backgroundColor: '#ecfdf5',
+                color: '#059669',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <MapPin size={20} />
+            </div>
+            <div>
+              <h3
+                style={{
+                  fontSize: '1.15rem',
+                  fontWeight: 700,
+                  color: '#0f172a',
+                  margin: 0,
+                }}
+              >
+                Company Contact &amp; Office Address
+              </h3>
+              <p
+                style={{
+                  fontSize: '0.84rem',
+                  color: '#64748b',
+                  margin: '2px 0 0 0',
+                }}
+              >
+                Manage your physical corporate address, direct phone line, WhatsApp number, and support email displayed on the website footer
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="admin-settings-card-corner-action"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            {!isEditingContact ? (
+              <button
+                type="button"
+                onClick={() => setIsEditingContact(true)}
+                className="btn-hero-secondary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                <Edit3 size={14} /> Edit
+              </button>
+            ) : null}
+          </div>
+        </div>
+
+        {contactSuccess && (
+          <div
+            style={{
+              padding: '12px 16px',
+              borderRadius: '8px',
+              backgroundColor: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              color: '#15803d',
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.88rem',
+              fontWeight: 500,
+            }}
+          >
+            <Check size={16} />
+            <span>{contactSuccess}</span>
+          </div>
+        )}
+
+        {contactError && (
+          <div
+            style={{
+              padding: '12px 16px',
+              borderRadius: '8px',
+              backgroundColor: '#fef2f2',
+              border: '1px solid #fecaca',
+              color: '#dc2626',
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.88rem',
+              fontWeight: 500,
+            }}
+          >
+            <AlertCircle size={16} />
+            <span>{contactError}</span>
+          </div>
+        )}
+
+        {!isEditingContact ? (
+          <div>
+            {/* Live Website Layout Preview (Matching Image Exactly) */}
+            <div
+              style={{
+                marginBottom: '24px',
+                padding: '20px 24px',
+                borderRadius: '12px',
+                backgroundColor: '#f0fdf4',
+                border: '1.5px solid #bbf7d0',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 800,
+                  letterSpacing: '0.08em',
+                  color: '#065f46',
+                  textTransform: 'uppercase',
+                  marginBottom: '14px',
+                }}
+              >
+                Website Footer Contact Preview
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <MapPin size={18} style={{ color: '#059669', flexShrink: 0, marginTop: '2px' }} />
+                  <span style={{ fontSize: '0.92rem', color: '#1e293b', lineHeight: 1.5, fontWeight: 500 }}>
+                    {contactForm.address}
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Phone size={18} style={{ color: '#059669', flexShrink: 0 }} />
+                  <a
+                    href={`tel:${contactForm.phoneRaw || contactForm.phone}`}
+                    style={{ fontSize: '0.92rem', color: '#0f766e', fontWeight: 600, textDecoration: 'none' }}
+                  >
+                    {contactForm.phone}
+                  </a>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Mail size={18} style={{ color: '#059669', flexShrink: 0 }} />
+                  <a
+                    href={`mailto:${contactForm.email}`}
+                    style={{ fontSize: '0.92rem', color: '#0f766e', fontWeight: 600, textDecoration: 'none' }}
+                  >
+                    {contactForm.email}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Structured Details Grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '16px',
+              }}
+            >
+              <div
+                style={{
+                  padding: '16px 20px',
+                  borderRadius: '12px',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                }}
+              >
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                  Dial Link (Raw)
+                </div>
+                <div style={{ fontSize: '0.92rem', fontWeight: 600, color: '#0f172a', marginTop: '4px' }}>
+                  <code>{contactForm.phoneRaw || contactForm.phone}</code>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  padding: '16px 20px',
+                  borderRadius: '12px',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                }}
+              >
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                  WhatsApp Target
+                </div>
+                <div style={{ fontSize: '0.92rem', fontWeight: 600, color: '#0f172a', marginTop: '4px' }}>
+                  <code>{contactForm.whatsapp || contactForm.phoneRaw || contactForm.phone}</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handleSaveContact}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {/* Address */}
+              <div>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: '0.88rem',
+                    fontWeight: 700,
+                    color: '#1e293b',
+                    marginBottom: '6px',
+                  }}
+                >
+                  Headquarters &amp; Office Address
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '12px',
+                      top: '12px',
+                      color: '#059669',
+                      display: 'flex',
+                    }}
+                  >
+                    <MapPin size={18} />
+                  </div>
+                  <textarea
+                    rows={3}
+                    value={contactForm.address}
+                    onChange={(e) => setContactForm((prev) => ({ ...prev, address: e.target.value }))}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px 10px 40px',
+                      borderRadius: '8px',
+                      border: '1.5px solid #cbd5e1',
+                      fontSize: '0.92rem',
+                      color: '#0f172a',
+                      boxSizing: 'border-box',
+                      lineHeight: 1.5,
+                      fontFamily: 'inherit',
+                    }}
+                    placeholder="T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032"
+                  />
+                </div>
+                <span style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                  Physical office location shown with the pin icon in the website footer and contact sections.
+                </span>
+              </div>
+
+              {/* Phone Grid */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                  gap: '16px',
+                }}
+              >
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Phone Number (Display Format)
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        color: '#059669',
+                        display: 'flex',
+                      }}
+                    >
+                      <Phone size={16} />
+                    </div>
+                    <input
+                      type="text"
+                      value={contactForm.phone}
+                      onChange={(e) => setContactForm((prev) => ({ ...prev, phone: e.target.value }))}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 10px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        color: '#0f172a',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="+91 9100006020"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Formatted phone text shown on screen (e.g. +91 9100006020).
+                  </span>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Dial Target Number (tel: link)
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        color: '#64748b',
+                        display: 'flex',
+                      }}
+                    >
+                      <Phone size={16} />
+                    </div>
+                    <input
+                      type="text"
+                      value={contactForm.phoneRaw}
+                      onChange={(e) => setContactForm((prev) => ({ ...prev, phoneRaw: e.target.value }))}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 10px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        color: '#0f172a',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="+919100006020"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Exact digits dialed when clicking the phone number (e.g. +919100006020).
+                  </span>
+                </div>
+              </div>
+
+              {/* WhatsApp & Email Grid */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                  gap: '16px',
+                }}
+              >
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    WhatsApp Support Number
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        color: '#25D366',
+                        display: 'flex',
+                      }}
+                    >
+                      <MessageCircle size={16} />
+                    </div>
+                    <input
+                      type="text"
+                      value={contactForm.whatsapp}
+                      onChange={(e) => setContactForm((prev) => ({ ...prev, whatsapp: e.target.value }))}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 10px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        color: '#0f172a',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="+919100006020"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Target number for WhatsApp quick chat buttons.
+                  </span>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '0.88rem',
+                      fontWeight: 700,
+                      color: '#1e293b',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Official Support / Contact Email
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        color: '#059669',
+                        display: 'flex',
+                      }}
+                    >
+                      <Mail size={16} />
+                    </div>
+                    <input
+                      type="email"
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm((prev) => ({ ...prev, email: e.target.value }))}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 10px 38px',
+                        borderRadius: '8px',
+                        border: '1.5px solid #cbd5e1',
+                        fontSize: '0.92rem',
+                        color: '#0f172a',
+                        fontWeight: 600,
+                        boxSizing: 'border-box',
+                      }}
+                      placeholder="info@speshway.com"
+                    />
+                  </div>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                    Email address shown with the mail icon in the footer and contact links.
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '12px',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  paddingTop: '16px',
+                  borderTop: '1px solid #f1f5f9',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={handleCancelContact}
+                  className="btn-hero-secondary"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '10px 20px',
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <X size={15} /> Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingContact}
+                  className="btn-hero-primary"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '10px 24px',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {savingContact ? (
+                    <>
+                      <Save size={16} /> Saving Contact Details...
+                    </>
+                  ) : (
+                    <>
+                      <Save size={16} /> Save Contact Information
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
       </div>
 
     </div>

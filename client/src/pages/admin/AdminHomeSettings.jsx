@@ -13,6 +13,7 @@ import {
   Phone,
   Mail,
   Headphones,
+  MapPin,
 } from 'lucide-react';
 
 export const AdminHomeSettings = () => {
@@ -50,6 +51,7 @@ export const AdminHomeSettings = () => {
       title: homeContent?.solutions?.title || DEFAULT_HOME_CONTENT.solutions.title,
     },
     contact: {
+      address: homeContent?.contact?.address || DEFAULT_HOME_CONTENT?.contact?.address || 'T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032',
       phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+91 9100006020',
       phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+919100006020',
       whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+919100006020',
@@ -133,6 +135,7 @@ export const AdminHomeSettings = () => {
       setForm((prev) => ({
         ...prev,
         contact: {
+          address: homeContent?.contact?.address || DEFAULT_HOME_CONTENT?.contact?.address || 'T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032',
           phone: homeContent?.contact?.phone || DEFAULT_HOME_CONTENT?.contact?.phone || '+91 9100006020',
           phoneRaw: homeContent?.contact?.phoneRaw || DEFAULT_HOME_CONTENT?.contact?.phoneRaw || '+919100006020',
           whatsapp: homeContent?.contact?.whatsapp || DEFAULT_HOME_CONTENT?.contact?.whatsapp || '+919100006020',
@@ -1174,6 +1177,33 @@ export const AdminHomeSettings = () => {
           ) : (
             /* EDIT MODE: Inputs & Save Changes Option */
             <div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1e293b', marginBottom: '6px' }}>
+                  Headquarters &amp; Office Address
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <div style={{ position: 'absolute', left: '12px', top: '12px', color: '#94a3b8', display: 'flex' }}>
+                    <MapPin size={16} />
+                  </div>
+                  <textarea
+                    rows={2}
+                    value={form.contact?.address ?? ''}
+                    onChange={(e) => handleChange('contact', 'address', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '9px 12px 9px 38px',
+                      borderRadius: '8px',
+                      border: '1.5px solid #cbd5e1',
+                      fontSize: '0.92rem',
+                      fontWeight: 500,
+                      boxSizing: 'border-box',
+                      fontFamily: 'inherit',
+                    }}
+                    placeholder="T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032"
+                  />
+                </div>
+              </div>
+
               <div
                 style={{
                   display: 'grid',
