@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Shield, ExternalLink, Search, X, SlidersHorizontal, Check, ChevronDown } from 'lucide-react';
+import { Globe, Shield, ExternalLink, Search, X, SlidersHorizontal, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 import {
   filterAdminProjects,
@@ -51,6 +51,15 @@ export const OurErpSolutions = () => {
 
   const handleShowMore = () => {
     setVisibleMobileCount((prev) => prev + 5);
+  };
+
+  const handleShowLess = () => {
+    setVisibleMobileCount(5);
+    const target = document.getElementById('solutions') || document.getElementById('erp-solutions-heading');
+    if (target) {
+      const topOffset = target.getBoundingClientRect().top + window.pageYOffset - 70;
+      window.scrollTo({ top: topOffset, behavior: 'smooth' });
+    }
   };
 
   // Close mobile filter dropdown when clicking outside
@@ -327,18 +336,30 @@ export const OurErpSolutions = () => {
               })}
             </div>
 
-            {/* Mobile Response Only: "Show More" option (5 cards initially, +5 on click) */}
-            {isMobile && visibleMobileCount < filteredProjects.length && (
+            {/* Mobile Response Only: "Show More" until end, then "Show Less" on last card */}
+            {isMobile && filteredProjects.length > 5 && (
               <div className="our-erp-show-more-wrap">
-                <button
-                  type="button"
-                  className="our-erp-show-more-btn"
-                  onClick={handleShowMore}
-                  aria-label="Show more solutions"
-                >
-                  <span>Show More</span>
-                  <ChevronDown size={16} className="our-erp-show-more-icon" />
-                </button>
+                {visibleMobileCount < filteredProjects.length ? (
+                  <button
+                    type="button"
+                    className="our-erp-show-more-btn"
+                    onClick={handleShowMore}
+                    aria-label="Show more solutions"
+                  >
+                    <span>Show More</span>
+                    <ChevronDown size={16} className="our-erp-show-more-icon" />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="our-erp-show-more-btn our-erp-show-less-btn"
+                    onClick={handleShowLess}
+                    aria-label="Show less solutions"
+                  >
+                    <span>Show Less</span>
+                    <ChevronUp size={16} className="our-erp-show-less-icon" />
+                  </button>
+                )}
               </div>
             )}
           </>
