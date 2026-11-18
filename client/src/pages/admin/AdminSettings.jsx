@@ -24,7 +24,6 @@ import {
   Linkedin,
   Instagram,
   Youtube,
-  Clock,
   Edit3,
   X,
   MapPin,
@@ -204,7 +203,7 @@ const validateSocialUrl = (platformKey, url) => {
 
 export const AdminSettings = () => {
   const { branding, updateBranding, homeContent, socialLinks, updateSocialLinks, contactInfo, updateContactInfo } = useSocket();
-  const { user, updateUserProfile, timeoutMinutes, updateSessionTimeout } = useAuth();
+  const { user, updateUserProfile } = useAuth();
 
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const currentSocial = socialLinks || homeContent?.socialLinks || DEFAULT_SOCIAL_LINKS;
@@ -285,31 +284,6 @@ export const AdminSettings = () => {
     }
   };
 
-  // Session Timeout State
-  const [selectedTimeout, setSelectedTimeout] = useState(typeof timeoutMinutes === 'number' ? timeoutMinutes : 0);
-  const [savingTimeout, setSavingTimeout] = useState(false);
-  const [timeoutSuccess, setTimeoutSuccess] = useState('');
-
-  useEffect(() => {
-    setSelectedTimeout(typeof timeoutMinutes === 'number' ? timeoutMinutes : 0);
-  }, [timeoutMinutes]);
-
-  const handleSaveTimeout = (e) => {
-    e.preventDefault();
-    setSavingTimeout(true);
-    updateSessionTimeout(selectedTimeout);
-    setTimeoutSuccess(
-      selectedTimeout === 0
-        ? 'Inactivity auto-lock disabled! Your admin session will stay active permanently.'
-        : `Session inactivity timeout successfully set to ${selectedTimeout} minutes!`
-    );
-    setIsEditingTimeout(false);
-    setTimeout(() => {
-      setSavingTimeout(false);
-      setTimeout(() => setTimeoutSuccess(''), 4500);
-    }, 300);
-  };
-
   // Brand Identity Form State
   const [brandTitle, setBrandTitle] = useState(currentBranding.brandTitle || 'SPESHWAY');
   const [brandSubtitle, setBrandSubtitle] = useState(currentBranding.brandSubtitle || 'ALL IN ONE ERP');
@@ -347,7 +321,6 @@ export const AdminSettings = () => {
   const [isEditingBranding, setIsEditingBranding] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isEditingSocial, setIsEditingSocial] = useState(false);
-  const [isEditingTimeout, setIsEditingTimeout] = useState(false);
 
   const handleCancelBranding = () => {
     setBrandTitle(currentBranding.brandTitle || 'SPESHWAY');
@@ -380,11 +353,6 @@ export const AdminSettings = () => {
     setSocialErrors({});
     setSocialGeneralError('');
     setIsEditingSocial(false);
-  };
-
-  const handleCancelTimeout = () => {
-    setSelectedTimeout(typeof timeoutMinutes === 'number' ? timeoutMinutes : 0);
-    setIsEditingTimeout(false);
   };
 
   useEffect(() => {
@@ -3220,259 +3188,6 @@ export const AdminSettings = () => {
         )}
       </div>
 
-      {/* 5. SESSION INACTIVITY & SECURITY SETTINGS */}
-      <div
-        className="admin-card admin-settings-card"
-        style={{
-          marginBottom: '28px',
-          borderRadius: '16px',
-          padding: '28px',
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
-          backgroundColor: '#ffffff',
-          position: 'relative',
-        }}
-      >
-        <div
-          className="admin-settings-card-header"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '24px',
-            paddingBottom: '16px',
-            borderBottom: '1px solid #f1f5f9',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div
-              style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '10px',
-                backgroundColor: '#eff6ff',
-                color: '#2563eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Clock size={20} />
-            </div>
-            <div>
-              <h3
-                style={{
-                  fontSize: '1.15rem',
-                  fontWeight: 700,
-                  color: '#0f172a',
-                  margin: 0,
-                }}
-              >
-                Session Inactivity & Security Preferences
-              </h3>
-              <p
-                style={{
-                  fontSize: '0.84rem',
-                  color: '#64748b',
-                  margin: '2px 0 0 0',
-                }}
-              >
-                Control automatic sign-out and session lifetime while the portal is inactive
-              </p>
-            </div>
-          </div>
-
-          <div
-            className="admin-settings-card-corner-action"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
-            {!isEditingTimeout ? (
-              <button
-                type="button"
-                onClick={() => setIsEditingTimeout(true)}
-                className="btn-hero-secondary"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '8px 16px',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                }}
-              >
-                <Edit3 size={14} /> Edit
-              </button>
-            ) : null}
-          </div>
-        </div>
-
-        {timeoutSuccess && (
-          <div
-            style={{
-              padding: '12px 16px',
-              borderRadius: '8px',
-              backgroundColor: '#f0fdf4',
-              border: '1px solid #bbf7d0',
-              color: '#15803d',
-              marginBottom: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '0.88rem',
-              fontWeight: 500,
-            }}
-          >
-            <Check size={16} />
-            <span>{timeoutSuccess}</span>
-          </div>
-        )}
-
-        {!isEditingTimeout ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '16px 20px',
-                borderRadius: '12px',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #e2e8f0',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <ShieldCheck size={22} style={{ color: '#10b981' }} />
-                <div>
-                  <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0f172a' }}>
-                    {timeoutMinutes === 0
-                      ? 'Stay Logged In (Persistent Session)'
-                      : `Automatic Sign-Out after ${timeoutMinutes} minutes of inactivity`}
-                  </div>
-                  <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '2px' }}>
-                    {timeoutMinutes === 0
-                      ? 'Inactivity auto-lock is disabled. You will remain safely authenticated across tabs without unexpected logouts.'
-                      : `The admin dashboard automatically signs out after ${timeoutMinutes} minutes of uninterrupted idle time.`}
-                  </div>
-                </div>
-              </div>
-              <span
-                style={{
-                  padding: '4px 12px',
-                  borderRadius: '9999px',
-                  fontSize: '0.78rem',
-                  fontWeight: 700,
-                  backgroundColor: timeoutMinutes === 0 ? '#ecfdf5' : '#eff6ff',
-                  color: timeoutMinutes === 0 ? '#059669' : '#2563eb',
-                  border: timeoutMinutes === 0 ? '1px solid #a7f3d0' : '1px solid #bfdbfe',
-                }}
-              >
-                {timeoutMinutes === 0 ? 'Permanent Active' : `${timeoutMinutes} min timeout`}
-              </span>
-            </div>
-          </div>
-        ) : (
-          <form onSubmit={handleSaveTimeout}>
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '0.88rem',
-                  fontWeight: 600,
-                  color: '#334155',
-                  marginBottom: '8px',
-                }}
-              >
-                Inactivity Auto-Lock Duration
-              </label>
-              <select
-                value={selectedTimeout}
-                onChange={(e) => setSelectedTimeout(Number(e.target.value))}
-                style={{
-                  width: '100%',
-                  maxWidth: '420px',
-                  padding: '10px 14px',
-                  borderRadius: '8px',
-                  border: '1px solid #cbd5e1',
-                  backgroundColor: '#ffffff',
-                  fontSize: '0.9rem',
-                  color: '#0f172a',
-                  outline: 'none',
-                }}
-              >
-                <option value={0}>Never (Stay Logged In - Recommended)</option>
-                <option value={43200}>30 Days (Persistent Cloud Session)</option>
-                <option value={480}>8 Hours (Full Working Day)</option>
-                <option value={60}>1 Hour</option>
-                <option value={30}>30 Minutes</option>
-                <option value={15}>15 Minutes</option>
-              </select>
-              <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '6px' }}>
-                Select "Never" to keep your administrator session permanently logged in without unexpected inactivity expiration.
-              </p>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                gap: '12px',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                paddingTop: '16px',
-                borderTop: '1px solid #f1f5f9',
-              }}
-            >
-              <button
-                type="button"
-                onClick={handleCancelTimeout}
-                className="btn-hero-secondary"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '10px 20px',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                }}
-              >
-                <X size={15} /> Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={savingTimeout}
-                className="btn-hero-primary"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 24px',
-                  fontSize: '0.9rem',
-                  fontWeight: 700,
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                }}
-              >
-                {savingTimeout ? (
-                  <>
-                    <Save size={16} /> Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save size={16} /> Save Preference
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
     </div>
   );
 };
