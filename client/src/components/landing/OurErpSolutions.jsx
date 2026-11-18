@@ -296,7 +296,11 @@ export const OurErpSolutions = () => {
                         onClick={(e) => {
                           e.stopPropagation();
                           const url = getWebsiteUrl(prod);
-                          window.open(url, '_blank', 'noopener,noreferrer');
+                          if (url && url.startsWith('/')) {
+                            navigate(url);
+                          } else {
+                            window.open(url, '_blank', 'noopener,noreferrer');
+                          }
                         }}
                         title={`Open live ${displayTitle} Website`}
                       >

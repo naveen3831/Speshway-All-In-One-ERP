@@ -1481,7 +1481,7 @@ export const NexoraDashboard = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>Store Name & Brand Domain</label>
-                    <input type="text" readOnly value="Nexora Online Store &bull; store.nexora.speshway.com" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#f8fafc' }} />
+                    <input type="text" readOnly value="Nexora Online Store &bull; ecom.speshway.site" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#f8fafc' }} />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>Payment Gateways Active</label>

@@ -113,7 +113,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'Speshway HRMS Enterprise empowers enterprises with end-to-end personnel automation: biometric attendance integration, leave approvals, salary slip generation, statutory tax filings, talent acquisition, and performance reviews.',
           features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-          websiteUrl: 'https://hrms.speshway.com',
+          websiteUrl: 'https://speshwayhrms.com/',
           adminUrl: '/product/speshway-hrms/dashboard',
           imageUrl: '/images/products/speshway-hrms.jpg',
           iconName: 'Users',
@@ -133,7 +133,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'Flavora Kitchen Restaurant & Cloud Kitchen ERP centralizes kitchen orders (KDS), dining table bookings, digital POS settlements, thermal KOT dispatching, recipe margins, and guest reviews.',
           features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-          websiteUrl: 'https://flavorakitchen.speshway.com',
+          websiteUrl: 'https://restaurant.speshway.site/',
           adminUrl: '/product/flavora-kitchen/dashboard',
           imageUrl: '/images/products/flavora-kitchen.jpg',
           iconName: 'Utensils',
@@ -153,7 +153,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'American Fitness Gym Athletic Club ERP streamlines gym operations with biometric turnstile entry, trainer rostering, class bookings, subscription tiers, locker assignment, and POS supplement sales.',
           features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-          websiteUrl: 'https://americanfitness.speshway.com',
+          websiteUrl: 'https://gym.speshway.site/',
           adminUrl: '/product/american-fitness-gym/dashboard',
           imageUrl: '/images/products/american-fitness-gym.jpg',
           iconName: 'Dumbbell',
@@ -173,7 +173,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'Fleet Management Enterprise is a complete transport logistics ERP offering real-time GPS fleet tracking, driver rostering, automated fuel consumption logs, preventive maintenance scheduling, waybills, and geofence perimeter alerts.',
           features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-          websiteUrl: 'https://fleet.speshway.com',
+          websiteUrl: 'https://fleet.speshway.site/',
           adminUrl: '/product/fleet-management/dashboard',
           imageUrl: '/images/products/fleet-management.jpg',
           iconName: 'Truck',
@@ -193,7 +193,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'Complete dairy operations ERP providing farm-to-door delivery tracking, automated daily subscriptions, real-time inventory for milk and milk byproducts, temperature-controlled warehouse logging, and seamless payments.',
           features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-          websiteUrl: 'https://speshway.com/natural-milk-dairy',
+          websiteUrl: 'https://dairy.speshway.site/',
           adminUrl: '/product/natural-milk-dairy/dashboard',
           imageUrl: '/images/products/natural-milk-dairy.jpg',
           iconName: 'Package',
@@ -213,7 +213,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'Nexora Online Store is an enterprise multi-category retail e-commerce ERP providing centralized catalog synchronization, inventory tracking, coupon marketing, customer loyalty programs, and high-volume order fulfillment.',
           features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-          websiteUrl: 'https://nexora.speshway.com',
+          websiteUrl: 'https://ecom.speshway.site/',
           adminUrl: '/product/e-commerce/dashboard',
           imageUrl: '/images/products/e-commerce.jpg',
           iconName: 'ShoppingCart',
@@ -233,7 +233,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'SPY Salon Jubilee Hills Studio ERP provides end-to-end luxury salon appointment scheduling, stylist chair allocation, beauty packages, client loyalty passes, and till billing.',
           features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-          websiteUrl: 'https://spysalon.speshway.com',
+          websiteUrl: '/product/saloon/dashboard',
           adminUrl: '/product/saloon/dashboard',
           imageUrl: '/images/products/saloon.jpg',
           iconName: 'Scissors',
@@ -273,7 +273,7 @@ export const seedProductsDatabase = async () => {
           longDescription: 'RideFlow Two-Wheeler ERP provides digital bike showroom management, dealership networks, online test ride and bike bookings, customer inquiries, maintenance service requests, and sales analytics.',
           features: ['Two-Wheeler Showroom Catalog', 'Dealership Network Management', 'Online Bike Bookings', 'Service Request Workflow', 'Deals & Promotional Offers', 'Revenue & Sales Analytics'],
           technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-          websiteUrl: 'https://rideflow.speshway.com',
+          websiteUrl: 'https://bike.speshway.site/',
           adminUrl: '/product/ride-flow/dashboard',
           imageUrl: '/images/products/ride-flow.jpg',
           iconName: 'Bike',
@@ -282,6 +282,44 @@ export const seedProductsDatabase = async () => {
           popularity: 99,
         });
       }
+    }
+
+    // Automatic migration of legacy or non-resolving NXDOMAIN URLs in MongoDB to active verified sites
+    try {
+      await Product.updateMany(
+        { websiteUrl: { $regex: /nexora\.speshway\.(com|site)/i } },
+        { $set: { websiteUrl: 'https://ecom.speshway.site/' } }
+      );
+      await Product.updateMany(
+        { websiteUrl: { $regex: /spysalon\.speshway\.(com|site)/i } },
+        { $set: { websiteUrl: '/product/saloon/dashboard' } }
+      );
+      await Product.updateMany(
+        { websiteUrl: { $regex: /vexastylehub\.com/i } },
+        { $set: { websiteUrl: '/product/vexa-style-hub/dashboard' } }
+      );
+      await Product.updateMany(
+        { websiteUrl: { $regex: /americanfitness\.speshway\.com/i } },
+        { $set: { websiteUrl: 'https://gym.speshway.site/' } }
+      );
+      await Product.updateMany(
+        { websiteUrl: { $regex: /flavorakitchen\.speshway\.com/i } },
+        { $set: { websiteUrl: 'https://restaurant.speshway.site/' } }
+      );
+      await Product.updateMany(
+        { websiteUrl: { $regex: /hrms\.speshway\.com/i } },
+        { $set: { websiteUrl: 'https://speshwayhrms.com/' } }
+      );
+      await Product.updateMany(
+        { websiteUrl: { $regex: /fleet\.speshway\.com/i } },
+        { $set: { websiteUrl: 'https://fleet.speshway.site/' } }
+      );
+      await Product.updateMany(
+        { websiteUrl: { $regex: /rideflow\.speshway\.com/i } },
+        { $set: { websiteUrl: 'https://bike.speshway.site/' } }
+      );
+    } catch (cleanErr) {
+      console.warn('Note: URL cleanup check skipped or non-critical:', cleanErr.message);
     }
 
     // Load active products from MongoDB into high-speed in-memory store for instant <1ms GET responses
