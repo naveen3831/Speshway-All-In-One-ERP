@@ -232,6 +232,9 @@ export const SocketProvider = ({ children }) => {
 
   const sanitizeContactInfo = (obj) => {
     const merged = { ...DEFAULT_CONTACT_INFO, ...(obj || {}) };
+    if (!merged.address) {
+      merged.address = DEFAULT_CONTACT_INFO.address;
+    }
     if (!merged.phone || merged.phone.includes('555-SPESH') || merged.phone.includes('1800')) {
       merged.phone = DEFAULT_CONTACT_INFO.phone;
     }
