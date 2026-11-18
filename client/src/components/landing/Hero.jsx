@@ -132,6 +132,8 @@ export const Hero = ({ onOpenGetStarted, onOpenDemo }) => {
                               <img
                                 src={prod.imageUrl}
                                 alt={prod.name}
+                                loading="lazy"
+                                decoding="async"
                                 style={{ width: '18px', height: '18px', objectFit: 'contain' }}
                                 onError={(e) => {
                                   e.currentTarget.style.display = 'none';

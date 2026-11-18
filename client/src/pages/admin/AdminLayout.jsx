@@ -65,10 +65,6 @@ export const AdminLayout = () => {
     location.pathname === '/admin/users';
 
   const normalizedPath = (location.pathname || '').replace(/\/+$/, '') || '/';
-  const isDashboardPage =
-    normalizedPath === '/admin/overview' ||
-    normalizedPath === '/admin/dashboard' ||
-    normalizedPath === '/admin';
 
   const getMobileTopbarTitle = () => {
     const path = location.pathname;
@@ -289,6 +285,9 @@ export const AdminLayout = () => {
   }, [notificationItems]);
 
   const handleLogout = () => {
+    try {
+      sessionStorage.removeItem('speshway_admin_authenticated');
+    } catch (e) {}
     logout();
     navigate('/admin');
   };
@@ -303,8 +302,13 @@ export const AdminLayout = () => {
     );
   }
 
-  // 1. If not authenticated or not an admin, show the dedicated Admin Login Portal
-  if (!user || user.role !== 'admin') {
+  // 1. If not authenticated or not an admin in this session, show the dedicated Admin Login Portal
+  const isAdminAuthenticated =
+    user &&
+    user.role === 'admin' &&
+    sessionStorage.getItem('speshway_admin_authenticated') === 'true';
+
+  if (!isAdminAuthenticated) {
     return <AdminLogin />;
   }
 
@@ -346,7 +350,11 @@ export const AdminLayout = () => {
             end
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) =>
-              isActive || location.pathname === '/admin' || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard'
+              isActive ||
+              location.pathname === '/admin' ||
+              location.pathname === '/admin/' ||
+              location.pathname === '/admin/overview' ||
+              location.pathname === '/admin/dashboard'
                 ? 'admin-nav-item active'
                 : 'admin-nav-item'
             }
@@ -467,16 +475,15 @@ export const AdminLayout = () => {
 
       {/* Main Admin Content Screen */}
       <div
-        className={`admin-main-wrap ${isDashboardPage ? 'has-admin-topbar' : 'no-admin-topbar'}`}
+        className="admin-main-wrap has-admin-topbar"
         ref={mainWrapRef}
       >
-        {/* Navbar: Rendered strictly on the Admin Dashboard page */}
-        {isDashboardPage && (
-          <header className="admin-topbar">
+        {/* Top Navbar: Rendered across all Admin pages */}
+        <header className="admin-topbar">
           {/* Brand Logo & Tagline Lockup (Mobile Response: Logo | SPESHWAY — ALL IN ONE ERP —) */}
           <div className="admin-topbar-logo-area">
             <Link
-              to="/admin/overview"
+              to="/admin"
               className="admin-topbar-brand-link"
               title={`${brandTitle} - ${brandSubtitle}`}
               aria-label={`${brandTitle} Dashboard`}
@@ -575,11 +582,8 @@ export const AdminLayout = () => {
             </div>
           </div>
         </header>
-        )}
 
-        <div
-          className={`admin-content-inner ${isDashboardPage ? 'has-admin-topbar' : 'no-admin-topbar'}`}
-        >
+        <div className="admin-content-inner has-admin-topbar">
           <ErrorBoundary>
             <Outlet />
           </ErrorBoundary>
@@ -596,7 +600,11 @@ export const AdminLayout = () => {
           }}
           className={({ isActive }) =>
             `admin-bottom-nav-item ${
-              (isActive || location.pathname === '/admin' || location.pathname === '/admin/overview' || location.pathname === '/admin/dashboard') &&
+              (isActive ||
+                location.pathname === '/admin' ||
+                location.pathname === '/admin/' ||
+                location.pathname === '/admin/overview' ||
+                location.pathname === '/admin/dashboard') &&
               !showMobileProfile
                 ? 'active'
                 : ''

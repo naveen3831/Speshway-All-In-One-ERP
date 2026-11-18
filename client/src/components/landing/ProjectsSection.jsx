@@ -236,7 +236,7 @@ export const ProjectsSection = ({ onSelectProduct }) => {
                     {(() => {
                       const displayImg = prod.imageUrl || getProductFallbackImage(prod.slug || prod.id || prod.name);
                       return displayImg ? (
-                        <img src={displayImg} alt={prod.name} className="app-icon-custom-img" />
+                        <img src={displayImg} alt={prod.name} className="app-icon-custom-img" loading="lazy" decoding="async" />
                       ) : (
                         <Icon className={`app-icon text-icon-${prod.color || 'green'}`} size={24} />
                       );

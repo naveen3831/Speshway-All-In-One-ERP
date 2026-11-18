@@ -371,6 +371,8 @@ export const ProductDetailPage = () => {
                       <img
                         src={heroImg}
                         alt={product.name}
+                        loading="lazy"
+                        decoding="async"
                         className="product-hero-custom-img"
                         onError={(e) => {
                           const fallback = getProductFallbackImage(product.slug || product.id);

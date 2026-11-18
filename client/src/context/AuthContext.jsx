@@ -48,25 +48,29 @@ export const AuthProvider = ({ children }) => {
 
   // Log out user (handles normal or session expiration)
   const logout = useCallback(async (isExpired = false, reason = '') => {
+    // Immediately clear local state synchronously for instant UI transition
+    setUser(null);
+    setCountdownSeconds(null);
+    try {
+      sessionStorage.removeItem('speshway_admin_authenticated');
+    } catch (e) {}
+    localStorage.removeItem('user');
+    localStorage.removeItem(STORAGE_LAST_ACTIVITY_KEY);
+
+    if (isExpired) {
+      setSessionExpired(true);
+      setSessionExpiredReason(
+        reason || `Your session expired due to ${timeoutMinutes} minutes of inactivity. For your security, please sign in again.`
+      );
+    } else {
+      setSessionExpired(false);
+      setSessionExpiredReason('');
+    }
+
     try {
       await authService.logout();
     } catch (err) {
       console.error('Logout error:', err);
-    } finally {
-      setUser(null);
-      setCountdownSeconds(null);
-      localStorage.removeItem('user');
-      localStorage.removeItem(STORAGE_LAST_ACTIVITY_KEY);
-
-      if (isExpired) {
-        setSessionExpired(true);
-        setSessionExpiredReason(
-          reason || `Your session expired due to ${timeoutMinutes} minutes of inactivity. For your security, please sign in again.`
-        );
-      } else {
-        setSessionExpired(false);
-        setSessionExpiredReason('');
-      }
     }
   }, [timeoutMinutes]);
 
@@ -94,6 +98,11 @@ export const AuthProvider = ({ children }) => {
       ...credentials,
       timeoutMinutes,
     });
+    if (data?.data?.role === 'admin') {
+      try {
+        sessionStorage.setItem('speshway_admin_authenticated', 'true');
+      } catch (e) {}
+    }
     setUser(data.data);
     setSessionExpired(false);
     setSessionExpiredReason('');
