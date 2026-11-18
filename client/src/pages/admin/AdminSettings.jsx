@@ -1941,6 +1941,8 @@ export const AdminSettings = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
+                    title={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                     style={{
                       position: 'absolute',
                       right: '12px',
@@ -1953,7 +1955,7 @@ export const AdminSettings = () => {
                       padding: '2px',
                     }}
                   >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
                   </button>
                 </div>
               </div>
