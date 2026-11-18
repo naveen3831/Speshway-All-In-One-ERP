@@ -466,7 +466,7 @@
   margin-left: 1px;
 }
 
-/* Show More Option (Mobile Only - Hidden on Desktop) */
+/* Show More & Show Less Options (Mobile Only - Hidden on Desktop) */
 .our-erp-show-more-wrap {
   display: none;
 }
@@ -476,24 +476,25 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  background-color: #ffffff;
-  color: #059669;
+  background-color: #059669;
+  color: #ffffff;
   border: 1.5px solid #059669;
   padding: 9px 24px;
   border-radius: 9999px;
   font-size: 0.86rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.08);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   font-family: inherit;
 }
 
 .our-erp-show-more-btn:hover {
-  background-color: #059669;
+  background-color: #047857;
+  border-color: #047857;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.22);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
   transform: translateY(-1px);
 }
 
@@ -501,13 +502,34 @@
   transform: translateY(0);
 }
 
-.our-erp-show-more-icon {
+.our-erp-show-more-icon,
+.our-erp-show-less-icon {
   transition: transform 0.2s ease;
   flex-shrink: 0;
 }
 
 .our-erp-show-more-btn:hover .our-erp-show-more-icon {
   transform: translateY(2px);
+}
+
+.our-erp-show-more-btn:hover .our-erp-show-less-icon {
+  transform: translateY(-2px);
+}
+
+/* Secondary outline style when Show Less sits next to Show More */
+.our-erp-show-more-btn.our-erp-show-less-secondary {
+  background-color: #ffffff;
+  color: #059669;
+  border: 1.5px solid #059669;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.08);
+}
+
+.our-erp-show-more-btn.our-erp-show-less-secondary:hover {
+  background-color: #ecfdf5;
+  color: #047857;
+  border-color: #047857;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.18);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
@@ -719,14 +741,16 @@
     display: none !important;
   }
 
-  /* Show More Button Centered on Mobile */
+  /* Show More & Show Less Buttons Centered on Mobile */
   .our-erp-show-more-wrap {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
+    gap: 10px !important;
     width: 100% !important;
     margin: 18px auto 6px auto !important;
     max-width: 440px !important;
+    flex-wrap: wrap !important;
   }
 
   .our-erp-search-filter-wrapper {
