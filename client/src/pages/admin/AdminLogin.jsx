@@ -36,11 +36,12 @@ export const AdminLogin = () => {
 
   // If already authenticated as admin in this session, seamlessly navigate to the admin dashboard
   useEffect(() => {
-    if (
-      user &&
-      user.role === 'admin' &&
-      sessionStorage.getItem('speshway_admin_authenticated') === 'true'
-    ) {
+    const isAuthed =
+      sessionStorage.getItem('speshway_admin_authenticated') === 'true' ||
+      localStorage.getItem('speshway_admin_authenticated') === 'true';
+
+    if (user && user.role === 'admin' && isAuthed) {
+      sessionStorage.setItem('speshway_admin_authenticated', 'true');
       navigate('/admin', { replace: true });
     }
   }, [user, navigate]);
@@ -55,6 +56,7 @@ export const AdminLogin = () => {
       const cleanPassword = password.trim();
       const res = await login({ email: cleanEmail, password: cleanPassword });
       sessionStorage.setItem('speshway_admin_authenticated', 'true');
+      localStorage.setItem('speshway_admin_authenticated', 'true');
       dismissSessionExpired();
       if (res?.data?.role === 'admin' || !res?.data?.role) {
         navigate('/admin', { replace: true });

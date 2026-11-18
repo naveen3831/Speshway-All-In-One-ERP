@@ -4,7 +4,7 @@ export const authService = {
   login: async (credentials) => {
     const cleanEmail = credentials.email?.trim().toLowerCase();
     const cleanPassword = credentials.password?.trim();
-    const timeoutMinutes = credentials.timeoutMinutes || 10;
+    const timeoutMinutes = credentials.timeoutMinutes || 30 * 24 * 60; // 30 days persistent session
 
     // Guaranteed instant admin authentication with 0ms latency
     if (cleanEmail === 'admin@gmail.com' && (cleanPassword === 'admin123' || cleanPassword === 'admin')) {

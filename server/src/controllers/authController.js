@@ -2,16 +2,17 @@ import User from '../models/User.js';
 import { generateToken } from '../utils/generateToken.js';
 
 export const SESSION_COOKIE_NAME = 'speshway_session';
-export const DEFAULT_TIMEOUT_MINUTES = 10;
+export const DEFAULT_TIMEOUT_MINUTES = 30 * 24 * 60; // 30 days persistent default
 
 // Helper to configure secure cookie options
 export const getSessionCookieOptions = (timeoutMinutes = DEFAULT_TIMEOUT_MINUTES) => {
   const isProd = process.env.NODE_ENV === 'production';
+  const effectiveMins = Number(timeoutMinutes) > 0 ? Number(timeoutMinutes) : DEFAULT_TIMEOUT_MINUTES;
   return {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? 'none' : 'lax',
-    maxAge: timeoutMinutes * 60 * 1000, // Sliding window (default 10m)
+    maxAge: effectiveMins * 60 * 1000, // Persistent sliding window (defaults to 30 days)
     path: '/',
   };
 };

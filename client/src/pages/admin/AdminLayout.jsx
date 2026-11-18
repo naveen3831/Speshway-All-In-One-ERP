@@ -287,6 +287,7 @@ export const AdminLayout = () => {
   const handleLogout = () => {
     try {
       sessionStorage.removeItem('speshway_admin_authenticated');
+      localStorage.removeItem('speshway_admin_authenticated');
     } catch (e) {}
     logout();
     navigate('/admin');
@@ -306,7 +307,8 @@ export const AdminLayout = () => {
   const isAdminAuthenticated =
     user &&
     user.role === 'admin' &&
-    sessionStorage.getItem('speshway_admin_authenticated') === 'true';
+    (sessionStorage.getItem('speshway_admin_authenticated') === 'true' ||
+      localStorage.getItem('speshway_admin_authenticated') === 'true');
 
   if (!isAdminAuthenticated) {
     return <AdminLogin />;
