@@ -190,7 +190,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     longDescription: 'Unified retail and manufacturing ERP for fashion brands: manages SKUs, variants, warehouse stock, vendor procurement, and boutique showroom sales.',
     features: ['Variant & Size Matrix', 'Omnichannel Orders', 'Showroom POS Integration', 'Fabric & Material Supply Chain', 'Seasonal Sales Analytics'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/vexa-style-hub',
+    websiteUrl: '/product/vexa-style-hub/dashboard',
     adminUrl: '/product/vexa-style-hub/dashboard',
     imageUrl: '/images/products/vexa-style-hub.png',
     iconName: 'Store',
@@ -224,7 +224,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     longDescription: 'Nexora Online Store is an enterprise multi-category retail e-commerce ERP providing centralized catalog synchronization, inventory tracking, coupon marketing, customer loyalty programs, and high-volume order fulfillment.',
     features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://nexora.speshway.com',
+    websiteUrl: 'https://ecom.speshway.site/',
     adminUrl: '/product/e-commerce/dashboard',
     imageUrl: '/images/products/e-commerce.jpg',
     iconName: 'ShoppingCart',
@@ -241,7 +241,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     longDescription: 'SPY Salon Jubilee Hills Studio ERP provides end-to-end luxury salon appointment scheduling, stylist chair allocation, beauty packages, client loyalty passes, and till billing.',
     features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://spysalon.speshway.com',
+    websiteUrl: '/product/saloon/dashboard',
     adminUrl: '/product/saloon/dashboard',
     imageUrl: '/images/products/saloon.jpg',
     iconName: 'Scissors',
@@ -326,7 +326,7 @@ export const DEFAULT_ADMIN_PROJECTS = [
     longDescription: 'Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
     features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://speshway.com/',
+    websiteUrl: 'https://gym.speshway.site/',
     adminUrl: '/product/american-fitness-gym/dashboard',
     imageUrl: '/images/products/american-fitness-gym.jpg',
     iconName: 'Dumbbell',
@@ -715,7 +715,34 @@ export const getWebsiteUrl = (prod) => {
   // 1. Direct websiteUrl / liveUrl / landingUrl / url property
   const directUrl = prod.websiteUrl || prod.liveUrl || prod.landingUrl || prod.url;
   if (directUrl && typeof directUrl === 'string' && directUrl.trim()) {
-    const trimmed = directUrl.trim();
+    let trimmed = directUrl.trim();
+
+    // Sanitize any broken / NXDOMAIN legacy hostnames to active verified sites or in-app routes
+    if (trimmed.includes('nexora.speshway.com') || trimmed.includes('nexora.speshway.site')) {
+      return 'https://ecom.speshway.site/';
+    }
+    if (trimmed.includes('spysalon.speshway.com') || trimmed.includes('spysalon.speshway.site')) {
+      return '/product/saloon/dashboard';
+    }
+    if (trimmed.includes('vexastylehub.com') || trimmed.includes('vexa.speshway.site')) {
+      return '/product/vexa-style-hub/dashboard';
+    }
+    if (trimmed.includes('americanfitness.speshway.com')) {
+      return 'https://gym.speshway.site/';
+    }
+    if (trimmed.includes('flavorakitchen.speshway.com')) {
+      return 'https://restaurant.speshway.site/';
+    }
+    if (trimmed.includes('hrms.speshway.com')) {
+      return 'https://speshwayhrms.com/';
+    }
+    if (trimmed.includes('fleet.speshway.com')) {
+      return 'https://fleet.speshway.site/';
+    }
+    if (trimmed.includes('foodway.speshway.site')) {
+      return 'https://foody.speshway.site/';
+    }
+
     if (/^https?:\/\//i.test(trimmed)) return trimmed;
     if (trimmed.startsWith('/')) return trimmed;
     return `https://${trimmed}`;
@@ -726,23 +753,23 @@ export const getWebsiteUrl = (prod) => {
   const name = (prod.name || '').toLowerCase();
 
   if (slug.includes('bike') || slug.includes('ride') || name.includes('ride flow')) return 'https://bike.speshway.site/';
-  if (slug.includes('joy') || slug.includes('event') || name.includes('joy')) return 'https://joyevents.speshway.site';
-  if (slug.includes('food') || name.includes('foodway')) return 'https://foodway.speshway.site';
-  if (slug.includes('hrms') || name.includes('hrms')) return 'https://hrms.speshway.com';
-  if (slug.includes('flavora') || slug.includes('kitchen') || name.includes('flavora')) return 'https://flavorakitchen.speshway.com';
-  if (slug.includes('gym') || slug.includes('fitness') || name.includes('fitness') || name.includes('american')) return 'https://americanfitness.speshway.com';
-  if (slug.includes('fleet') || name.includes('fleet')) return 'https://fleet.speshway.com';
+  if (slug.includes('joy') || slug.includes('event') || name.includes('joy')) return 'https://joyevents.speshway.site/';
+  if (slug.includes('food') || name.includes('foodway') || slug.includes('foody')) return 'https://foody.speshway.site/';
+  if (slug.includes('hrms') || name.includes('hrms')) return 'https://speshwayhrms.com/';
+  if (slug.includes('flavora') || slug.includes('kitchen') || name.includes('flavora')) return 'https://restaurant.speshway.site/';
+  if (slug.includes('gym') || slug.includes('fitness') || name.includes('fitness') || name.includes('american')) return 'https://gym.speshway.site/';
+  if (slug.includes('fleet') || name.includes('fleet')) return 'https://fleet.speshway.site/';
   if (slug.includes('hospital') || name.includes('hospital')) return 'https://speshway.com/hospitals';
-  if (slug.includes('travel') || slug.includes('tour') || name.includes('travel')) return 'https://speshway.com/tours-and-travels';
-  if (slug.includes('dairy') || slug.includes('milk') || name.includes('dairy')) return 'https://speshway.com/natural-milk-dairy';
-  if (slug.includes('vexa') || slug.includes('style') || name.includes('vexa')) return 'https://speshway.com/vexa-style-hub';
+  if (slug.includes('travel') || slug.includes('tour') || name.includes('travel') || slug.includes('bus')) return 'https://bus.speshway.site/';
+  if (slug.includes('dairy') || slug.includes('milk') || name.includes('dairy')) return 'https://dairy.speshway.site/';
+  if (slug.includes('vexa') || slug.includes('style') || name.includes('vexa')) return '/product/vexa-style-hub/dashboard';
   if (slug.includes('aneera') || slug.includes('silk') || name.includes('aneera')) return 'https://aneerasilks.com';
-  if (slug.includes('salon') || slug.includes('saloon') || slug.includes('spy') || name.includes('salon')) return 'https://spysalon.speshway.com';
-  if (slug.includes('nexora') || slug.includes('commerce') || name.includes('nexora')) return 'https://nexora.speshway.com';
+  if (slug.includes('salon') || slug.includes('saloon') || slug.includes('spy') || name.includes('salon')) return '/product/saloon/dashboard';
+  if (slug.includes('nexora') || slug.includes('commerce') || name.includes('nexora') || slug.includes('e-com')) return 'https://ecom.speshway.site/';
   if (slug.includes('service') || name.includes('service')) return 'https://speshway.com/service-center';
   if (slug.includes('estate') || slug.includes('real') || name.includes('real estate')) return 'https://speshway.com/real-estate';
   if (slug.includes('school') || name.includes('school')) return 'https://speshway.com/school-erp';
-  if (slug.includes('hotel') || name.includes('hotel')) return 'https://speshway.com/hotel-erp';
+  if (slug.includes('hotel') || slug.includes('stayz') || name.includes('hotel')) return 'https://hotel.speshway.site/';
 
   return `https://speshway.com/${slug}`;
 };

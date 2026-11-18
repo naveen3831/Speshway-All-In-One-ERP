@@ -6,7 +6,7 @@ import { Footer } from '../components/landing/Footer';
 import { DemoModal } from '../components/landing/DemoModal';
 import { useSocket, isSameProduct } from '../context/SocketContext';
 import { getProductFallbackImage } from '../utils/productImages';
-import { getProjectCategory } from '../utils/adminProjects';
+import { getProjectCategory, getWebsiteUrl } from '../utils/adminProjects';
 import {
   Globe,
   Shield,
@@ -120,7 +120,7 @@ export const ProductDetailPage = () => {
     category: 'Dairy & Agriculture',
     status: 'active',
     description: 'Natural Milk Dairy is an all-in-one Dairy Management System that simplifies product management, customer orders, subscriptions, inventory, daily deliveries, and payments through a centralized admin dashboard.',
-    websiteUrl: 'https://speshway.com/natural-milk-dairy',
+    websiteUrl: 'https://dairy.speshway.site/',
     adminUrl: '/product/natural-milk-dairy/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'REST API'],
     features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
@@ -142,7 +142,7 @@ export const ProductDetailPage = () => {
     category: 'E-Commerce Retail',
     status: 'active',
     description: 'Speshway Ecom is an all-in-one online shopping platform offering multiple product categories, seamless product browsing, wishlist, cart management, secure payments, and convenient order tracking.',
-    websiteUrl: 'https://nexora.speshway.com',
+    websiteUrl: 'https://ecom.speshway.site/',
     adminUrl: '/product/e-commerce/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
@@ -153,7 +153,7 @@ export const ProductDetailPage = () => {
     category: 'Logistics & Fleet',
     status: 'active',
     description: 'A smart Fleet Management System designed to simplify vehicle operations, monitor fleet activities, manage drivers and trips, and improve operational efficiency. Track fleet performance, organize vehicle records, and manage transportation operations through one centralized platform.',
-    websiteUrl: 'https://fleet.speshway.com',
+    websiteUrl: 'https://fleet.speshway.site/',
     adminUrl: '/product/fleet-management/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
@@ -164,7 +164,7 @@ export const ProductDetailPage = () => {
     category: 'Fitness & Wellness',
     status: 'active',
     description: 'American Fitness Gym is a modern fitness platform designed to help fitness enthusiasts achieve their health and fitness goals. Explore gym services, workout programs, professional trainers, membership plans, and schedules through a user-friendly website.',
-    websiteUrl: 'https://americanfitness.speshway.com',
+    websiteUrl: 'https://gym.speshway.site/',
     adminUrl: '/product/american-fitness-gym/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
@@ -175,7 +175,7 @@ export const ProductDetailPage = () => {
     category: 'Restaurant & Dining',
     status: 'active',
     description: 'Flavora Kitchen is an enterprise cloud kitchen and restaurant management system that streamlines live orders, online deliveries, dining table reservations, recipe costings, kitchen display systems (KDS), and inventory through a centralized digital platform.',
-    websiteUrl: 'https://flavorakitchen.speshway.com',
+    websiteUrl: 'https://restaurant.speshway.site/',
     adminUrl: '/product/flavora-kitchen/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
@@ -197,7 +197,7 @@ export const ProductDetailPage = () => {
     category: 'Event Management',
     status: 'active',
     description: 'Joy Events is a modern event management platform designed to simplify event planning, bookings, and vendor coordination. From weddings and birthday parties to corporate events and celebrations, manage event requirements through one centralized platform.',
-    websiteUrl: 'https://joyevents.speshway.site',
+    websiteUrl: 'https://joyevents.speshway.site/',
     adminUrl: '/product/joy-events/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Event Bookings & Scheduling', 'Multi-Category Packages', 'Vendor & Caterer Coordination', 'Real-Time Revenue Analytics', 'Automated Invoices & Payments', 'Role-Based Staff Access'],
@@ -208,7 +208,7 @@ export const ProductDetailPage = () => {
     category: 'Human Resources',
     status: 'active',
     description: 'Speshway HRMS is an all-in-one Human Resource Management System designed to simplify workforce management and automate daily HR operations. Manage employees, attendance, leave requests, payroll, recruitment, and performance through a centralized platform.',
-    websiteUrl: 'https://hrms.speshway.com',
+    websiteUrl: 'https://speshwayhrms.com/',
     adminUrl: '/product/speshway-hrms/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
@@ -219,7 +219,7 @@ export const ProductDetailPage = () => {
     category: 'Beauty & Wellness',
     status: 'active',
     description: 'SPY Salon is a premium beauty and wellness studio offering professional hair styling, beauty treatments, skincare, grooming, and personalized salon services with convenient online appointment booking.',
-    websiteUrl: 'https://spysalon.speshway.com',
+    websiteUrl: '/product/saloon/dashboard',
     adminUrl: '/product/saloon/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
@@ -230,7 +230,7 @@ export const ProductDetailPage = () => {
     category: 'Fashion & Apparel',
     status: 'Active Product',
     description: 'VEXA Style Hub is a modern clothing e-commerce platform that offers a seamless online shopping experience with stylish collections, easy product browsing, secure payments, and convenient order tracking.',
-    websiteUrl: 'https://vexastylehub.com',
+    websiteUrl: '/product/vexa-style-hub/dashboard',
     adminUrl: '/product/vexa-style-hub/dashboard',
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
     features: ['Real-Time Orders', 'Role-Based Access', 'Apparel Inventory', 'Sales Tracking', 'Manufacturing Batches'],
@@ -239,8 +239,12 @@ export const ProductDetailPage = () => {
   const handleOpenWebsite = (e) => {
     if (e && e.preventDefault) e.preventDefault();
     try {
-      const url = product?.websiteUrl || `https://speshway.com/${product?.slug || id || ''}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
+      const targetUrl = getWebsiteUrl(product || { id, slug: id });
+      if (targetUrl.startsWith('/')) {
+        navigate(targetUrl);
+      } else {
+        window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      }
     } catch (err) {
       console.error('Error opening website:', err);
     }

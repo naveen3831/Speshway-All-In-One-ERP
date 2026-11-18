@@ -48,6 +48,7 @@ import {
   DEFAULT_ADMIN_PROJECTS,
   PRIMARY_ERP_CATEGORIES,
   getPrimaryCategory,
+  getWebsiteUrl,
   EXCLUDED_SLUGS,
   EXCLUDED_NAMES,
 } from '../../utils/adminProjects';
@@ -521,7 +522,7 @@ export const AdminProducts = () => {
                       const pId = String(prod.id || prod.slug || prod._id || `grp-p-${pIdx}`);
                       const pName = typeof prod.name === 'string' ? prod.name : String(prod.name || 'ERP Project');
                       const pSlug = String(prod.slug || prod.id || prod._id || pId);
-                      const pUrl = typeof prod.websiteUrl === 'string' ? prod.websiteUrl : '';
+                      const pUrl = getWebsiteUrl(prod);
                       const ProjIcon = (prod.iconName && iconMap[prod.iconName]) ? iconMap[prod.iconName] : Layers;
                       const pColor = typeof prod.color === 'string' ? prod.color : 'green';
 
@@ -563,11 +564,17 @@ export const AdminProducts = () => {
                             </button>
                             {pUrl && (
                               <a
-                                href={pUrl}
-                                target="_blank"
+                                href={pUrl.startsWith('http') ? pUrl : '#'}
+                                target={pUrl.startsWith('http') ? '_blank' : undefined}
                                 rel="noreferrer"
                                 className="admin-cat-proj-btn"
-                                title="Open Live Website"
+                                title={pUrl.startsWith('/') ? "Open In-App Dashboard" : "Open Live Website"}
+                                onClick={(e) => {
+                                  if (pUrl.startsWith('/')) {
+                                    e.preventDefault();
+                                    navigate(pUrl);
+                                  }
+                                }}
                               >
                                 <ExternalLink size={12} />
                               </a>
@@ -678,7 +685,7 @@ export const AdminProducts = () => {
             const pDesc = typeof prod.description === 'string' ? prod.description : '';
             const pStatus = typeof prod.status === 'string' ? prod.status : 'active';
             const pColor = typeof prod.color === 'string' ? prod.color : 'green';
-            const pUrl = typeof prod.websiteUrl === 'string' ? prod.websiteUrl : '';
+            const pUrl = getWebsiteUrl(prod);
             const pSlug = String(prod.slug || prod.id || prod._id || pId);
             const Icon = (prod.iconName && iconMap[prod.iconName]) ? iconMap[prod.iconName] : Layers;
             const techList = parseTechList(prod.technologies);
@@ -763,7 +770,7 @@ export const AdminProducts = () => {
                   const pCategory = typeof prod.category === 'string' ? prod.category : 'General ERP';
                   const pStatus = typeof prod.status === 'string' ? prod.status : 'active';
                   const pColor = typeof prod.color === 'string' ? prod.color : 'green';
-                  const pUrl = typeof prod.websiteUrl === 'string' ? prod.websiteUrl : '';
+                  const pUrl = getWebsiteUrl(prod);
                   const pSlug = String(prod.slug || prod.id || prod._id || pId);
                   const techList = parseTechList(prod.technologies);
 
@@ -800,11 +807,17 @@ export const AdminProducts = () => {
                       </td>
                       <td>
                         <a
-                          href={pUrl || '#'}
-                          target="_blank"
+                          href={pUrl && pUrl.startsWith('http') ? pUrl : '#'}
+                          target={pUrl && pUrl.startsWith('http') ? '_blank' : undefined}
                           rel="noreferrer"
                           className="table-url-link"
-                          onClick={(e) => e.stopPropagation()}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (pUrl && pUrl.startsWith('/')) {
+                              e.preventDefault();
+                              navigate(pUrl);
+                            }
+                          }}
                         >
                           <Globe size={13} />
                           <span>{pUrl || 'Not configured'}</span>

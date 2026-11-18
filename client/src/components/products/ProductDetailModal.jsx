@@ -15,7 +15,7 @@ import {
   Activity,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { getProjectCategory } from '../../utils/adminProjects';
+import { getProjectCategory, getWebsiteUrl } from '../../utils/adminProjects';
 
 export const ProductDetailModal = ({ product, onClose }) => {
   const navigate = useNavigate();
@@ -23,9 +23,14 @@ export const ProductDetailModal = ({ product, onClose }) => {
 
   if (!product) return null;
 
+  const resolvedWebsiteUrl = getWebsiteUrl(product);
+
   const handleViewWebsite = () => {
-    if (product.websiteUrl && product.websiteUrl.startsWith('http')) {
-      window.open(product.websiteUrl, '_blank', 'noopener,noreferrer');
+    if (resolvedWebsiteUrl && resolvedWebsiteUrl.startsWith('http')) {
+      window.open(resolvedWebsiteUrl, '_blank', 'noopener,noreferrer');
+    } else if (resolvedWebsiteUrl && resolvedWebsiteUrl.startsWith('/')) {
+      onClose();
+      navigate(resolvedWebsiteUrl);
     } else {
       onClose();
       navigate(`/product/${product.slug || product.id}`);
@@ -155,12 +160,19 @@ export const ProductDetailModal = ({ product, onClose }) => {
                 <div className="endpoint-row">
                   <span className="endpoint-label">Website URL:</span>
                   <a
-                    href={product.websiteUrl || '#'}
+                    href={resolvedWebsiteUrl && resolvedWebsiteUrl.startsWith('http') ? resolvedWebsiteUrl : '#'}
                     target="_blank"
                     rel="noreferrer"
                     className="endpoint-value link"
+                    onClick={(e) => {
+                      if (resolvedWebsiteUrl && resolvedWebsiteUrl.startsWith('/')) {
+                        e.preventDefault();
+                        onClose();
+                        navigate(resolvedWebsiteUrl);
+                      }
+                    }}
                   >
-                    {product.websiteUrl || `https://speshway.com/${product.slug}`}
+                    {resolvedWebsiteUrl}
                     <ExternalLink size={12} style={{ display: 'inline', marginLeft: '4px' }} />
                   </a>
                 </div>
@@ -203,7 +215,7 @@ export const ProductDetailModal = ({ product, onClose }) => {
                 </div>
                 <div className="tech-row">
                   <span className="tech-k">Public Landing Page:</span>
-                  <span className="tech-v">{product.websiteUrl || `https://speshway.com/${product.slug}`}</span>
+                  <span className="tech-v">{resolvedWebsiteUrl}</span>
                 </div>
                 <div className="tech-row">
                   <span className="tech-k">Admin Management Route:</span>

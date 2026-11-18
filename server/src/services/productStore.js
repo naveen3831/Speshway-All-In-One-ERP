@@ -101,7 +101,7 @@ export const initialProducts = [
     longDescription: 'Speshway HRMS Enterprise empowers enterprises with end-to-end personnel automation: biometric attendance integration, leave approvals, salary slip generation, statutory tax filings, talent acquisition, and performance reviews.',
     features: ['Biometric Shift Punch Logs', 'Leave & Attendance Engine', 'Automated Payroll & Tax Slips', 'Applicant Tracking (ATS)', 'Employee Self-Service (ESS)', 'Performance Appraisals'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://hrms.speshway.com',
+    websiteUrl: 'https://speshwayhrms.com/',
     adminUrl: '/product/speshway-hrms/dashboard',
     imageUrl: '/images/products/speshway-hrms.jpg',
     iconName: 'Users',
@@ -119,7 +119,7 @@ export const initialProducts = [
     longDescription: 'Flavora Kitchen Restaurant & Cloud Kitchen ERP centralizes kitchen orders (KDS), dining table bookings, digital POS settlements, thermal KOT dispatching, recipe margins, and guest reviews.',
     features: ['Live Kitchen Display (KDS)', 'Table Reservation Engine', 'Thermal KOT Printing', 'Menu & Recipe Costing', 'Digital POS Settlements', 'Customer Loyalty & Reviews'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://flavorakitchen.speshway.com',
+    websiteUrl: 'https://restaurant.speshway.site/',
     adminUrl: '/product/flavora-kitchen/dashboard',
     imageUrl: '/images/products/flavora-kitchen.jpg',
     iconName: 'Utensils',
@@ -137,7 +137,7 @@ export const initialProducts = [
     longDescription: 'American Fitness Gym Athletic Club ERP streamlines gym operations with biometric turnstile entry, trainer rostering, class bookings, subscription tiers, locker assignment, and POS supplement sales.',
     features: ['Biometric Turnstile Check-In', 'PT & Class Scheduling', 'Membership Subscription Tiers', 'Attendance Streak Tracking', 'Supplement Bar POS', 'Revenue Analytics'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://americanfitness.speshway.com',
+    websiteUrl: 'https://gym.speshway.site/',
     adminUrl: '/product/american-fitness-gym/dashboard',
     imageUrl: '/images/products/american-fitness-gym.jpg',
     iconName: 'Dumbbell',
@@ -155,7 +155,7 @@ export const initialProducts = [
     longDescription: 'Fleet Management Enterprise is a complete transport logistics ERP offering real-time GPS fleet tracking, driver rostering, automated fuel consumption logs, preventive maintenance scheduling, waybills, and geofence perimeter alerts.',
     features: ['Real-Time GPS Telematics', 'Driver & Vehicle Rostering', 'Fuel Dispensation Audits', 'Waybill & Route Tracking', 'Preventive Maintenance Logs', 'Geofence Perimeter Security'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://fleet.speshway.com',
+    websiteUrl: 'https://fleet.speshway.site/',
     adminUrl: '/product/fleet-management/dashboard',
     imageUrl: '/images/products/fleet-management.jpg',
     iconName: 'Truck',
@@ -207,7 +207,7 @@ export const initialProducts = [
     longDescription: 'Complete dairy operations ERP providing farm-to-door delivery tracking, automated daily subscriptions, real-time inventory for milk and milk byproducts, temperature-controlled warehouse logging, and seamless payments.',
     features: ['Real-Time Orders', 'Role-Based Access', 'Daily Milk Subscriptions', 'Delivery Route Tracking', 'Inventory & Cold Storage', 'Revenue Analytics'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/natural-milk-dairy',
+    websiteUrl: 'https://dairy.speshway.site/',
     adminUrl: '/product/natural-milk-dairy/dashboard',
     imageUrl: '/images/products/natural-milk-dairy.jpg',
     iconName: 'Package',
@@ -224,7 +224,7 @@ export const initialProducts = [
     longDescription: 'Unified retail and manufacturing ERP for fashion brands: manages SKUs, variants, warehouse stock, vendor procurement, and boutique showroom sales.',
     features: ['Variant & Size Matrix', 'Omnichannel Orders', 'Showroom POS Integration', 'Fabric & Material Supply Chain', 'Seasonal Sales Analytics'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO'],
-    websiteUrl: 'https://speshway.com/vexa-style-hub',
+    websiteUrl: '/product/vexa-style-hub/dashboard',
     adminUrl: '/product/vexa-style-hub/dashboard',
     imageUrl: '/images/products/vexa-style-hub.png',
     iconName: 'Store',
@@ -258,7 +258,7 @@ export const initialProducts = [
     longDescription: 'Nexora Online Store is an enterprise multi-category retail e-commerce ERP providing centralized catalog synchronization, inventory tracking, coupon marketing, customer loyalty programs, and high-volume order fulfillment.',
     features: ['Multi-Category Catalog', 'Real-Time Order Tracking', 'Role-Based Access', 'Cart & Wishlist Engine', 'Payment Gateway Integration', 'Inventory Stock Alerts'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://nexora.speshway.com',
+    websiteUrl: 'https://ecom.speshway.site/',
     adminUrl: '/product/e-commerce/dashboard',
     imageUrl: '/images/products/e-commerce.jpg',
     iconName: 'ShoppingCart',
@@ -275,7 +275,7 @@ export const initialProducts = [
     longDescription: 'SPY Salon Jubilee Hills Studio ERP provides end-to-end luxury salon appointment scheduling, stylist chair allocation, beauty packages, client loyalty passes, and till billing.',
     features: ['Real-Time Appointments', 'Stylist & Chair Rostering', 'Service & Package Catalog', 'Loyalty & Membership Passes', 'POS & Split Billing', 'Inventory & Salon Consumables'],
     technologies: ['React 18', 'Node.js', 'Express.js', 'MongoDB Atlas', 'Socket.IO', 'Tailwind/CSS'],
-    websiteUrl: 'https://spysalon.speshway.com',
+    websiteUrl: '/product/saloon/dashboard',
     adminUrl: '/product/saloon/dashboard',
     imageUrl: '/images/products/saloon.jpg',
     iconName: 'Scissors',
@@ -357,9 +357,39 @@ let productsMemory = [...initialProducts];
 
 const normalize = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
+const sanitizeProductWebsite = (p) => {
+  if (!p || typeof p !== 'object') return p;
+  const web = typeof p.websiteUrl === 'string' ? p.websiteUrl : '';
+  let updatedWeb = web;
+  if (web.includes('nexora.speshway.com') || web.includes('nexora.speshway.site')) {
+    updatedWeb = 'https://ecom.speshway.site/';
+  } else if (web.includes('spysalon.speshway.com') || web.includes('spysalon.speshway.site')) {
+    updatedWeb = '/product/saloon/dashboard';
+  } else if (web.includes('vexastylehub.com') || web.includes('vexa.speshway.site')) {
+    updatedWeb = '/product/vexa-style-hub/dashboard';
+  } else if (web.includes('americanfitness.speshway.com')) {
+    updatedWeb = 'https://gym.speshway.site/';
+  } else if (web.includes('flavorakitchen.speshway.com')) {
+    updatedWeb = 'https://restaurant.speshway.site/';
+  } else if (web.includes('hrms.speshway.com')) {
+    updatedWeb = 'https://speshwayhrms.com/';
+  } else if (web.includes('fleet.speshway.com')) {
+    updatedWeb = 'https://fleet.speshway.site/';
+  }
+  if (updatedWeb !== web) {
+    if (typeof p.toObject === 'function') {
+      const obj = p.toObject();
+      obj.websiteUrl = updatedWeb;
+      return obj;
+    }
+    return { ...p, websiteUrl: updatedWeb };
+  }
+  return p;
+};
+
 export const setProductsMemory = (products) => {
   if (Array.isArray(products) && products.length > 0) {
-    productsMemory = [...products];
+    productsMemory = products.map(sanitizeProductWebsite);
   }
 };
 

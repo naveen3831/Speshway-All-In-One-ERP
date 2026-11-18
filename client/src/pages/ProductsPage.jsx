@@ -8,6 +8,7 @@ import {
   normalizeProductCategory,
   PRIMARY_ERP_CATEGORIES,
   getPrimaryCategory,
+  getWebsiteUrl,
 } from '../utils/adminProjects';
 import { getProductFallbackImage } from '../utils/productImages';
 import {
@@ -428,8 +429,11 @@ export const ProductsPage = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (prod.websiteUrl && prod.websiteUrl.startsWith('http')) {
-                          window.open(prod.websiteUrl, '_blank', 'noopener,noreferrer');
+                        const targetUrl = getWebsiteUrl(prod);
+                        if (targetUrl && targetUrl.startsWith('http')) {
+                          window.open(targetUrl, '_blank', 'noopener,noreferrer');
+                        } else if (targetUrl && targetUrl.startsWith('/')) {
+                          navigate(targetUrl);
                         } else {
                           navigate(`/product/${prod.slug || prod.id}`);
                         }
