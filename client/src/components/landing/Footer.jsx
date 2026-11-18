@@ -13,13 +13,14 @@ import {
 import { useSocket, DEFAULT_BRANDING, DEFAULT_SOCIAL_LINKS } from '../../context/SocketContext';
 
 export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
-  const { homeContent, branding, socialLinks } = useSocket();
+  const { homeContent, branding, socialLinks, contactInfo } = useSocket();
 
   const currentBranding = branding || homeContent?.branding || DEFAULT_BRANDING;
   const brandTitle = currentBranding.brandTitle || 'SPESHWAY';
   const brandSubtitle = currentBranding.brandSubtitle || 'ALL IN ONE ERP';
   const logoUrl = currentBranding.logoUrl || '/logo.png';
   const currentSocial = socialLinks || homeContent?.socialLinks || DEFAULT_SOCIAL_LINKS;
+  const currentContact = contactInfo || homeContent?.contact || DEFAULT_CONTACT_INFO;
 
   // Helper to determine boolean visibility with homeContent as primary source of truth
   const getPricingVisible = () => {
@@ -237,16 +238,26 @@ export const Footer = ({ onOpenGetStarted, onOpenDemo }) => {
               <div className="footer-contact-item">
                 <MapPin size={15} className="footer-contact-icon" />
                 <span className="footer-contact-text">
-                  T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032
+                  {currentContact?.address || DEFAULT_CONTACT_INFO.address}
                 </span>
               </div>
-              <a href="tel:+919100006020" className="footer-contact-item footer-contact-link">
+              <a
+                href={`tel:${currentContact?.phoneRaw || (currentContact?.phone || DEFAULT_CONTACT_INFO.phone).replace(/\s+/g, '')}`}
+                className="footer-contact-item footer-contact-link"
+              >
                 <Phone size={15} className="footer-contact-icon" />
-                <span className="footer-contact-text">+91 9100006020</span>
+                <span className="footer-contact-text">
+                  {currentContact?.phone || DEFAULT_CONTACT_INFO.phone}
+                </span>
               </a>
-              <a href="mailto:info@speshway.com" className="footer-contact-item footer-contact-link">
+              <a
+                href={`mailto:${currentContact?.email || DEFAULT_CONTACT_INFO.email}`}
+                className="footer-contact-item footer-contact-link"
+              >
                 <Mail size={15} className="footer-contact-icon" />
-                <span className="footer-contact-text">info@speshway.com</span>
+                <span className="footer-contact-text">
+                  {currentContact?.email || DEFAULT_CONTACT_INFO.email}
+                </span>
               </a>
             </div>
           </div>

@@ -41,6 +41,7 @@ export const DEFAULT_HOME_CONTENT = {
     youtube: 'https://youtube.com/@speshway',
   },
   contact: {
+    address: 'T-Hub, Plot No 1/C, Sy No 83/1, Raidurgam, Knowledge City Rd, panmaktha, Hyderabad, Serilingampalle (M), Telangana 500032',
     phone: '+91 9100006020',
     phoneRaw: '+919100006020',
     whatsapp: '+919100006020',
@@ -50,6 +51,9 @@ export const DEFAULT_HOME_CONTENT = {
 
 const sanitizeContact = (contact) => {
   const merged = { ...DEFAULT_HOME_CONTENT.contact, ...(contact || {}) };
+  if (!merged.address) {
+    merged.address = DEFAULT_HOME_CONTENT.contact.address;
+  }
   if (!merged.phone || merged.phone.includes('555-SPESH') || merged.phone.includes('1800')) {
     merged.phone = '+91 9100006020';
   }
